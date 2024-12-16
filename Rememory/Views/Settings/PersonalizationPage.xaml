@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page x:Class="Rememory.Views.Settings.PersonalizationPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:Rememory.Views.Settings"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:tkcontrols="using:CommunityToolkit.WinUI.Controls"
+      mc:Ignorable="d"
+      DataContext="{x:Bind ViewModel}">
+    <StackPanel Margin="56 0"
+                Spacing="5">
+        <tkcontrols:SettingsCard x:Uid="SettingsCard_AppTheme">
+            <tkcontrols:SettingsCard.HeaderIcon>
+                <FontIcon Glyph="&#xE790;" />
+            </tkcontrols:SettingsCard.HeaderIcon>
+            <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.CurrentThemeIndex, Mode=TwoWay}">
+                <ComboBoxItem x:Uid="SettingsComboBox_AppTheme_Default" />
+                <ComboBoxItem x:Uid="SettingsComboBox_AppTheme_Light" />
+                <ComboBoxItem x:Uid="SettingsComboBox_AppTheme_Dark" />
+            </ComboBox>
+        </tkcontrols:SettingsCard>
+
+        <tkcontrols:SettingsExpander x:Uid="SettingsCard_WindowPosition"
+                                     IsExpanded="True">
+            <tkcontrols:SettingsExpander.HeaderIcon>
+                <FontIcon Glyph="&#xE90D;" />
+            </tkcontrols:SettingsExpander.HeaderIcon>
+            <tkcontrols:SettingsExpander.Items>
+                <tkcontrols:SettingsCard x:Uid="SettingsCard_WindowWidth">
+                    <NumberBox SpinButtonPlacementMode="Inline"
+                               SmallChange="10"
+                               LargeChange="100"
+                               Minimum="300"
+                               Maximum="800"
+                               Value="{x:Bind ViewModel.SettingsContext.WindowWidth, Mode=TwoWay}" />
+                </tkcontrols:SettingsCard>
+                <tkcontrols:SettingsCard x:Uid="SettingsCard_WindowMargin">
+                    <NumberBox SpinButtonPlacementMode="Inline"
+                               Minimum="0"
+                               Maximum="50"
+                               Value="{x:Bind ViewModel.SettingsContext.WindowMargin, Mode=TwoWay}" />
+                </tkcontrols:SettingsCard>
+            </tkcontrols:SettingsExpander.Items>
+        </tkcontrols:SettingsExpander>
+    </StackPanel>
+</Page>

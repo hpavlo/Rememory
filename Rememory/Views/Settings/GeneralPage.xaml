@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page x:Class="Rememory.Views.Settings.GeneralPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:Rememory.Views.Settings"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:controls="using:Rememory.Views.Settings.Controls"
+      xmlns:tkcontrols="using:CommunityToolkit.WinUI.Controls"
+      mc:Ignorable="d"
+      DataContext="{x:Bind ViewModel}">
+    <StackPanel Margin="56 0"
+                Spacing="5">
+        <tkcontrols:SettingsCard x:Uid="SettingsCard_ActivationShortcut">
+            <tkcontrols:SettingsCard.HeaderIcon>
+                <FontIcon Glyph="&#xE765;" />
+            </tkcontrols:SettingsCard.HeaderIcon>
+            <controls:ShortcutControl x:Uid="SettingsShortcutCotrol_ActivationShortcut"
+                                      ActivationShortcut="{x:Bind ViewModel.SettingsContext.ActivationShortcut, Mode=TwoWay}"
+                                      ActivationShortcutDefault="{x:Bind ViewModel.SettingsContext.ActivationShortcutDefault, Mode=OneWay}" />
+        </tkcontrols:SettingsCard>
+
+        <tkcontrols:SettingsExpander x:Uid="SettingsExpander_RestartAsAdmin"
+                                     IsExpanded="True"
+                                     Loaded="RestartAsAdministratorSettings_Loaded">
+            <tkcontrols:SettingsExpander.HeaderIcon>
+                <FontIcon Glyph="&#xE7EF;" />
+            </tkcontrols:SettingsExpander.HeaderIcon>
+
+            <Button x:Uid="SettingsButton_RestartAsAdmin"
+                    Command="{x:Bind ViewModel.RestartAsAdministratorCommand, Mode=OneWay}" />
+
+            <tkcontrols:SettingsExpander.Items>
+                <tkcontrols:SettingsCard x:Uid="SettingsCard_AlwaysRunAsAdmin"
+                                         IsEnabled="{x:Bind ViewModel.IsAdministratorSettingsEnabled, Mode=OneWay}">
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.RunAsAdministratorToggle, Mode=TwoWay}" />
+                </tkcontrols:SettingsCard>
+            </tkcontrols:SettingsExpander.Items>
+        </tkcontrols:SettingsExpander>
+
+        <tkcontrols:SettingsCard x:Uid="SettingsCard_RunAtStartup">
+            <ToggleSwitch IsOn="{x:Bind ViewModel.RunAtStartupToggle, Mode=TwoWay}" />
+        </tkcontrols:SettingsCard>
+    </StackPanel>
+</Page>

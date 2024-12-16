@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  IgnorableNamespaces="uap rescap">
+
+	<Identity
+	  Name="PavloHuk.RememoryClipboardManager"
+	  Publisher="CN=5B9A5D1B-D565-4FE5-8AF8-CA331C5718E5"
+	  Version="1.0.0.0" />
+
+	<Properties>
+		<DisplayName>Rememory | Clipboard Manager</DisplayName>
+		<PublisherDisplayName>Pavlo Huk</PublisherDisplayName>
+		<Logo>Assets\StoreLogo.png</Logo>
+	</Properties>
+
+	<Dependencies>
+		<TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.19041.0" MaxVersionTested="10.0.26100.0" />
+	</Dependencies>
+
+	<Resources>
+		<Resource Language="en-US"/>
+		<Resource Language="fr-FR"/>
+		<Resource Language="uk-UA"/>
+	</Resources>
+
+	<Applications>
+		<Application Id="App"
+					 Executable="$targetnametoken$.exe"
+					 EntryPoint="$targetentrypoint$">
+			<uap:VisualElements DisplayName="ms-resource:AppDisplayName"
+								Description="ms-resource:AppDescription"
+								BackgroundColor="transparent"
+								Square150x150Logo="Assets\Square150x150Logo.png"
+								Square44x44Logo="Assets\Square44x44Logo.png">
+				<uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"
+								 Square71x71Logo="Assets\SmallTile.png"
+								 Square310x310Logo="Assets\LargeTile.png"/>
+				<uap:SplashScreen Image="Assets\SplashScreen.png" />
+			</uap:VisualElements>
+
+			<Extensions>
+				<uap:Extension Category="windows.protocol">
+					<uap:Protocol ReturnResults="none" Name="rememory" />
+				</uap:Extension>
+
+				<uap5:Extension Category="windows.appExecutionAlias">
+					<uap5:AppExecutionAlias>
+						<uap5:ExecutionAlias Alias="Rememory.exe" />
+					</uap5:AppExecutionAlias>
+				</uap5:Extension>
+			</Extensions>
+		</Application>
+	</Applications>
+
+	<Capabilities>
+		<rescap:Capability Name="runFullTrust" />
+	</Capabilities>
+</Package>

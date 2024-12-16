@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Rememory": {
+      "commandName": "Project"
+    },
+    "Rememory (MSIX)": {
+      "commandName": "MsixPackage",
+      "nativeDebugging": true
+    }
+  }
+}

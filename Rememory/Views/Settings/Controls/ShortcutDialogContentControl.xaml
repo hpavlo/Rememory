@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl x:Class="Rememory.Views.Settings.Controls.ShortcutDialogContentControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:Rememory.Views.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters="using:Rememory.Converters"
+             mc:Ignorable="d"
+             MinWidth="500">
+    <UserControl.Resources>
+        <converters:VirtualKeyToTextConverter x:Key="VirtualKeyToTextConverter" />
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="ShortcutDialogStatus">
+                <VisualState x:Name="Normal">
+                    <VisualState.Setters>
+                        <Setter Target="ShortcutItems.Margin"
+                                Value="0 16 0 0" />
+                        <Setter Target="ErrorInfoBar.IsOpen"
+                                Value="False" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Error">
+                    <VisualState.Setters>
+                        <Setter Target="ShortcutItems.Margin"
+                                Value="0 16 0 16" />
+                        <Setter Target="ErrorInfoBar.IsOpen"
+                                Value="True" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <TextBlock x:Uid="ShortcutDialogBox_Subtitle"
+                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+        <ItemsControl x:Name="ShortcutItems"
+                      Grid.Row="1"
+                      Margin="0 16 0 0"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      ItemsSource="{x:Bind ShortcutKeys, Mode=OneWay}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="8" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="x:Int32">
+                    <Border Padding="10"
+                            CornerRadius="4"
+                            Background="{ThemeResource AccentButtonBackground}">
+                        <ContentPresenter MinWidth="32"
+                                          MinHeight="32"
+                                          HorizontalContentAlignment="Center"
+                                          VerticalContentAlignment="Center"
+                                          Foreground="{ThemeResource AccentButtonForeground}"
+                                          Content="{x:Bind Mode=OneWay, Converter={StaticResource VirtualKeyToTextConverter}}" />
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <InfoBar x:Name="ErrorInfoBar"
+                 x:Uid="ShortcutDialogBox_ErrorInfoBar"
+                 Grid.Row="2"
+                 Margin="5 0"
+                 Severity="Error"
+                 IsClosable="False" />
+    </Grid>
+</UserControl>

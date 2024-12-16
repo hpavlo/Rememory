@@ -1,0 +1,148 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
+		<TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+		<RootNamespace>Rememory</RootNamespace>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<Platforms>x86;x64;arm64</Platforms>
+		<RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+		<PublishProfile>Properties\PublishProfiles\win-$(Platform).pubxml</PublishProfile>
+		<DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+		<UseWinUI>true</UseWinUI>
+		<EnableMsixTooling>true</EnableMsixTooling>
+		<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<StartupObject>Rememory.Program</StartupObject>
+		<ApplicationIcon>Assets\WindowIcon.ico</ApplicationIcon>
+		<DefaultLanguage>en-US</DefaultLanguage>
+		<PublishDir>bin\$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)\publish\</PublishDir>
+		<PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
+		<PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
+		<PublishReadyToRunComposite Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRunComposite>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Remove="Views\ClipboardRootPage.xaml" />
+		<None Remove="Views\Controls\ImagePreview.xaml" />
+		<None Remove="Views\Controls\LinkPreview.xaml" />
+		<None Remove="Views\Controls\ShortcutControl.xaml" />
+		<None Remove="Views\Controls\ShortcutDialogContentControl.xaml" />
+		<None Remove="Views\Controls\TextPreview.xaml" />
+		<None Remove="Views\SettingsWindow.xaml" />
+		<None Remove="Views\Settings\AboutPage.xaml" />
+		<None Remove="Views\Settings\GeneralPage.xaml" />
+		<None Remove="Views\Settings\SettingsRootPage.xaml" />
+		<None Remove="Assets\Rememory.Core" />
+		<None Remove="Views\Settings\StoragePage.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Assets\WindowIcon.ico">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+		<PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.1.240916" />
+		<PackageReference Include="HtmlAgilityPack" Version="1.11.71" />
+		<PackageReference Include="MessageFormat" Version="7.1.2" />
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
+		<PackageReference Include="TaskScheduler" Version="2.11.0" />
+		<PackageReference Include="WinUIEx" Version="2.5.0" />
+		<Manifest Include="$(ApplicationManifest)" />
+	</ItemGroup>
+
+	<!-- 
+    Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
+    Tools extension to be activated for this project even if the Windows App SDK Nuget
+    package has not yet been restored.
+  -->
+	<ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
+		<ProjectCapability Include="Msix" />
+	</ItemGroup>
+	<ItemGroup>
+		<ContentWithTargetPath Include="Assets\Rememory.Core\Rememory.Core.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>Rememory.Core.dll</TargetPath>
+		</ContentWithTargetPath>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\Controls\ShortcutDialogContentControl.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\Controls\ShortcutControl.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\Settings\AboutPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\Settings\GeneralPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\Settings\SettingsRootPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\SettingsWindow.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\Controls\ImagePreview.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\Controls\TextPreview.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Views\Controls\LinkPreview.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Views\ClipboardRootPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Views\Settings\Controls\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\Settings\StoragePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\Settings\PersonalizationPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<PropertyGroup Label="Globals">
+	  <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+	</PropertyGroup>
+
+	<!-- 
+    Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution 
+    Explorer "Package and Publish" context menu entry to be enabled for this project even if 
+    the Windows App SDK Nuget package has not yet been restored.
+  -->
+	<PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
+		<HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
+	</PropertyGroup>
+</Project>

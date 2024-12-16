@@ -1,0 +1,349 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ContextMenu_AddToFavorite.Text" xml:space="preserve">
+    <value>Add to favorite</value>
+  </data>
+  <data name="ContextMenu_RemoveFromFavorite.Text" xml:space="preserve">
+    <value>Remove from favorite</value>
+  </data>
+  <data name="ContextMenu_Paste.Text" xml:space="preserve">
+    <value>Paste</value>
+  </data>
+  <data name="ContextMenu_Copy.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="ContextMenu_Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ContextMenu_PasteAsPlainText.Text" xml:space="preserve">
+    <value>Paste as Plain Text</value>
+  </data>
+  <data name="NavigationMenu_Home.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="NavigationMenu_Links.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Links</value>
+  </data>
+  <data name="NavigationMenu_Images.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="NavigationMenu_Favorites.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Favorites</value>
+  </data>
+  <data name="DaysAgo" xml:space="preserve">
+    <value>{0, plural, one {# day ago} other {# days ago}}</value>
+  </data>
+  <data name="HoursAgo" xml:space="preserve">
+    <value>{0, plural, one {# hour ago} other {# hours ago}}</value>
+  </data>
+  <data name="MinutesAgo" xml:space="preserve">
+    <value>{0, plural, one {# minute ago} other {# minutes ago}}</value>
+  </data>
+  <data name="SecondsAgo" xml:space="preserve">
+    <value>{0, plural, one {# second ago} other {# seconds ago}}</value>
+  </data>
+  <data name="Now" xml:space="preserve">
+    <value>Now</value>
+  </data>
+  <data name="CharactersCount" xml:space="preserve">
+    <value>{0, plural, one {# character} other {# characters}}</value>
+  </data>
+  <data name="ImageSize" xml:space="preserve">
+    <value>Size: {0} x {1}</value>
+  </data>
+  <data name="ContextMenu_OpenInFlyout.Text" xml:space="preserve">
+    <value>Open in flyout</value>
+  </data>
+  <data name="ShortcutDialogBox_Title" xml:space="preserve">
+    <value>Activation shortcut</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ShortcutDialogBox_Subtitle.Text" xml:space="preserve">
+    <value>Press a combination of keys to change this shortcut</value>
+  </data>
+  <data name="ShortcutDialogBox_ErrorInfoBar.Message" xml:space="preserve">
+    <value>Shortcut should start with Windows key, Ctrl, Alt or Shift</value>
+  </data>
+  <data name="ShortcutDialogBox_ErrorInfoBar.Title" xml:space="preserve">
+    <value>Invalid shortcut</value>
+  </data>
+  <data name="MessageBox_UnableToOpenApp.Caption" xml:space="preserve">
+    <value>Unable to open this app</value>
+  </data>
+  <data name="MessageBox_UnableToOpenApp.Text" xml:space="preserve">
+    <value>Unable to open this app in current mode</value>
+  </data>
+  <data name="DeleteAllSavedDataQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete all saved data?</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="TitleButton_Close.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="TitleButton_Settings.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SettingsExpanderHeader_RestartAsAdministrator" xml:space="preserve">
+    <value>Restart as administrator</value>
+  </data>
+  <data name="SettingsExpanderHeader_RunningAsAdministrator" xml:space="preserve">
+    <value>Running as administrator</value>
+  </data>
+  <data name="SettingsPageTitle_General.Content" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="SettingsPageTitle_Personalization.Content" xml:space="preserve">
+    <value>Personalization</value>
+  </data>
+  <data name="SettingsPageTitle_Storage.Content" xml:space="preserve">
+    <value>Storage</value>
+  </data>
+  <data name="SettingsPageTitle_About.Content" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="SettingsCard_ActivationShortcut.Header" xml:space="preserve">
+    <value>Activation shortcut</value>
+  </data>
+  <data name="SettingsCard_ActivationShortcut.Description" xml:space="preserve">
+    <value>Set the shortcut combination to open Clipboard Manager</value>
+  </data>
+  <data name="SettingsShortcutCotrol_ActivationShortcut.ButtonText" xml:space="preserve">
+    <value>Change shortcut</value>
+  </data>
+  <data name="SettingsExpander_RestartAsAdmin.Description" xml:space="preserve">
+    <value>Advanced settings that require administrator privileges</value>
+  </data>
+  <data name="SettingsButton_RestartAsAdmin.Content" xml:space="preserve">
+    <value>Restart as Administrator</value>
+  </data>
+  <data name="SettingsCard_AlwaysRunAsAdmin.Header" xml:space="preserve">
+    <value>Always run as Administrator</value>
+  </data>
+  <data name="SettingsCard_AlwaysRunAsAdmin.Description" xml:space="preserve">
+    <value>Enable this option to always run the app with administrator privileges</value>
+  </data>
+  <data name="SettingsCard_RunAtStartup.Header" xml:space="preserve">
+    <value>Run at startup</value>
+  </data>
+  <data name="SettingsCard_RunAtStartup.Description" xml:space="preserve">
+    <value>Enable this option to automatically launch Rememory when your computer starts</value>
+  </data>
+  <data name="SettingsCard_AppTheme.Header" xml:space="preserve">
+    <value>Application theme</value>
+  </data>
+  <data name="SettingsCard_AppTheme.Description" xml:space="preserve">
+    <value>Select your preferred theme for the application interface</value>
+  </data>
+  <data name="SettingsComboBox_AppTheme_Default.Content" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="SettingsComboBox_AppTheme_Light.Content" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="SettingsComboBox_AppTheme_Dark.Content" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="SettingsCard_WindowPosition.Header" xml:space="preserve">
+    <value>Clipboard window position</value>
+  </data>
+  <data name="SettingsCard_WindowPosition.Description" xml:space="preserve">
+    <value>Customize the position of the Clipboard Manager window on your screen</value>
+  </data>
+  <data name="SettingsCard_WindowWidth.Header" xml:space="preserve">
+    <value>Window width</value>
+  </data>
+  <data name="SettingsCard_WindowWidth.Description" xml:space="preserve">
+    <value>Set the width of the Clipboard Manager window (in pixels)</value>
+  </data>
+  <data name="SettingsCard_WindowMargin.Header" xml:space="preserve">
+    <value>Window margin</value>
+  </data>
+  <data name="SettingsCard_WindowMargin.Description" xml:space="preserve">
+    <value>Set the margin around the Clipboard Manager window (in pixels)</value>
+  </data>
+  <data name="SettingsCard_EraseData.Header" xml:space="preserve">
+    <value>Erase clipboard data</value>
+  </data>
+  <data name="SettingsCard_EraseData.Description" xml:space="preserve">
+    <value>Remove all saved clipboard data from your computer</value>
+  </data>
+  <data name="SettingsButton_EraseData.Content" xml:space="preserve">
+    <value>Delete all data</value>
+  </data>
+  <data name="SettingsCard_RetentionPeriod.Header" xml:space="preserve">
+    <value>Data retention period</value>
+  </data>
+  <data name="SettingsCard_RetentionPeriod.Description" xml:space="preserve">
+    <value>Specify how long clipboard data should be kept on your disk</value>
+  </data>
+  <data name="SettingsComboBox_RetentionPeriod_Daily.Content" xml:space="preserve">
+    <value>Daily</value>
+  </data>
+  <data name="SettingsComboBox_RetentionPeriod_Weekly.Content" xml:space="preserve">
+    <value>Weekly</value>
+  </data>
+  <data name="SettingsComboBox_RetentionPeriod_Monthly.Content" xml:space="preserve">
+    <value>Monthly</value>
+  </data>
+  <data name="SettingsComboBox_RetentionPeriod_Always.Content" xml:space="preserve">
+    <value>Always</value>
+  </data>
+  <data name="AppDisplayName" xml:space="preserve">
+    <value>Rememory</value>
+  </data>
+  <data name="AppDescription" xml:space="preserve">
+    <value>Rememory - Clipboard Manager</value>
+    <comment>Max number of characters is 127. Using this value in tray icon</comment>
+  </data>
+  <data name="AppVersion" xml:space="preserve">
+    <value>Version: {0}</value>
+  </data>
+  <data name="SettingsCard_GitHubLink.Header" xml:space="preserve">
+    <value>GitHub repository</value>
+  </data>
+  <data name="TrayIconMenu_Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="TrayIconMenu_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="TrayIconMenu_Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="SearchBox.PlaceholderText" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="MessageBox_AccessDenied.Caption" xml:space="preserve">
+    <value>Access denied</value>
+  </data>
+  <data name="MessageBox_AccessDenied.Text" xml:space="preserve">
+    <value>To do this action please restart this app as Administrator</value>
+  </data>
+</root>

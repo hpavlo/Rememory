@@ -1,0 +1,349 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ContextMenu_AddToFavorite.Text" xml:space="preserve">
+    <value>Додати до вибраних</value>
+  </data>
+  <data name="ContextMenu_RemoveFromFavorite.Text" xml:space="preserve">
+    <value>Видалити з вибраних</value>
+  </data>
+  <data name="ContextMenu_Paste.Text" xml:space="preserve">
+    <value>Вставити</value>
+  </data>
+  <data name="ContextMenu_Copy.Text" xml:space="preserve">
+    <value>Скопіювати</value>
+  </data>
+  <data name="ContextMenu_Delete.Text" xml:space="preserve">
+    <value>Видалити</value>
+  </data>
+  <data name="ContextMenu_PasteAsPlainText.Text" xml:space="preserve">
+    <value>Вставити без форматування</value>
+  </data>
+  <data name="NavigationMenu_Home.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Головна</value>
+  </data>
+  <data name="NavigationMenu_Links.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Посилання</value>
+  </data>
+  <data name="NavigationMenu_Images.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Зображення</value>
+  </data>
+  <data name="NavigationMenu_Favorites.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Вибрані</value>
+  </data>
+  <data name="DaysAgo" xml:space="preserve">
+    <value>{0, plural, one {# день назад} few {# дні назад} many {# днів назад} other {# днів назад}}</value>
+  </data>
+  <data name="HoursAgo" xml:space="preserve">
+    <value>{0, plural, one {# година назад} few {# години назад} many {# годин назад} other {# годин назад}}</value>
+  </data>
+  <data name="MinutesAgo" xml:space="preserve">
+    <value>{0, plural, one {# хвилина назад} few {# хвилини назад} many {# хвилин назад} other {# хвилин назад}}</value>
+  </data>
+  <data name="SecondsAgo" xml:space="preserve">
+    <value>{0, plural, one {# секунда назад} few {# секунди назад} many {# секунд назад} other {# секунд назад}}</value>
+  </data>
+  <data name="Now" xml:space="preserve">
+    <value>Зараз</value>
+  </data>
+  <data name="CharactersCount" xml:space="preserve">
+    <value>{0, plural, one {# символ} few {# символи} many {# символів} other {# символів}}</value>
+  </data>
+  <data name="ImageSize" xml:space="preserve">
+    <value>Розмір: {0} x {1}</value>
+  </data>
+  <data name="ContextMenu_OpenInFlyout.Text" xml:space="preserve">
+    <value>Попередній перегляд</value>
+  </data>
+  <data name="ShortcutDialogBox_Title" xml:space="preserve">
+    <value>Комбінація клавіш для активації</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Зберегти</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Скинути</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Скасувати</value>
+  </data>
+  <data name="ShortcutDialogBox_Subtitle.Text" xml:space="preserve">
+    <value>Введіть комбінацію клавіш</value>
+  </data>
+  <data name="ShortcutDialogBox_ErrorInfoBar.Message" xml:space="preserve">
+    <value>Комбінація клавіш має починатися з клавіші Windows, Ctrl, Alt або Shift</value>
+  </data>
+  <data name="ShortcutDialogBox_ErrorInfoBar.Title" xml:space="preserve">
+    <value>Неправильна комбінація клавіш</value>
+  </data>
+  <data name="MessageBox_UnableToOpenApp.Caption" xml:space="preserve">
+    <value>Неможливо відкрити цей додаток</value>
+  </data>
+  <data name="MessageBox_UnableToOpenApp.Text" xml:space="preserve">
+    <value>Неможливо відкрити цей додаток у поточному режимі</value>
+  </data>
+  <data name="DeleteAllSavedDataQuestion" xml:space="preserve">
+    <value>Ви впевнені, що хочете видалити всі збережені дані?</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Так</value>
+  </data>
+  <data name="TitleButton_Close.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Закрити</value>
+  </data>
+  <data name="TitleButton_Settings.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Налаштування</value>
+  </data>
+  <data name="SettingsExpanderHeader_RestartAsAdministrator" xml:space="preserve">
+    <value>Перезапустити з правами адміністратора</value>
+  </data>
+  <data name="SettingsExpanderHeader_RunningAsAdministrator" xml:space="preserve">
+    <value>Запущено з правами адміністратора</value>
+  </data>
+  <data name="SettingsPageTitle_General.Content" xml:space="preserve">
+    <value>Загальні</value>
+  </data>
+  <data name="SettingsPageTitle_Personalization.Content" xml:space="preserve">
+    <value>Персоналізація</value>
+  </data>
+  <data name="SettingsPageTitle_Storage.Content" xml:space="preserve">
+    <value>Сховище</value>
+  </data>
+  <data name="SettingsPageTitle_About.Content" xml:space="preserve">
+    <value>Про програму</value>
+  </data>
+  <data name="SettingsCard_ActivationShortcut.Header" xml:space="preserve">
+    <value>Комбінація клавіш для активації</value>
+  </data>
+  <data name="SettingsCard_ActivationShortcut.Description" xml:space="preserve">
+    <value>Встановити комбінацію клавіш для відкриття менеджера буфера обміну</value>
+  </data>
+  <data name="SettingsShortcutCotrol_ActivationShortcut.ButtonText" xml:space="preserve">
+    <value>Змінити комбінацію клавіш</value>
+  </data>
+  <data name="SettingsExpander_RestartAsAdmin.Description" xml:space="preserve">
+    <value>Розширені налаштування, які потребують прав адміністратора</value>
+  </data>
+  <data name="SettingsButton_RestartAsAdmin.Content" xml:space="preserve">
+    <value>Перезапустити від імені адміністратора</value>
+  </data>
+  <data name="SettingsCard_AlwaysRunAsAdmin.Header" xml:space="preserve">
+    <value>Завжди запускати з правами адміністратора</value>
+  </data>
+  <data name="SettingsCard_AlwaysRunAsAdmin.Description" xml:space="preserve">
+    <value>Увімкніть цю опцію, щоб завжди запускати додаток з правами адміністратора</value>
+  </data>
+  <data name="SettingsCard_RunAtStartup.Header" xml:space="preserve">
+    <value>Автозапуск</value>
+  </data>
+  <data name="SettingsCard_RunAtStartup.Description" xml:space="preserve">
+    <value>Увімкніть цю опцію, щоб Rememory запускався автоматично під час увімкнення комп'ютера</value>
+  </data>
+  <data name="SettingsCard_AppTheme.Header" xml:space="preserve">
+    <value>Тема інтерфейсу</value>
+  </data>
+  <data name="SettingsCard_AppTheme.Description" xml:space="preserve">
+    <value>Виберіть бажану тему для інтерфейсу додатку</value>
+  </data>
+  <data name="SettingsComboBox_AppTheme_Default.Content" xml:space="preserve">
+    <value>За замовчуванням</value>
+  </data>
+  <data name="SettingsComboBox_AppTheme_Light.Content" xml:space="preserve">
+    <value>Світла</value>
+  </data>
+  <data name="SettingsComboBox_AppTheme_Dark.Content" xml:space="preserve">
+    <value>Темна</value>
+  </data>
+  <data name="SettingsCard_WindowPosition.Header" xml:space="preserve">
+    <value>Розташування вікна буфера обміну</value>
+  </data>
+  <data name="SettingsCard_WindowPosition.Description" xml:space="preserve">
+    <value>Налаштуйте позицію вікна менеджера буфера обміну на вашому екрані</value>
+  </data>
+  <data name="SettingsCard_WindowWidth.Header" xml:space="preserve">
+    <value>Ширина вікна</value>
+  </data>
+  <data name="SettingsCard_WindowWidth.Description" xml:space="preserve">
+    <value>Встановіть ширину вікна менеджера буфера обміну (у пікселях)</value>
+  </data>
+  <data name="SettingsCard_WindowMargin.Header" xml:space="preserve">
+    <value>Відступи вікна</value>
+  </data>
+  <data name="SettingsCard_WindowMargin.Description" xml:space="preserve">
+    <value>Встановіть відступ навколо вікна менеджера буфера обміну (у пікселях)</value>
+  </data>
+  <data name="SettingsCard_EraseData.Header" xml:space="preserve">
+    <value>Очистити буфер обміну</value>
+  </data>
+  <data name="SettingsCard_EraseData.Description" xml:space="preserve">
+    <value>"Видалити всі збережені дані буфера обміну з вашого комп'ютера</value>
+  </data>
+  <data name="SettingsButton_EraseData.Content" xml:space="preserve">
+    <value>Видалити усі дані</value>
+  </data>
+  <data name="SettingsCard_RetentionPeriod.Header" xml:space="preserve">
+    <value>Період зберігання даних</value>
+  </data>
+  <data name="SettingsCard_RetentionPeriod.Description" xml:space="preserve">
+    <value>Вкажіть, як довго слід зберігати дані з буфера обміну на вашому диску</value>
+  </data>
+  <data name="SettingsComboBox_RetentionPeriod_Daily.Content" xml:space="preserve">
+    <value>День</value>
+  </data>
+  <data name="SettingsComboBox_RetentionPeriod_Weekly.Content" xml:space="preserve">
+    <value>Тиждень</value>
+  </data>
+  <data name="SettingsComboBox_RetentionPeriod_Monthly.Content" xml:space="preserve">
+    <value>Місяць</value>
+  </data>
+  <data name="SettingsComboBox_RetentionPeriod_Always.Content" xml:space="preserve">
+    <value>Завжди</value>
+  </data>
+  <data name="AppDisplayName" xml:space="preserve">
+    <value>Rememory</value>
+  </data>
+  <data name="AppDescription" xml:space="preserve">
+    <value>Rememory - Менеджер буфера обміну</value>
+    <comment>Max number of characters is 127. Using this value in tray icon</comment>
+  </data>
+  <data name="AppVersion" xml:space="preserve">
+    <value>Версія: {0}</value>
+  </data>
+  <data name="SettingsCard_GitHubLink.Header" xml:space="preserve">
+    <value>GitHub репозиторій</value>
+  </data>
+  <data name="TrayIconMenu_Open" xml:space="preserve">
+    <value>Відкрити</value>
+  </data>
+  <data name="TrayIconMenu_Settings" xml:space="preserve">
+    <value>Налаштування</value>
+  </data>
+  <data name="TrayIconMenu_Exit" xml:space="preserve">
+    <value>Вихід</value>
+  </data>
+  <data name="SearchBox.PlaceholderText" xml:space="preserve">
+    <value>Пошук</value>
+  </data>
+  <data name="MessageBox_AccessDenied.Caption" xml:space="preserve">
+    <value>Доступ заборонено</value>
+  </data>
+  <data name="MessageBox_AccessDenied.Text" xml:space="preserve">
+    <value>Щоб виконати цю дію, перезапустіть програму від імені адміністратора</value>
+  </data>
+</root>
