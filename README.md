@@ -10,3 +10,5 @@ Rememory is a powerful clipboard manager designed to enhance your productivity b
 - Save various data types: formatted text, images, HTML
 - Quick search
 - Organized data grouping
+
+[Privace Policy](./PRIVACY.md)
