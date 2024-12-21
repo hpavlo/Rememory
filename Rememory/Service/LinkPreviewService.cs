@@ -46,7 +46,13 @@ namespace Rememory.Service
                     return;
                 }
 
-                string str = await response.Content.ReadAsStringAsync();
+                string str = string.Empty;
+                try
+                {
+                    str = await response.Content.ReadAsStringAsync();
+                }
+                catch (InvalidOperationException) { }
+
                 HtmlDocument html = new();
                 html.LoadHtml(str);
                 var titleNode = html.DocumentNode.SelectSingleNode("//meta[@property='og:title']");
