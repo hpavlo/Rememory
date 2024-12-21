@@ -2,6 +2,8 @@
 using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using Microsoft.Windows.AppNotifications.Builder;
+using Microsoft.Windows.AppNotifications;
 using Rememory.Helper;
 using Rememory.Helper.WindowBackdrop;
 using Rememory.Hooks;
@@ -91,6 +93,15 @@ namespace Rememory
             _messageMonitor = new WindowMessageMonitor(ClipboardWindowHwnd);
             _messageMonitor.WindowMessageReceived += WindowMessageReceived;
             _keyboardMonitor.StartMonitor();
+
+            if (!_launchArguments.Contains("-silent"))
+            {
+                AppNotificationManager.Default.Show(new AppNotificationBuilder()
+                    .AddText("AppNotification_AppIsRunning".GetLocalizedResource())
+                    .AddText("AppNotification_UseShortcutToOpen".GetLocalizedFormatResource(
+                        KeyboardHelper.ShortcutToString(SettingsContext.ActivationShortcut, "+")))
+                    .BuildNotification());
+            }
         }
 
         private void InitializeMainWindow()

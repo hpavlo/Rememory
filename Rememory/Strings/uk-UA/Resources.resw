@@ -346,4 +346,10 @@
   <data name="MessageBox_AccessDenied.Text" xml:space="preserve">
     <value>Щоб виконати цю дію, перезапустіть програму від імені адміністратора</value>
   </data>
+  <data name="AppNotification_AppIsRunning" xml:space="preserve">
+    <value>Програма запущена</value>
+  </data>
+  <data name="AppNotification_UseShortcutToOpen" xml:space="preserve">
+    <value>Використовуйте комбінацію, щоб відкрити її: {0}</value>
+  </data>
 </root>

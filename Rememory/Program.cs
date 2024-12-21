@@ -5,8 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
+using Microsoft.Windows.AppNotifications.Builder;
+using Microsoft.Windows.AppNotifications;
 using Rememory.Helper;
 using WinRT;
+using Rememory.Models;
 
 namespace Rememory
 {
@@ -39,6 +42,15 @@ namespace Rememory
                     _ = new App(args);
                 });
             }
+            else
+            {
+                AppNotificationManager.Default.Show(new AppNotificationBuilder()
+                    .AddText("AppNotification_AppIsRunning".GetLocalizedResource())
+                    .AddText("AppNotification_UseShortcutToOpen".GetLocalizedFormatResource(
+                        KeyboardHelper.ShortcutToString(SettingsContext.Instance.ActivationShortcut, "+")))
+                    .BuildNotification());
+            }
+
             return 0;
         }
 
