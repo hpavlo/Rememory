@@ -69,8 +69,10 @@ namespace Rememory.Service
                 Delay = TimeSpan.FromSeconds(3),
                 UserId = WindowsIdentity.GetCurrent().Name
             });
-            task.Actions.Add(AppAliasExePath);
+            task.Actions.Add(AppAliasExePath, arguments: "-silent");
+            task.Settings.StopIfGoingOnBatteries = false;
             task.Settings.DisallowStartIfOnBatteries = false;
+            task.Settings.ExecutionTimeLimit = TimeSpan.Zero;
 
             // Delete if task already created
             DeleteStartupTask();
