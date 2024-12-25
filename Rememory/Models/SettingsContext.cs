@@ -68,7 +68,7 @@ namespace Rememory.Models
                 {
                     _localSettings.Values[nameof(ActivationShortcut)] = JsonSerializer.Serialize(value);
                     unsafe {
-                        RememoryCoreHelper.UpdateTrayIconMenuItem(App.TRAY_OPEN_COMMAND, new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged(
+                        RememoryCoreHelper.UpdateTrayIconMenuItem(RememoryCoreHelper.TRAY_OPEN_COMMAND, new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged(
                             $"{"TrayIconMenu_Open".GetLocalizedResource()}\t{KeyboardHelper.ShortcutToString(value, "+")}")));
                     }
                 }

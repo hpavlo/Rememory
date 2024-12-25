@@ -51,15 +51,7 @@ namespace Rememory
         private string[] _launchArguments;
         private IKeyboardMonitor _keyboardMonitor;
         private WindowMessageMonitor _messageMonitor;
-
-        private const uint WM_COMMAND = 0x0111;   // Move it to NativeHelper
-        private const uint WM_LBUTTONDBLCLK = 0x0203;
-        private const uint WM_USER = 0x0400;
-
-        public const uint TRAY_NOTIFICATION = WM_USER + 1;
-        public const uint TRAY_OPEN_COMMAND = 10;
-        public const uint TRAY_SETTINGS_COMMAND = 11;
-        public const uint TRAY_EXIT_COMMAND = 12;
+        private bool _queryEndSessionReceived = false;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -129,6 +121,7 @@ namespace Rememory
 
             ClipboardWindow.Activated += ClipboardWindow_Activated;
             ClipboardWindow.AppWindow.Closing += ClipboardWindow_Closing;
+            ClipboardWindow.Closed += ClipboardWindow_Closed;
         }
 
         private unsafe void InitializeRememoryCore()
@@ -187,25 +180,26 @@ namespace Rememory
         {
             switch (args.Message.MessageId)
             {
-                case WM_COMMAND:
+                case NativeHelper.WM_QUERYENDSESSION:
+                    _queryEndSessionReceived = true;
+                    break;
+
+                case NativeHelper.WM_COMMAND:
                     switch (args.Message.WParam)
                     {
-                        case TRAY_OPEN_COMMAND:
+                        case RememoryCoreHelper.TRAY_OPEN_COMMAND:
                             ShowClipboardWindow();
                             break;
-                        case TRAY_SETTINGS_COMMAND:
+                        case RememoryCoreHelper.TRAY_SETTINGS_COMMAND:
                             SettingsWindow.ShowSettingsWindow();
                             break;
-                        case TRAY_EXIT_COMMAND:
-                            ClipboardWindow.Activated -= ClipboardWindow_Activated;
-                            SettingsWindow.CloseSettingsWindow();
-                            _keyboardMonitor.StopMonitor();
+                        case RememoryCoreHelper.TRAY_EXIT_COMMAND:
                             ClipboardWindow.Close();
                             break;
                     }
                     break;
-                case TRAY_NOTIFICATION:
-                    if (args.Message.LParam == WM_LBUTTONDBLCLK)
+                case RememoryCoreHelper.TRAY_NOTIFICATION:
+                    if (args.Message.LParam == NativeHelper.WM_LBUTTONDBLCLK)
                         SettingsWindow.ShowSettingsWindow();
                     break;
             }
@@ -221,8 +215,20 @@ namespace Rememory
 
         private void ClipboardWindow_Closing(AppWindow sender, AppWindowClosingEventArgs args)
         {
-            HideClipboardWindow();
-            args.Cancel = true;
+            if (!_queryEndSessionReceived)
+            {
+                HideClipboardWindow();
+                args.Cancel = true;
+            }
+        }
+
+        private void ClipboardWindow_Closed(object sender, WindowEventArgs args)
+        {
+            SettingsWindow.CloseSettingsWindow();
+            _keyboardMonitor.StopMonitor();
+            ClipboardWindow.Activated -= ClipboardWindow_Activated;
+            _messageMonitor.WindowMessageReceived -= WindowMessageReceived;
+            Exit();
         }
 
         private Rect GetWorkAreaRectangle()

@@ -5,6 +5,11 @@ namespace Rememory.Helper
 {
     public class RememoryCoreHelper
     {
+        public const uint TRAY_NOTIFICATION = NativeHelper.WM_USER + 1;
+        public const uint TRAY_OPEN_COMMAND = 10;
+        public const uint TRAY_SETTINGS_COMMAND = 11;
+        public const uint TRAY_EXIT_COMMAND = 12;
+
         [DllImport("Rememory.Core.dll")]
         public static extern bool StartClipboardMonitor(IntPtr hWnd, ClipboardMonitorCallback handler);
 
