@@ -6,6 +6,7 @@ namespace Rememory.Converters
 {
     public class DateTimeToHumanReadableConverter : IValueConverter
     {
+        // https://www.unicode.org/cldr/charts/46/supplemental/language_plural_rules.html
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             var elapsed = DateTime.Now - ((DateTime)value);

@@ -11,7 +11,7 @@ namespace Rememory.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return new TaskCompletionNotifier<string>(GetFooterInfo((Dictionary<ClipboardFormat, string>)value));
+            return new TaskCompletionNotifier<string>(Task.Run(() => GetFooterInfo((Dictionary<ClipboardFormat, string>)value)));
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
