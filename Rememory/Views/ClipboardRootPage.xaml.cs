@@ -8,12 +8,9 @@ using Rememory.Helper;
 using Rememory.Models;
 using Rememory.Service;
 using Rememory.ViewModels;
-using Rememory.Views.Controls;
 using Rememory.Views.Controls.Behavior;
 using Rememory.Views.Settings;
-using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Windows.System;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -55,16 +52,7 @@ namespace Rememory.Views
                     ClipboardItemListView.ScrollIntoView(ClipboardItemListView.Items.First());
                 }
 
-                if (ViewModel.CleanupOldData())
-                {
-                    ViewModel.UpdateItemsList();
-                    return;
-                }
-
-                foreach (ClipboardItem item in ClipboardItemListView.Items.Cast<ClipboardItem>())
-                {
-                    item.UpdateProperty(nameof(item.Time));
-                }
+                ViewModel.OnWindowActivated();
             }
         }
 
@@ -212,6 +200,15 @@ namespace Rememory.Views
             var button = (Button)args.Element;
             ViewModel.CopyItemCommand.Execute(button.DataContext);
             args.Handled = true;
+        }
+
+        private void ClipboardItemListView_DragItemsStarting(object sender, DragItemsStartingEventArgs e)
+        {
+            var item = (ClipboardItem)e.Items.FirstOrDefault();
+            if (item is not null)
+            {
+                ViewModel.OnDragItemStarting(item, e.Data);
+            }
         }
     }
 }

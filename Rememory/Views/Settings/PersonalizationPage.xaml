@@ -21,6 +21,142 @@
             </ComboBox>
         </tkcontrols:SettingsCard>
 
+        <tkcontrols:SettingsCard x:Uid="SettingsCard_Backdrop"
+                                 IsEnabled="{x:Bind ViewModel.IsBackgropSupported, Mode=OneWay}">
+            <tkcontrols:SettingsCard.HeaderIcon>
+                <FontIcon Glyph="&#xEF1F;" />
+            </tkcontrols:SettingsCard.HeaderIcon>
+            <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.CurrentWindowBackdropIndex, Mode=TwoWay}">
+                <ComboBoxItem x:Uid="SettingsComboBox_Backdrop_None" />
+                <ComboBoxItem x:Uid="SettingsComboBox_Backdrop_Acrylic" />
+                <ComboBoxItem x:Uid="SettingsComboBox_Backdrop_ThinAcrylic" />
+                <ComboBoxItem x:Uid="SettingsComboBox_Backdrop_Mica" />
+                <ComboBoxItem x:Uid="SettingsComboBox_Backdrop_MicaAlt" />
+            </ComboBox>
+        </tkcontrols:SettingsCard>
+
+        <tkcontrols:SettingsExpander x:Uid="SettingsCard_BackgroundColor"
+                                     IsExpanded="True">
+            <tkcontrols:SettingsExpander.HeaderIcon>
+                <FontIcon Glyph="&#xE771;" />
+            </tkcontrols:SettingsExpander.HeaderIcon>
+            <SplitButton Padding="0"
+                         IsTapEnabled="False">
+                <SplitButton.Resources>
+                    <ResourceDictionary>
+                        <ResourceDictionary.ThemeDictionaries>
+                            <ResourceDictionary x:Key="Light">
+                                <SolidColorBrush x:Key="DefaultThemeBackgroundBrush"
+                                                 Color="White" />
+                            </ResourceDictionary>
+                            <ResourceDictionary x:Key="Dark">
+                                <SolidColorBrush x:Key="DefaultThemeBackgroundBrush"
+                                                 Color="Black" />
+                            </ResourceDictionary>
+                        </ResourceDictionary.ThemeDictionaries>
+
+                    </ResourceDictionary>
+                </SplitButton.Resources>
+                
+                <Grid Width="32"
+                      Height="32"
+                      Margin="0 2"
+                      CornerRadius="2"
+                      Background="{ThemeResource DefaultThemeBackgroundBrush}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <Grid.Resources>
+
+                        <Style TargetType="Rectangle">
+                            <Setter Property="Width"
+                                    Value="8" />
+                            <Setter Property="Height"
+                                    Value="8" />
+                            <Setter Property="Fill"
+                                    Value="#60888888" />
+                        </Style>
+                    </Grid.Resources>
+
+                    <Rectangle Grid.Column="0"
+                               Grid.Row="0" />
+                    <Rectangle Grid.Column="1"
+                               Grid.Row="1" />
+                    <Rectangle Grid.Column="2"
+                               Grid.Row="2" />
+                    <Rectangle Grid.Column="3"
+                               Grid.Row="3" />
+                    <Rectangle Grid.Column="2"
+                               Grid.Row="0" />
+                    <Rectangle Grid.Column="3"
+                               Grid.Row="1" />
+                    <Rectangle Grid.Column="0"
+                               Grid.Row="2" />
+                    <Rectangle Grid.Column="1"
+                               Grid.Row="3" />
+
+                    <Border x:Name="BackgroundColorPreview"
+                            Grid.ColumnSpan="4"
+                            Grid.RowSpan="4"
+                            Background="{x:Bind ViewModel.SettingsContext.CurrentWindowBackgroundBrush, Mode=OneWay}" />
+                </Grid>
+
+                <SplitButton.Flyout>
+                    <Flyout ShouldConstrainToRootBounds="False"
+                            Closed="BackgroundColorFlyout_Closed">
+                        <ColorPicker x:Name="BackgroundColorPicker"
+                                     IsAlphaEnabled="True"
+                                     IsMoreButtonVisible="True"
+                                     Loaded="BackgroundColorPicker_Loaded" />
+                    </Flyout>
+                </SplitButton.Flyout>
+            </SplitButton>
+
+            <tkcontrols:SettingsExpander.Items>
+                <tkcontrols:SettingsCard>
+                    <tkcontrols:SettingsCard.Template>
+                        <ControlTemplate TargetType="tkcontrols:SettingsCard">
+                            <ContentPresenter Background="{TemplateBinding Background}"
+                                              Padding="{TemplateBinding Padding}" />
+                        </ControlTemplate>
+                    </tkcontrols:SettingsCard.Template>
+
+                    <ItemsView x:Name="BackgroundColorItemsView"
+                               SelectionMode="Single"
+                               SelectionChanged="BackgroundColorItemsView_SelectionChanged"
+                               Loaded="BackgroundColorItemsView_Loaded"
+                               ItemsSource="{x:Bind _suggestedBackgroundColors, Mode=OneWay}">
+                        <ItemsView.Layout>
+                            <UniformGridLayout MinColumnSpacing="6"
+                                               MinRowSpacing="6"/>
+                        </ItemsView.Layout>
+                        <ItemsView.ItemTemplate>
+                            <DataTemplate x:DataType="SolidColorBrush">
+                                <ItemContainer>
+                                    <Border Background="{x:Bind Mode=OneWay}"
+                                            Width="40"
+                                            Height="40"
+                                            BorderThickness="1"
+                                            BorderBrush="{ThemeResource ButtonBorderBrush}"
+                                            CornerRadius="4" />
+                                </ItemContainer>
+                            </DataTemplate>
+                        </ItemsView.ItemTemplate>
+                    </ItemsView>
+                </tkcontrols:SettingsCard>
+            </tkcontrols:SettingsExpander.Items>
+        </tkcontrols:SettingsExpander>
+
         <tkcontrols:SettingsExpander x:Uid="SettingsCard_WindowPosition"
                                      IsExpanded="True">
             <tkcontrols:SettingsExpander.HeaderIcon>

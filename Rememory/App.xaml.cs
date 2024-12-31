@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
-using Microsoft.Windows.AppNotifications.Builder;
 using Microsoft.Windows.AppNotifications;
+using Microsoft.Windows.AppNotifications.Builder;
+using Microsoft.Windows.Globalization;
 using Rememory.Helper;
 using Rememory.Helper.WindowBackdrop;
 using Rememory.Hooks;
@@ -12,8 +12,10 @@ using Rememory.Service;
 using Rememory.Views;
 using Rememory.Views.Settings;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices.Marshalling;
+using System.Threading;
 using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.Graphics;
@@ -65,6 +67,8 @@ namespace Rememory
             _keyboardMonitor = Services.GetService<IKeyboardMonitor>();
 
             this.InitializeComponent();
+            SetCulture(SettingsContext.CurrentLanguageCode.Equals(string.Empty) ?
+                CultureInfo.CurrentCulture.TwoLetterISOLanguageName : SettingsContext.CurrentLanguageCode);
         }
 
         /// <summary>
@@ -116,12 +120,30 @@ namespace Rememory
 
             ClipboardWindow.Content = new ClipboardRootPage(ClipboardWindow);
 
-            var backdropHelper = new WindowBackdropHelper(ClipboardWindow);
-            backdropHelper.TrySetAcrylicBackdrop(DesktopAcrylicKind.Base);
+            if (WindowBackdropHelper.IsSystemBackdropSupported)
+            {
+                var backdropHelper = new WindowBackdropHelper(ClipboardWindow);
+                backdropHelper.InitWindowBackdrop();
+            }
 
             ClipboardWindow.Activated += ClipboardWindow_Activated;
             ClipboardWindow.AppWindow.Closing += ClipboardWindow_Closing;
             ClipboardWindow.Closed += ClipboardWindow_Closed;
+        }
+
+        private void SetCulture(string culture)
+        {
+            var cultureInfo = new CultureInfo(culture);
+
+            // Set the culture for the current thread
+            Thread.CurrentThread.CurrentCulture = cultureInfo;
+            Thread.CurrentThread.CurrentUICulture = cultureInfo;
+
+            // Ensure new threads will use this culture
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
+            ApplicationLanguages.PrimaryLanguageOverride = culture;
         }
 
         private unsafe void InitializeRememoryCore()

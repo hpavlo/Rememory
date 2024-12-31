@@ -352,4 +352,61 @@
   <data name="AppNotification_UseShortcutToOpen" xml:space="preserve">
     <value>Utilisez le raccourci pour l'ouvrir: {0}</value>
   </data>
+  <data name="SettingsWindow_Title" xml:space="preserve">
+    <value>{0} - Paramètres</value>
+  </data>
+  <data name="SettingsCard_Language.Header" xml:space="preserve">
+    <value>Langue de l'application</value>
+  </data>
+  <data name="SettingsCard_Language.Description" xml:space="preserve">
+    <value>Sélectionnez la langue de l'application ou utilisez la langue du système d'exploitation par défaut</value>
+  </data>
+  <data name="SettingsTeachingTip_Language.Title" xml:space="preserve">
+    <value>Redémarrage requis</value>
+  </data>
+  <data name="SettingsTeachingTip_Language.Subtitle" xml:space="preserve">
+    <value>Pour changer la langue de l'application, vous devez redémarrer le programme</value>
+  </data>
+  <data name="SettingsTeachingTipButton_Restart.Content" xml:space="preserve">
+    <value>Redémarrer l'application</value>
+  </data>
+  <data name="SettingsCard_LinkPreview.Header" xml:space="preserve">
+    <value>Aperçu du lien</value>
+  </data>
+  <data name="SettingsCard_LinkPreview.Description" xml:space="preserve">
+    <value>Charger les informations d'aperçu du lien. Cela n'affectera pas les données précédemment chargées</value>
+  </data>
+  <data name="SettingsCard_ItemDragAndDrop.Header" xml:space="preserve">
+    <value>Glisser-déposer</value>
+  </data>
+  <data name="SettingsCard_ItemDragAndDrop.Description" xml:space="preserve">
+    <value>Activer le glisser-déposer pour les éléments</value>
+  </data>
+  <data name="SettingsCard_Backdrop.Header" xml:space="preserve">
+    <value>Arrière-plan</value>
+  </data>
+  <data name="SettingsCard_Backdrop.Description" xml:space="preserve">
+    <value>Modifier l'arrière-plan dans la fenêtre du gestionnaire du presse-papiers</value>
+  </data>
+  <data name="SettingsCard_BackgroundColor.Header" xml:space="preserve">
+    <value>Couleur d'arrière-plan</value>
+  </data>
+  <data name="SettingsCard_BackgroundColor.Description" xml:space="preserve">
+    <value>Modifier la couleur d'arrière-plan dans la fenêtre du gestionnaire du presse-papiers</value>
+  </data>
+  <data name="SettingsComboBox_Language_Default.Content" xml:space="preserve">
+    <value>Langue par défaut</value>
+  </data>
+  <data name="SettingsComboBox_Language_English.Content" xml:space="preserve">
+    <value>Anglais</value>
+  </data>
+  <data name="SettingsComboBox_Language_French.Content" xml:space="preserve">
+    <value>Français</value>
+  </data>
+  <data name="SettingsComboBox_Language_Ukrainian.Content" xml:space="preserve">
+    <value>Ukrainien</value>
+  </data>
+  <data name="SettingsComboBox_Backdrop_None.Content" xml:space="preserve">
+    <value>Aucun</value>
+  </data>
 </root>

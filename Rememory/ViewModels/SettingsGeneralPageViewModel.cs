@@ -70,13 +70,16 @@ namespace Rememory.ViewModels
             InitializeCommands();
         }
 
+        public ICommand RestartCommand { get; private set; }
         public ICommand RestartAsAdministratorCommand { get; private set; }
 
         private void InitializeCommands()
         {
             RestartAsAdministratorCommand = new RelayCommand(
-                () => AdministratorHelper.TryToRestartAppAsAdministrator("-settings"),
+                () => AdministratorHelper.TryToRestartApp(true, "-settings -silent"),
                 () => !AdministratorHelper.IsAppRunningAsAdministrator());
+
+            RestartCommand = new RelayCommand(() => AdministratorHelper.TryToRestartApp(false, "-settings -silent"));
         }
 
         private void ShowAccessExceptionMessageBox()

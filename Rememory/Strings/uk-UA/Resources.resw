@@ -148,16 +148,16 @@
     <value>Вибрані</value>
   </data>
   <data name="DaysAgo" xml:space="preserve">
-    <value>{0, plural, one {# день назад} few {# дні назад} many {# днів назад} other {# днів назад}}</value>
+    <value>{0, plural, one {# день назад} few {# дні назад} many {# днів назад} other {# дня назад}}</value>
   </data>
   <data name="HoursAgo" xml:space="preserve">
-    <value>{0, plural, one {# година назад} few {# години назад} many {# годин назад} other {# годин назад}}</value>
+    <value>{0, plural, one {# година назад} few {# години назад} many {# годин назад} other {# години назад}}</value>
   </data>
   <data name="MinutesAgo" xml:space="preserve">
-    <value>{0, plural, one {# хвилина назад} few {# хвилини назад} many {# хвилин назад} other {# хвилин назад}}</value>
+    <value>{0, plural, one {# хвилина назад} few {# хвилини назад} many {# хвилин назад} other {# хвилини назад}}</value>
   </data>
   <data name="SecondsAgo" xml:space="preserve">
-    <value>{0, plural, one {# секунда назад} few {# секунди назад} many {# секунд назад} other {# секунд назад}}</value>
+    <value>{0, plural, one {# секунда назад} few {# секунди назад} many {# секунд назад} other {# секунди назад}}</value>
   </data>
   <data name="Now" xml:space="preserve">
     <value>Зараз</value>
@@ -292,7 +292,7 @@
     <value>Очистити буфер обміну</value>
   </data>
   <data name="SettingsCard_EraseData.Description" xml:space="preserve">
-    <value>"Видалити всі збережені дані буфера обміну з вашого комп'ютера</value>
+    <value>Видалити всі збережені дані буфера обміну з вашого комп'ютера</value>
   </data>
   <data name="SettingsButton_EraseData.Content" xml:space="preserve">
     <value>Видалити усі дані</value>
@@ -351,5 +351,62 @@
   </data>
   <data name="AppNotification_UseShortcutToOpen" xml:space="preserve">
     <value>Використовуйте комбінацію, щоб відкрити її: {0}</value>
+  </data>
+  <data name="SettingsWindow_Title" xml:space="preserve">
+    <value>{0} - Налаштування</value>
+  </data>
+  <data name="SettingsCard_Language.Header" xml:space="preserve">
+    <value>Мова програми</value>
+  </data>
+  <data name="SettingsCard_Language.Description" xml:space="preserve">
+    <value>Виберіть мову програми або використовуйте мову ОС за замовчуванням</value>
+  </data>
+  <data name="SettingsTeachingTip_Language.Title" xml:space="preserve">
+    <value>Потрібен перезапуск</value>
+  </data>
+  <data name="SettingsTeachingTip_Language.Subtitle" xml:space="preserve">
+    <value>Щоб змінити мову програми, необхідно перезапустити програму</value>
+  </data>
+  <data name="SettingsTeachingTipButton_Restart.Content" xml:space="preserve">
+    <value>Перезапустити програму</value>
+  </data>
+  <data name="SettingsCard_LinkPreview.Header" xml:space="preserve">
+    <value>Попередній перегляд посилань</value>
+  </data>
+  <data name="SettingsCard_LinkPreview.Description" xml:space="preserve">
+    <value>Завантажити інформацію про попередній перегляд посилань. Це не вплине на раніше завантажені дані</value>
+  </data>
+  <data name="SettingsCard_ItemDragAndDrop.Header" xml:space="preserve">
+    <value>Перетягування</value>
+  </data>
+  <data name="SettingsCard_ItemDragAndDrop.Description" xml:space="preserve">
+    <value>Увімкніть перетягування елементів</value>
+  </data>
+  <data name="SettingsCard_Backdrop.Header" xml:space="preserve">
+    <value>Фон</value>
+  </data>
+  <data name="SettingsCard_Backdrop.Description" xml:space="preserve">
+    <value>Змінити фон у вікні диспетчера буфера обміну</value>
+  </data>
+  <data name="SettingsCard_BackgroundColor.Header" xml:space="preserve">
+    <value>Колір фону</value>
+  </data>
+  <data name="SettingsCard_BackgroundColor.Description" xml:space="preserve">
+    <value>Змініть колір фону у вікні диспетчера буфера обміну</value>
+  </data>
+  <data name="SettingsComboBox_Language_Default.Content" xml:space="preserve">
+    <value>Мова за замовчуванням</value>
+  </data>
+  <data name="SettingsComboBox_Language_English.Content" xml:space="preserve">
+    <value>Англійська</value>
+  </data>
+  <data name="SettingsComboBox_Language_French.Content" xml:space="preserve">
+    <value>Французька</value>
+  </data>
+  <data name="SettingsComboBox_Language_Ukrainian.Content" xml:space="preserve">
+    <value>Українська</value>
+  </data>
+  <data name="SettingsComboBox_Backdrop_None.Content" xml:space="preserve">
+    <value>Немає</value>
   </data>
 </root>

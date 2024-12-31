@@ -20,7 +20,10 @@ namespace Rememory.Service
                     && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
             {
                 linkItem = new ClipboardLinkItem(item);
-                LoadMetaInfo(linkItem);
+                if (SettingsContext.Instance.EnableLinkPreviewLoading)
+                {
+                    LoadMetaInfo(linkItem);
+                }
                 return true;
             }
             linkItem = null;

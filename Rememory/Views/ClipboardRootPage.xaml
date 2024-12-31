@@ -14,12 +14,14 @@
       xmlns:behavior="using:Rememory.Views.Controls.Behavior"
       x:Name="RootPage"
       DataContext="{x:Bind ViewModel}"
+      Background="{x:Bind ViewModel.SettingsContext.CurrentWindowBackgroundBrush, Mode=OneWay}"
       KeyUp="Escape_KeyUp">
     <Page.Resources>
         <converters:ClipboardItemToControlConverter x:Key="ClipboardItemToControlConverter" />
         <converters:OwnerBitmapToImageConverter x:Key="OwnerBitmapToImageConverter" />
         <converters:DateTimeToHumanReadableConverter x:Key="DateTimeToHumanReadableConverter" />
         <converters:DataFooterInfoConverter x:Key="DataFooterInfoConverter" />
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
         <Style x:Key="DataPreviewFlyoutPresenterStyle"
                BasedOn="{StaticResource DefaultFlyoutPresenterStyle}"
@@ -189,11 +191,13 @@
         <ListView x:Name="ClipboardItemListView"
                   Grid.ColumnSpan="3"
                   Grid.Row="2"
-                  SelectionMode="None"
                   Padding="5 3"
                   TabIndex="1"
-                  ShowsScrollingPlaceholders="True"
-                  ItemsSource="{x:Bind ViewModel.ItemsCollection, Mode=OneWay}">
+                  SelectionMode="None"
+                  ShowsScrollingPlaceholders="False"
+                  CanDragItems="{x:Bind ViewModel.SettingsContext.EnableItemDragAndDrop, Mode=OneWay}"
+                  ItemsSource="{x:Bind ViewModel.ItemsCollection, Mode=OneWay}"
+                  DragItemsStarting="ClipboardItemListView_DragItemsStarting">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="IsTabStop"
@@ -201,7 +205,18 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListViewItem">
-                                <ContentPresenter Margin="2" />
+                                <Grid Margin="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <FontIcon Glyph="&#xE784;"
+                                              Margin="-4 0 0 0"
+                                              FontSize="16"
+                                              Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                              Visibility="{Binding DataContext.SettingsContext.EnableItemDragAndDrop, ElementName=ClipboardItemListView, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                    <ContentPresenter Grid.Column="1" />
+                                </Grid>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
@@ -311,8 +326,7 @@
                             <Image Grid.Column="2"
                                    Grid.Row="1"
                                    Height="16"
-                                   DataContext="{x:Bind OwnerIconBitmap, Mode=OneWay, Converter={StaticResource OwnerBitmapToImageConverter}}"
-                                   Source="{Binding Result}" />
+                                   Source="{x:Bind OwnerIconBitmap, Mode=OneWay, Converter={StaticResource OwnerBitmapToImageConverter}}" />
                         </Grid>
                     </Button>
                 </DataTemplate>

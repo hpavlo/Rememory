@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System;
 using System.Security.Principal;
-using Windows.ApplicationModel;
+using System.Reflection;
 
 namespace Rememory.Helper
 {
@@ -13,14 +13,14 @@ namespace Rememory.Helper
             return windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator);
         }
 
-        public static void TryToRestartAppAsAdministrator(string arguments = "")
+        public static void TryToRestartApp(bool asAdministrator = false, string arguments = "")
         {
             var startInfo = new ProcessStartInfo()
             {
-                FileName = $"Rememory.exe",
+                FileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.exe",
                 UseShellExecute = true,
                 Arguments = arguments,
-                Verb = "runas"
+                Verb = asAdministrator ? "runas" : string.Empty
             };
             try
             {

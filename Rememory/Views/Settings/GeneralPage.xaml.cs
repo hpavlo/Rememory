@@ -30,5 +30,13 @@ namespace Rememory.Views.Settings
                 "SettingsExpanderHeader_RestartAsAdministrator")
                 .GetLocalizedResource();
         }
+
+        private void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.RemovedItems.Count > 0)
+            {
+                LanguageTeachingTip.IsOpen = true;
+            }
+        }
     }
 }

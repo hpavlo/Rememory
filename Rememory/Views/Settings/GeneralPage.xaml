@@ -11,6 +11,33 @@
       DataContext="{x:Bind ViewModel}">
     <StackPanel Margin="56 0"
                 Spacing="5">
+        <tkcontrols:SettingsCard x:Uid="SettingsCard_Language">
+            <tkcontrols:SettingsCard.HeaderIcon>
+                <FontIcon Glyph="&#xF2B7;" />
+            </tkcontrols:SettingsCard.HeaderIcon>
+            <ComboBox x:Name="LanguageComboBox"
+                      SelectedIndex="{x:Bind ViewModel.SettingsContext.CurrentLanguageIndex, Mode=TwoWay}"
+                      SelectionChanged="LanguageComboBox_SelectionChanged">
+                <ComboBox.Resources>
+                    <TeachingTip x:Name="LanguageTeachingTip"
+                                 x:Uid="SettingsTeachingTip_Language"
+                                 Target="{x:Bind LanguageComboBox}">
+                        <TeachingTip.IconSource>
+                            <FontIconSource Glyph="&#xE777;" />
+                        </TeachingTip.IconSource>
+                        <Button x:Uid="SettingsTeachingTipButton_Restart"
+                                Margin="0 8 0 0"
+                                HorizontalAlignment="Center"
+                                Command="{x:Bind ViewModel.RestartCommand, Mode=OneWay}"/>
+                    </TeachingTip>
+                </ComboBox.Resources>
+                <ComboBoxItem x:Uid="SettingsComboBox_Language_Default" />
+                <ComboBoxItem x:Uid="SettingsComboBox_Language_English" />
+                <ComboBoxItem x:Uid="SettingsComboBox_Language_French" />
+                <ComboBoxItem x:Uid="SettingsComboBox_Language_Ukrainian" />
+            </ComboBox>
+        </tkcontrols:SettingsCard>
+
         <tkcontrols:SettingsCard x:Uid="SettingsCard_ActivationShortcut">
             <tkcontrols:SettingsCard.HeaderIcon>
                 <FontIcon Glyph="&#xE765;" />
@@ -40,6 +67,20 @@
 
         <tkcontrols:SettingsCard x:Uid="SettingsCard_RunAtStartup">
             <ToggleSwitch IsOn="{x:Bind ViewModel.RunAtStartupToggle, Mode=TwoWay}" />
+        </tkcontrols:SettingsCard>
+
+        <tkcontrols:SettingsCard x:Uid="SettingsCard_LinkPreview">
+            <tkcontrols:SettingsCard.HeaderIcon>
+                <FontIcon Glyph="&#xE8A1;" />
+            </tkcontrols:SettingsCard.HeaderIcon>
+            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.EnableLinkPreviewLoading, Mode=TwoWay}" />
+        </tkcontrols:SettingsCard>
+
+        <tkcontrols:SettingsCard x:Uid="SettingsCard_ItemDragAndDrop">
+            <tkcontrols:SettingsCard.HeaderIcon>
+                <FontIcon Glyph="&#xE7C2;" />
+            </tkcontrols:SettingsCard.HeaderIcon>
+            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.EnableItemDragAndDrop, Mode=TwoWay}" />
         </tkcontrols:SettingsCard>
     </StackPanel>
 </Page>

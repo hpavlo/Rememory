@@ -4,10 +4,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Rememory.Helper;
 using Rememory.Models;
 using Rememory.Service;
+using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Input;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage;
 using Windows.System;
 
 namespace Rememory.ViewModels
@@ -17,6 +21,8 @@ namespace Rememory.ViewModels
         private IClipboardService _clipboardService = App.Current.Services.GetService<IClipboardService>();
         private ICleanupDataService _cleanupDataService = App.Current.Services.GetService<ICleanupDataService>();
         private ISearchService _searchService = App.Current.Services.GetService<ISearchService>();
+
+        public SettingsContext SettingsContext => SettingsContext.Instance;
 
         private ObservableCollection<ClipboardItem> _itemsCollection;
         public ObservableCollection<ClipboardItem> ItemsCollection
@@ -125,9 +131,51 @@ namespace Rememory.ViewModels
             InitializeCommands();
         }
 
-        public bool CleanupOldData() => _cleanupDataService.Cleanup();
+        public void OnWindowActivated()
+        {
+            if (CleanupOldData())
+            {
+                UpdateItemsList();
+                return;
+            }
 
-        public void UpdateItemsList()
+            foreach (var item in ItemsCollection)
+            {
+                item.UpdateProperty(nameof(item.Time));
+            }
+        }
+
+        public void OnDragItemStarting(ClipboardItem item, DataPackage dataPackage)
+        {
+            foreach (var itemData in item.DataMap)
+            {
+                try
+                {
+                    switch (itemData.Key)
+                    {
+                        case ClipboardFormat.Png:
+                            dataPackage.SetData("PNG", File.OpenRead(itemData.Value).AsRandomAccessStream());
+                            dataPackage.SetStorageItems([StorageFile.GetFileFromPathAsync(itemData.Value).AsTask().Result]);
+                            break;
+                        case ClipboardFormat.Text:
+                            dataPackage.SetText(itemData.Value);
+                            break;
+                        case ClipboardFormat.Html:
+                            dataPackage.SetData("HTML Format", File.OpenRead(itemData.Value).AsRandomAccessStream());
+                            break;
+                        case ClipboardFormat.Rtf:
+                            dataPackage.SetData("Rich Text Format", File.OpenRead(itemData.Value).AsRandomAccessStream());
+                            break;
+                    }
+                }
+                catch { }
+            }
+            dataPackage.RequestedOperation = DataPackageOperation.Copy;
+        }
+
+        private bool CleanupOldData() => _cleanupDataService.Cleanup();
+
+        private void UpdateItemsList()
         {
             ItemsCollection?.Clear();
             ItemsCollection = new(_clipboardService.ClipboardItems.Where(ItemFilter));

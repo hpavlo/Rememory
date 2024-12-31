@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Principal;
 using Windows.ApplicationModel;
 
@@ -58,7 +59,7 @@ namespace Rememory.Service
             "Microsoft",
             "WindowsApps",
             Package.Current.Id.FamilyName,
-            $"Rememory.exe");
+            $"{Assembly.GetExecutingAssembly().GetName().Name}.exe");
 
         private void CreateStartupTask()
         {

@@ -1,11 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.WinUI.Helpers;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.Windows.Globalization;
 using Microsoft.Windows.Storage;
 using Rememory.Helper;
+using Rememory.Helper.WindowBackdrop;
 using Rememory.Service;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.Marshalling;
 using System.Text.Json;
@@ -19,8 +24,18 @@ namespace Rememory.Models
 
         private static ApplicationDataContainer _localSettings = ApplicationData.GetDefault().LocalSettings;
 
+        private IList<string> _supportedLanguages;
+        private string _currentLanguageCode;
+        public string LanguageCodeDefault { get; private set; } = string.Empty;
+        public string CurrentLanguageCode => _currentLanguageCode;
+        public int CurrentLanguageIndex
+        {
+            get => _supportedLanguages.IndexOf(_currentLanguageCode);
+            set => SetSettingsProperty(ref _currentLanguageCode, _supportedLanguages[value], nameof(CurrentLanguageCode));
+        }
+
         private int _currentThemeIndex;
-        public int CurrentThemeIndexDefault = (int)ElementTheme.Default;
+        public int ThemeIndexDefault { get; private set; } = (int)ElementTheme.Default;
         public int CurrentThemeIndex
         {
             get => _currentThemeIndex;
@@ -33,8 +48,30 @@ namespace Rememory.Models
             }
         }
 
+        private int _currentWindowBackdropIndex;
+        public int WindowBackdropIndexDefault { get; private set; } = (int)WindowBackdropType.Acrylic;
+        public int CurrentWindowBackdropIndex
+        {
+            get => _currentWindowBackdropIndex;
+            set
+            {
+                if (SetSettingsProperty(ref _currentWindowBackdropIndex, value))
+                {
+                    App.Current.ThemeService.ApplyWindowBackdrop();
+                }
+            }
+        }
+
+        private string _currentWindowBackgroundColor;
+        public string WindowBackgroundColorDefault { get; private set; } = WindowBackdropHelper.IsSystemBackdropSupported ? "#00000000" : "#3269797E";
+        public SolidColorBrush CurrentWindowBackgroundBrush
+        {
+            get => new SolidColorBrush(_currentWindowBackgroundColor.ToColor());
+            set => SetSettingsProperty(ref _currentWindowBackgroundColor, value.Color.ToHex());
+        }
+
         private int _windowWidth;
-        public int WindowWidthDefault = 500;
+        public int WindowWidthDefault { get; private set; } = 500;
         public int WindowWidth
         {
             get => _windowWidth;
@@ -42,7 +79,7 @@ namespace Rememory.Models
         }
 
         private int _windowMargin;
-        public int WindowMarginDefault = 10;
+        public int WindowMarginDefault { get; private set; } = 10;
         public int WindowMargin
         {
             get => _windowMargin;
@@ -50,7 +87,7 @@ namespace Rememory.Models
         }
 
         private int _cleanupTimeSpanIndex;
-        public int CleanupTimeSpanIndexDefault = (int)CleanupTimeSpan.Month;
+        public int CleanupTimeSpanIndexDefault { get; private set; } = (int)CleanupTimeSpan.Month;
         public int CleanupTimeSpanIndex
         {
             get => _cleanupTimeSpanIndex;
@@ -58,7 +95,7 @@ namespace Rememory.Models
         }
 
         private List<int> _activationShortcut;
-        public List<int> ActivationShortcutDefault = [0x10, 0x56, 0x5B];   // Win + Shift + V
+        public List<int> ActivationShortcutDefault { get; private set; } = [0x10, 0x56, 0x5B];   // Win + Shift + V
         public List<int> ActivationShortcut
         {
             get => _activationShortcut;
@@ -75,14 +112,38 @@ namespace Rememory.Models
             }
         }
 
+        private bool _enableLinkPreviewLoading;
+        public bool EnableLinkPreviewLoadingDefault { get; private set; } = true;
+        public bool EnableLinkPreviewLoading
+        {
+            get => _enableLinkPreviewLoading;
+            set => SetSettingsProperty(ref _enableLinkPreviewLoading, value);
+        }
+
+        private bool _enableItemDragAndDrop;
+        public bool EnableItemDragAndDropDefault { get; private set; } = false;
+        public bool EnableItemDragAndDrop
+        {
+            get => _enableItemDragAndDrop;
+            set => SetSettingsProperty(ref _enableItemDragAndDrop, value);
+        }
+
         private SettingsContext()
         {
-            _currentThemeIndex = GetSettingValue(nameof(CurrentThemeIndex), CurrentThemeIndexDefault);
+            _supportedLanguages = ApplicationLanguages.ManifestLanguages.ToList();
+            _supportedLanguages.Insert(0, string.Empty);   // Default language
+
+            _currentLanguageCode = GetSettingValue(nameof(CurrentLanguageCode), LanguageCodeDefault);
+            _currentThemeIndex = GetSettingValue(nameof(CurrentThemeIndex), ThemeIndexDefault);
+            _currentWindowBackdropIndex = GetSettingValue(nameof(CurrentWindowBackdropIndex), WindowBackdropIndexDefault);
+            _currentWindowBackgroundColor = GetSettingValue(nameof(CurrentWindowBackgroundBrush), WindowBackgroundColorDefault);
             _windowWidth = GetSettingValue(nameof(WindowWidth), WindowWidthDefault);
             _windowMargin = GetSettingValue(nameof(WindowMargin), WindowMarginDefault);
             _cleanupTimeSpanIndex = GetSettingValue(nameof(CleanupTimeSpanIndex), CleanupTimeSpanIndexDefault);
             _activationShortcut = _localSettings.Values.TryGetValue(nameof(ActivationShortcut), out var value) ?
                 JsonSerializer.Deserialize<List<int>>((string)value) : ActivationShortcutDefault;
+            _enableLinkPreviewLoading = GetSettingValue(nameof(EnableLinkPreviewLoading), EnableLinkPreviewLoadingDefault);
+            _enableItemDragAndDrop = GetSettingValue(nameof(EnableItemDragAndDrop), EnableItemDragAndDropDefault);
         }
 
         private T GetSettingValue<T>(string key, T defaultValue)

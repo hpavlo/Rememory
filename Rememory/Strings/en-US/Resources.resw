@@ -352,4 +352,73 @@
   <data name="AppNotification_UseShortcutToOpen" xml:space="preserve">
     <value>Use shortcut to open it: {0}</value>
   </data>
+  <data name="SettingsWindow_Title" xml:space="preserve">
+    <value>{0} - Settings</value>
+  </data>
+  <data name="SettingsCard_Language.Header" xml:space="preserve">
+    <value>Application language</value>
+  </data>
+  <data name="SettingsCard_Language.Description" xml:space="preserve">
+    <value>Select the application language or use OS language by default</value>
+  </data>
+  <data name="SettingsTeachingTip_Language.Title" xml:space="preserve">
+    <value>Restart required</value>
+  </data>
+  <data name="SettingsTeachingTip_Language.Subtitle" xml:space="preserve">
+    <value>To change the application language, you need to restart the program</value>
+  </data>
+  <data name="SettingsTeachingTipButton_Restart.Content" xml:space="preserve">
+    <value>Restart application</value>
+  </data>
+  <data name="SettingsCard_LinkPreview.Header" xml:space="preserve">
+    <value>Link preview</value>
+  </data>
+  <data name="SettingsCard_LinkPreview.Description" xml:space="preserve">
+    <value>Load link preview information. This will not affect previously loaded data</value>
+  </data>
+  <data name="SettingsCard_ItemDragAndDrop.Header" xml:space="preserve">
+    <value>Drag and Drop</value>
+  </data>
+  <data name="SettingsCard_ItemDragAndDrop.Description" xml:space="preserve">
+    <value>Enable drag and drop for items</value>
+  </data>
+  <data name="SettingsCard_Backdrop.Header" xml:space="preserve">
+    <value>Backdrop</value>
+  </data>
+  <data name="SettingsCard_Backdrop.Description" xml:space="preserve">
+    <value>Change backdrop in the Clipboard Manager window</value>
+  </data>
+  <data name="SettingsCard_BackgroundColor.Header" xml:space="preserve">
+    <value>Background color</value>
+  </data>
+  <data name="SettingsCard_BackgroundColor.Description" xml:space="preserve">
+    <value>Change background color in the Clipboard Manager window</value>
+  </data>
+  <data name="SettingsComboBox_Language_Default.Content" xml:space="preserve">
+    <value>Default language</value>
+  </data>
+  <data name="SettingsComboBox_Language_English.Content" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="SettingsComboBox_Language_French.Content" xml:space="preserve">
+    <value>French</value>
+  </data>
+  <data name="SettingsComboBox_Language_Ukrainian.Content" xml:space="preserve">
+    <value>Ukrainian</value>
+  </data>
+  <data name="SettingsComboBox_Backdrop_None.Content" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="SettingsComboBox_Backdrop_Acrylic.Content" xml:space="preserve">
+    <value>Acrylic</value>
+  </data>
+  <data name="SettingsComboBox_Backdrop_ThinAcrylic.Content" xml:space="preserve">
+    <value>Thin Acrylic</value>
+  </data>
+  <data name="SettingsComboBox_Backdrop_Mica.Content" xml:space="preserve">
+    <value>Mica</value>
+  </data>
+  <data name="SettingsComboBox_Backdrop_MicaAlt.Content" xml:space="preserve">
+    <value>Mica Alt</value>
+  </data>
 </root>
