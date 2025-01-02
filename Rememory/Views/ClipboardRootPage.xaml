@@ -97,17 +97,35 @@
         <Flyout x:Key="PreviewTextFlyout"
                 ShowMode="Transient"
                 ShouldConstrainToRootBounds="False"
-                Placement="LeftEdgeAlignedTop">
+                Placement="LeftEdgeAlignedTop"
+                Closed="PreviewFlyout_Closed">
             <Flyout.SystemBackdrop>
                 <DesktopAcrylicBackdrop />
             </Flyout.SystemBackdrop>
             <TextBlock FontSize="12"
                        TextWrapping="Wrap" />
         </Flyout>
+
+        <Flyout x:Key="PreviewRtfFlyout"
+                ShowMode="Transient"
+                ShouldConstrainToRootBounds="False"
+                Placement="LeftEdgeAlignedTop"
+                Closed="PreviewFlyout_Closed">
+            <Flyout.SystemBackdrop>
+                <DesktopAcrylicBackdrop />
+            </Flyout.SystemBackdrop>
+            <RichEditBox FontSize="12"
+                         BorderThickness="0"
+                         Background="White"
+                         IsHitTestVisible="False"
+                         TextWrapping="Wrap" />
+        </Flyout>
+
         <Flyout x:Key="PreviewImageFlyout"
                 ShowMode="Transient"
                 ShouldConstrainToRootBounds="False"
-                Placement="LeftEdgeAlignedTop">
+                Placement="LeftEdgeAlignedTop"
+                Closed="PreviewFlyout_Closed">
             <Flyout.SystemBackdrop>
                 <DesktopAcrylicBackdrop />
             </Flyout.SystemBackdrop>

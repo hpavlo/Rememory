@@ -1,3 +1,4 @@
+using Microsoft.UI.Text;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
@@ -10,6 +11,7 @@ using Rememory.Service;
 using Rememory.ViewModels;
 using Rememory.Views.Controls.Behavior;
 using Rememory.Views.Settings;
+using System.IO;
 using System.Linq;
 using Windows.System;
 
@@ -28,6 +30,7 @@ namespace Rememory.Views
         private readonly Window _window;
         private IThemeService ThemeService => App.Current.ThemeService;
         private Flyout PreviewTextFlyout => (Flyout)this.Resources["PreviewTextFlyout"];
+        private Flyout PreviewRtfFlyout => (Flyout)this.Resources["PreviewRtfFlyout"];
         private Flyout PreviewImageFlyout => (Flyout)this.Resources["PreviewImageFlyout"];
 
         public ClipboardRootPage(Window window)
@@ -84,6 +87,9 @@ namespace Rememory.Views
                 return newStyle;
             }
 
+            PreviewRtfFlyout.FlyoutPresenterStyle = UpdateFlyoutPresenterStyle(ActualWidth * 1.5, ActualHeight);
+            ((RichEditBox)PreviewRtfFlyout.Content).Width = ActualWidth * 1.5 - 36;
+
             PreviewTextFlyout.FlyoutPresenterStyle = UpdateFlyoutPresenterStyle(ActualWidth, ActualHeight);
             ((TextBlock)PreviewTextFlyout.Content).MaxWidth = ActualWidth - 36;
 
@@ -105,52 +111,18 @@ namespace Rememory.Views
             ((FrameworkElement)sender).SetBinding(SelectorBar.SelectedItemProperty, binding);
         }
 
+        #region Context menu items
+
+        private void FavoriteMenuItem_Loading(FrameworkElement sender, object args)
+        {
+            UpdateFavoriteMenuFlyoutItem((MenuFlyoutItem)sender);
+        }
+
         private void FavoriteMenuItem_Click(object sender, RoutedEventArgs e)
         {
             var menuItem = (MenuFlyoutItem)sender;
             ViewModel.ChangeItemFavoriteCommand.Execute(menuItem.DataContext);
             UpdateFavoriteMenuFlyoutItem(menuItem);
-        }
-
-        private void FavoriteMenuItem_Loading(FrameworkElement sender, object args)
-        {
-            var menuItem = (MenuFlyoutItem)sender;
-            UpdateFavoriteMenuFlyoutItem(menuItem);
-        }
-
-        private void OpenInFlyoutItem_Click(object sender, RoutedEventArgs e)
-        {
-            var menuItem = (MenuFlyoutItem)sender;
-            var clipboardItem = (ClipboardItem)menuItem.DataContext;
-
-            if (clipboardItem.DataMap.TryGetValue(ClipboardFormat.Text, out var textData))
-            {
-                ((TextBlock)PreviewTextFlyout.Content).Text = textData;
-                PreviewTextFlyout.ShowAt(this);
-            }
-            else if (clipboardItem.DataMap.TryGetValue(ClipboardFormat.Png, out var imagePath))
-            {
-                ((Image)PreviewImageFlyout.Content).Source = new BitmapImage(new(imagePath));
-                PreviewImageFlyout.ShowAt(this);
-            }
-        }
-
-        private void Escape_KeyUp(object sender, KeyRoutedEventArgs e)
-        {
-            if (e.Key == VirtualKey.Escape)
-            {
-                App.Current.HideClipboardWindow();
-            }
-        }
-
-        private void SettingsButton_Click(object sender, RoutedEventArgs e)
-        {
-            SettingsWindow.ShowSettingsWindow();
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            App.Current.HideClipboardWindow();
         }
 
         private void UpdateFavoriteMenuFlyoutItem(MenuFlyoutItem menuItem)
@@ -167,21 +139,74 @@ namespace Rememory.Views
             }
         }
 
+        #endregion
+
+        #region Preview Flyout
+
+        private void OpenInFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
+            OpenPreviewFlyout((ClipboardItem)((FrameworkElement)sender).DataContext);
+        }
+
+        private void PreviewFlyout_Closed(object sender, object e)
+        {
+            switch (((Flyout)sender).Content)
+            {
+                case Image flyoutImage:
+                    flyoutImage.Source = null;
+                    break;
+                case RichEditBox flyoutRtf:
+                    flyoutRtf.IsReadOnly = false;
+                    flyoutRtf.Document.SetText(TextSetOptions.FormatRtf, string.Empty);
+                    break;
+                case TextBlock flyoutText:
+                    flyoutText.Text = string.Empty;
+                    break;
+            }
+        }
+
+        private void OpenPreviewFlyout(ClipboardItem clipboardItem)
+        {
+            foreach (var data in clipboardItem.DataMap)
+            {
+                switch (data.Key)
+                {
+                    case ClipboardFormat.Png:
+                        try
+                        {
+                            ((Image)PreviewImageFlyout.Content).Source = new BitmapImage(new(data.Value));
+                            PreviewImageFlyout.ShowAt(this);
+                            return;
+                        }
+                        catch { }
+                        break;
+                    case ClipboardFormat.Rtf:
+                        var richEditBox = (RichEditBox)PreviewRtfFlyout.Content;
+                        richEditBox.IsReadOnly = false;
+                        try
+                        {
+                            richEditBox.Document.SetText(TextSetOptions.FormatRtf, File.ReadAllText(data.Value).Replace("{\\rtf", "{\\rtf1"));
+                            richEditBox.IsReadOnly = true;
+                            PreviewRtfFlyout.ShowAt(this);
+                            return;
+                        }
+                        catch { }
+                        break;
+                    case ClipboardFormat.Text:
+                        ((TextBlock)PreviewTextFlyout.Content).Text = data.Value;
+                        PreviewTextFlyout.ShowAt(this);
+                        return;
+                }
+            }
+        }
+
+        #endregion
+
+        #region KeyboardAccelerators
+
         private void OpenInFlyoutKeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
-            var button = (Button)args.Element;
-            var clipboardItem = (ClipboardItem)button.DataContext;
-
-            if (clipboardItem.DataMap.TryGetValue(ClipboardFormat.Text, out var textData))
-            {
-                ((TextBlock)PreviewTextFlyout.Content).Text = textData;
-                PreviewTextFlyout.ShowAt(this);
-            }
-            else if (clipboardItem.DataMap.TryGetValue(ClipboardFormat.Png, out var imagePath))
-            {
-                ((Image)PreviewImageFlyout.Content).Source = new BitmapImage(new(imagePath));
-                PreviewImageFlyout.ShowAt(this);
-            }
+            OpenPreviewFlyout((ClipboardItem)((FrameworkElement)args.Element).DataContext);
             args.Handled = true;
         }
         private void PastePlainTextKeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
@@ -200,6 +225,26 @@ namespace Rememory.Views
             var button = (Button)args.Element;
             ViewModel.CopyItemCommand.Execute(button.DataContext);
             args.Handled = true;
+        }
+
+        #endregion
+
+        private void Escape_KeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Escape)
+            {
+                App.Current.HideClipboardWindow();
+            }
+        }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow.ShowSettingsWindow();
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            App.Current.HideClipboardWindow();
         }
 
         private void ClipboardItemListView_DragItemsStarting(object sender, DragItemsStartingEventArgs e)
