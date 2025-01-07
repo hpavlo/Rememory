@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<AssemblyName>Rememory</AssemblyName>
 		<TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
 		<TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
 		<RootNamespace>Rememory</RootNamespace>
@@ -15,13 +14,24 @@
 		<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<StartupObject>Rememory.Program</StartupObject>
-		<ApplicationIcon>Assets\WindowIcon.ico</ApplicationIcon>
 		<DefaultLanguage>en-US</DefaultLanguage>
+		<OutDir>bin\$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)\</OutDir>
 		<PublishDir>bin\$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)\publish\</PublishDir>
-		<PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
-		<PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
-		<PublishReadyToRunComposite Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRunComposite>
 	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+		<AssemblyName>RememoryDev</AssemblyName>
+		<ApplicationIcon>Assets\IconsDev\WindowIcon.ico</ApplicationIcon>
+		<PublishReadyToRun>False</PublishReadyToRun>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+		<AssemblyName>Rememory</AssemblyName>
+		<ApplicationIcon>Assets\IconsRelease\WindowIcon.ico</ApplicationIcon>
+		<PublishReadyToRun>True</PublishReadyToRun>
+		<PublishReadyToRunComposite>True</PublishReadyToRunComposite>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<None Remove="Views\ClipboardRootPage.xaml" />
 		<None Remove="Views\Controls\ImagePreview.xaml" />
@@ -33,14 +43,36 @@
 		<None Remove="Views\Settings\AboutPage.xaml" />
 		<None Remove="Views\Settings\GeneralPage.xaml" />
 		<None Remove="Views\Settings\SettingsRootPage.xaml" />
-		<None Remove="Assets\Rememory.Core" />
 		<None Remove="Views\Settings\StoragePage.xaml" />
+		<None Remove="Assets\Rememory.Core" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="Assets\WindowIcon.ico">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		<Content Remove="Assets\IconsDev\**\*" />
+		<Content Remove="Assets\IconsRelease\**\*" />
+		<Content Remove="Assets\Rememory.Core\**\*" />
+		<Content Condition="'$(Configuration)' == 'Debug'" Include="Assets\IconsDev\**\*">
+			<Link>Assets\%(RecursiveDir)%(Filename)%(Extension)</Link>
 		</Content>
+		<Content Condition="'$(Configuration)' == 'Release'" Include="Assets\IconsRelease\**\*">
+			<Link>Assets\%(RecursiveDir)%(Filename)%(Extension)</Link>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ContentWithTargetPath Include="Assets\Rememory.Core\Rememory.Core.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>Rememory.Core.dll</TargetPath>
+		</ContentWithTargetPath>
+	</ItemGroup>
+
+	<ItemGroup>
+		<AppxManifest Include="Package.Dev.appxmanifest" Condition="'$(Configuration)' == 'Debug'">
+			<SubType>Designer</SubType>
+		</AppxManifest>
+		<AppxManifest Include="Package.appxmanifest" Condition="'$(Configuration)' == 'Release'">
+			<SubType>Designer</SubType>
+		</AppxManifest>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -57,92 +89,10 @@
 		<Manifest Include="$(ApplicationManifest)" />
 	</ItemGroup>
 
-	<!-- 
-    Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
-    Tools extension to be activated for this project even if the Windows App SDK Nuget
-    package has not yet been restored.
-  -->
 	<ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
 		<ProjectCapability Include="Msix" />
 	</ItemGroup>
-	<ItemGroup>
-		<ContentWithTargetPath Include="Assets\Rememory.Core\Rememory.Core.dll">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<TargetPath>Rememory.Core.dll</TargetPath>
-		</ContentWithTargetPath>
-	</ItemGroup>
-	<ItemGroup>
-	  <Page Update="Views\Controls\ShortcutDialogContentControl.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
-	</ItemGroup>
-	<ItemGroup>
-	  <Page Update="Views\Controls\ShortcutControl.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
-	</ItemGroup>
-	<ItemGroup>
-	  <Page Update="Views\Settings\AboutPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
-	</ItemGroup>
-	<ItemGroup>
-	  <Page Update="Views\Settings\GeneralPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
-	</ItemGroup>
-	<ItemGroup>
-	  <Page Update="Views\Settings\SettingsRootPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
-	</ItemGroup>
-	<ItemGroup>
-	  <Page Update="Views\SettingsWindow.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
-	</ItemGroup>
-	<ItemGroup>
-	  <Page Update="Views\Controls\ImagePreview.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
-	</ItemGroup>
-	<ItemGroup>
-	  <Page Update="Views\Controls\TextPreview.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
-	</ItemGroup>
-	<ItemGroup>
-		<Page Update="Views\Controls\LinkPreview.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</Page>
-	</ItemGroup>
-	<ItemGroup>
-		<Page Update="Views\ClipboardRootPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</Page>
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Views\Settings\Controls\" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Page Update="Views\Settings\StoragePage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
-	</ItemGroup>
-	<ItemGroup>
-	  <Page Update="Views\Settings\PersonalizationPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
-	</ItemGroup>
-	<PropertyGroup Label="Globals">
-	  <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
-	</PropertyGroup>
 
-	<!-- 
-    Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution 
-    Explorer "Package and Publish" context menu entry to be enabled for this project even if 
-    the Windows App SDK Nuget package has not yet been restored.
-  -->
 	<PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
 		<HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
 	</PropertyGroup>

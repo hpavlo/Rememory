@@ -315,12 +315,9 @@
   <data name="SettingsComboBox_RetentionPeriod_Always.Content" xml:space="preserve">
     <value>Завжди</value>
   </data>
-  <data name="AppDisplayName" xml:space="preserve">
-    <value>Rememory</value>
-  </data>
   <data name="AppDescription" xml:space="preserve">
     <value>Rememory - Менеджер буфера обміну</value>
-    <comment>Max number of characters is 127. Using this value in tray icon</comment>
+    <comment>Max number of characters is 120. Using this value in tray icon</comment>
   </data>
   <data name="AppVersion" xml:space="preserve">
     <value>Версія: {0}</value>

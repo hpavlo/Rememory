@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml.Media;
 using Rememory.Helper;
 using System;
+using Windows.ApplicationModel;
 using Windows.Graphics;
 using WinRT.Interop;
 using WinUIEx;
@@ -51,7 +52,7 @@ namespace Rememory.Views.Settings
             _window.Content = new SettingsRootPage(_window);
             _window.Closed += SettingsWindow_Closed;
 
-            _window.AppWindow.Title = "SettingsWindow_Title".GetLocalizedFormatResource("AppDisplayName".GetLocalizedResource());
+            _window.AppWindow.Title = "SettingsWindow_Title".GetLocalizedFormatResource(AppInfo.Current.DisplayInfo.DisplayName);
             _window.AppWindow.SetIcon("Assets\\WindowIcon.ico");
             _window.AppWindow.TitleBar.SetDragRectangles([new RectInt32(0, 0, _window.AppWindow.ClientSize.Width, 48)]);
 

@@ -9,12 +9,12 @@
   IgnorableNamespaces="uap rescap">
 
 	<Identity
-	  Name="PavloHuk.RememoryClipboardManager"
-	  Publisher="CN=5B9A5D1B-D565-4FE5-8AF8-CA331C5718E5"
+	  Name="Dev.RememoryClipboardManager"
+	  Publisher="CN=Pavlo Huk"
 	  Version="1.0.1.0" />
 
 	<Properties>
-		<DisplayName>Rememory | Clipboard Manager</DisplayName>
+		<DisplayName>Rememory Dev | Clipboard Manager</DisplayName>
 		<PublisherDisplayName>Pavlo Huk</PublisherDisplayName>
 		<Logo>Assets\StoreLogo.png</Logo>
 	</Properties>
@@ -33,7 +33,7 @@
 		<Application Id="App"
 					 Executable="$targetnametoken$.exe"
 					 EntryPoint="$targetentrypoint$">
-			<uap:VisualElements DisplayName="Rememory"
+			<uap:VisualElements DisplayName="Rememory Dev"
 								Description="ms-resource:AppDescription"
 								BackgroundColor="transparent"
 								Square150x150Logo="Assets\MidTile.png"
@@ -42,13 +42,13 @@
 
 			<Extensions>
 				<uap:Extension Category="windows.protocol">
-					<uap:Protocol ReturnResults="none" Name="rememory" />
+					<uap:Protocol ReturnResults="none" Name="rememory-dev" />
 				</uap:Extension>
 
 				<uap5:Extension Category="windows.appExecutionAlias">
 					<uap5:AppExecutionAlias>
 						<!-- Alias name should be the same as AssemblyName in project file -->
-						<uap5:ExecutionAlias Alias="Rememory.exe" />
+						<uap5:ExecutionAlias Alias="RememoryDev.exe" />
 					</uap5:AppExecutionAlias>
 				</uap5:Extension>
 			</Extensions>
