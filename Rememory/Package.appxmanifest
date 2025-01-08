@@ -11,7 +11,7 @@
 	<Identity
 	  Name="PavloHuk.RememoryClipboardManager"
 	  Publisher="CN=5B9A5D1B-D565-4FE5-8AF8-CA331C5718E5"
-	  Version="1.0.1.0" />
+	  Version="1.1.0.0" />
 
 	<Properties>
 		<DisplayName>Rememory | Clipboard Manager</DisplayName>
@@ -36,8 +36,9 @@
 			<uap:VisualElements DisplayName="Rememory"
 								Description="ms-resource:AppDescription"
 								BackgroundColor="transparent"
-								Square150x150Logo="Assets\MidTile.png"
+								Square150x150Logo="Assets\MedTile.png"
 								Square44x44Logo="Assets\AppList.png">
+				<uap:DefaultTile/>
 			</uap:VisualElements>
 
 			<Extensions>
