@@ -49,7 +49,7 @@ namespace Rememory.Models
         }
 
         private int _currentWindowBackdropIndex;
-        public int WindowBackdropIndexDefault { get; private set; } = (int)WindowBackdropType.Acrylic;
+        public int WindowBackdropIndexDefault { get; private set; } = WindowBackdropHelper.IsSystemBackdropSupported ? (int)WindowBackdropType.Acrylic : (int)WindowBackdropType.None;
         public int CurrentWindowBackdropIndex
         {
             get => _currentWindowBackdropIndex;
