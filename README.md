@@ -14,6 +14,7 @@ Maximize your productivity and never lose track of your clipboard history with R
 - Save various data types: formatted text, images, HTML
 - Quick search
 - Organized data grouping
+- Drag and Drop
 
 ## Download
 
