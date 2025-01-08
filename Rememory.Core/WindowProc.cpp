@@ -9,8 +9,7 @@ LRESULT CALLBACK MainWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 {
     switch (uMsg)
     {
-    case WM_DRAWCLIPBOARD:
-    case WM_CHANGECBCHAIN:
+    case WM_CLIPBOARDUPDATE:
     {
         ClipboardManager::GetInstance().ClipboardManagerMessage(hWnd, uMsg, wParam, lParam);
         break;

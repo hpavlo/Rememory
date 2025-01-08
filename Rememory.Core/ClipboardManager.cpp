@@ -2,7 +2,6 @@
 #include "ClipboardManager.h"
 #include "OwnerHelper.h"
 #include "HashHelper.h"
-//#include <iostream>
 
 const UINT TIMER_DELAY = 100;
 const UINT OPEN_CLIPBOARD_ATTEMPTS = 3;
@@ -15,16 +14,11 @@ std::vector<FormatDataItem> CopiedClipboardData;
 
 bool StartClipboardMonitor(HWND hWnd, Callback handler)
 {
-    //AllocConsole();
-    //FILE* fp;
-    //freopen_s(&fp, "CONOUT$", "w", stdout);
-
     return ClipboardManager::GetInstance().StartMonitoring(hWnd, handler);
 }
 
 bool StopClipboardMonitor(HWND hWnd)
 {
-    //FreeConsole();
     return ClipboardManager::GetInstance().StopMonitoring();
 }
 
@@ -51,8 +45,7 @@ bool ClipboardManager::StartMonitoring(HWND hWnd, Callback handler)
     ClipboardDataHelper::InitializeClipboardFormats();
 
     _oldClipboardSequenceNumber = GetClipboardSequenceNumber();
-    _nextClipboardViewer = SetClipboardViewer(_hWnd);
-    return true;
+    return AddClipboardFormatListener(_hWnd);
 }
 
 bool ClipboardManager::StopMonitoring()
@@ -61,9 +54,8 @@ bool ClipboardManager::StopMonitoring()
     {
         KillTimer(_hWnd, _timerId);
     }
-    ChangeClipboardChain(_hWnd, _nextClipboardViewer);
     delete[] _ownerPath;
-    return true;
+    return RemoveClipboardFormatListener(_hWnd);
 }
 
 bool ClipboardManager::SetDataToClipboard(RtfPreviewInfo& dataInfo)
@@ -88,9 +80,9 @@ void ClipboardManager::ClipboardManagerMessage(HWND hWnd, UINT uMsg, WPARAM wPar
 {
     switch (uMsg)
     {
-    case WM_DRAWCLIPBOARD:
+    case WM_CLIPBOARDUPDATE:
     {
-        OwnerHelper::GetOwnerPath((HWND)wParam, _ownerPath);
+        OwnerHelper::GetOwnerPath(GetClipboardOwner(), _ownerPath);
 
         DWORD clipboardSequenceNumber = GetClipboardSequenceNumber();
         if (_oldClipboardSequenceNumber == clipboardSequenceNumber)
@@ -108,23 +100,6 @@ void ClipboardManager::ClipboardManagerMessage(HWND hWnd, UINT uMsg, WPARAM wPar
         if (!_timerId)
         {
             _timerId = SetTimer(_hWnd, 1, TIMER_DELAY, MonitorTimerProc);
-        }
-
-        if (_nextClipboardViewer != NULL)
-        {
-            SendMessage(_nextClipboardViewer, uMsg, wParam, lParam);
-        }
-        break;
-    }
-    case WM_CHANGECBCHAIN:
-    {
-        if ((HWND)wParam == _nextClipboardViewer)
-        {
-            _nextClipboardViewer = (HWND)lParam;
-        }
-        else if (_nextClipboardViewer != NULL)
-        {
-            SendMessage(_nextClipboardViewer, uMsg, wParam, lParam);
         }
         break;
     }
