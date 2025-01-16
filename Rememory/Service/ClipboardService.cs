@@ -16,6 +16,7 @@ namespace Rememory.Service
         public event EventHandler<ClipboardEventArgs> FavoriteItemChanged;
         public event EventHandler<ClipboardEventArgs> ItemDeleted;
         public event EventHandler<ClipboardEventArgs> OldItemsDeleted;
+        public event EventHandler<ClipboardEventArgs> AllItemsDeleted;
 
         public List<ClipboardItem> ClipboardItems { get; private set; }
 
@@ -98,18 +99,27 @@ namespace Rememory.Service
             OnItemDeleted(new ClipboardEventArgs(ClipboardItems, item));
         }
 
-        public void DeleteOldItems(DateTime cutoffTime)
+        public bool DeleteOldItems(DateTime cutoffTime)
         {
-            ClipboardItems.Where(item => item.Time < cutoffTime)
-                .ToList()
-                .ForEach(item =>
-                {
-                    ClipboardItems.Remove(item);
-                    item.ClearSavedData();
-                    _storageService.DeleteClipboardItem(item);
-                });
-            OnOldItemsDeleted(new ClipboardEventArgs(ClipboardItems, null));
+            var itemsToDelete = ClipboardItems
+                .Where(item => item.Time < cutoffTime)
+                .ToList();
+
+            if (itemsToDelete.Count == 0)
+            {
+                return false;
+            }
+            itemsToDelete.ForEach(item =>
+            {
+                ClipboardItems.Remove(item);
+                item.ClearSavedData();
+                _storageService.DeleteClipboardItem(item);
+            });
+
+            OnOldItemsDeleted(new ClipboardEventArgs(ClipboardItems, changedClipboardItems: itemsToDelete));
+            return true;
         }
+
 
         public void DeleteAllItems()
         {
@@ -136,7 +146,7 @@ namespace Rememory.Service
             }
             catch { }
 
-            OnOldItemsDeleted(new ClipboardEventArgs(ClipboardItems, null));
+            OnAllItemsDeleted(new ClipboardEventArgs(ClipboardItems, changedClipboardItems: []));
         }
 
         private bool CallbackFunc(ClipboardDataInfo dataInfo)
@@ -243,6 +253,10 @@ namespace Rememory.Service
         protected void OnOldItemsDeleted(ClipboardEventArgs e)
         {
             OldItemsDeleted?.Invoke(this, e);
+        }
+        protected void OnAllItemsDeleted(ClipboardEventArgs e)
+        {
+            AllItemsDeleted?.Invoke(this, e);
         }
     }
 }

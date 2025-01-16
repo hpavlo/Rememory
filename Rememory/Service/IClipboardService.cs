@@ -12,6 +12,7 @@ namespace Rememory.Service
         event EventHandler<ClipboardEventArgs> FavoriteItemChanged;
         event EventHandler<ClipboardEventArgs> ItemDeleted;
         event EventHandler<ClipboardEventArgs> OldItemsDeleted;
+        event EventHandler<ClipboardEventArgs> AllItemsDeleted;
         List<ClipboardItem> ClipboardItems { get; }
         void StartClipboardMonitor();
         void StopClipboardMonitor();
@@ -19,7 +20,7 @@ namespace Rememory.Service
         void MoveItemToTop(ClipboardItem item);
         void ChangeFavoriteItem(ClipboardItem item);
         void DeleteItem(ClipboardItem item);
-        void DeleteOldItems(DateTime cutoffTime);
+        bool DeleteOldItems(DateTime cutoffTime);
         void DeleteAllItems();
     }
 }

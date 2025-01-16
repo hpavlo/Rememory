@@ -151,9 +151,14 @@ namespace Rememory.ViewModels
             };
             _clipboardService.OldItemsDeleted += (s, a) =>
             {
-                UpdateItemsList();
+                a.ChangedClipboardItems.ForEach(item => ItemsCollection.Remove(item));
+            };
+            _clipboardService.AllItemsDeleted += (s, a) =>
+            {
+                ItemsCollection.Clear();
             };
             _clipboardService.StartClipboardMonitor();
+            UpdateItemsList();
             CleanupOldData();
             InitializeCommands();
         }

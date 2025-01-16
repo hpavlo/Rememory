@@ -10,14 +10,17 @@ namespace Rememory.Service
         private IClipboardService _clipboardService = App.Current.Services.GetService<IClipboardService>();
         private DateTime _lastCleanupTime = DateTime.MinValue;
 
+        /// <summary>
+        /// Check clean time and delete old items once in 24 hours
+        /// </summary>
+        /// <returns>true if at least one item was deleted</returns>
         public bool Cleanup()
         {
             if ((CleanupTimeSpan)_settingsContext.CleanupTimeSpanIndex != CleanupTimeSpan.None &&
                 DateTime.Now.Subtract(_lastCleanupTime).Days > 0)
             {
                 _lastCleanupTime = DateTime.Now;
-                _clipboardService.DeleteOldItems(RoundToNearestDay(_lastCleanupTime).Subtract(GetTimeSpanFromSettings()));
-                return true;
+                return _clipboardService.DeleteOldItems(RoundToNearestDay(_lastCleanupTime).Subtract(GetTimeSpanFromSettings()));
             }
             return false;
         }
