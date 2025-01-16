@@ -32,22 +32,55 @@ namespace Rememory.Helper
 
     public delegate bool ClipboardMonitorCallback(ClipboardDataInfo dataInfo);
 
+    /// <summary>
+    /// Information about all formats and clipboard owner
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct ClipboardDataInfo
     {
+        /// <summary>
+        /// All <see cref="FormatDataItem"/> count
+        /// </summary>
         public uint FormatCount;
+        /// <summary>
+        /// Pointer to the first <see cref="FormatDataItem"/>
+        /// </summary>
         public IntPtr FirstItem;
+        /// <summary>
+        /// Pointer to the owner path
+        /// </summary>
         public IntPtr OwnerPath;
+        /// <summary>
+        /// Length of the owner icon bitmap
+        /// </summary>
         public int IconLength;
+        /// <summary>
+        /// Pointer to the owner icon bitmap
+        /// </summary>
         public IntPtr IconPixels;
     };
 
+    /// <summary>
+    /// Information about ond format form clipboard
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct FormatDataItem
     {
+        /// <summary>
+        /// Format code
+        /// </summary>
         public uint Format;
+        /// <summary>
+        /// Pointer to the data
+        /// </summary>
         public IntPtr Data;
+        /// <summary>
+        /// Data length
+        /// </summary>
         public ulong Size;
+        /// <summary>
+        /// Hash of the data
+        /// </summary>
         public IntPtr Hash;
     }
 }
