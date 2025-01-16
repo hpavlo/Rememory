@@ -2,25 +2,93 @@
 using Rememory.Models;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Rememory.Service
 {
     public interface IClipboardService
     {
+        /// <summary>
+        /// Occurs when clipboard was updated and we recived a new item
+        /// </summary>
         event EventHandler<ClipboardEventArgs> NewItemAdded;
+
+        /// <summary>
+        /// Occurs when some item was moved to the top
+        /// </summary>
         event EventHandler<ClipboardEventArgs> ItemMovedToTop;
+
+        /// <summary>
+        /// Occurs when we changed <seealso cref="ClipboardItem.IsFavorite"/> property
+        /// </summary>
         event EventHandler<ClipboardEventArgs> FavoriteItemChanged;
+
+        /// <summary>
+        /// Occurs when one item was deleted
+        /// </summary>
         event EventHandler<ClipboardEventArgs> ItemDeleted;
+
+        /// <summary>
+        /// Occurs when old items were deleted
+        /// </summary>
         event EventHandler<ClipboardEventArgs> OldItemsDeleted;
+
+        /// <summary>
+        /// Occurs when all items were deleted
+        /// </summary>
         event EventHandler<ClipboardEventArgs> AllItemsDeleted;
+
+        /// <summary>
+        /// Saves all items we have in memory
+        /// </summary>
         List<ClipboardItem> ClipboardItems { get; }
+
+        /// <summary>
+        /// Start monitoring the system clipboard
+        /// </summary>
         void StartClipboardMonitor();
+
+        /// <summary>
+        /// Stop monitoring the system clipboard
+        /// </summary>
         void StopClipboardMonitor();
-        bool SetClipboardData(ClipboardItem item, ClipboardFormat? type = null);
+
+        /// <summary>
+        /// Update current clipboard data with this item
+        /// </summary>
+        /// <param name="item">Item we want to set to clipboard</param>
+        /// <param name="type">Set only specific type of the data</param>
+        /// <returns>true if the clipboard was successfully updated</returns>
+        bool SetClipboardData(ClipboardItem item, [Optional] ClipboardFormat? type);
+
+        /// <summary>
+        /// Remove item from the current position and insert it on 0 position
+        /// </summary>
+        /// <param name="item">Item we want to move</param>
         void MoveItemToTop(ClipboardItem item);
+
+        /// <summary>
+        /// Update <seealso cref="ClipboardItem.IsFavorite"/> field in item
+        /// </summary>
+        /// <param name="item">Item we want to update</param>
         void ChangeFavoriteItem(ClipboardItem item);
+
+        /// <summary>
+        /// Delete item from memory
+        /// </summary>
+        /// <param name="item">Item we want to delete</param>
         void DeleteItem(ClipboardItem item);
+
+        /// <summary>
+        /// Check and delete all older data for <paramref name="cutoffTime"/>
+        /// </summary>
+        /// <param name="cutoffTime">Time we will use to compare the data</param>
+        /// <returns></returns>
         bool DeleteOldItems(DateTime cutoffTime);
+
+        /// <summary>
+        /// Erase all data from the memory
+        /// </summary>
         void DeleteAllItems();
     }
 }

@@ -8,6 +8,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Input;
 using Windows.ApplicationModel.DataTransfer;
@@ -239,14 +240,14 @@ namespace Rememory.ViewModels
         private void InitializeCommands()
         {
             ChangeItemFavoriteCommand = new RelayCommand<ClipboardItem>(_clipboardService.ChangeFavoriteItem);
-            PasteItemCommand = new RelayCommand<ClipboardItem>(item => SendDataToClipboard(item, true));
-            PastePlainTextItemCommand = new RelayCommand<ClipboardItem>(item => SendDataToClipboard(item, true, ClipboardFormat.Text),
+            PasteItemCommand = new RelayCommand<ClipboardItem>(item => SendDataToClipboard(item, paste: true));
+            PastePlainTextItemCommand = new RelayCommand<ClipboardItem>(item => SendDataToClipboard(item, ClipboardFormat.Text, true),
                 item => item is not null && item.DataMap.ContainsKey(ClipboardFormat.Text));
             CopyItemCommand = new RelayCommand<ClipboardItem>(item => SendDataToClipboard(item));
             DeleteItemCommand = new RelayCommand<ClipboardItem>(_clipboardService.DeleteItem);
         }
 
-        private void SendDataToClipboard(ClipboardItem item, bool paste = false, ClipboardFormat? type = null)
+        private void SendDataToClipboard(ClipboardItem item, [Optional] ClipboardFormat? type, bool paste = false)
         {
             if (_clipboardService.SetClipboardData(item, type) && paste)
             {

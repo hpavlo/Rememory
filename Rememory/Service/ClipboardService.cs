@@ -41,7 +41,7 @@ namespace Rememory.Service
             RememoryCoreHelper.StopClipboardMonitor(App.Current.ClipboardWindowHwnd);
         }
 
-        public unsafe bool SetClipboardData(ClipboardItem item, ClipboardFormat? type = null)
+        public unsafe bool SetClipboardData(ClipboardItem item, [Optional] ClipboardFormat? type)
         {
             List<ClipboardFormat> selectedTypes = type.HasValue ? new() { type.Value } : new(item.DataMap.Keys);
 

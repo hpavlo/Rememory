@@ -4,6 +4,10 @@ using System;
 
 namespace Rememory.Service
 {
+    /// <summary>
+    /// Cleans the data if the retention period of items has expired.
+    /// Check the data once in 24 hours
+    /// </summary>
     public class CleanupDataService : ICleanupDataService
     {
         private SettingsContext _settingsContext = SettingsContext.Instance;
