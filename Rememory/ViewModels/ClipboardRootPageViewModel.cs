@@ -16,15 +16,26 @@ using Windows.System;
 
 namespace Rememory.ViewModels
 {
+    /// <summary>
+    /// View model for the clipboard window root page
+    /// </summary>
     public class ClipboardRootPageViewModel : ObservableObject
     {
+        // Services
         private IClipboardService _clipboardService = App.Current.Services.GetService<IClipboardService>();
         private ICleanupDataService _cleanupDataService = App.Current.Services.GetService<ICleanupDataService>();
         private ISearchService _searchService = App.Current.Services.GetService<ISearchService>();
 
+        /// <summary>
+        /// User settings context class.
+        /// Stores all settings for the entire application
+        /// </summary>
         public SettingsContext SettingsContext => SettingsContext.Instance;
 
         private ObservableCollection<ClipboardItem> _itemsCollection;
+        /// <summary>
+        /// Visible collection on the main page
+        /// </summary>
         public ObservableCollection<ClipboardItem> ItemsCollection
         {
             get => _itemsCollection;
@@ -32,6 +43,9 @@ namespace Rememory.ViewModels
         }
 
         private NavigationMenuItem _selectedMenuItem;
+        /// <summary>
+        /// Return <seealso cref="NavigationMenuItem"/> that user selected on the main page
+        /// </summary>
         public NavigationMenuItem SelectedMenuItem
         {
             get => _selectedMenuItem;
@@ -44,9 +58,14 @@ namespace Rememory.ViewModels
                 }
             }
         }
+
+        // Disable search area if images filter is selected
         public bool IsSearchEnabled => SelectedMenuItem != NavigationMenuItem.Images;
 
         private bool _searchMode;
+        /// <summary>
+        /// Return true if <seealso cref="SearchString"/> contains search pattern
+        /// </summary>
         public bool SearchMode
         {
             get => _searchMode;
@@ -68,9 +87,16 @@ namespace Rememory.ViewModels
             }
         }
 
+        // We use this collection to save current items and search for elements within it 
         private ObservableCollection<ClipboardItem> _searchContext;
+
+        // Saves all items we founded. Uses only in search mode
         private ObservableCollection<ClipboardItem> _searchBuffer = [];
+
         private string _searchString = string.Empty;
+        /// <summary>
+        /// Search pattern. Linked to the search box
+        /// </summary>
         public string SearchString
         {
             get => _searchString;
@@ -99,6 +125,7 @@ namespace Rememory.ViewModels
             {
                 if (ItemFilter(a.ChangedClipboardItem))
                 {
+                    SearchString = string.Empty;
                     ItemsCollection.Insert(0, a.ChangedClipboardItem);
                 }
             };
@@ -131,20 +158,19 @@ namespace Rememory.ViewModels
             InitializeCommands();
         }
 
+        // Call it from view when window is activated
         public void OnWindowActivated()
         {
-            if (CleanupOldData())
-            {
-                UpdateItemsList();
-                return;
-            }
+            CleanupOldData();
 
+            // Update time on view
             foreach (var item in ItemsCollection)
             {
                 item.UpdateProperty(nameof(item.Time));
             }
         }
 
+        // Call it from view when user starts dragging
         public void OnDragItemStarting(ClipboardItem item, DataPackage dataPackage)
         {
             foreach (var itemData in item.DataMap)
@@ -173,6 +199,10 @@ namespace Rememory.ViewModels
             dataPackage.RequestedOperation = DataPackageOperation.Copy;
         }
 
+        /// <summary>
+        /// Check if the retention period of items has expired
+        /// </summary>
+        /// <returns>true if all items were checked</returns>
         private bool CleanupOldData() => _cleanupDataService.Cleanup();
 
         private void UpdateItemsList()
