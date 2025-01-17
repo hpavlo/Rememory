@@ -1,12 +1,14 @@
 using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using Rememory.Helper;
 using Rememory.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -78,35 +80,12 @@ namespace Rememory.Views.Settings
 
         private void NavigationViewPanel_Loaded(object sender, RoutedEventArgs e)
         {
-            NavigationViewPanel.SelectedItem = GeneralMenuItem;
-            _prevSelectedMenuItem = (NavigationViewItemBase)NavigationViewPanel.SelectedItem;
-
-            var navOptions = new FrameNavigationOptions();
-            navOptions.IsNavigationStackEnabled = true;
-            NavigationViewFrame.NavigateToType(typeof(GeneralPage), null, navOptions);
-            NavigationViewPanel.Header = "General";
+            NavigateTo((NavigationViewItemBase)NavigationViewPanel.SelectedItem);
         }
 
         private void NavigationViewPanel_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
-            if (args.InvokedItemContainer.Equals(_prevSelectedMenuItem))
-            {
-                return;
-            }
-
-            var navOptions = new FrameNavigationOptions
-            {
-                TransitionInfoOverride = args.RecommendedNavigationTransitionInfo,
-                IsNavigationStackEnabled = true
-            };
-
-            if (_navigationMap.TryGetValue(args.InvokedItemContainer, out var navInfo))
-            {
-                NavigationViewFrame.NavigateToType(navInfo.PageType, null, navOptions);
-                sender.Header = navInfo.Header;
-            }
-
-            _prevSelectedMenuItem = args.InvokedItemContainer;
+            NavigateTo(args.InvokedItemContainer, args.RecommendedNavigationTransitionInfo);
         }
 
         private void NavigationViewPanel_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
@@ -121,6 +100,24 @@ namespace Rememory.Views.Settings
                 sender.SelectedItem = currentMenuItem;
                 sender.Header = _navigationMap[currentMenuItem].Header;
                 _prevSelectedMenuItem = currentMenuItem;
+            }
+        }
+
+        private void NavigateTo(NavigationViewItemBase navigationViewItem, [Optional] NavigationTransitionInfo navigationTransitionInfo)
+        {
+            if (navigationViewItem != _prevSelectedMenuItem &&
+                _navigationMap.TryGetValue(navigationViewItem, out var navInfo))
+            {
+                var navOptions = new FrameNavigationOptions
+                {
+                    TransitionInfoOverride = navigationTransitionInfo,
+                    IsNavigationStackEnabled = true
+                };
+
+                NavigationViewFrame.NavigateToType(navInfo.PageType, null, navOptions);
+                NavigationViewPanel.Header = navInfo.Header;
+
+                _prevSelectedMenuItem = navigationViewItem;
             }
         }
     }

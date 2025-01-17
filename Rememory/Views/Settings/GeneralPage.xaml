@@ -40,7 +40,7 @@
 
         <tkcontrols:SettingsCard x:Uid="SettingsCard_ActivationShortcut">
             <tkcontrols:SettingsCard.HeaderIcon>
-                <FontIcon Glyph="&#xE765;" />
+                <FontIcon Glyph="&#xEDA7;" />
             </tkcontrols:SettingsCard.HeaderIcon>
             <controls:ShortcutControl x:Uid="SettingsShortcutCotrol_ActivationShortcut"
                                       ActivationShortcut="{x:Bind ViewModel.SettingsContext.ActivationShortcut, Mode=TwoWay}"
@@ -66,6 +66,9 @@
         </tkcontrols:SettingsExpander>
 
         <tkcontrols:SettingsCard x:Uid="SettingsCard_RunAtStartup">
+            <tkcontrols:SettingsCard.HeaderIcon>
+                <FontIcon Glyph="&#xF103;" />
+            </tkcontrols:SettingsCard.HeaderIcon>
             <ToggleSwitch IsOn="{x:Bind ViewModel.RunAtStartupToggle, Mode=TwoWay}" />
         </tkcontrols:SettingsCard>
 

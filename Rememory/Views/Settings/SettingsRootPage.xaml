@@ -75,6 +75,7 @@
                         Grid.RowSpan="2"
                         IsSettingsVisible="False"
                         IsBackEnabled="{x:Bind NavigationViewFrame.CanGoBack, Mode=OneWay}"
+                        SelectedItem="{x:Bind GeneralMenuItem, Mode=OneWay}"
                         Loaded="NavigationViewPanel_Loaded"
                         BackRequested="NavigationViewPanel_BackRequested"
                         DisplayModeChanged="NavigationViewPanel_DisplayModeChanged"
