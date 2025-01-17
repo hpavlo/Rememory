@@ -7,10 +7,16 @@ namespace Rememory.Helper
 {
     public static class AdministratorHelper
     {
+        private static bool? _isRunningAsAdministrator;
+
         public static bool IsAppRunningAsAdministrator()
         {
-            var windowsPrincipal = new WindowsPrincipal(WindowsIdentity.GetCurrent());
-            return windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator);
+            if (!_isRunningAsAdministrator.HasValue)
+            {
+                var windowsPrincipal = new WindowsPrincipal(WindowsIdentity.GetCurrent());
+                _isRunningAsAdministrator = windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator);
+            }
+            return _isRunningAsAdministrator.Value; 
         }
 
         public static void TryToRestartApp(bool asAdministrator = false, string arguments = "")

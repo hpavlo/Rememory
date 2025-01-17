@@ -232,7 +232,7 @@
                                               Margin="-4 0 0 0"
                                               FontSize="16"
                                               Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
-                                              Visibility="{Binding DataContext.SettingsContext.EnableItemDragAndDrop, ElementName=ClipboardItemListView, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                              Visibility="{Binding CanDragItems, ElementName=ClipboardItemListView, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                     <ContentPresenter Grid.Column="1" />
                                 </Grid>
                             </ControlTemplate>

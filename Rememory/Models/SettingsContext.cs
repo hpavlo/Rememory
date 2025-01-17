@@ -124,7 +124,10 @@ namespace Rememory.Models
         public bool EnableItemDragAndDropDefault { get; private set; } = false;
         public bool EnableItemDragAndDrop
         {
-            get => _enableItemDragAndDrop;
+            // TODO
+            // Update after resolving the drag and drop issue
+            // See https://github.com/hpavlo/Rememory/issues/2
+            get => _enableItemDragAndDrop && !AdministratorHelper.IsAppRunningAsAdministrator();
             set => SetSettingsProperty(ref _enableItemDragAndDrop, value);
         }
 
