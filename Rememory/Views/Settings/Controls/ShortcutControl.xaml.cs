@@ -20,7 +20,6 @@ namespace Rememory.Views.Settings.Controls
         private ContentDialog _dialogBox;
         private ShortcutDialogContentControl _dialogContent;
         private List<int> _currentPressedKeys = [];
-        private List<int> _lastPressedKeys = [];
 
         public string ButtonText
         {
@@ -112,16 +111,11 @@ namespace Rememory.Views.Settings.Controls
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    {
-                        _lastPressedKeys.Sort();
-                        ActivationShortcut = new List<int>(_lastPressedKeys);
+                        ActivationShortcut = new List<int>(_dialogContent.ShortcutKeys.Order());
                         break;
-                    }
                 case ContentDialogResult.Secondary:
-                    {
                         ActivationShortcut = ActivationShortcutDefault;
                         break;
-                    }
             }
         }
 
@@ -142,9 +136,8 @@ namespace Rememory.Views.Settings.Controls
                     _currentPressedKeys.Add(key);
                 }
 
-                _lastPressedKeys = new(_currentPressedKeys);
-                _dialogContent.ShortcutKeys = _lastPressedKeys;
-                if (IsShortcutValid(_lastPressedKeys))
+                _dialogContent.ShortcutKeys = new List<int>(_currentPressedKeys);
+                if (IsShortcutValid(_dialogContent.ShortcutKeys))
                 {
                     _dialogContent.IsError = false;
                     _dialogBox.IsPrimaryButtonEnabled = true;
@@ -176,7 +169,7 @@ namespace Rememory.Views.Settings.Controls
             };
         }
 
-        private bool IsShortcutValid(List<int> shortcut)
+        private bool IsShortcutValid(IList<int> shortcut)
         {
             return shortcut.Count > 1 &&
                 KeyboardHelper.ModifierKeys.Contains((VirtualKey)shortcut.First()) &&
