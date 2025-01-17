@@ -226,8 +226,8 @@ namespace Rememory
                     }
                     break;
                 case RememoryCoreHelper.TRAY_NOTIFICATION:
-                    if (args.Message.LParam == NativeHelper.WM_LBUTTONDBLCLK)
-                        SettingsWindow.ShowSettingsWindow();
+                    if (args.Message.LParam == NativeHelper.WM_LBUTTONUP)
+                        ShowClipboardWindow();
                     break;
             }
         }
