@@ -33,12 +33,12 @@ namespace Rememory.Service
 
         public void StartClipboardMonitor()
         {
-            RememoryCoreHelper.StartClipboardMonitor(App.Current.ClipboardWindowHwnd, _clipboardCallback);
+            RememoryCoreHelper.StartClipboardMonitor(App.Current.ClipboardWindowHandle, _clipboardCallback);
         }
 
         public void StopClipboardMonitor()
         {
-            RememoryCoreHelper.StopClipboardMonitor(App.Current.ClipboardWindowHwnd);
+            RememoryCoreHelper.StopClipboardMonitor(App.Current.ClipboardWindowHandle);
         }
 
         public unsafe bool SetClipboardData(ClipboardItem item, [Optional] ClipboardFormat? type)

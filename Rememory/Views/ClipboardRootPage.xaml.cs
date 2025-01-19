@@ -49,7 +49,7 @@ namespace Rememory.Views
         {
             if (args.WindowActivationState == WindowActivationState.CodeActivated)
             {
-                ((UIElement)FocusManager.FindFirstFocusableElement(this)).Focus(FocusState.Programmatic);
+                ((UIElement)FocusManager.FindFirstFocusableElement(this))?.Focus(FocusState.Programmatic);
                 if (ClipboardItemListView.Items.Count != 0)
                 {
                     ClipboardItemListView.ScrollIntoView(ClipboardItemListView.Items.First());
