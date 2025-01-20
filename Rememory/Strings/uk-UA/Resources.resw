@@ -406,4 +406,7 @@
   <data name="SettingsComboBox_Backdrop_None.Content" xml:space="preserve">
     <value>Немає</value>
   </data>
+  <data name="TitleButton_PinWindow.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Закріпити вікно</value>
+  </data>
 </root>

@@ -39,12 +39,6 @@ namespace Rememory.Views
             int cornerPreference = (int)NativeHelper.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
             NativeHelper.DwmSetWindowAttribute(this.GetWindowHandle(), NativeHelper.DWMWA_WINDOW_CORNER_PREFERENCE, ref cornerPreference, sizeof(int));
 
-            if (WindowBackdropHelper.IsSystemBackdropSupported)
-            {
-                var backdropHelper = new WindowBackdropHelper(this);
-                backdropHelper.InitWindowBackdrop();
-            }
-
             _messageMonitor = new WindowMessageMonitor(this.GetWindowHandle());
             _messageMonitor.WindowMessageReceived += WindowMessageReceived;
 
@@ -77,6 +71,17 @@ namespace Rememory.Views
             Hiding?.Invoke(this, EventArgs.Empty);
             this.AppWindow.Hide();
             return true;
+        }
+
+        // Call it after set Content of window
+        public bool InitSystemBackdrop()
+        {
+            if (WindowBackdropHelper.IsSystemBackdropSupported)
+            {
+                var backdropHelper = new WindowBackdropHelper(this);
+                return backdropHelper.InitWindowBackdrop();
+            }
+            return false;
         }
 
         private void WindowMessageReceived(object sender, WindowMessageEventArgs args)
@@ -147,9 +152,9 @@ namespace Rememory.Views
             // Resize window
             this.AppWindow.MoveAndResize(new RectInt32(
                 (int)workArea.Right - width - margin,
-                (int)workArea.Top + (int)workArea.Height / 2,
+                (int)workArea.Top + margin,
                 width,
-                (int)workArea.Height / 2 - margin));
+                (int)workArea.Height - 2 * margin));                
         }
 
         private Rect GetWorkAreaRectangle()
