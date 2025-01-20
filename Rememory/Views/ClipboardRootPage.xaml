@@ -79,21 +79,6 @@
             </Setter>
         </Style>
 
-        <Style x:Key="TitleBarButtonStyle"
-               TargetType="Button"
-               BasedOn="{StaticResource DefaultButtonStyle}">
-            <Setter Property="Width"
-                    Value="36" />
-            <Setter Property="Height"
-                    Value="36" />
-            <Setter Property="Padding"
-                    Value="0" />
-            <Setter Property="BorderThickness"
-                    Value="0" />
-            <Setter Property="Background"
-                    Value="Transparent" />
-        </Style>
-
         <Flyout x:Key="PreviewTextFlyout"
                 ShowMode="Transient"
                 ShouldConstrainToRootBounds="False"
@@ -171,32 +156,33 @@
         <StackPanel Grid.Column="1"
                     Grid.Row="0"
                     Margin="5 0"
-                    Spacing="3"
                     Orientation="Horizontal">
-            <ToggleButton IsChecked="{x:Bind ViewModel.IsWindowPinned, Mode=TwoWay}">
+            <AppBarToggleButton x:Name="PinWindowButton"
+                                x:Uid="TitleButton_PinWindow"
+                                Width="40"
+                                IsChecked="{x:Bind ViewModel.IsWindowPinned, Mode=TwoWay}"
+                                LabelPosition="Collapsed">
                 <FontIcon Glyph="&#xE718;"
                           FontSize="16" />
-            </ToggleButton>
+            </AppBarToggleButton>
 
-            <Button x:Name="SettingsButton"
-                    x:Uid="TitleButton_Settings"
-                    Style="{StaticResource TitleBarButtonStyle}"
-                    Click="SettingsButton_Click">
-                <AnimatedIcon Width="16"
-                              Height="16">
-                    <AnimatedIcon.Source>
-                        <animatedvisuals:AnimatedSettingsVisualSource />
-                    </AnimatedIcon.Source>
-                </AnimatedIcon>
-            </Button>
+            <AppBarButton x:Name="SettingsButton"
+                          x:Uid="TitleButton_Settings"
+                          Width="40"
+                          LabelPosition="Collapsed"
+                          Click="SettingsButton_Click">
+                <FontIcon Glyph="&#xE713;"
+                          FontSize="16" />
+            </AppBarButton>
 
-            <Button x:Name="CloseButton"
-                    x:Uid="TitleButton_Close"
-                    Style="{StaticResource TitleBarButtonStyle}"
-                    Click="CloseButton_Click">
+            <AppBarButton x:Name="CloseButton"
+                          x:Uid="TitleButton_Close"
+                          Width="40"
+                          LabelPosition="Collapsed"
+                          Click="CloseButton_Click">
                 <FontIcon Glyph="&#xE711;"
                           FontSize="16" />
-            </Button>
+            </AppBarButton>
         </StackPanel>
 
         <AutoSuggestBox x:Name="SearchBox"

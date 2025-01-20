@@ -68,6 +68,7 @@ namespace Rememory
             ClipboardWindow.Closed += ClipboardWindow_Closed;
             ClipboardWindowHandle = WindowNative.GetWindowHandle(ClipboardWindow);
             ClipboardWindow.Content = new ClipboardRootPage(ClipboardWindow);
+            ClipboardWindow.InitSystemBackdrop();
 
             InitializeRememoryCore();
             _keyboardMonitor.StartMonitor();
