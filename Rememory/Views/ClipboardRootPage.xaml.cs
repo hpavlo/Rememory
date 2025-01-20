@@ -15,48 +15,45 @@ using System.IO;
 using System.Linq;
 using Windows.System;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace Rememory.Views
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class ClipboardRootPage : Page
     {
         public readonly ClipboardRootPageViewModel ViewModel = new();
 
-        private readonly Window _window;
+        private readonly ClipboardWindow _window;
         private IThemeService ThemeService => App.Current.ThemeService;
         private Flyout PreviewTextFlyout => (Flyout)this.Resources["PreviewTextFlyout"];
         private Flyout PreviewRtfFlyout => (Flyout)this.Resources["PreviewRtfFlyout"];
         private Flyout PreviewImageFlyout => (Flyout)this.Resources["PreviewImageFlyout"];
 
-        public ClipboardRootPage(Window window)
+        public ClipboardRootPage(ClipboardWindow window)
         {
             this.InitializeComponent();
             _window = window;
-            RequestedTheme = ThemeService.Theme;
+            _window.Showing += Window_Showing;
+            _window.Hiding += Window_Hiding;
 
-            _window.Activated += Window_Activated;
+            RequestedTheme = ThemeService.Theme;
             ThemeService.ThemeChanged += ThemeChanged;
 
             SizeChanged += ClipboardRootPage_SizeChanged;
         }
 
-        private void Window_Activated(object sender, WindowActivatedEventArgs args)
+        private void Window_Showing(object sender, System.EventArgs e)
         {
-            if (args.WindowActivationState == WindowActivationState.CodeActivated)
+            ((UIElement)FocusManager.FindFirstFocusableElement(this))?.Focus(FocusState.Programmatic);
+            if (ClipboardItemListView.Items.Count != 0)
             {
-                ((UIElement)FocusManager.FindFirstFocusableElement(this))?.Focus(FocusState.Programmatic);
-                if (ClipboardItemListView.Items.Count != 0)
-                {
-                    ClipboardItemListView.ScrollIntoView(ClipboardItemListView.Items.First());
-                }
-
-                ViewModel.OnWindowActivated();
+                ClipboardItemListView.ScrollIntoView(ClipboardItemListView.Items.First());
             }
+
+            ViewModel.OnWindowShowing();
+        }
+
+        private void Window_Hiding(object sender, System.EventArgs e)
+        {
+            ViewModel.OnWindowHiding();
         }
 
         private void ThemeChanged(object sender, ElementTheme theme)
@@ -233,7 +230,7 @@ namespace Rememory.Views
         {
             if (e.Key == VirtualKey.Escape)
             {
-                App.Current.HideClipboardWindow();
+                App.Current.ClipboardWindow.HideWindow();
             }
         }
 
@@ -244,7 +241,7 @@ namespace Rememory.Views
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            App.Current.HideClipboardWindow();
+            App.Current.ClipboardWindow.HideWindow();
         }
 
         private void ClipboardItemListView_DragItemsStarting(object sender, DragItemsStartingEventArgs e)

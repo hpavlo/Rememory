@@ -173,9 +173,13 @@
                     Margin="5 0"
                     Spacing="3"
                     Orientation="Horizontal">
+            <ToggleButton IsChecked="{x:Bind ViewModel.IsWindowPinned, Mode=TwoWay}">
+                <FontIcon Glyph="&#xE718;"
+                          FontSize="16" />
+            </ToggleButton>
+
             <Button x:Name="SettingsButton"
                     x:Uid="TitleButton_Settings"
-                    TabIndex="4"
                     Style="{StaticResource TitleBarButtonStyle}"
                     Click="SettingsButton_Click">
                 <AnimatedIcon Width="16"
@@ -188,7 +192,6 @@
 
             <Button x:Name="CloseButton"
                     x:Uid="TitleButton_Close"
-                    TabIndex="5"
                     Style="{StaticResource TitleBarButtonStyle}"
                     Click="CloseButton_Click">
                 <FontIcon Glyph="&#xE711;"

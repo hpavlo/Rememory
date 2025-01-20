@@ -71,7 +71,7 @@ namespace Rememory.Hooks
                 if (!_activationShortcutPressed)
                 {
                     _activationShortcutPressed = true;
-                    App.Current.ShowClipboardWindow();
+                    App.Current.ClipboardWindow.ShowWindow();
                     args.Handled = true;
                 }
             }

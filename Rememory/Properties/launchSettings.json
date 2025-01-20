@@ -1,7 +1,8 @@
 {
   "profiles": {
     "Rememory (MSIX)": {
-      "commandName": "MsixPackage"
+      "commandName": "MsixPackage",
+      "nativeDebugging": true
     }
   }
 }

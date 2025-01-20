@@ -16,9 +16,6 @@ using System.Runtime.InteropServices.Marshalling;
 using System.Threading;
 using WinRT.Interop;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace Rememory
 {
     /// <summary>
@@ -31,6 +28,7 @@ namespace Rememory
         /// </summary>
         public new static App Current => (App)Application.Current;
         public IntPtr ClipboardWindowHandle { get; private set; }
+        public ClipboardWindow ClipboardWindow { get; private set; }
         public IThemeService ThemeService { get; private set; }
         public SettingsContext SettingsContext => SettingsContext.Instance;
 
@@ -41,7 +39,6 @@ namespace Rememory
 
         public Microsoft.UI.Dispatching.DispatcherQueue DispatcherQueue { get; private set; } = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
 
-        private ClipboardWindow _clipboardWindow;
         private string[] _launchArguments;
         private IKeyboardMonitor _keyboardMonitor;
 
@@ -67,9 +64,10 @@ namespace Rememory
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
-            _clipboardWindow = new ClipboardWindow();
-            _clipboardWindow.Closed += ClipboardWindow_Closed;
-            ClipboardWindowHandle = WindowNative.GetWindowHandle(_clipboardWindow);
+            ClipboardWindow = new ClipboardWindow();
+            ClipboardWindow.Closed += ClipboardWindow_Closed;
+            ClipboardWindowHandle = WindowNative.GetWindowHandle(ClipboardWindow);
+            ClipboardWindow.Content = new ClipboardRootPage(ClipboardWindow);
 
             InitializeRememoryCore();
             _keyboardMonitor.StartMonitor();
@@ -88,9 +86,6 @@ namespace Rememory
                     .BuildNotification());
             }
         }
-
-        public void ShowClipboardWindow() => _clipboardWindow.ShowWindow();
-        public void HideClipboardWindow() => _clipboardWindow.HideWindow();
 
         private void ClipboardWindow_Closed(object sender, WindowEventArgs args)
         {
