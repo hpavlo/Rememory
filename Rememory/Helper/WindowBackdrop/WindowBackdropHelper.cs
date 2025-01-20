@@ -2,6 +2,7 @@
 using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Xaml;
 using Rememory.Service;
+using Rememory.Views;
 using WinRT;
 
 namespace Rememory.Helper.WindowBackdrop
@@ -10,14 +11,14 @@ namespace Rememory.Helper.WindowBackdrop
     {
         public static bool IsSystemBackdropSupported => DesktopAcrylicController.IsSupported() && MicaController.IsSupported();
 
-        private Window _window;
+        private ClipboardWindow _window;
         private WindowsSystemDispatcherQueueHelper _wsdqHelper;
         private DesktopAcrylicController _acrylicController;
         private MicaController _micaController;
         private SystemBackdropConfiguration _configurationSource;
         private IThemeService ThemeService => App.Current.ThemeService;
 
-        public WindowBackdropHelper(Window window)
+        public WindowBackdropHelper(ClipboardWindow window)
         {
             _window = window;
         }
@@ -30,7 +31,8 @@ namespace Rememory.Helper.WindowBackdrop
                 _wsdqHelper.EnsureWindowsSystemDispatcherQueueController();
 
                 _configurationSource = new SystemBackdropConfiguration();
-                _window.Activated += Window_Activated;
+                _window.Showing += Window_Showing;
+                _window.Hiding += Window_Hiding;
                 _window.Closed += Window_Closed;
                 ((FrameworkElement)_window.Content).ActualThemeChanged += Window_ThemeChanged;
                 _configurationSource.IsInputActive = true;
@@ -102,9 +104,14 @@ namespace Rememory.Helper.WindowBackdrop
             _micaController.AddSystemBackdropTarget(_window.As<ICompositionSupportsSystemBackdrop>());
         }
 
-        private void Window_Activated(object sender, WindowActivatedEventArgs args)
+        private void Window_Showing(object sender, System.EventArgs e)
         {
-            _configurationSource.IsInputActive = args.WindowActivationState != WindowActivationState.Deactivated;
+            _configurationSource.IsInputActive = true;
+        }
+
+        private void Window_Hiding(object sender, System.EventArgs e)
+        {
+            _configurationSource.IsInputActive = false;
         }
 
         private void Window_Closed(object sender, WindowEventArgs args)
@@ -121,7 +128,8 @@ namespace Rememory.Helper.WindowBackdrop
                 _micaController.Dispose();
                 _micaController = null;
             }
-            _window.Activated -= Window_Activated;
+            _window.Showing -= Window_Showing;
+            _window.Hiding -= Window_Hiding;
             _configurationSource = null;
         }
 

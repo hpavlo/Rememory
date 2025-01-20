@@ -24,6 +24,9 @@ namespace Rememory.Helper
         [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         internal static extern int MessageBox(IntPtr hWnd, string text, string caption, uint type);
 
+        [DllImport("user32.dll")]
+        internal static extern bool SetForegroundWindow(IntPtr hWnd);
+
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
         internal static extern IntPtr LoadLibrary(string lpFileName);
@@ -44,6 +47,8 @@ namespace Rememory.Helper
             IntPtr[] pHandles, out uint dwIndex);
 
 
+        internal const int WH_KEYBOARD_LL = 13;
+
         internal delegate IntPtr HookProc(int nCode, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
@@ -54,6 +59,19 @@ namespace Rememory.Helper
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
         internal static extern IntPtr CallNextHookEx(IntPtr idHook, int nCode, IntPtr wParam, IntPtr lParam);
+
+
+        internal const uint EVENT_SYSTEM_FOREGROUND = 0x0003;
+        internal const uint WINEVENT_OUTOFCONTEXT = 0x0000;
+        internal const uint WINEVENT_SKIPOWNPROCESS = 0x0002;
+
+        internal delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hWnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
+        internal static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
+        internal static extern bool UnhookWinEvent(IntPtr hWinEventHook);
 
 
         [DllImport("user32.dll")]
@@ -96,8 +114,6 @@ namespace Rememory.Helper
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
             public char[] szDevice = new char[32];
         }
-
-        internal const int WH_KEYBOARD_LL = 13;
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
         internal static extern short GetAsyncKeyState(int vKey);

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using Rememory.Helper;
+using Rememory.Hooks;
 using Rememory.Models;
 using Rememory.Service;
 using System;
@@ -26,6 +27,9 @@ namespace Rememory.ViewModels
         private IClipboardService _clipboardService = App.Current.Services.GetService<IClipboardService>();
         private ICleanupDataService _cleanupDataService = App.Current.Services.GetService<ICleanupDataService>();
         private ISearchService _searchService = App.Current.Services.GetService<ISearchService>();
+
+        // Using to get last active window if clipboard window is pinned
+        private ActiveWindowHook _activeWindowHook = new();
 
         /// <summary>
         /// User settings context class.
@@ -56,6 +60,31 @@ namespace Rememory.ViewModels
                     SearchString = string.Empty;
                     OnPropertyChanged(nameof(IsSearchEnabled));
                     UpdateItemsList();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Return true if main clipboard window is pinned
+        /// </summary>
+        public bool IsWindowPinned
+        {
+            get => App.Current.ClipboardWindow.IsPinned;
+            set
+            {
+                if (App.Current.ClipboardWindow.IsPinned != value)
+                {
+                    App.Current.ClipboardWindow.IsPinned = value;
+                    // Use event hook only if window is pinned
+                    if (value)
+                    {
+                        _activeWindowHook.AddEventHook();
+                    }
+                    else
+                    {
+                        _activeWindowHook.RemoveEventHook();
+                    }
+                    OnPropertyChanged(nameof(IsWindowPinned));
                 }
             }
         }
@@ -164,8 +193,8 @@ namespace Rememory.ViewModels
             InitializeCommands();
         }
 
-        // Call it from view when window is activated
-        public void OnWindowActivated()
+        // Call it from view when window is showing
+        public void OnWindowShowing()
         {
             CleanupOldData();
 
@@ -174,6 +203,12 @@ namespace Rememory.ViewModels
             {
                 item.UpdateProperty(nameof(item.Time));
             }
+        }
+
+        // Call it from view when window is hiding
+        public void OnWindowHiding()
+        {
+            IsWindowPinned = false;
         }
 
         // Call it from view when user starts dragging
@@ -251,7 +286,14 @@ namespace Rememory.ViewModels
         {
             if (_clipboardService.SetClipboardData(item, type) && paste)
             {
-                App.Current.HideClipboardWindow();
+                if (IsWindowPinned && _activeWindowHook.LastActiveWindowHandle != IntPtr.Zero)
+                {
+                    NativeHelper.SetForegroundWindow(_activeWindowHook.LastActiveWindowHandle);
+                }
+                else
+                {
+                    App.Current.ClipboardWindow.HideWindow();
+                }
                 Thread.Sleep(10);
                 KeyboardHelper.MultiKeyAction([VirtualKey.Control, VirtualKey.V], KeyboardHelper.KeyAction.DownUp);
             }

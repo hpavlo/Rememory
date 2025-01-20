@@ -17,6 +17,10 @@ namespace Rememory.Views
     public class ClipboardWindow : WindowEx
     {
         public SettingsContext SettingsContext => SettingsContext.Instance;
+        public bool IsPinned { get; set; } = false;
+
+        public event EventHandler Showing;
+        public event EventHandler Hiding;
 
         private WindowMessageMonitor _messageMonitor;
         private bool _queryEndSessionReceived = false;
@@ -30,7 +34,6 @@ namespace Rememory.Views
             IsMaximizable = false;
             IsMinimizable = false;
             TaskBarIcon = Icon.FromFile(AppContext.BaseDirectory + "Assets\\WindowIcon.ico");
-            Content = new ClipboardRootPage(this);
 
             this.SetWindowStyle(WindowStyle.Popup);
             int cornerPreference = (int)NativeHelper.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
@@ -53,8 +56,12 @@ namespace Rememory.Views
         public bool ShowWindow()
         {
             if (this.Visible)
+            {
+                this.SetForegroundWindow();
                 return false;
+            }
             MoveToStartPosition();
+            Showing?.Invoke(this, EventArgs.Empty);
             this.AppWindow.Show();
             KeyboardHelper.MultiKeyAction([(VirtualKey)0x0E], KeyboardHelper.KeyAction.DownUp);   // To fix problem with foreground window
             this.SetForegroundWindow();
@@ -67,6 +74,7 @@ namespace Rememory.Views
             {
                 return false;
             }
+            Hiding?.Invoke(this, EventArgs.Empty);
             this.AppWindow.Hide();
             return true;
         }
@@ -102,7 +110,7 @@ namespace Rememory.Views
 
         private void Window_Activated(object sender, WindowActivatedEventArgs args)
         {
-            if (args.WindowActivationState == WindowActivationState.Deactivated)
+            if (!IsPinned && args.WindowActivationState == WindowActivationState.Deactivated)
             {
                 HideWindow();
             }
@@ -120,10 +128,8 @@ namespace Rememory.Views
         private void Window_Closed(object sender, WindowEventArgs args)
         {
             SettingsWindow.CloseSettingsWindow();
-            //_keyboardMonitor.StopMonitor();
             this.Activated -= Window_Activated;
             _messageMonitor.WindowMessageReceived -= WindowMessageReceived;
-            //Exit();
         }
 
         private void MoveToStartPosition()
@@ -141,9 +147,9 @@ namespace Rememory.Views
             // Resize window
             this.AppWindow.MoveAndResize(new RectInt32(
                 (int)workArea.Right - width - margin,
-                (int)workArea.Top + margin,
+                (int)workArea.Top + (int)workArea.Height / 2,
                 width,
-                (int)workArea.Height - 2 * margin));
+                (int)workArea.Height / 2 - margin));
         }
 
         private Rect GetWorkAreaRectangle()
