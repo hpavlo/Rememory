@@ -15,6 +15,7 @@ Maximize your productivity and never lose track of your clipboard history with R
 - Quick search
 - Organized data grouping
 - Drag and Drop
+- Window pinning
 
 ## Download
 
