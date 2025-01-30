@@ -6,7 +6,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
-    <TextBlock Padding="4 0"
+    <TextBlock x:Name="PreviewTextBlock"
+               Padding="4 0"
                MaxHeight="120"
                FontSize="12"
                TextWrapping="Wrap"

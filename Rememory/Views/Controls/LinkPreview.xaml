@@ -7,7 +7,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
     <StackPanel Spacing="6">
-        <TextBlock Grid.ColumnSpan="2"
+        <TextBlock x:Name="PreviewTextBlock"
+                   Grid.ColumnSpan="2"
                    Padding="4 0"
                    MaxHeight="34"
                    FontSize="12"

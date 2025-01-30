@@ -1,6 +1,7 @@
 ﻿using Rememory.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Rememory.Service
 {
@@ -8,7 +9,7 @@ namespace Rememory.Service
     {
         void StartSearching(IEnumerable<ClipboardItem> items,
                             string searchString,
-                            Action<ClipboardItem> findedItemAction);
+                            ObservableCollection<ClipboardItem> foundItems);
         void StopSearching();
     }
 }

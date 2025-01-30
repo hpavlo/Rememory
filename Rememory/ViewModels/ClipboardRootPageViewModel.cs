@@ -142,8 +142,7 @@ namespace Rememory.ViewModels
                     else
                     {
                         SearchMode = true;
-                        ItemsCollection.Clear();
-                        _searchService?.StartSearching(_searchContext, _searchString, ItemsCollection.Add);
+                        _searchService?.StartSearching(_searchContext, _searchString, ItemsCollection);
                     }
                 }
             }

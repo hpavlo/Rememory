@@ -1,6 +1,7 @@
 ﻿using Rememory.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,12 +14,12 @@ namespace Rememory.Service
 
         public void StartSearching(IEnumerable<ClipboardItem> items,
                                    string searchString,
-                                   Action<ClipboardItem> findedItemAction)
+                                   ObservableCollection<ClipboardItem> foundItems)
         {
             StopSearching();
             _cancellationTokenSource = new CancellationTokenSource();
             var cancellationToken = _cancellationTokenSource.Token;
-            _searchTask = Task.Run(() => SearchingAsync(items, searchString, findedItemAction, cancellationToken), cancellationToken);
+            _searchTask = Task.Run(() => SearchingAsync(items, searchString, foundItems, cancellationToken), cancellationToken);
         }
 
         public void StopSearching()
@@ -26,11 +27,13 @@ namespace Rememory.Service
             _cancellationTokenSource?.Cancel();
         }
 
-        private void SearchingAsync(IEnumerable<ClipboardItem> items,
+        private async void SearchingAsync(IEnumerable<ClipboardItem> items,
                                     string searchString,
-                                    Action<ClipboardItem> findedItemAction,
+                                    ObservableCollection<ClipboardItem> foundItems,
                                     CancellationToken cancellationToken)
         {
+            App.Current.DispatcherQueue.TryEnqueue(foundItems.Clear);
+            await Task.Delay(50);
             foreach (var item in items)
             {
                 if (cancellationToken.IsCancellationRequested)
@@ -41,7 +44,7 @@ namespace Rememory.Service
                 if (item.DataMap.TryGetValue(Helper.ClipboardFormat.Text, out string textData) &&
                     textData.Contains(searchString, StringComparison.OrdinalIgnoreCase))
                 {
-                    App.Current.DispatcherQueue.TryEnqueue(() => findedItemAction.Invoke(item));
+                    App.Current.DispatcherQueue.TryEnqueue(() => foundItems.Add(item));
                 }
             }
         }
