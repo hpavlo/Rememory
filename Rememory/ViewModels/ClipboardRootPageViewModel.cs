@@ -31,6 +31,9 @@ namespace Rememory.ViewModels
         // Using to get last active window if clipboard window is pinned
         private ActiveWindowHook _activeWindowHook = new();
 
+        // Using to get last active window before clipboard window is opened
+        private IntPtr _lastActiveWindowHandleBeforeShowing = IntPtr.Zero;
+
         /// <summary>
         /// User settings context class.
         /// Stores all settings for the entire application
@@ -54,7 +57,8 @@ namespace Rememory.ViewModels
         public NavigationMenuItem SelectedMenuItem
         {
             get => _selectedMenuItem;
-            set {
+            set
+            {
                 if (SetProperty(ref _selectedMenuItem, value))
                 {
                     SearchString = string.Empty;
@@ -99,7 +103,8 @@ namespace Rememory.ViewModels
         public bool SearchMode
         {
             get => _searchMode;
-            set {
+            set
+            {
                 if (SetProperty(ref _searchMode, value))
                 {
                     if (_searchMode)
@@ -150,6 +155,10 @@ namespace Rememory.ViewModels
 
         public ClipboardRootPageViewModel()
         {
+            App.Current.ClipboardWindow.Showing += (s, a) =>
+            {
+                _lastActiveWindowHandleBeforeShowing = NativeHelper.GetForegroundWindow();
+            };
             _clipboardService.NewItemAdded += (s, a) =>
             {
                 if (ItemFilter(a.ChangedClipboardItem))
@@ -285,14 +294,26 @@ namespace Rememory.ViewModels
         {
             if (_clipboardService.SetClipboardData(item, type) && paste)
             {
-                if (IsWindowPinned && _activeWindowHook.LastActiveWindowHandle != IntPtr.Zero)
+                var windowToActivate = IntPtr.Zero;
+
+                // Check case if we pinned window and right after we're trying to paste some item
+                // In this case _activeWindowHook.LastActiveWindowHandle will be zero 
+                if (IsWindowPinned)
                 {
-                    NativeHelper.SetForegroundWindow(_activeWindowHook.LastActiveWindowHandle);
+                    windowToActivate = _activeWindowHook.LastActiveWindowHandle != IntPtr.Zero
+                        ? _activeWindowHook.LastActiveWindowHandle
+                        : _lastActiveWindowHandleBeforeShowing;
+                }
+
+                if (windowToActivate != IntPtr.Zero)
+                {
+                    NativeHelper.SetForegroundWindow(windowToActivate);
                 }
                 else
                 {
                     App.Current.ClipboardWindow.HideWindow();
                 }
+
                 Thread.Sleep(10);
                 KeyboardHelper.MultiKeyAction([VirtualKey.Control, VirtualKey.V], KeyboardHelper.KeyAction.DownUp);
             }

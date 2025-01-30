@@ -25,6 +25,9 @@ namespace Rememory.Helper
         internal static extern int MessageBox(IntPtr hWnd, string text, string caption, uint type);
 
         [DllImport("user32.dll")]
+        internal static extern IntPtr GetForegroundWindow();
+        
+        [DllImport("user32.dll")]
         internal static extern bool SetForegroundWindow(IntPtr hWnd);
 
 
