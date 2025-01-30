@@ -17,7 +17,8 @@
       Background="{x:Bind ViewModel.SettingsContext.CurrentWindowBackgroundBrush, Mode=OneWay}"
       KeyUp="Escape_KeyUp">
     <Page.Resources>
-        <converters:ClipboardItemToControlConverter x:Key="ClipboardItemToControlConverter" />
+        <converters:ClipboardItemToControlConverter x:Key="ClipboardItemToControlConverter"
+                                                    SearchString="{x:Bind ViewModel.SearchString, Mode=OneWay}" />
         <converters:OwnerBitmapToImageConverter x:Key="OwnerBitmapToImageConverter" />
         <converters:DateTimeToHumanReadableConverter x:Key="DateTimeToHumanReadableConverter" />
         <converters:DataFooterInfoConverter x:Key="DataFooterInfoConverter" />
@@ -102,8 +103,18 @@
             </Flyout.SystemBackdrop>
             <RichEditBox FontSize="12"
                          BorderThickness="0"
-                         Background="White"
-                         TextWrapping="Wrap" />
+                         TextWrapping="Wrap">
+                <RichEditBox.Resources>
+                    <SolidColorBrush x:Key="TextControlBackground"
+                                     Color="White" />
+                    <SolidColorBrush x:Key="TextControlBackgroundDisabled"
+                                     Color="White" />
+                    <SolidColorBrush x:Key="TextControlBackgroundPointerOver"
+                                     Color="White" />
+                    <SolidColorBrush x:Key="TextControlBackgroundFocused"
+                                     Color="White" />
+                </RichEditBox.Resources>
+            </RichEditBox>
         </Flyout>
 
         <Flyout x:Key="PreviewImageFlyout"
@@ -312,7 +323,7 @@
                                             MaxHeight="120"
                                             IsTabStop="False"
                                             HorizontalContentAlignment="Stretch"
-                                            Content="{x:Bind Mode=OneWay, Converter={StaticResource ClipboardItemToControlConverter}}" />
+                                            Content="{Binding Mode=OneWay, Converter={StaticResource ClipboardItemToControlConverter}}" />
                             <TextBlock Grid.Row="1"
                                        Padding="4 0"
                                        FontSize="12"

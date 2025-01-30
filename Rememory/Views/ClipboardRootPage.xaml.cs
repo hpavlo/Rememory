@@ -158,6 +158,7 @@ namespace Rememory.Views
                     break;
                 case TextBlock flyoutText:
                     flyoutText.Text = string.Empty;
+                    flyoutText.TextHighlighters.Clear();
                     break;
             }
         }
@@ -183,6 +184,7 @@ namespace Rememory.Views
                         try
                         {
                             richEditBox.Document.SetText(TextSetOptions.FormatRtf, File.ReadAllText(data.Value).Replace("{\\rtf", "{\\rtf1"));
+                            richEditBox.SearchHighligh(ViewModel.SearchString);
                             richEditBox.IsReadOnly = true;
                             PreviewRtfFlyout.ShowAt(this);
                             return;
@@ -190,7 +192,9 @@ namespace Rememory.Views
                         catch { }
                         break;
                     case ClipboardFormat.Text:
-                        ((TextBlock)PreviewTextFlyout.Content).Text = data.Value;
+                        var textBlock = (TextBlock)PreviewTextFlyout.Content;
+                        textBlock.Text = data.Value;
+                        textBlock.SearchHighlight(ViewModel.SearchString);
                         PreviewTextFlyout.ShowAt(this);
                         return;
                 }
