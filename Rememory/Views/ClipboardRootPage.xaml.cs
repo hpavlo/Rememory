@@ -228,6 +228,16 @@ namespace Rememory.Views
             args.Handled = true;
         }
 
+        private void EditKeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            var button = (Button)args.Element;
+            if (ViewModel.EditItemCommand.CanExecute(button.DataContext))
+            {
+                ViewModel.EditItemCommand.Execute(button.DataContext);
+            }
+            args.Handled = true;
+        }
+
         #endregion
 
         private void Escape_KeyUp(object sender, KeyRoutedEventArgs e)

@@ -9,6 +9,7 @@
       xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
       xmlns:models="using:Rememory.Models"
       xmlns:vm="using:Rememory.ViewModels"
+      xmlns:tkconverters="using:CommunityToolkit.WinUI.Converters"
       xmlns:converters="using:Rememory.Converters"
       xmlns:controls="using:Rememory.Views.Controls"
       xmlns:behavior="using:Rememory.Views.Controls.Behavior"
@@ -17,12 +18,13 @@
       Background="{x:Bind ViewModel.SettingsContext.CurrentWindowBackgroundBrush, Mode=OneWay}"
       KeyUp="Escape_KeyUp">
     <Page.Resources>
+        <tkconverters:BoolNegationConverter x:Key="BoolNegationConverter" />
+        <tkconverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <converters:ClipboardItemToControlConverter x:Key="ClipboardItemToControlConverter"
                                                     SearchString="{x:Bind ViewModel.SearchString, Mode=OneWay}" />
         <converters:OwnerBitmapToImageConverter x:Key="OwnerBitmapToImageConverter" />
         <converters:DateTimeToHumanReadableConverter x:Key="DateTimeToHumanReadableConverter" />
         <converters:DataFooterInfoConverter x:Key="DataFooterInfoConverter" />
-        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
         <Style x:Key="DataPreviewFlyoutPresenterStyle"
                BasedOn="{StaticResource DefaultFlyoutPresenterStyle}"
@@ -232,7 +234,7 @@
                                               Margin="-4 0 0 0"
                                               FontSize="16"
                                               Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
-                                              Visibility="{Binding CanDragItems, ElementName=ClipboardItemListView, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                              Visibility="{Binding CanDragItems, ElementName=ClipboardItemListView, Converter={StaticResource BoolToVisibilityConverter}}" />
                                     <ContentPresenter Grid.Column="1" />
                                 </Grid>
                             </ControlTemplate>
@@ -250,7 +252,9 @@
                             HorizontalContentAlignment="Stretch"
                             KeyboardAcceleratorPlacementMode="Hidden"
                             CommandParameter="{x:Bind Mode=OneWay}"
-                            Command="{Binding DataContext.PasteItemCommand, ElementName=ClipboardItemListView}">
+                            Command="{Binding DataContext.PasteItemCommand, ElementName=ClipboardItemListView}"
+                            
+                            IsEnabled="{x:Bind IsOpenInEditor, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}">
                         <Button.KeyboardAccelerators>
                             <KeyboardAccelerator Key="Space"
                                                  Invoked="OpenInFlyoutKeyboardAccelerator_Invoked" />
@@ -260,6 +264,9 @@
                             <KeyboardAccelerator Key="C"
                                                  Modifiers="Control"
                                                  Invoked="CopyKeyboardAccelerator_Invoked" />
+                            <KeyboardAccelerator Key="U"
+                                                 Modifiers="Control"
+                                                 Invoked="EditKeyboardAccelerator_Invoked" />
                         </Button.KeyboardAccelerators>
 
                         <Button.ContextFlyout>
@@ -285,7 +292,8 @@
                                 <MenuFlyoutItem x:Uid="ContextMenu_PasteAsPlainText"
                                                 KeyboardAcceleratorTextOverride="Shift+Enter"
                                                 CommandParameter="{x:Bind Mode=OneWay}"
-                                                Command="{Binding DataContext.PastePlainTextItemCommand, ElementName=ClipboardItemListView}">
+                                                Command="{Binding DataContext.PastePlainTextItemCommand, ElementName=ClipboardItemListView}"
+                                                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <MenuFlyoutItem.Icon>
                                         <FontIcon Glyph="&#xE8D2;" />
                                     </MenuFlyoutItem.Icon>
@@ -296,6 +304,15 @@
                                                 Command="{Binding DataContext.CopyItemCommand, ElementName=ClipboardItemListView}">
                                     <MenuFlyoutItem.Icon>
                                         <FontIcon Glyph="&#xE8C8;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem x:Uid="ContextMenu_Edit"                      Text="Edit"
+                                                KeyboardAcceleratorTextOverride="Ctrl+U"
+                                                CommandParameter="{x:Bind Mode=OneWay}"
+                                                Command="{Binding DataContext.EditItemCommand, ElementName=ClipboardItemListView}"
+                                                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="&#xE70F;" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
                                 <MenuFlyoutItem x:Uid="ContextMenu_Delete"

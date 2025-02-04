@@ -75,6 +75,20 @@ namespace Rememory.Service
             return result;
         }
 
+        public void AddNewItem(ClipboardItem item)
+        {
+            if (!RemoveDuplicateItem(item))
+            {
+                if (_linkPreviewService.TryCreateLinkItem(item, out ClipboardLinkItem newLinkItem))
+                {
+                    item = newLinkItem;
+                }
+                ClipboardItems.Insert(0, item);
+                item.Id = _storageService.SaveClipboardItem(item);
+                OnNewItemAdded(new ClipboardEventArgs(ClipboardItems, item));
+            }
+        }
+
         public void MoveItemToTop(ClipboardItem item)
         {
             ClipboardItems.Remove(item);
@@ -120,7 +134,6 @@ namespace Rememory.Service
             return true;
         }
 
-
         public void DeleteAllItems()
         {
             void DeleteFolder(string path)
@@ -163,10 +176,10 @@ namespace Rememory.Service
             
             for (uint i = 0; i < dataInfo.FormatCount; i++)
             {
-                var kvp = Marshal.PtrToStructure<FormatDataItem>((nint)(dataInfo.FirstItem + i * Marshal.SizeOf<FormatDataItem>()));
+                var dataFormatInfo = Marshal.PtrToStructure<FormatDataItem>((nint)(dataInfo.FirstItem + i * Marshal.SizeOf<FormatDataItem>()));
 
-                var dataType = ClipboardFormatHelper.GetFormatKeyByValue(kvp.Format).Value;
-                string str = ClipboardFormatHelper.DataTypeToStringConverters[dataType]((kvp.Data, kvp.Size));
+                var dataType = ClipboardFormatHelper.GetFormatKeyByValue(dataFormatInfo.Format).Value;
+                string str = ClipboardFormatHelper.DataTypeToStringConverters[dataType]((dataFormatInfo.Data, dataFormatInfo.Size));
                 if (string.IsNullOrEmpty(str))
                 {
                     return false;
@@ -174,7 +187,7 @@ namespace Rememory.Service
                 newItem.DataMap.Add(dataType, str);
 
                 var hash = new byte[32];
-                Marshal.Copy(kvp.Hash, hash, 0, 32);
+                Marshal.Copy(dataFormatInfo.Hash, hash, 0, 32);
                 newItem.HashMap.Add(dataType, hash);
             }
 
@@ -184,16 +197,7 @@ namespace Rememory.Service
                 newItem.OwnerPath = ownerPathStr;
             }
 
-            if (!RemoveDuplicateItem(newItem))
-            {
-                if (_linkPreviewService.TryCreateLinkItem(newItem, out ClipboardLinkItem newLinkItem))
-                {
-                    newItem = newLinkItem;
-                }
-                ClipboardItems.Insert(0, newItem);
-                newItem.Id = _storageService.SaveClipboardItem(newItem);
-                OnNewItemAdded(new ClipboardEventArgs(ClipboardItems, newItem));
-            }
+            AddNewItem(newItem);
             
             return true;
         }
