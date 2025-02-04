@@ -31,7 +31,7 @@ void ClipboardDataHelper::MakeDataCopy(DataItemsRef destination, DataItemsRef cl
         newItem.data = malloc(item.size);
         memcpy(newItem.data, item.data, item.size);
         newItem.size = item.size;
-        newItem.hash = HashHelper::ComputeSHA256(item.data, item.size);;
+        newItem.hash = HashHelper::ComputeSHA256(item.data, item.size);
         destination.push_back(newItem);
     }
 }

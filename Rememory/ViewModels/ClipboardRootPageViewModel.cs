@@ -5,6 +5,7 @@ using Rememory.Helper;
 using Rememory.Hooks;
 using Rememory.Models;
 using Rememory.Service;
+using Rememory.Views.Editor;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -278,6 +279,7 @@ namespace Rememory.ViewModels
         public ICommand PasteItemCommand { get; private set; }
         public ICommand PastePlainTextItemCommand { get; private set; }
         public ICommand CopyItemCommand { get; private set; }
+        public ICommand EditItemCommand { get; private set; }
         public ICommand DeleteItemCommand { get; private set; }
 
         private void InitializeCommands()
@@ -287,6 +289,8 @@ namespace Rememory.ViewModels
             PastePlainTextItemCommand = new RelayCommand<ClipboardItem>(item => SendDataToClipboard(item, ClipboardFormat.Text, true),
                 item => item is not null && item.DataMap.ContainsKey(ClipboardFormat.Text));
             CopyItemCommand = new RelayCommand<ClipboardItem>(item => SendDataToClipboard(item));
+            EditItemCommand = new RelayCommand<ClipboardItem>(EditorWindow.ShowEditorWindow,
+                item => item is not null && item.DataMap.ContainsKey(ClipboardFormat.Text) && !EditorWindow.TryGetEditorContext(out _));
             DeleteItemCommand = new RelayCommand<ClipboardItem>(_clipboardService.DeleteItem);
         }
 

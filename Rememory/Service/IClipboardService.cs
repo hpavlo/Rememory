@@ -39,7 +39,7 @@ namespace Rememory.Service
         event EventHandler<ClipboardEventArgs> AllItemsDeleted;
 
         /// <summary>
-        /// Saves all items we have in memory
+        /// Saves all items we have in DB
         /// </summary>
         List<ClipboardItem> ClipboardItems { get; }
 
@@ -62,6 +62,12 @@ namespace Rememory.Service
         bool SetClipboardData(ClipboardItem item, [Optional] ClipboardFormat? type);
 
         /// <summary>
+        /// Adds new item to collection and DB
+        /// </summary>
+        /// <param name="item">New item we want to add to collection</param>
+        void AddNewItem(ClipboardItem item);
+
+        /// <summary>
         /// Remove item from the current position and insert it on 0 position
         /// </summary>
         /// <param name="item">Item we want to move</param>
@@ -74,7 +80,7 @@ namespace Rememory.Service
         void ChangeFavoriteItem(ClipboardItem item);
 
         /// <summary>
-        /// Delete item from memory
+        /// Delete one item from collection and DB
         /// </summary>
         /// <param name="item">Item we want to delete</param>
         void DeleteItem(ClipboardItem item);
@@ -87,7 +93,7 @@ namespace Rememory.Service
         bool DeleteOldItems(DateTime cutoffTime);
 
         /// <summary>
-        /// Erase all data from the memory
+        /// Erase all data from collection and DB
         /// </summary>
         void DeleteAllItems();
     }

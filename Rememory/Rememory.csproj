@@ -39,6 +39,7 @@
 		<None Remove="Views\Controls\ShortcutControl.xaml" />
 		<None Remove="Views\Controls\ShortcutDialogContentControl.xaml" />
 		<None Remove="Views\Controls\TextPreview.xaml" />
+		<None Remove="Views\Editor\EditorRootPage.xaml" />
 		<None Remove="Views\SettingsWindow.xaml" />
 		<None Remove="Views\Settings\AboutPage.xaml" />
 		<None Remove="Views\Settings\GeneralPage.xaml" />
@@ -78,6 +79,7 @@
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
 		<PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.1.240916" />
+		<PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.1.240916" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.71" />
 		<PackageReference Include="MessageFormat" Version="7.1.2" />
 		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.0" />
