@@ -40,7 +40,7 @@ bool OwnerHelper::GetOwnerPath(const HWND owner, WCHAR* ownerPath)
     return false;
 }
 
-void OwnerHelper::LoadOwnerIcon(const WCHAR* ownerPath, RtfPreviewInfo* dataInfo)
+void OwnerHelper::LoadOwnerIcon(const WCHAR* ownerPath, ClipboardDataInfo* dataInfo)
 {
     HICON hIcon = ExtractIcon(NULL, ownerPath, 0);
 

@@ -24,6 +24,13 @@ namespace Rememory.Models
             set => SetProperty(ref _isFavorite, value);
         }
 
+        private bool _isOpenInEditor = false;
+        public bool IsOpenInEditor
+        {
+            get => _isOpenInEditor;
+            set => SetProperty(ref _isOpenInEditor, value);
+        }
+
         private DateTime _time;
         public DateTime Time
         {
@@ -49,6 +56,7 @@ namespace Rememory.Models
             DataMap = clipboardItem.DataMap;
             HashMap = clipboardItem.HashMap;
             IsFavorite = clipboardItem.IsFavorite;
+            IsOpenInEditor = clipboardItem.IsOpenInEditor;
             Time = clipboardItem.Time;
             OwnerPath = clipboardItem.OwnerPath;
             OwnerIconBitmap = clipboardItem.OwnerIconBitmap;
