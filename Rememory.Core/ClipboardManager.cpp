@@ -22,7 +22,7 @@ bool StopClipboardMonitor(HWND hWnd)
     return ClipboardManager::GetInstance().StopMonitoring();
 }
 
-bool SetDataToClipboard(RtfPreviewInfo& dataInfo)
+bool SetDataToClipboard(ClipboardDataInfo& dataInfo)
 {
     return ClipboardManager::GetInstance().SetDataToClipboard(dataInfo);
 }
@@ -58,7 +58,7 @@ bool ClipboardManager::StopMonitoring()
     return RemoveClipboardFormatListener(_hWnd);
 }
 
-bool ClipboardManager::SetDataToClipboard(RtfPreviewInfo& dataInfo)
+bool ClipboardManager::SetDataToClipboard(ClipboardDataInfo& dataInfo)
 {
     if (!dataInfo.formatCount || !TryOpenClipboard())
     {
@@ -147,7 +147,7 @@ void ClipboardManager::HandleClipboardData()
     ClipboardData.clear();
 
     if (hasNewData) {
-        RtfPreviewInfo dataInfo = {};
+        ClipboardDataInfo dataInfo = {};
         dataInfo.formatCount = CopiedClipboardData.size();
         dataInfo.firstItem = CopiedClipboardData.data();
 
@@ -157,7 +157,7 @@ void ClipboardManager::HandleClipboardData()
             OwnerHelper::LoadOwnerIcon(_ownerPath, &dataInfo);
         }
 
-        _handler(dataInfo);
+        _handler(&dataInfo);
 
         if (dataInfo.iconPixels) {
             free(dataInfo.iconPixels);

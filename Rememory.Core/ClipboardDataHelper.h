@@ -13,7 +13,7 @@ struct FormatDataItem
         : format(frmt), data(hData), size(GlobalSize(hData)) {}
 };
 
-struct RtfPreviewInfo
+struct ClipboardDataInfo
 {
     UINT formatCount;
     FormatDataItem* firstItem;

@@ -70,7 +70,7 @@ namespace Rememory.Service
                 currentPtr = IntPtr.Add(currentPtr, Marshal.SizeOf<FormatDataItem>());
             }
 
-            var result = RememoryCoreHelper.SetDataToClipboard(dataInfo);
+            var result = RememoryCoreHelper.SetDataToClipboard(ref dataInfo);
             Marshal.FreeHGlobal(dataInfo.FirstItem);
             return result;
         }
@@ -162,7 +162,7 @@ namespace Rememory.Service
             OnAllItemsDeleted(new ClipboardEventArgs(ClipboardItems, changedClipboardItems: []));
         }
 
-        private bool CallbackFunc(ClipboardDataInfo dataInfo)
+        private bool CallbackFunc(ref ClipboardDataInfo dataInfo)
         {
             ClipboardItem newItem = new()
             {
