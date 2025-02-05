@@ -17,7 +17,7 @@ namespace Rememory.Helper
         public static extern bool StopClipboardMonitor(IntPtr hWnd);
 
         [DllImport("Rememory.Core.dll")]
-        public static extern bool SetDataToClipboard(ClipboardDataInfo dataInfo);
+        public static extern bool SetDataToClipboard(ref ClipboardDataInfo dataInfo);
 
 
         [DllImport("Rememory.Core.dll")]
@@ -30,7 +30,7 @@ namespace Rememory.Helper
         public static extern void UpdateTrayIconMenuItem(uint commandId, IntPtr newName);
     }
 
-    public delegate bool ClipboardMonitorCallback(ClipboardDataInfo dataInfo);
+    public delegate bool ClipboardMonitorCallback(ref ClipboardDataInfo dataInfo);
 
     /// <summary>
     /// Information about all formats and clipboard owner
@@ -77,7 +77,7 @@ namespace Rememory.Helper
         /// <summary>
         /// Data length
         /// </summary>
-        public ulong Size;
+        public UIntPtr Size;
         /// <summary>
         /// Hash of the data
         /// </summary>

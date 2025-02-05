@@ -19,7 +19,7 @@ namespace Rememory.Helper
             { ClipboardFormat.Png, NativeHelper.RegisterClipboardFormat("PNG") }
         };
 
-        public static unsafe readonly Dictionary<ClipboardFormat, Func<(IntPtr, ulong), string>> DataTypeToStringConverters = new()
+        public static unsafe readonly Dictionary<ClipboardFormat, Func<(IntPtr, UIntPtr), string>> DataTypeToStringConverters = new()
         {
             { ClipboardFormat.Text, _ => Marshal.PtrToStringUni(_.Item1) },
             { ClipboardFormat.Rtf, _ => ConvertPointerToFile(_.Item1, _.Item2, ClipboardFormat.Rtf) },   // Marshal.PtrToStringUTF8
@@ -77,7 +77,7 @@ namespace Rememory.Helper
             return dataPointer;
         }
 
-        public static unsafe string ConvertPointerToFile(IntPtr dataPointer, ulong dataSize, ClipboardFormat format)
+        public static unsafe string ConvertPointerToFile(IntPtr dataPointer, UIntPtr dataSize, ClipboardFormat format)
         {
             var filePath = GenerateFilePath(format);
             using FileStream fs = new(filePath, FileMode.Create, FileAccess.Write);

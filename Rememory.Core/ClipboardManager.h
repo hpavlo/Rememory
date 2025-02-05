@@ -1,11 +1,11 @@
 #pragma once
 #include "ClipboardDataHelper.h"
 
-typedef bool(__stdcall* Callback)(RtfPreviewInfo& dataInfo);
+typedef bool(__stdcall* Callback)(ClipboardDataInfo* dataInfo);
 
 extern "C" __declspec(dllexport) bool StartClipboardMonitor(HWND hWnd, Callback handler);
 extern "C" __declspec(dllexport) bool StopClipboardMonitor(HWND hWnd);
-extern "C" __declspec(dllexport) bool SetDataToClipboard(RtfPreviewInfo& dataInfo);
+extern "C" __declspec(dllexport) bool SetDataToClipboard(ClipboardDataInfo& dataInfo);
 
 class ClipboardManager
 {
@@ -13,7 +13,7 @@ public:
     static ClipboardManager& GetInstance();
     bool StartMonitoring(HWND hWnd, Callback handler);
     bool StopMonitoring();
-    bool SetDataToClipboard(RtfPreviewInfo& dataInfo);
+    bool SetDataToClipboard(ClipboardDataInfo& dataInfo);
     void ClipboardManagerMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 private:
