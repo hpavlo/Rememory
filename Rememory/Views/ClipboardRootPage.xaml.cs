@@ -213,10 +213,28 @@ namespace Rememory.Views
 
         #region KeyboardAccelerators
 
+        // Open or close preview if user press 'space' button
         private void OpenInFlyoutKeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
-            OpenPreviewFlyout((ClipboardItem)((FrameworkElement)args.Element).DataContext);
             args.Handled = true;
+
+            if (PreviewTextFlyout.IsOpen)
+            {
+                PreviewTextFlyout.Hide();
+                return;
+            }
+            if (PreviewRtfFlyout.IsOpen)
+            {
+                PreviewRtfFlyout.Hide();
+                return;
+            }
+            if (PreviewImageFlyout.IsOpen)
+            {
+                PreviewImageFlyout.Hide();
+                return;
+            }
+
+            OpenPreviewFlyout((ClipboardItem)((FrameworkElement)args.Element).DataContext);
         }
         private void PastePlainTextKeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
@@ -269,9 +287,18 @@ namespace Rememory.Views
         private void ClipboardItemListView_DragItemsStarting(object sender, DragItemsStartingEventArgs e)
         {
             var item = (ClipboardItem)e.Items.FirstOrDefault();
-            if (item is not null)
+            if (item is not null) 
             {
                 ViewModel.OnDragItemStarting(item, e.Data);
+            }
+        }
+
+        // Change preview if user select another item
+        private void ClipboardItemButton_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (PreviewTextFlyout.IsOpen || PreviewRtfFlyout.IsOpen || PreviewImageFlyout.IsOpen)
+            {
+                OpenPreviewFlyout((ClipboardItem)((FrameworkElement)sender).DataContext);
             }
         }
     }
