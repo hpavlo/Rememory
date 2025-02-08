@@ -460,4 +460,10 @@
   <data name="Editor_ZoomOutButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>Зменшити масштаб</value>
   </data>
+  <data name="SettingsCard_SearchFocus.Header" xml:space="preserve">
+    <value>Фокус поля пошуку</value>
+  </data>
+  <data name="SettingsCard_SearchFocus.Description" xml:space="preserve">
+    <value>Коли вікно відкривається, поле пошуку завжди буде у фокусі</value>
+  </data>
 </root>

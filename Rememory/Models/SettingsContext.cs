@@ -131,6 +131,14 @@ namespace Rememory.Models
             set => SetSettingsProperty(ref _enableItemDragAndDrop, value);
         }
 
+        private bool _enableSearchFocusOnStart;
+        public bool EnableSearchFocusOnStartDefault { get; private set; } = false;
+        public bool EnableSearchFocusOnStart
+        {
+            get => _enableSearchFocusOnStart;
+            set => SetSettingsProperty(ref _enableSearchFocusOnStart, value);
+        }
+
         private SettingsContext()
         {
             _supportedLanguages = ApplicationLanguages.ManifestLanguages.ToList();
@@ -147,6 +155,7 @@ namespace Rememory.Models
                 JsonSerializer.Deserialize<List<int>>((string)value) : ActivationShortcutDefault;
             _enableLinkPreviewLoading = GetSettingValue(nameof(EnableLinkPreviewLoading), EnableLinkPreviewLoadingDefault);
             _enableItemDragAndDrop = GetSettingValue(nameof(EnableItemDragAndDrop), EnableItemDragAndDropDefault);
+            _enableSearchFocusOnStart = GetSettingValue(nameof(EnableSearchFocusOnStart), EnableSearchFocusOnStartDefault);
         }
 
         private T GetSettingValue<T>(string key, T defaultValue)

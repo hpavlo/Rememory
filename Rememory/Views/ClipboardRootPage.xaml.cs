@@ -42,7 +42,15 @@ namespace Rememory.Views
 
         private void Window_Showing(object sender, System.EventArgs e)
         {
-            ((UIElement)FocusManager.FindFirstFocusableElement(this))?.Focus(FocusState.Programmatic);
+            if (ViewModel.SettingsContext.EnableSearchFocusOnStart)
+            {
+                SearchBox.Focus(FocusState.Keyboard);
+            }
+            else
+            {
+                ((UIElement)FocusManager.FindFirstFocusableElement(ClipboardItemListView))?.Focus(FocusState.Programmatic);
+            }
+
             if (ClipboardItemListView.Items.Count != 0)
             {
                 ClipboardItemListView.ScrollIntoView(ClipboardItemListView.Items.First());

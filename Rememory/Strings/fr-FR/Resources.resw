@@ -460,4 +460,10 @@
   <data name="Editor_ZoomOutButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>Zoom arrière</value>
   </data>
+  <data name="SettingsCard_SearchFocus.Header" xml:space="preserve">
+    <value>Focus sur la zone de recherche</value>
+  </data>
+  <data name="SettingsCard_SearchFocus.Description" xml:space="preserve">
+    <value>Lorsque la fenêtre s'ouvre, le champ de recherche sera toujours focalisé</value>
+  </data>
 </root>

@@ -472,4 +472,10 @@
   <data name="Editor_ZoomOutButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>Zoom out</value>
   </data>
+  <data name="SettingsCard_SearchFocus.Header" xml:space="preserve">
+    <value>Search box focus</value>
+  </data>
+  <data name="SettingsCard_SearchFocus.Description" xml:space="preserve">
+    <value>When the window opens, the search field will always be focused</value>
+  </data>
 </root>

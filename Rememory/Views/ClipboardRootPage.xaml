@@ -193,7 +193,7 @@
                         Grid.ColumnSpan="2"
                         Grid.Row="1"
                         Margin="6 4"
-                        TabIndex="2"
+                        TabIndex="1"
                         VerticalAlignment="Center"
                         IsEnabled="{x:Bind ViewModel.IsSearchEnabled, Mode=OneWay}"
                         Text="{x:Bind ViewModel.SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -202,7 +202,7 @@
                   Grid.ColumnSpan="3"
                   Grid.Row="2"
                   Padding="5 3"
-                  TabIndex="1"
+                  TabIndex="2"
                   SelectionMode="None"
                   ShowsScrollingPlaceholders="False"
                   CanDragItems="{x:Bind ViewModel.SettingsContext.EnableItemDragAndDrop, Mode=OneWay}"

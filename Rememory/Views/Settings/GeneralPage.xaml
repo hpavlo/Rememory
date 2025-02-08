@@ -68,5 +68,10 @@
                                  HeaderIcon="{tk:FontIcon Glyph=&#xE7C2;}">
             <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.EnableItemDragAndDrop, Mode=TwoWay}" />
         </tkcontrols:SettingsCard>
+
+        <tkcontrols:SettingsCard x:Uid="SettingsCard_SearchFocus"
+                                 HeaderIcon="{tk:FontIcon Glyph=&#xE721;}">
+            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.EnableSearchFocusOnStart, Mode=TwoWay}" />
+        </tkcontrols:SettingsCard>
     </StackPanel>
 </Page>
