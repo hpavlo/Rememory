@@ -1,7 +1,9 @@
 ﻿using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
+using Rememory.Helper;
 using Rememory.Models;
+using Windows.ApplicationModel;
 using WinUIEx;
 
 namespace Rememory.Views.Editor
@@ -51,10 +53,8 @@ namespace Rememory.Views.Editor
             _window.Content = new EditorRootPage(_window, _itemContext);
             _window.Closed += EditorWindow_Closed;
 
-            //_window.AppWindow.Title = "SettingsWindow_Title".GetLocalizedFormatResource(AppInfo.Current.DisplayInfo.DisplayName);
-            _window.AppWindow.Title = "Rememory Editor";
+            _window.AppWindow.Title = "EditorWindow_Title".GetLocalizedFormatResource(AppInfo.Current.DisplayInfo.DisplayName);
             _window.AppWindow.SetIcon("Assets\\WindowIcon.ico");
-            //_window.AppWindow.TitleBar.SetDragRectangles([new RectInt32(0, 0, _window.AppWindow.ClientSize.Width, 48)]);
             _window.AppWindow.SetPresenter(AppWindowPresenterKind.CompactOverlay);
             _window.CenterOnScreen();
         }
@@ -62,8 +62,11 @@ namespace Rememory.Views.Editor
         private static void EditorWindow_Closed(object sender, WindowEventArgs args)
         {
             _window = null;
-            _itemContext.IsOpenInEditor = false;
-            _itemContext = null;
+            if (_itemContext is not null)
+            {
+                _itemContext.IsOpenInEditor = false;
+                _itemContext = null;
+            }
         }
     }
 }

@@ -3,25 +3,19 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="using:Rememory.Views.Settings"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:tk="using:CommunityToolkit.WinUI"
       xmlns:tkcontrols="using:CommunityToolkit.WinUI.Controls"
-      mc:Ignorable="d"
       DataContext="{x:Bind ViewModel}">
     <StackPanel Margin="56 0"
                 Spacing="5">
-        <tkcontrols:SettingsCard x:Uid="SettingsCard_EraseData">
-            <tkcontrols:SettingsCard.HeaderIcon>
-                <FontIcon Glyph="&#xE75C;" />
-            </tkcontrols:SettingsCard.HeaderIcon>
+        <tkcontrols:SettingsCard x:Uid="SettingsCard_EraseData"
+                                 HeaderIcon="{tk:FontIcon Glyph=&#xE75C;}">
             <Button x:Uid="SettingsButton_EraseData"
                     Click="EraseClipboardDataButton_Click" />
         </tkcontrols:SettingsCard>
 
-        <tkcontrols:SettingsCard x:Uid="SettingsCard_RetentionPeriod">
-            <tkcontrols:SettingsCard.HeaderIcon>
-                <FontIcon Glyph="&#xE74E;" />
-            </tkcontrols:SettingsCard.HeaderIcon>
+        <tkcontrols:SettingsCard x:Uid="SettingsCard_RetentionPeriod"
+                                 HeaderIcon="{tk:FontIcon Glyph=&#xE74E;}">
             <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.CleanupTimeSpanIndex, Mode=TwoWay}">
                 <ComboBoxItem x:Uid="SettingsComboBox_RetentionPeriod_Daily" />
                 <ComboBoxItem x:Uid="SettingsComboBox_RetentionPeriod_Weekly" />

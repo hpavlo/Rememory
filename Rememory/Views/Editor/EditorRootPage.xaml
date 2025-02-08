@@ -3,15 +3,14 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="using:Rememory.Views.Editor"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      mc:Ignorable="d"
+      xmlns:tk="using:CommunityToolkit.WinUI"
       DataContext="{x:Bind ViewModel}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <StackPanel x:Name="WindowTitleBar"
@@ -30,151 +29,117 @@
                        Text="{x:Bind _window.AppWindow.Title}" />
         </StackPanel>
 
-        <StackPanel x:Name="CommandBarContainer"
-                    Grid.Row="1"
-                    Margin="8 4 8 8"
-                    Spacing="8"
-                    Orientation="Horizontal">
-            <Button xmlns:ui="using:CommunityToolkit.WinUI"
-                    Style="{ThemeResource AccentButtonStyle}"
-                    Command="{Binding SaveTextCommand}">
-                <StackPanel Orientation="Horizontal"
-                            Spacing="8">
-                    <FontIcon FontSize="16"
-                              Glyph="&#xE74E;" />
-                    <TextBlock Text="Save" />
-                </StackPanel>
-            </Button>
-            <ToggleButton Content="Spell checking"
-                          IsChecked="{x:Bind EditorTextBox.IsSpellCheckEnabled, Mode=TwoWay}" />
-            <Button xmlns:ui="using:CommunityToolkit.WinUI"
-                    x:Name="CanUndoButton"
-                    Content="{ui:FontIcon FontSize=14, Glyph=&#xE7A7;}"
-                    IsEnabled="False"
-                    Style="{ThemeResource EllipsisButton}"
-                    Height="32"
-                    VerticalAlignment="Stretch"
-                    Click="{x:Bind EditorTextBox.Undo}" />
-            <Button xmlns:ui="using:CommunityToolkit.WinUI"
-                    Content="{ui:FontIcon FontSize=14, Glyph=&#xE7A6;}"
-                    x:Name="CanRedoButton"
-                    IsEnabled="False"
-                    Style="{ThemeResource EllipsisButton}"
-                    Height="32" VerticalAlignment="Stretch"
-                    Click="{x:Bind EditorTextBox.Redo}" />
+        <Grid Grid.Row="1"
+              Margin="8 4 8 8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-            <Button Content="Change Presenter"
-                    Click="PresenterButton_Click" />
-        </StackPanel>
+            <StackPanel Spacing="8"
+                        Orientation="Horizontal">
+                <Button x:Uid="Editor_SaveButton"
+                        Style="{ThemeResource AccentButtonStyle}"
+                        Command="{Binding SaveTextCommand}"
+                        IsEnabled="{x:Bind ViewModel.IsTextChanged, Mode=OneWay}">
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="8">
+                        <FontIcon FontSize="16"
+                                  Glyph="&#xE74E;" />
+                        <TextBlock x:Uid="Editor_SaveButtonContent" />
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="CanUndoButton"
+                        x:Uid="Editor_UndoButton"
+                        Height="32"
+                        Padding="5 2"
+                        IsEnabled="False"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        Content="{tk:FontIcon FontSize=14, Glyph=&#xE7A7;}"
+                        Click="{x:Bind EditorTextBox.Undo}">
+                    <Button.Resources>
+                        <SolidColorBrush x:Key="ButtonBackgroundDisabled"
+                                         Color="Transparent" /> 
+                        <SolidColorBrush x:Key="ButtonBorderBrushDisabled"
+                                         Color="Transparent" />
+                    </Button.Resources>
+                </Button>
+                <Button x:Name="CanRedoButton"
+                        x:Uid="Editor_RedoButton"
+                        Height="32"
+                        Padding="5 2"
+                        IsEnabled="False"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        Content="{tk:FontIcon FontSize=14, Glyph=&#xE7A6;}"
+                        Click="{x:Bind EditorTextBox.Redo}">
+                    <Button.Resources>
+                        <SolidColorBrush x:Key="ButtonBackgroundDisabled"
+                                         Color="Transparent" />
+                        <SolidColorBrush x:Key="ButtonBorderBrushDisabled"
+                                         Color="Transparent" />
+                    </Button.Resources>
+                </Button>
+            </StackPanel>
+
+            <StackPanel Grid.Column="2"
+                        Spacing="8"
+                        Orientation="Horizontal">
+                <Button x:Uid="Editor_MoreButton"
+                        Content="{tk:FontIcon FontSize=14, Glyph=&#xE712;}">
+                    <Button.Flyout>
+                        <MenuFlyout>
+                            <ToggleMenuFlyoutItem x:Uid="EditorMenuFlyout_More_TextWrapping"
+                                                  Icon="{tk:FontIcon Glyph=&#xE751;}"
+                                                  IsChecked="True"
+                                                  Click="EordWrapToggle_Click" />
+                            <ToggleMenuFlyoutItem x:Uid="EditorMenuFlyout_More_SpellCheck"
+                                                  Icon="{tk:FontIcon Glyph=&#xF87B;}"
+                                                  IsChecked="{x:Bind EditorTextBox.IsSpellCheckEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </MenuFlyout>
+                    </Button.Flyout>
+                </Button>
+
+                <Button x:Uid="Editor_ExtendButton"
+                        Content="{tk:FontIcon FontSize=14, Glyph=&#xE740;}"
+                        Click="PresenterButton_Click" />
+            </StackPanel>
+        </Grid>
 
         <TextBox x:Name="EditorTextBox"
-                 TextChanged="EditorTextBox_TextChanged"
                  Grid.Row="2"
                  TabIndex="0"
                  TextWrapping="Wrap"
                  AcceptsReturn="True"
-                 CornerRadius="0"
-                 BorderThickness="0 1 0 0"
                  IsSpellCheckEnabled="False"
                  Text="{x:Bind ViewModel.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 ScrollViewer.VerticalScrollBarVisibility="Auto">
+                 TextChanged="EditorTextBox_TextChanged"
+                 Loaded="EditorTextBox_Loaded"
+                 SelectionChanged="EditorTextBox_SelectionChanged"
+                 PointerWheelChanged="EditorTextBox_PointerWheelChanged">
             <TextBox.Style>
                 <Style TargetType="TextBox"
                        BasedOn="{StaticResource DefaultTextBoxStyle}">
-                    <Setter Property="Foreground"
-                            Value="{ThemeResource TextControlForeground}" />
-                    <Setter Property="Background"
-                            Value="{ThemeResource TextControlBackground}" />
                     <Setter Property="BorderBrush"
-                            Value="{ThemeResource TextControlBorderBrush}" />
-                    <Setter Property="SelectionHighlightColor"
-                            Value="{ThemeResource TextControlSelectionHighlightColor}" />
+                            Value="{ThemeResource ButtonBorderBrushDisabled}" />
                     <Setter Property="BorderThickness"
-                            Value="{ThemeResource TextControlBorderThemeThickness}" />
-                    <Setter Property="FontFamily"
-                            Value="{ThemeResource ContentControlThemeFontFamily}" />
+                            Value="0 1" />
                     <Setter Property="FontSize"
-                            Value="{ThemeResource ControlContentThemeFontSize}" />
-                    <Setter Property="ScrollViewer.HorizontalScrollMode"
-                            Value="Auto" />
-                    <Setter Property="ScrollViewer.VerticalScrollMode"
-                            Value="Auto" />
+                            Value="14" />
                     <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
-                            Value="Hidden" />
+                            Value="Auto" />
                     <Setter Property="ScrollViewer.VerticalScrollBarVisibility"
-                            Value="Hidden" />
-                    <Setter Property="ScrollViewer.IsDeferredScrollingEnabled"
-                            Value="False" />
-                    <Setter Property="MinHeight"
-                            Value="{ThemeResource TextControlThemeMinHeight}" />
-                    <Setter Property="MinWidth"
-                            Value="{ThemeResource TextControlThemeMinWidth}" />
-                    <Setter Property="Padding"
-                            Value="{ThemeResource TextControlThemePadding}" />
-                    <Setter Property="UseSystemFocusVisuals"
-                            Value="{ThemeResource IsApplicationFocusVisualKindReveal}" />
-                    <Setter Property="ContextFlyout"
-                            Value="{StaticResource TextControlCommandBarContextFlyout}" />
-                    <Setter Property="SelectionFlyout"
-                            Value="{StaticResource TextControlCommandBarSelectionFlyout}" />
+                            Value="Auto" />
                     <Setter Property="CornerRadius"
-                            Value="{ThemeResource ControlCornerRadius}" />
-                    <Setter Property="BackgroundSizing"
-                            Value="InnerBorderEdge" />
+                            Value="0" />
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="TextBox">
                                 <Grid>
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup x:Name="CommonStates">
-                                            <VisualState x:Name="Normal" />
-                                            <VisualState x:Name="Disabled" />
-                                            <VisualState x:Name="PointerOver" />
-                                            <VisualState x:Name="Focused" />
-                                        </VisualStateGroup>
-                                        <VisualStateGroup x:Name="ButtonStates">
-                                            <VisualState x:Name="ButtonVisible">
-                                                <Storyboard>
-                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DeleteButton"
-                                                                                   Storyboard.TargetProperty="Visibility">
-                                                        <DiscreteObjectKeyFrame KeyTime="0">
-                                                            <DiscreteObjectKeyFrame.Value>
-                                                                <Visibility>Visible</Visibility>
-                                                            </DiscreteObjectKeyFrame.Value>
-                                                        </DiscreteObjectKeyFrame>
-                                                    </ObjectAnimationUsingKeyFrames>
-                                                </Storyboard>
-                                            </VisualState>
-                                            <VisualState x:Name="ButtonCollapsed" />
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <ContentPresenter x:Name="HeaderContentPresenter"
-                                                      Grid.Row="0"
-                                                      Grid.Column="0"
-                                                      Grid.ColumnSpan="2"
-                                                      Content="{TemplateBinding Header}"
-                                                      ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                                      FontWeight="Normal"
-                                                      Foreground="{ThemeResource TextControlHeaderForeground}"
-                                                      Margin="{ThemeResource TextBoxTopHeaderMargin}"
-                                                      TextWrapping="Wrap"
-                                                      VerticalAlignment="Top"
-                                                      Visibility="Collapsed"
-                                                      x:DeferLoadStrategy="Lazy" />
                                     <Border x:Name="BorderElement"
-                                            Grid.Row="1"
-                                            Grid.Column="0"
-                                            Grid.RowSpan="1"
-                                            Grid.ColumnSpan="2"
                                             Background="{TemplateBinding Background}"
                                             BorderBrush="{TemplateBinding BorderBrush}"
                                             BorderThickness="{TemplateBinding BorderThickness}"
@@ -183,8 +148,6 @@
                                             MinWidth="{TemplateBinding MinWidth}"
                                             MinHeight="{TemplateBinding MinHeight}" />
                                     <ScrollViewer x:Name="ContentElement"
-                                                  Grid.Row="1"
-                                                  Grid.Column="0"
                                                   HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}"
                                                   HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                                                   VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}"
@@ -198,37 +161,6 @@
                                                   IsTabStop="False"
                                                   AutomationProperties.AccessibilityView="Raw"
                                                   ZoomMode="Disabled" />
-                                    <TextBlock x:Name="PlaceholderTextContentPresenter"
-                                               Grid.Row="1"
-                                               Grid.Column="0"
-                                               Grid.ColumnSpan="2"
-                                               Foreground="{Binding PlaceholderForeground, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue={ThemeResource TextControlPlaceholderForeground}}"
-                                               Margin="{TemplateBinding BorderThickness}"
-                                               Padding="{TemplateBinding Padding}"
-                                               Text="{TemplateBinding PlaceholderText}"
-                                               TextAlignment="{TemplateBinding TextAlignment}"
-                                               TextWrapping="{TemplateBinding TextWrapping}"
-                                               IsHitTestVisible="False" />
-                                    <Button x:Name="DeleteButton"
-                                            Grid.Row="1"
-                                            Grid.Column="1"
-                                            BorderThickness="{TemplateBinding BorderThickness}"
-                                            CornerRadius="{TemplateBinding CornerRadius}"
-                                            Padding="{ThemeResource HelperButtonThemePadding}"
-                                            IsTabStop="False"
-                                            Visibility="Collapsed"
-                                            AutomationProperties.AccessibilityView="Raw"
-                                            FontSize="{TemplateBinding FontSize}"
-                                            Width="30"
-                                            VerticalAlignment="Stretch" />
-                                    <ContentPresenter x:Name="DescriptionPresenter"
-                                                      Grid.Row="2"
-                                                      Grid.Column="0"
-                                                      Grid.ColumnSpan="2"
-                                                      Content="{TemplateBinding Description}"
-                                                      Foreground="{ThemeResource SystemControlDescriptionTextForegroundBrush}"
-                                                      AutomationProperties.AccessibilityView="Raw"
-                                                      x:Load="False" />
                                 </Grid>
                             </ControlTemplate>
                         </Setter.Value>
@@ -236,5 +168,51 @@
                 </Style>
             </TextBox.Style>
         </TextBox>
+
+        <Grid Grid.Row="3"
+              Height="22"
+              Margin="8 2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock x:Name="CharactersCountTextBlock"
+                       FontSize="12"
+                       TextWrapping="Wrap"
+                       VerticalAlignment="Center"
+                       Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+            <RepeatButton x:Name="ScaleDownButton"
+                          x:Uid="Editor_ZoomOutButton"
+                          Grid.Column="2"
+                          Padding="5 2"
+                          BorderBrush="Transparent"
+                          Background="Transparent"
+                          VerticalContentAlignment="Center"
+                          Click="{x:Bind DownFontSize}"
+                          Content="{tk:FontIcon FontSize=14, Glyph=&#xE71F;}" />
+            <TextBlock x:Name="ScaleTextBlock"
+                       Grid.Column="3"
+                       Width="30"
+                       Margin="8 0"
+                       FontSize="12"
+                       TextWrapping="Wrap"
+                       VerticalAlignment="Center"
+                       HorizontalTextAlignment="Center"
+                       Text="100%"
+                       Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+            <RepeatButton x:Name="ScaleUpButton"
+                          x:Uid="Editor_ZoomInButton"
+                          Grid.Column="4"
+                          Padding="5 2"
+                          BorderBrush="Transparent"
+                          Background="Transparent"
+                          VerticalContentAlignment="Center"
+                          Click="{x:Bind UpFontSize}"
+                          Content="{tk:FontIcon FontSize=14, Glyph=&#xE8A3;}" />
+        </Grid>
     </Grid>
 </Page>

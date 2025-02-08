@@ -25,6 +25,7 @@ namespace Rememory.Models
         }
 
         private bool _isOpenInEditor = false;
+        // Don't saved in DB
         public bool IsOpenInEditor
         {
             get => _isOpenInEditor;

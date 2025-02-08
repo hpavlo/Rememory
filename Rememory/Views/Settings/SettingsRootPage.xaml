@@ -3,9 +3,7 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="using:Rememory.Views.Settings"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      mc:Ignorable="d">
+      xmlns:tk="using:CommunityToolkit.WinUI">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -89,31 +87,19 @@
             </NavigationView.Resources>
             <NavigationView.MenuItems>
                 <NavigationViewItem x:Name="GeneralMenuItem"
-                                    x:Uid="SettingsPageTitle_General">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE713;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
+                                    x:Uid="SettingsPageTitle_General"
+                                    Icon="{tk:FontIcon Glyph=&#xE713;}" />
                 <NavigationViewItem x:Name="PersonalizationMenuItem"
-                                    x:Uid="SettingsPageTitle_Personalization">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE790;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
+                                    x:Uid="SettingsPageTitle_Personalization"
+                                    Icon="{tk:FontIcon Glyph=&#xE790;}" />
                 <NavigationViewItem x:Name="StorageMenuItem"
-                                    x:Uid="SettingsPageTitle_Storage">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE74E;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
+                                    x:Uid="SettingsPageTitle_Storage"
+                                    Icon="{tk:FontIcon Glyph=&#xE74E;}" />
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem x:Name="AboutMenuItem"
-                                    x:Uid="SettingsPageTitle_About">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE946;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
+                                    x:Uid="SettingsPageTitle_About"
+                                    Icon="{tk:FontIcon Glyph=&#xE946;}" />
             </NavigationView.FooterMenuItems>
 
             <ScrollViewer Margin="0 20 0 5">
