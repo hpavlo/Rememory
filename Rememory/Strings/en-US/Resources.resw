@@ -421,4 +421,55 @@
   <data name="TitleButton_PinWindow.ToolTipService.ToolTip" xml:space="preserve">
     <value>Pin window</value>
   </data>
+  <data name="EditorWindow_Title" xml:space="preserve">
+    <value>{0} Editor</value>
+  </data>
+  <data name="ContextMenu_Edit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="EditorDialogBox_Content" xml:space="preserve">
+    <value>Do you want to save your changes?</value>
+  </data>
+  <data name="DoNotSave" xml:space="preserve">
+    <value>Don't save</value>
+  </data>
+  <data name="EditorWindowFooter_CharactersCount" xml:space="preserve">
+    <value>{0, plural, one {# character} other {# characters}}</value>
+  </data>
+  <data name="EditorWindowFooter_SelectedCharactersCount" xml:space="preserve">
+    <value>{0} of {1, plural, one {# character} other {# characters}}</value>
+  </data>
+  <data name="Editor_SaveButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Save changes</value>
+  </data>
+  <data name="Editor_SaveButtonContent.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Editor_UndoButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Undo</value>
+  </data>
+  <data name="Editor_RedoButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Redo</value>
+  </data>
+  <data name="Editor_MoreButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>See more</value>
+  </data>
+  <data name="EditorMenuFlyout_More_TextWrapping.Text" xml:space="preserve">
+    <value>Word wrap</value>
+  </data>
+  <data name="EditorMenuFlyout_More_SpellCheck.Text" xml:space="preserve">
+    <value>Spell check</value>
+  </data>
+  <data name="Editor_ExtendButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Extended window</value>
+  </data>
+  <data name="Editor_CompactButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Compact window</value>
+  </data>
+  <data name="Editor_ZoomInButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Zoom in</value>
+  </data>
+  <data name="Editor_ZoomOutButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Zoom out</value>
+  </data>
 </root>

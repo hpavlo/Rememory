@@ -3,27 +3,21 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="using:Rememory.Views.Settings"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:tkcontrols="using:CommunityToolkit.WinUI.Controls"
-      mc:Ignorable="d">
+      xmlns:tk="using:CommunityToolkit.WinUI"
+      xmlns:tkcontrols="using:CommunityToolkit.WinUI.Controls">
     <StackPanel Margin="56 0"
                 Spacing="5">
-        <tkcontrols:SettingsCard Header="{x:Bind _appName}">
+        <tkcontrols:SettingsCard Header="{x:Bind _appName}"
+                                 HeaderIcon="{tk:FontIcon Glyph=&#xE946;}">
             <tkcontrols:SettingsCard.Description>
                 <TextBlock Text="{x:Bind _appVersion}"
                            IsTextSelectionEnabled="True"
                            HorizontalAlignment="Left" />
             </tkcontrols:SettingsCard.Description>
-            <tkcontrols:SettingsCard.HeaderIcon>
-                <FontIcon Glyph="&#xE946;" />
-            </tkcontrols:SettingsCard.HeaderIcon>
         </tkcontrols:SettingsCard>
 
-        <tkcontrols:SettingsCard x:Uid="SettingsCard_GitHubLink">
-            <tkcontrols:SettingsCard.HeaderIcon>
-                <FontIcon Glyph="&#xE774;" />
-            </tkcontrols:SettingsCard.HeaderIcon>
+        <tkcontrols:SettingsCard x:Uid="SettingsCard_GitHubLink"
+                                 HeaderIcon="{tk:FontIcon Glyph=&#xE774;}">
             <HyperlinkButton NavigateUri="{x:Bind _githubLink}">
                 <FontIcon Glyph="&#xE8A7;" />
             </HyperlinkButton>

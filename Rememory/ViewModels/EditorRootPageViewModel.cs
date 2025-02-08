@@ -19,11 +19,24 @@ namespace Rememory.ViewModels
 
         private ClipboardItem _context;
 
+        private bool _isTextChanged;
+        public  bool IsTextChanged
+        {
+            get => _isTextChanged;
+            set => SetProperty(ref _isTextChanged, value);
+        }
+
         private string _text;
         public string Text
         {
             get => _text;
-            set => SetProperty(ref _text, value);
+            set
+            {
+                if (SetProperty(ref _text, value) && !IsTextChanged)
+                {
+                    IsTextChanged = true;
+                }
+            }
         }
 
         public ICommand SaveTextCommand { get; private set; }
@@ -31,7 +44,7 @@ namespace Rememory.ViewModels
         public EditorRootPageViewModel(ClipboardItem itemContext)
         {
             _context = itemContext;
-            Text = itemContext.DataMap.GetValueOrDefault(ClipboardFormat.Text, string.Empty);
+            _text = itemContext.DataMap.GetValueOrDefault(ClipboardFormat.Text, string.Empty);
 
             SaveTextCommand = new RelayCommand<ClipboardItem>(_ => SaveChanges());
         }
@@ -39,7 +52,7 @@ namespace Rememory.ViewModels
         private void SaveChanges()
         {
             var bytes = Encoding.Unicode.GetBytes(Text.EndsWith('\0') ? Text : (Text + '\0'));
-            var hash = SHA256.Create().ComputeHash(bytes);
+            var hash = SHA256.HashData(bytes);
 
             var newItem = new ClipboardItem()
             {

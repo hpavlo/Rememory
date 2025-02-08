@@ -409,4 +409,55 @@
   <data name="TitleButton_PinWindow.ToolTipService.ToolTip" xml:space="preserve">
     <value>Закріпити вікно</value>
   </data>
+  <data name="EditorWindow_Title" xml:space="preserve">
+    <value>{0} Редактор</value>
+  </data>
+  <data name="ContextMenu_Edit.Text" xml:space="preserve">
+    <value>Редагувати</value>
+  </data>
+  <data name="EditorDialogBox_Content" xml:space="preserve">
+    <value>Ви хочете зберегти ваші зміни?</value>
+  </data>
+  <data name="DoNotSave" xml:space="preserve">
+    <value>Не зберігати</value>
+  </data>
+  <data name="EditorWindowFooter_CharactersCount" xml:space="preserve">
+    <value>{0, plural, one {# символ} few {# символи} many {# символів} other {# символів}}</value>
+  </data>
+  <data name="EditorWindowFooter_SelectedCharactersCount" xml:space="preserve">
+    <value>{0} of {1, plural, one {# символ} few {# символи} many {# символів} other {# символів}}</value>
+  </data>
+  <data name="Editor_SaveButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Зберегти зміни</value>
+  </data>
+  <data name="Editor_SaveButtonContent.Text" xml:space="preserve">
+    <value>Зберегти</value>
+  </data>
+  <data name="Editor_UndoButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Скасувати</value>
+  </data>
+  <data name="Editor_RedoButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Повторити</value>
+  </data>
+  <data name="Editor_MoreButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Більше</value>
+  </data>
+  <data name="EditorMenuFlyout_More_TextWrapping.Text" xml:space="preserve">
+    <value>Перенесення слів</value>
+  </data>
+  <data name="EditorMenuFlyout_More_SpellCheck.Text" xml:space="preserve">
+    <value>Перевірка правопису</value>
+  </data>
+  <data name="Editor_ExtendButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Розширене вікно</value>
+  </data>
+  <data name="Editor_CompactButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Компактне вікно</value>
+  </data>
+  <data name="Editor_ZoomInButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Збільшити масштаб</value>
+  </data>
+  <data name="Editor_ZoomOutButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Зменшити масштаб</value>
+  </data>
 </root>

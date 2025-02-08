@@ -77,16 +77,13 @@ namespace Rememory.Service
 
         public void AddNewItem(ClipboardItem item)
         {
-            if (!RemoveDuplicateItem(item))
+            if (_linkPreviewService.TryCreateLinkItem(item, out ClipboardLinkItem newLinkItem))
             {
-                if (_linkPreviewService.TryCreateLinkItem(item, out ClipboardLinkItem newLinkItem))
-                {
-                    item = newLinkItem;
-                }
-                ClipboardItems.Insert(0, item);
-                item.Id = _storageService.SaveClipboardItem(item);
-                OnNewItemAdded(new ClipboardEventArgs(ClipboardItems, item));
+                item = newLinkItem;
             }
+            ClipboardItems.Insert(0, item);
+            item.Id = _storageService.SaveClipboardItem(item);
+            OnNewItemAdded(new ClipboardEventArgs(ClipboardItems, item));
         }
 
         public void MoveItemToTop(ClipboardItem item)
@@ -197,7 +194,10 @@ namespace Rememory.Service
                 newItem.OwnerPath = ownerPathStr;
             }
 
-            AddNewItem(newItem);
+            if (!RemoveDuplicateItem(newItem))
+            {
+                AddNewItem(newItem);
+            }
             
             return true;
         }

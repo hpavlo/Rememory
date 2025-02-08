@@ -3,17 +3,13 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="using:Rememory.Views.Settings"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:tk="using:CommunityToolkit.WinUI"
       xmlns:tkcontrols="using:CommunityToolkit.WinUI.Controls"
-      mc:Ignorable="d"
       DataContext="{x:Bind ViewModel}">
     <StackPanel Margin="56 0"
                 Spacing="5">
-        <tkcontrols:SettingsCard x:Uid="SettingsCard_AppTheme">
-            <tkcontrols:SettingsCard.HeaderIcon>
-                <FontIcon Glyph="&#xE790;" />
-            </tkcontrols:SettingsCard.HeaderIcon>
+        <tkcontrols:SettingsCard x:Uid="SettingsCard_AppTheme"
+                                 HeaderIcon="{tk:FontIcon Glyph=&#xE790;}">
             <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.CurrentThemeIndex, Mode=TwoWay}">
                 <ComboBoxItem x:Uid="SettingsComboBox_AppTheme_Default" />
                 <ComboBoxItem x:Uid="SettingsComboBox_AppTheme_Light" />
@@ -22,10 +18,8 @@
         </tkcontrols:SettingsCard>
 
         <tkcontrols:SettingsCard x:Uid="SettingsCard_Backdrop"
-                                 IsEnabled="{x:Bind ViewModel.IsBackgropSupported, Mode=OneWay}">
-            <tkcontrols:SettingsCard.HeaderIcon>
-                <FontIcon Glyph="&#xEF1F;" />
-            </tkcontrols:SettingsCard.HeaderIcon>
+                                 IsEnabled="{x:Bind ViewModel.IsBackgropSupported, Mode=OneWay}"
+                                 HeaderIcon="{tk:FontIcon Glyph=&#xEF1F;}">
             <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.CurrentWindowBackdropIndex, Mode=TwoWay}">
                 <ComboBoxItem x:Uid="SettingsComboBox_Backdrop_None" />
                 <ComboBoxItem x:Uid="SettingsComboBox_Backdrop_Acrylic" />
@@ -36,10 +30,8 @@
         </tkcontrols:SettingsCard>
 
         <tkcontrols:SettingsExpander x:Uid="SettingsCard_BackgroundColor"
-                                     IsExpanded="True">
-            <tkcontrols:SettingsExpander.HeaderIcon>
-                <FontIcon Glyph="&#xE771;" />
-            </tkcontrols:SettingsExpander.HeaderIcon>
+                                     IsExpanded="True"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xE771;}">
             <SplitButton Padding="0"
                          IsTapEnabled="False">
                 <SplitButton.Resources>
@@ -158,10 +150,8 @@
         </tkcontrols:SettingsExpander>
 
         <tkcontrols:SettingsExpander x:Uid="SettingsCard_WindowPosition"
-                                     IsExpanded="True">
-            <tkcontrols:SettingsExpander.HeaderIcon>
-                <FontIcon Glyph="&#xE90D;" />
-            </tkcontrols:SettingsExpander.HeaderIcon>
+                                     IsExpanded="True"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xE90D;}">
             <tkcontrols:SettingsExpander.Items>
                 <tkcontrols:SettingsCard x:Uid="SettingsCard_WindowWidth">
                     <NumberBox SpinButtonPlacementMode="Inline"
