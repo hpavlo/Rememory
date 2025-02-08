@@ -14,8 +14,9 @@ Maximize your productivity and never lose track of your clipboard history with R
 - Save various data types: formatted text, images, HTML
 - Quick search
 - Organized data grouping
-- Drag and Drop
+- Drag and Drop (doesn't work if run as administrator, see [issue](https://github.com/hpavlo/Rememory/issues/2))
 - Window pinning
+- Edit clipboard content
 
 ## Download
 

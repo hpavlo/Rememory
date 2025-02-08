@@ -11,7 +11,7 @@
 	<Identity
 	  Name="Dev.RememoryClipboardManager"
 	  Publisher="CN=Pavlo Huk"
-	  Version="1.1.1.0" />
+	  Version="1.1.2.0" />
 
 	<Properties>
 		<DisplayName>Rememory Dev | Clipboard Manager</DisplayName>
