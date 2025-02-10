@@ -77,17 +77,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.1.240916" />
 		<PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.1.240916" />
-		<PackageReference Include="HtmlAgilityPack" Version="1.11.71" />
+		<PackageReference Include="HtmlAgilityPack" Version="1.11.72" />
 		<PackageReference Include="MessageFormat" Version="7.1.2" />
-		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.1" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250108002" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
 		<PackageReference Include="TaskScheduler" Version="2.11.0" />
-		<PackageReference Include="WinUIEx" Version="2.5.0" />
+		<PackageReference Include="WinUIEx" Version="2.5.1" />
 		<Manifest Include="$(ApplicationManifest)" />
 	</ItemGroup>
 
