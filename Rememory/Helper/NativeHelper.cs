@@ -9,6 +9,7 @@ namespace Rememory.Helper
     public static class NativeHelper
     {
         public const uint WM_QUERYENDSESSION = 0x0011;
+        public const uint WM_ENDSESSION = 0x16;
         public const uint WM_COMMAND = 0x0111;
         public const uint WM_LBUTTONUP = 0x0202;
         public const uint WM_USER = 0x0400;
@@ -29,6 +30,9 @@ namespace Rememory.Helper
         
         [DllImport("user32.dll")]
         internal static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        internal static extern uint RegisterApplicationRestart(string pwzCommandline, int dwFlags);
 
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]

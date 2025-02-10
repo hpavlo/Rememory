@@ -23,7 +23,6 @@ namespace Rememory.Views
         public event EventHandler Hiding;
 
         private WindowMessageMonitor _messageMonitor;
-        private bool _queryEndSessionReceived = false;
 
         public ClipboardWindow()
         {
@@ -89,7 +88,19 @@ namespace Rememory.Views
             switch (args.Message.MessageId)
             {
                 case NativeHelper.WM_QUERYENDSESSION:
-                    _queryEndSessionReceived = true;
+                    if (args.Message.LParam == 1)   // ENDSESSION_CLOSEAPP
+                    {
+                        NativeHelper.RegisterApplicationRestart(null, 0x1011);   // RESTART_NO_CRASH  | RESTART_NO_HANG  | RESTART_NO_REBOOT
+                    }
+                    args.Result = 1;
+                    args.Handled = true;
+                    break;
+
+                case NativeHelper.WM_ENDSESSION:
+                    if (args.Message.WParam != 0)   // wParam = 1 means the session is ending
+                    {
+                        App.Current.Exit();
+                    }
                     break;
 
                 case NativeHelper.WM_COMMAND:
@@ -102,7 +113,7 @@ namespace Rememory.Views
                             SettingsWindow.ShowSettingsWindow();
                             break;
                         case RememoryCoreHelper.TRAY_EXIT_COMMAND:
-                            this.Close();
+                            App.Current.Exit();
                             break;
                     }
                     break;
@@ -123,11 +134,8 @@ namespace Rememory.Views
 
         private void Window_Closing(AppWindow sender, AppWindowClosingEventArgs args)
         {
-            if (!_queryEndSessionReceived)
-            {
-                HideWindow();
-                args.Cancel = true;
-            }
+            HideWindow();
+            args.Cancel = true;
         }
 
         private void Window_Closed(object sender, WindowEventArgs args)
