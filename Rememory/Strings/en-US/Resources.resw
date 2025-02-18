@@ -198,7 +198,7 @@
   <data name="MessageBox_UnableToOpenApp.Text" xml:space="preserve">
     <value>Unable to open this app in current mode</value>
   </data>
-  <data name="DeleteAllSavedDataQuestion" xml:space="preserve">
+  <data name="SettingsFlyoutText_EraseData.Text" xml:space="preserve">
     <value>Are you sure you want to delete all saved data?</value>
   </data>
   <data name="Yes" xml:space="preserve">
@@ -477,5 +477,8 @@
   </data>
   <data name="SettingsCard_SearchFocus.Description" xml:space="preserve">
     <value>When the window opens, the search field will always be focused</value>
+  </data>
+  <data name="SettingsFlyoutButton_EraseData.Content" xml:space="preserve">
+    <value>Yes, delete all data</value>
   </data>
 </root>

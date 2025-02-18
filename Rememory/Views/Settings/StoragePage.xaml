@@ -10,8 +10,26 @@
                 Spacing="5">
         <tkcontrols:SettingsCard x:Uid="SettingsCard_EraseData"
                                  HeaderIcon="{tk:FontIcon Glyph=&#xE75C;}">
-            <Button x:Uid="SettingsButton_EraseData"
-                    Click="EraseClipboardDataButton_Click" />
+            <StackPanel Orientation="Horizontal"
+                        Spacing="12">
+                <InfoBadge x:Name="EraseDataInfoBadge"
+                           VerticalAlignment="Center"
+                           Visibility="Collapsed"
+                           Style="{ThemeResource SuccessIconInfoBadgeStyle}"/>
+                <Button x:Uid="SettingsButton_EraseData">
+                    <Button.Flyout>
+                        <Flyout x:Name="EraseDataFlyout"
+                                ShouldConstrainToRootBounds="False">
+                            <StackPanel Spacing="12">
+                                <TextBlock x:Uid="SettingsFlyoutText_EraseData"
+                                           Style="{ThemeResource BaseTextBlockStyle}" />
+                                <Button x:Uid="SettingsFlyoutButton_EraseData"
+                                        Click="EraseDataButton_Click" />
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+            </StackPanel>
         </tkcontrols:SettingsCard>
 
         <tkcontrols:SettingsCard x:Uid="SettingsCard_RetentionPeriod"

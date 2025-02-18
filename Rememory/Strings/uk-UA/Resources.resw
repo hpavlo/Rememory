@@ -198,7 +198,7 @@
   <data name="MessageBox_UnableToOpenApp.Text" xml:space="preserve">
     <value>Неможливо відкрити цей додаток у поточному режимі</value>
   </data>
-  <data name="DeleteAllSavedDataQuestion" xml:space="preserve">
+  <data name="SettingsFlyoutText_EraseData.Text" xml:space="preserve">
     <value>Ви впевнені, що хочете видалити всі збережені дані?</value>
   </data>
   <data name="Yes" xml:space="preserve">
@@ -465,5 +465,8 @@
   </data>
   <data name="SettingsCard_SearchFocus.Description" xml:space="preserve">
     <value>Коли вікно відкривається, поле пошуку завжди буде у фокусі</value>
+  </data>
+  <data name="SettingsFlyoutButton_EraseData.Content" xml:space="preserve">
+    <value>Так, видалити усі дані</value>
   </data>
 </root>

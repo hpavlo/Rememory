@@ -1,8 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Rememory.Helper;
 using Rememory.ViewModels;
-using System;
 
 namespace Rememory.Views.Settings
 {
@@ -15,23 +13,14 @@ namespace Rememory.Views.Settings
             this.InitializeComponent();
         }
 
-        private async void EraseClipboardDataButton_Click(object sender, RoutedEventArgs e)
+        private void EraseDataButton_Click(object sender, RoutedEventArgs e)
         {
-            ContentDialog dialog = new()
+            if (ViewModel.EraseClipboardDataCommand.CanExecute(null))
             {
-                XamlRoot = this.XamlRoot,
-                Title = "DeleteAllSavedDataQuestion".GetLocalizedResource(),
-                PrimaryButtonText = "Yes".GetLocalizedResource(),
-                CloseButtonText = "Cancel".GetLocalizedResource(),
-                DefaultButton = ContentDialogButton.Close
-            };
-
-            var result = await dialog.ShowAsync();
-
-            if (result == ContentDialogResult.Primary)
-            {
-                ViewModel.EraseClipboardDataCommand?.Execute(null);
+                ViewModel.EraseClipboardDataCommand.Execute(null);
             }
+            EraseDataFlyout.Hide();
+            EraseDataInfoBadge.Visibility = Visibility.Visible;
         }
     }
 }
