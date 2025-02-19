@@ -28,6 +28,13 @@ namespace Rememory.Helper
 
         [DllImport("Rememory.Core.dll")]
         public static extern void UpdateTrayIconMenuItem(uint commandId, IntPtr newName);
+
+
+        [DllImport("Rememory.Core.dll")]
+        public static extern void GetOwnerIcon(IntPtr ownerPath, ref int iconLength, ref IntPtr iconPixels);
+
+        [DllImport("Rememory.Core.dll")]
+        public static extern void FreeOwnerIcon(ref IntPtr iconPixels);
     }
 
     public delegate bool ClipboardMonitorCallback(ref ClipboardDataInfo dataInfo);

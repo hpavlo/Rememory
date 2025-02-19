@@ -4,6 +4,23 @@
 #include <shlobj.h>
 #include <shellapi.h>
 
+#pragma region External functions
+
+void GetOwnerIcon(const WCHAR* ownerPath, LONG* iconLength, BYTE** iconPixels)
+{
+    return OwnerHelper::LoadOwnerIcon(ownerPath, iconLength, iconPixels);
+}
+
+void FreeOwnerIcon(BYTE** iconPixels)
+{
+    if (*iconPixels) {
+        free(*iconPixels);
+        *iconPixels = nullptr;
+    }
+}
+
+#pragma endregion
+
 bool OwnerHelper::GetOwnerPath(const HWND owner, WCHAR* ownerPath)
 {
     if (!owner)
@@ -40,13 +57,13 @@ bool OwnerHelper::GetOwnerPath(const HWND owner, WCHAR* ownerPath)
     return false;
 }
 
-void OwnerHelper::LoadOwnerIcon(const WCHAR* ownerPath, ClipboardDataInfo* dataInfo)
+void OwnerHelper::LoadOwnerIcon(const WCHAR* ownerPath, LONG* iconLength, BYTE** iconPixels)
 {
     HICON hIcon = ExtractIcon(NULL, ownerPath, 0);
 
     if (!hIcon) {
-        dataInfo->iconLength = 0;
-        dataInfo->iconPixels = nullptr;
+        *iconLength = 0;
+        *iconPixels = nullptr;
         return;
     }
 
@@ -70,6 +87,6 @@ void OwnerHelper::LoadOwnerIcon(const WCHAR* ownerPath, ClipboardDataInfo* dataI
 
     ReleaseDC(NULL, hdc);
 
-    dataInfo->iconLength = bmp.bmWidthBytes * bmp.bmHeight;
-    dataInfo->iconPixels = hIcon ? pixels : nullptr;
+    *iconLength = bmp.bmWidthBytes * bmp.bmHeight;
+    *iconPixels = hIcon ? pixels : nullptr;
 }

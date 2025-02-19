@@ -151,16 +151,20 @@ void ClipboardManager::HandleClipboardData()
         dataInfo.formatCount = CopiedClipboardData.size();
         dataInfo.firstItem = CopiedClipboardData.data();
 
+        dataInfo.iconLength = 0;
+        dataInfo.iconPixels = nullptr;
+
         if (_ownerPath[0])
         {
             dataInfo.ownerPath = _ownerPath;
-            OwnerHelper::LoadOwnerIcon(_ownerPath, &dataInfo);
+            OwnerHelper::LoadOwnerIcon(_ownerPath, &dataInfo.iconLength, &dataInfo.iconPixels);
         }
 
         _handler(&dataInfo);
 
         if (dataInfo.iconPixels) {
             free(dataInfo.iconPixels);
+            dataInfo.iconPixels = nullptr;
         }
     }
 }
