@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 
 namespace Rememory.Service
 {
@@ -22,13 +23,21 @@ namespace Rememory.Service
 
         private ClipboardMonitorCallback _clipboardCallback;
 
+        private SettingsContext SettingsContext => SettingsContext.Instance;
+
         private readonly IStorageService _storageService = App.Current.Services.GetService<IStorageService>();
         private readonly ILinkPreviewService _linkPreviewService = App.Current.Services.GetService<ILinkPreviewService>();
+        private readonly IOwnerAppService _ownerAppService = App.Current.Services.GetService<IOwnerAppService>();
 
         public ClipboardService()
         {
             _clipboardCallback = CallbackFunc;
+
+            // Load items from DB
             ClipboardItems = _storageService.LoadClipboardItems();
+
+            // Save each owner app info
+            ClipboardItems.ForEach(item => _ownerAppService.RegisterNewItem(item.OwnerPath, item.OwnerIconBitmap));
         }
 
         public void StartClipboardMonitor()
@@ -83,6 +92,7 @@ namespace Rememory.Service
             }
             ClipboardItems.Insert(0, item);
             item.Id = _storageService.SaveClipboardItem(item);
+            _ownerAppService.RegisterNewItem(item.OwnerPath, item.OwnerIconBitmap);
             OnNewItemAdded(new ClipboardEventArgs(ClipboardItems, item));
         }
 
@@ -107,6 +117,7 @@ namespace Rememory.Service
             ClipboardItems.Remove(item);
             item.ClearSavedData();
             _storageService.DeleteClipboardItem(item);
+            _ownerAppService.UnregisterItem(item.OwnerPath);
             OnItemDeleted(new ClipboardEventArgs(ClipboardItems, item));
         }
 
@@ -125,6 +136,7 @@ namespace Rememory.Service
                 ClipboardItems.Remove(item);
                 item.ClearSavedData();
                 _storageService.DeleteClipboardItem(item);
+                _ownerAppService.UnregisterItem(item.OwnerPath);
             });
 
             OnOldItemsDeleted(new ClipboardEventArgs(ClipboardItems, changedClipboardItems: itemsToDelete));
@@ -142,6 +154,7 @@ namespace Rememory.Service
             }
 
             _storageService.DeleteAllClipboardItems();
+            _ownerAppService.UnregisterAllItems();
             ClipboardItems.Clear();
 
             try
@@ -166,6 +179,27 @@ namespace Rememory.Service
                 Time = DateTime.Now
             };
 
+            string ownerPathStr = Marshal.PtrToStringUni(dataInfo.OwnerPath);
+            if (!string.IsNullOrEmpty(ownerPathStr))
+            {
+                // Check should filter this source app or not
+                var replacedOwnerPath = ownerPathStr.Replace('\\', '/');
+                try
+                {
+                    var ownerFilter = SettingsContext.OwnerAppFilters.FirstOrDefault(filter => ownerPathStr.Equals(filter.Pattern)
+                        || Regex.IsMatch(replacedOwnerPath, $"^{filter.Pattern.Replace('\\', '/').Replace("*", ".*")}$"));
+                    if (ownerFilter is not null)
+                    {
+                        ownerFilter.FilteredCount++;
+                        SettingsContext.OwnerAppFiltersSave();
+                        return false;
+                    }
+                }
+                catch { }
+
+                newItem.OwnerPath = ownerPathStr;
+            }
+
             if (dataInfo.IconPixels != 0)
             {
                 newItem.OwnerIconBitmap = GetIconBitmap(dataInfo);
@@ -186,12 +220,6 @@ namespace Rememory.Service
                 var hash = new byte[32];
                 Marshal.Copy(dataFormatInfo.Hash, hash, 0, 32);
                 newItem.HashMap.Add(dataType, hash);
-            }
-
-            string ownerPathStr = Marshal.PtrToStringUni(dataInfo.OwnerPath);
-            if (!string.IsNullOrEmpty(ownerPathStr))
-            {
-                newItem.OwnerPath = ownerPathStr;
             }
 
             if (!RemoveDuplicateItem(newItem))

@@ -8,6 +8,7 @@ using Rememory.Service;
 using Rememory.Views.Editor;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -281,6 +282,7 @@ namespace Rememory.ViewModels
         public ICommand CopyItemCommand { get; private set; }
         public ICommand EditItemCommand { get; private set; }
         public ICommand DeleteItemCommand { get; private set; }
+        public ICommand AddOwnerToFiltersCommand { get; private set; }
 
         private void InitializeCommands()
         {
@@ -292,6 +294,11 @@ namespace Rememory.ViewModels
             EditItemCommand = new RelayCommand<ClipboardItem>(EditorWindow.ShowEditorWindow,
                 item => item is not null && item.DataMap.ContainsKey(ClipboardFormat.Text) && !EditorWindow.TryGetEditorContext(out _));
             DeleteItemCommand = new RelayCommand<ClipboardItem>(_clipboardService.DeleteItem);
+            AddOwnerToFiltersCommand = new RelayCommand<string>(AddOwnerToFilters, item =>
+            {
+                // check svchost.exe for UWP app sources
+                return !string.IsNullOrEmpty(item) && !item.EndsWith("svchost.exe");
+            });
         }
 
         private void SendDataToClipboard(ClipboardItem item, [Optional] ClipboardFormat? type, bool paste = false)
@@ -322,6 +329,23 @@ namespace Rememory.ViewModels
                 KeyboardHelper.MultiKeyAction([VirtualKey.Control, VirtualKey.V], KeyboardHelper.KeyAction.DownUp);
             }
             _clipboardService.MoveItemToTop(item);
+        }
+
+        private void AddOwnerToFilters(string sourcePath)
+        {
+            if (!SettingsContext.OwnerAppFilters.Any(filter => filter.Pattern.Equals(sourcePath)))
+            {
+                OwnerAppFilter filter = new();
+                filter.Pattern = sourcePath;
+
+                if (Path.Exists(sourcePath))
+                {
+                    filter.Name = FileVersionInfo.GetVersionInfo(sourcePath).ProductName ?? string.Empty;
+                }
+
+                SettingsContext.OwnerAppFilters.Add(filter);
+                SettingsContext.OwnerAppFiltersSave();
+            }
         }
 
         #endregion
