@@ -1,11 +1,10 @@
 ﻿using Microsoft.UI.Xaml.Media.Imaging;
 using Rememory.Helper;
-using Rememory.Service;
 using System.Collections.Generic;
 
 namespace Rememory.Models
 {
-    public class ClipboardLinkItem : ClipboardItem
+    public partial class ClipboardLinkItem : ClipboardItem
     {
         private string _title;
         public string Title

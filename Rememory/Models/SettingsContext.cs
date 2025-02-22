@@ -9,6 +9,7 @@ using Rememory.Helper.WindowBackdrop;
 using Rememory.Service;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -17,7 +18,7 @@ using System.Text.Json;
 
 namespace Rememory.Models
 {
-    public class SettingsContext : ObservableObject
+    public partial class SettingsContext : ObservableObject
     {
         private static SettingsContext _instance;
         public static SettingsContext Instance => _instance ??= new SettingsContext();
@@ -139,6 +140,12 @@ namespace Rememory.Models
             set => SetSettingsProperty(ref _enableSearchFocusOnStart, value);
         }
 
+        /// <summary>
+        /// Use <see cref="OwnerAppFiltersSave"/> to save changes
+        /// </summary>
+        public ObservableCollection<OwnerAppFilter> OwnerAppFilters { get; private set; }
+        public void OwnerAppFiltersSave() => _localSettings.Values[nameof(OwnerAppFilters)] = JsonSerializer.Serialize(OwnerAppFilters);
+
         private SettingsContext()
         {
             _supportedLanguages = ApplicationLanguages.ManifestLanguages.ToList();
@@ -151,11 +158,13 @@ namespace Rememory.Models
             _windowWidth = GetSettingValue(nameof(WindowWidth), WindowWidthDefault);
             _windowMargin = GetSettingValue(nameof(WindowMargin), WindowMarginDefault);
             _cleanupTimeSpanIndex = GetSettingValue(nameof(CleanupTimeSpanIndex), CleanupTimeSpanIndexDefault);
-            _activationShortcut = _localSettings.Values.TryGetValue(nameof(ActivationShortcut), out var value) ?
-                JsonSerializer.Deserialize<List<int>>((string)value) : ActivationShortcutDefault;
+            _activationShortcut = _localSettings.Values.TryGetValue(nameof(ActivationShortcut), out var activationShortcutValue) ?
+                JsonSerializer.Deserialize<List<int>>((string)activationShortcutValue) : ActivationShortcutDefault;
             _enableLinkPreviewLoading = GetSettingValue(nameof(EnableLinkPreviewLoading), EnableLinkPreviewLoadingDefault);
             _enableItemDragAndDrop = GetSettingValue(nameof(EnableItemDragAndDrop), EnableItemDragAndDropDefault);
             _enableSearchFocusOnStart = GetSettingValue(nameof(EnableSearchFocusOnStart), EnableSearchFocusOnStartDefault);
+            OwnerAppFilters = _localSettings.Values.TryGetValue(nameof(OwnerAppFilters), out var filterSourceValue) ?
+                JsonSerializer.Deserialize<ObservableCollection<OwnerAppFilter>>((string)filterSourceValue) : [];
         }
 
         private T GetSettingValue<T>(string key, T defaultValue)

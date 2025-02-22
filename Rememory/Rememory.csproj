@@ -36,9 +36,10 @@
 		<None Remove="Views\ClipboardRootPage.xaml" />
 		<None Remove="Views\Controls\ImagePreview.xaml" />
 		<None Remove="Views\Controls\LinkPreview.xaml" />
-		<None Remove="Views\Controls\ShortcutControl.xaml" />
-		<None Remove="Views\Controls\ShortcutDialogContentControl.xaml" />
 		<None Remove="Views\Controls\TextPreview.xaml" />
+		<None Remove="Views\Settings\Controls\ShortcutControl.xaml" />
+		<None Remove="Views\Settings\Controls\ShortcutDialogContentControl.xaml" />
+		<None Remove="Views\Settings\Controls\FilterEditorDialogContent.xaml" />
 		<None Remove="Views\Editor\EditorRootPage.xaml" />
 		<None Remove="Views\SettingsWindow.xaml" />
 		<None Remove="Views\Settings\AboutPage.xaml" />

@@ -99,7 +99,7 @@ namespace Rememory.Helper
 
         private static string GenerateFilePath(ClipboardFormat format)
         {
-            var pngPathStr = format switch
+            var filePath = format switch
             {
                 ClipboardFormat.Rtf => Path.Combine(RootHistoryFolderPath, RTF_FORMAT_FOLDER_NAME, string.Format(RTF_FILE_NAME_FORMAT, DateTime.Now)),
                 ClipboardFormat.Html => Path.Combine(RootHistoryFolderPath, HTML_FORMAT_FOLDER_NAME, string.Format(HTML_FILE_NAME_FORMAT, DateTime.Now)),
@@ -107,13 +107,13 @@ namespace Rememory.Helper
                 _ => throw new NotImplementedException()
             };
 
-            var directoryName = Path.GetDirectoryName(pngPathStr);
+            var directoryName = Path.GetDirectoryName(filePath);
             if (!Directory.Exists(directoryName))
             {
                 Directory.CreateDirectory(directoryName);
             }
 
-            return pngPathStr;
+            return filePath;
         }
     }
 

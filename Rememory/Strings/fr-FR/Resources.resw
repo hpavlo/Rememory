@@ -469,4 +469,43 @@
   <data name="SettingsFlyoutButton_EraseData.Content" xml:space="preserve">
     <value>Oui, supprimer toutes les données</value>
   </data>
+  <data name="SettingsFilterList_FilteredCount" xml:space="preserve">
+    <value>Articles filtrés: {0}</value>
+  </data>
+  <data name="SettingsExpander_OwnerFilters.Header" xml:space="preserve">
+    <value>Filtres d'application du propriétaire</value>
+  </data>
+  <data name="SettingsExpander_OwnerFilters.Description" xml:space="preserve">
+    <value>Le gestionnaire du presse-papiers n'enregistrera aucune donnée de ces programmes</value>
+  </data>
+  <data name="SettingsExpander_OwnerFiltersWarning.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Le filtrage ne fonctionne pas correctement avec les&#x0a;applications UWP et WebView2</value>
+  </data>
+  <data name="SettingsExpander_OwnerFiltersAddButton.Content" xml:space="preserve">
+    <value>Ajouter un filtre</value>
+  </data>
+  <data name="FilterDialogBox_Title" xml:space="preserve">
+    <value>Modifier le filtre</value>
+  </data>
+  <data name="FilterDialogBox_TeachingTip.Title" xml:space="preserve">
+    <value>Exemples de patterns</value>
+  </data>
+  <data name="FilterDialogBox_ExampleButton.Content" xml:space="preserve">
+    <value>Exemples de patterns</value>
+  </data>
+  <data name="FilterDialogBox_NameTextBox.PlaceholderText" xml:space="preserve">
+    <value>Nom du filtre</value>
+  </data>
+  <data name="FilterDialogBox_PatternTextBox.PlaceholderText" xml:space="preserve">
+    <value>Pattern de filtre</value>
+  </data>
+  <data name="ContextMenu_More.Text" xml:space="preserve">
+    <value>Plus</value>
+  </data>
+  <data name="ContextMenu_Filter.Text" xml:space="preserve">
+    <value>Filtrer cette source</value>
+  </data>
+  <data name="UnknownOwnerAppTitle" xml:space="preserve">
+    <value>Inconnu</value>
+  </data>
 </root>

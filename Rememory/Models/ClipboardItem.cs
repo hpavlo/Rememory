@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace Rememory.Models
 {
-    public class ClipboardItem : ObservableObject, IDisposable
+    public partial class ClipboardItem : ObservableObject, IDisposable
     {
         private bool _disposed = false;
 

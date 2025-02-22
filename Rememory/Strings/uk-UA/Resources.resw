@@ -469,4 +469,43 @@
   <data name="SettingsFlyoutButton_EraseData.Content" xml:space="preserve">
     <value>Так, видалити усі дані</value>
   </data>
+  <data name="SettingsFilterList_FilteredCount" xml:space="preserve">
+    <value>Відфільтровані елементи: {0}</value>
+  </data>
+  <data name="SettingsExpander_OwnerFilters.Header" xml:space="preserve">
+    <value>Фільтри програм-власників</value>
+  </data>
+  <data name="SettingsExpander_OwnerFilters.Description" xml:space="preserve">
+    <value>Менеджер буфера обміну не зберігатиме дані з цих програм</value>
+  </data>
+  <data name="SettingsExpander_OwnerFiltersWarning.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Фільтрування не працює належним чином&#x0a;із програмами UWP і WebView2</value>
+  </data>
+  <data name="SettingsExpander_OwnerFiltersAddButton.Content" xml:space="preserve">
+    <value>Додати фільтр</value>
+  </data>
+  <data name="FilterDialogBox_Title" xml:space="preserve">
+    <value>Редагувати фільтр</value>
+  </data>
+  <data name="FilterDialogBox_TeachingTip.Title" xml:space="preserve">
+    <value>Приклади патернів</value>
+  </data>
+  <data name="FilterDialogBox_ExampleButton.Content" xml:space="preserve">
+    <value>Приклади патернів</value>
+  </data>
+  <data name="FilterDialogBox_NameTextBox.PlaceholderText" xml:space="preserve">
+    <value>Назва фільтру</value>
+  </data>
+  <data name="FilterDialogBox_PatternTextBox.PlaceholderText" xml:space="preserve">
+    <value>Патерн фільтру</value>
+  </data>
+  <data name="ContextMenu_More.Text" xml:space="preserve">
+    <value>Більше</value>
+  </data>
+  <data name="ContextMenu_Filter.Text" xml:space="preserve">
+    <value>Фільтрувати це джерело</value>
+  </data>
+  <data name="UnknownOwnerAppTitle" xml:space="preserve">
+    <value>Невідомий</value>
+  </data>
 </root>
