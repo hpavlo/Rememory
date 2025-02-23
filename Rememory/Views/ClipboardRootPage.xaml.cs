@@ -279,6 +279,11 @@ namespace Rememory.Views
             SettingsWindow.ShowSettingsWindow();
         }
 
+        private void QuitButton_Click(object sender, RoutedEventArgs e)
+        {
+            App.Current.Exit();
+        }
+
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             App.Current.ClipboardWindow.HideWindow();

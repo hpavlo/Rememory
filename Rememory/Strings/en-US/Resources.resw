@@ -207,9 +207,6 @@
   <data name="TitleButton_Close.ToolTipService.ToolTip" xml:space="preserve">
     <value>Close</value>
   </data>
-  <data name="TitleButton_Settings.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Settings</value>
-  </data>
   <data name="SettingsExpanderHeader_RestartAsAdministrator" xml:space="preserve">
     <value>Restart as administrator</value>
   </data>
@@ -418,9 +415,6 @@
   <data name="SettingsComboBox_Backdrop_MicaAlt.Content" xml:space="preserve">
     <value>Mica Alt</value>
   </data>
-  <data name="TitleButton_PinWindow.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Pin window</value>
-  </data>
   <data name="EditorWindow_Title" xml:space="preserve">
     <value>{0} Editor</value>
   </data>
@@ -519,5 +513,23 @@
   </data>
   <data name="UnknownOwnerAppTitle" xml:space="preserve">
     <value>Unknown</value>
+  </data>
+  <data name="TitleButton_More.ToolTipService.ToolTip" xml:space="preserve">
+    <value>More</value>
+  </data>
+  <data name="TitleMenuButton_PinWindow.Text" xml:space="preserve">
+    <value>Pin window</value>
+  </data>
+  <data name="TitleMenuButton_PauseMonitoring.Text" xml:space="preserve">
+    <value>Pause monitoring</value>
+  </data>
+  <data name="TitleMenuButton_Settings.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="TitleMenuButton_Quit.Text" xml:space="preserve">
+    <value>Quit</value>
+  </data>
+  <data name="Banner_PausedMonitoring.Text" xml:space="preserve">
+    <value>Saving clipboard data is paused</value>
   </data>
 </root>
