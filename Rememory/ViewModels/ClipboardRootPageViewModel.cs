@@ -95,6 +95,29 @@ namespace Rememory.ViewModels
             }
         }
 
+        private bool _isClipboardMonitoringPaused = false;
+        /// <summary>
+        /// When it's true, clipboard manager doesn't save any data
+        /// </summary>
+        public bool IsClipboardMonitoringPaused
+        {
+            get => _isClipboardMonitoringPaused;
+            set
+            {
+                if (SetProperty(ref _isClipboardMonitoringPaused, value))
+                {
+                    if (value)
+                    {
+                        _clipboardService.StopClipboardMonitor();
+                    }
+                    else
+                    {
+                        _clipboardService.StartClipboardMonitor();
+                    }
+                }
+            }
+        }
+
         // Disable search area if images filter is selected
         public bool IsSearchEnabled => SelectedMenuItem != NavigationMenuItem.Images;
 

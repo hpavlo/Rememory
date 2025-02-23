@@ -137,6 +137,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -167,25 +168,36 @@
         <StackPanel Grid.Column="1"
                     Grid.Row="0"
                     Margin="5 0"
-                    Orientation="Horizontal">
-            <AppBarToggleButton x:Name="PinWindowButton"
-                                x:Uid="TitleButton_PinWindow"
-                                Width="40"
-                                IsChecked="{x:Bind ViewModel.IsWindowPinned, Mode=TwoWay}"
-                                LabelPosition="Collapsed"
-                                Icon="{tk:FontIcon FontSize=16, Glyph=&#xE718;}" />
-            <AppBarButton x:Name="SettingsButton"
-                          x:Uid="TitleButton_Settings"
-                          Width="40"
-                          LabelPosition="Collapsed"
-                          Click="SettingsButton_Click"
-                          Icon="{tk:FontIcon FontSize=16, Glyph=&#xE713;}" />
-            <AppBarButton x:Name="CloseButton"
-                          x:Uid="TitleButton_Close"
-                          Width="40"
-                          LabelPosition="Collapsed"
-                          Click="CloseButton_Click"
-                          Icon="{tk:FontIcon FontSize=16, Glyph=&#xE711;}" />
+                    Orientation="Horizontal"
+                    VerticalAlignment="Center">
+            <!-- Change style to custom one -->
+            <Button x:Uid="TitleButton_More"
+                    Content="{tk:FontIcon FontSize=16, Glyph=&#xE712;}"
+                    Style="{ThemeResource AlternateCloseButtonStyle}">
+                <Button.Flyout>
+                    <MenuFlyout>
+                        <ToggleMenuFlyoutItem x:Uid="TitleMenuButton_PinWindow"
+                                              IsChecked="{x:Bind ViewModel.IsWindowPinned, Mode=TwoWay}"
+                                              Icon="{tk:FontIcon FontSize=16, Glyph=&#xE718;}" />
+                        <ToggleMenuFlyoutItem x:Uid="TitleMenuButton_PauseMonitoring"
+                                              IsChecked="{x:Bind ViewModel.IsClipboardMonitoringPaused, Mode=TwoWay}"
+                                              Icon="{tk:FontIcon FontSize=16, Glyph=&#xF0E3;}" />
+                        <MenuFlyoutSeparator />
+                        <MenuFlyoutItem x:Uid="TitleMenuButton_Settings"
+                                        Click="SettingsButton_Click"
+                                        Icon="{tk:FontIcon FontSize=16, Glyph=&#xE713;}" />
+                        <MenuFlyoutItem x:Uid="TitleMenuButton_Quit"
+                                        Click="QuitButton_Click"
+                                        Icon="{tk:FontIcon FontSize=16, Glyph=&#xEA39;}" />
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
+            
+            <Button x:Name="CloseButton"
+                    x:Uid="TitleButton_Close"
+                    Click="CloseButton_Click"
+                    Content="{tk:FontIcon FontSize=16, Glyph=&#xE711;}"
+                    Style="{ThemeResource AlternateCloseButtonStyle}" />
         </StackPanel>
 
         <AutoSuggestBox x:Name="SearchBox"
@@ -198,9 +210,34 @@
                         IsEnabled="{x:Bind ViewModel.IsSearchEnabled, Mode=OneWay}"
                         Text="{x:Bind ViewModel.SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
+        <Grid x:Name="MonitoringPausedBanner"
+              Grid.ColumnSpan="2"
+              Grid.Row="2"
+              Margin="6 2 6 0"
+              Padding="8"
+              ColumnSpacing="8"
+              CornerRadius="8"
+              BorderBrush="{ThemeResource InfoBarBorderBrush}"
+              BorderThickness="{ThemeResource InfoBarBorderThickness}"
+              Background="{ThemeResource InfoBarWarningSeverityBackgroundBrush}"
+              Visibility="{x:Bind ViewModel.IsClipboardMonitoringPaused, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            
+            <FontIcon Margin="4 0 0 0"
+                      FontSize="16"
+                      Glyph="&#xF167;"
+                      Foreground="{ThemeResource InfoBarWarningSeverityIconBackground}" />
+            <TextBlock x:Uid="Banner_PausedMonitoring"
+                       Grid.Column="1"
+                       TextWrapping="Wrap" />
+        </Grid>
+
         <ListView x:Name="ClipboardItemListView"
-                  Grid.ColumnSpan="3"
-                  Grid.Row="2"
+                  Grid.ColumnSpan="2"
+                  Grid.Row="3"
                   Padding="5 3"
                   TabIndex="2"
                   SelectionMode="None"

@@ -54,7 +54,10 @@ bool ClipboardManager::StopMonitoring()
     {
         KillTimer(_hWnd, _timerId);
     }
-    delete[] _ownerPath;
+    if (_ownerPath) {
+        delete[] _ownerPath;
+        _ownerPath = nullptr;
+    }
     return RemoveClipboardFormatListener(_hWnd);
 }
 

@@ -207,9 +207,6 @@
   <data name="TitleButton_Close.ToolTipService.ToolTip" xml:space="preserve">
     <value>Закрити</value>
   </data>
-  <data name="TitleButton_Settings.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Налаштування</value>
-  </data>
   <data name="SettingsExpanderHeader_RestartAsAdministrator" xml:space="preserve">
     <value>Перезапустити з правами адміністратора</value>
   </data>
@@ -406,9 +403,6 @@
   <data name="SettingsComboBox_Backdrop_None.Content" xml:space="preserve">
     <value>Немає</value>
   </data>
-  <data name="TitleButton_PinWindow.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Закріпити вікно</value>
-  </data>
   <data name="EditorWindow_Title" xml:space="preserve">
     <value>{0} Редактор</value>
   </data>
@@ -507,5 +501,23 @@
   </data>
   <data name="UnknownOwnerAppTitle" xml:space="preserve">
     <value>Невідомий</value>
+  </data>
+  <data name="TitleButton_More.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Більше</value>
+  </data>
+  <data name="TitleMenuButton_PinWindow.Text" xml:space="preserve">
+    <value>Закріпити вікно</value>
+  </data>
+  <data name="TitleMenuButton_PauseMonitoring.Text" xml:space="preserve">
+    <value>Призупинити моніторинг</value>
+  </data>
+  <data name="TitleMenuButton_Settings.Text" xml:space="preserve">
+    <value>Налаштування</value>
+  </data>
+  <data name="TitleMenuButton_Quit.Text" xml:space="preserve">
+    <value>Вийти</value>
+  </data>
+  <data name="Banner_PausedMonitoring.Text" xml:space="preserve">
+    <value>Збереження даних буфера обміну призупинено</value>
   </data>
 </root>
