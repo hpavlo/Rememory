@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Text;
-using Windows.Foundation;
 
 namespace Rememory.Helper
 {
@@ -80,6 +80,12 @@ namespace Rememory.Helper
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
         internal static extern bool UnhookWinEvent(IntPtr hWinEventHook);
 
+
+        [DllImport("user32.dll")]
+        internal static extern uint GetWindowThreadProcessId(IntPtr hwnd, out uint lpdwProcessId);
+
+        [DllImport("user32.dll")]
+        internal static extern bool ClientToScreen(IntPtr hWnd, ref Point lpPoint);
 
         [DllImport("user32.dll")]
         internal static extern bool GetCursorPos(out PointInter lpPoint);

@@ -5,8 +5,8 @@ using Rememory.Helper.WindowBackdrop;
 using Rememory.Models;
 using Rememory.Views.Settings;
 using System;
+using System.Drawing;
 using Windows.ApplicationModel;
-using Windows.Foundation;
 using Windows.Graphics;
 using Windows.System;
 using WinUIEx;
@@ -150,29 +150,68 @@ namespace Rememory.Views
             var workArea = GetWorkAreaRectangle();
 
             int width = SettingsContext.WindowWidth;
+            // Temp height
+            // Add this as settings parameter
+            int height = 400;
             int margin = SettingsContext.WindowMargin;
 
             // To update DPI for window
-            this.AppWindow.Move(new(
-                (int)workArea.Right - width - margin,
-                (int)workArea.Top + margin));
+            this.AppWindow.Move(new(workArea.Right - width - margin, workArea.Top + margin));
 
-            // Resize window
-            this.AppWindow.MoveAndResize(new RectInt32(
-                (int)workArea.Right - width - margin,
-                (int)workArea.Top + margin,
-                width,
-                (int)workArea.Height - 2 * margin));                
+            TextBoxCaretHelper.GetCaretPosition(out var rect);
+            PositionWindowRelativeToCaret(rect, workArea, width, height, margin);
         }
 
-        private Rect GetWorkAreaRectangle()
+        private void PositionWindowRelativeToCaret(Rectangle caretRect, Rectangle workArea, int windowWidth, int windowHeight, int margin)
+        {
+            // Defoult position for window 
+            int x = workArea.Right - windowWidth - margin;
+            int y = workArea.Bottom - windowHeight - margin;
+
+            if (!caretRect.IsEmpty)
+            {
+                if (workArea.Right - caretRect.Right > windowWidth)
+                {
+                    x = caretRect.Right;
+                }
+                else if (workArea.Right - caretRect.Left > windowWidth)
+                {
+                    x = caretRect.Left;
+                }
+                else
+                {
+                    x = workArea.Right - windowWidth;
+                }
+
+                if (workArea.Bottom - caretRect.Bottom > windowHeight)
+                {
+                    y = caretRect.Bottom;
+                }
+                else if (caretRect.Top - workArea.Top > windowHeight)
+                {
+                    y = caretRect.Top - windowHeight;
+                }
+                else if (workArea.Bottom - caretRect.Top > windowHeight)
+                {
+                    y = caretRect.Top;
+                }
+                else
+                {
+                    y = workArea.Bottom - windowHeight;
+                }
+            }
+
+            this.AppWindow.MoveAndResize(new RectInt32(x, y, windowWidth, windowHeight));
+        }
+
+        private Rectangle GetWorkAreaRectangle()
         {
             NativeHelper.GetCursorPos(out NativeHelper.PointInter point);
             IntPtr monitor = NativeHelper.MonitorFromPoint(point, NativeHelper.MONITOR_DEFAULTTONEAREST);
             NativeHelper.MonitorInfoEx info = new();
             NativeHelper.GetMonitorInfo(monitor, info);
 
-            return new Rect(
+            return new Rectangle(
                 info.rcWork.left,
                 info.rcWork.top,
                 info.rcWork.right - info.rcWork.left,
