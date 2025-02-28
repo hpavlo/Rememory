@@ -279,6 +279,12 @@
   <data name="SettingsCard_WindowWidth.Description" xml:space="preserve">
     <value>Set the width of the Clipboard Manager window (in pixels)</value>
   </data>
+  <data name="SettingsCard_WindowHeight.Header" xml:space="preserve">
+    <value>Window height</value>
+  </data>
+  <data name="SettingsCard_WindowHeight.Description" xml:space="preserve">
+    <value>Set the height of the Clipboard Manager window (in pixels)</value>
+  </data>
   <data name="SettingsCard_WindowMargin.Header" xml:space="preserve">
     <value>Window margin</value>
   </data>
@@ -531,5 +537,20 @@
   </data>
   <data name="Banner_PausedMonitoring.Text" xml:space="preserve">
     <value>Saving clipboard data is paused</value>
+  </data>
+  <data name="SettingsComboBox_Position_Caret.Content" xml:space="preserve">
+    <value>Caret</value>
+  </data>
+  <data name="SettingsComboBox_Position_ScreenCenter.Content" xml:space="preserve">
+    <value>Screen center</value>
+  </data>
+  <data name="SettingsComboBox_Position_LastPosition.Content" xml:space="preserve">
+    <value>Last position</value>
+  </data>
+  <data name="SettingsComboBox_Position_Right.Content" xml:space="preserve">
+    <value>Right</value>
+  </data>
+  <data name="SettingsComboBox_Position_RightCorner.Content" xml:space="preserve">
+    <value>Right corner</value>
   </data>
 </root>

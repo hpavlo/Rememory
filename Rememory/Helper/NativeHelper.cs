@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Text;
+using Windows.Graphics;
 
 namespace Rememory.Helper
 {
@@ -88,7 +89,7 @@ namespace Rememory.Helper
         internal static extern bool ClientToScreen(IntPtr hWnd, ref Point lpPoint);
 
         [DllImport("user32.dll")]
-        internal static extern bool GetCursorPos(out PointInter lpPoint);
+        internal static extern bool GetCursorPos(out PointInt32 lpPoint);
 
         internal const int MONITOR_DEFAULTTONEAREST = 2;
 
@@ -96,17 +97,11 @@ namespace Rememory.Helper
         [ResourceExposure(ResourceScope.None)]
         internal static extern bool GetMonitorInfo(IntPtr hmonitor, [In, Out] MonitorInfoEx info);
 
+        [DllImport("Shcore.dll")]
+        private static extern IntPtr GetDpiForMonitor([In] IntPtr hmonitor, [In] int dpiType, [Out] out uint dpiX, [Out] out uint dpiY);
+
         [DllImport("User32.dll")]
-        internal static extern IntPtr MonitorFromPoint(PointInter pt, int flags);
-
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct PointInter
-        {
-            public int X;
-            public int Y;
-
-            public static explicit operator Point(PointInter point) => new Point(point.X, point.Y);
-        }
+        internal static extern IntPtr MonitorFromPoint(PointInt32 pt, int flags);
 
         [StructLayout(LayoutKind.Sequential)]
         internal struct Rect
@@ -127,6 +122,25 @@ namespace Rememory.Helper
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
             public char[] szDevice = new char[32];
         }
+
+        /// <param name="dpiX">dpiX of the monitor</param>
+        /// <param name="dpiY">dpiY of the monitor</param>
+        /// <returns><see cref="Rectangle"/> of the monitor work area where the cursor is currently located</returns>
+        internal static Rectangle GetWorkAreaRectangle(out uint dpiX, out uint dpiY)
+        {
+            GetCursorPos(out var point);
+            IntPtr monitor = MonitorFromPoint(point, MONITOR_DEFAULTTONEAREST);
+            MonitorInfoEx info = new();
+            GetMonitorInfo(monitor, info);
+
+            GetDpiForMonitor(monitor, 0, out dpiX, out dpiY);   // Get MDT_EFFECTIVE_DPI
+            return new Rectangle(
+                info.rcWork.left,
+                info.rcWork.top,
+                info.rcWork.right - info.rcWork.left,
+                info.rcWork.bottom - info.rcWork.top);
+        }
+
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
         internal static extern short GetAsyncKeyState(int vKey);

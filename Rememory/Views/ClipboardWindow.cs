@@ -7,7 +7,6 @@ using Rememory.Views.Settings;
 using System;
 using System.Drawing;
 using Windows.ApplicationModel;
-using Windows.Graphics;
 using Windows.System;
 using WinUIEx;
 using WinUIEx.Messaging;
@@ -147,26 +146,80 @@ namespace Rememory.Views
 
         private void MoveToStartPosition()
         {
-            var workArea = GetWorkAreaRectangle();
+            var workArea = NativeHelper.GetWorkAreaRectangle(out var dpiX, out var dpiY);
+            double dpiScaleX = dpiX / 96.0;   // 96 is a default DPI (scale 100%)
+            double dpiScaleY = dpiY / 96.0;
 
-            int width = SettingsContext.WindowWidth;
-            // Temp height
-            // Add this as settings parameter
-            int height = 400;
-            int margin = SettingsContext.WindowMargin;
+            int scaledWidth = SettingsContext.WindowWidth;
+            int scaledHeight = SettingsContext.WindowHeight;
+            int scaledMargin = SettingsContext.WindowMargin;
 
-            // To update DPI for window
-            this.AppWindow.Move(new(workArea.Right - width - margin, workArea.Top + margin));
+            double independedWidth = scaledWidth * dpiScaleX;
+            double independedHeight = scaledHeight * dpiScaleY;
+            double independedMarginX = scaledMargin * dpiScaleX;
+            double independedMarginY = scaledMargin * dpiScaleY;
 
-            TextBoxCaretHelper.GetCaretPosition(out var rect);
-            PositionWindowRelativeToCaret(rect, workArea, width, height, margin);
+            //this.AppWindow.MoveAndResize - requires restart after DPI update, width and height depends on DPI
+            //this.MoveAndResize - don't require restart after DPI update
+
+            switch ((ClipboardWindowPosition)SettingsContext.ClipboardWindowPositionIndex)
+            {
+                case ClipboardWindowPosition.Caret:
+                    PositionWindowRelativeToCaret(workArea, scaledWidth, scaledHeight);
+                    break;
+                case ClipboardWindowPosition.ScreenCenter:
+                    this.MoveAndResize(
+                        workArea.Left + (workArea.Width - independedWidth) / 2,
+                        workArea.Top + (workArea.Height - independedHeight) / 2,
+                        scaledWidth,
+                        scaledHeight);
+                    break;
+                case ClipboardWindowPosition.LastPosition:
+                    // Check if last position is out of work area
+                    if (this.AppWindow.Position.X >= workArea.Left
+                        && this.AppWindow.Position.X - independedWidth <= workArea.Right
+                        && this.AppWindow.Position.Y >= workArea.Top
+                        && this.AppWindow.Position.Y - independedHeight <= workArea.Bottom)
+                    {
+                        this.MoveAndResize(
+                            this.AppWindow.Position.X,
+                            this.AppWindow.Position.Y,
+                            scaledWidth,
+                            scaledHeight);
+                    }
+                    else
+                    {
+                        this.MoveAndResize(
+                            workArea.Left + (workArea.Width - independedWidth) / 2,
+                            workArea.Top + (workArea.Height - independedHeight) / 2,
+                            scaledWidth,
+                            scaledHeight);
+                    }
+                    break;
+                case ClipboardWindowPosition.Right:
+                    this.MoveAndResize(
+                        workArea.Right - independedWidth - independedMarginX,
+                        workArea.Top + independedMarginY,
+                        scaledWidth,
+                        (workArea.Height - 2 * independedMarginY) / dpiScaleY);
+                    break;
+                case ClipboardWindowPosition.RightCorner:
+                    this.MoveAndResize(
+                        workArea.Right - independedWidth - independedMarginX,
+                        workArea.Bottom - independedHeight - independedMarginY,
+                        scaledWidth,
+                        scaledHeight);
+                    break;
+            }
         }
 
-        private void PositionWindowRelativeToCaret(Rectangle caretRect, Rectangle workArea, int windowWidth, int windowHeight, int margin)
+        private void PositionWindowRelativeToCaret(Rectangle workArea, int windowWidth, int windowHeight)
         {
-            // Defoult position for window 
-            int x = workArea.Right - windowWidth - margin;
-            int y = workArea.Bottom - windowHeight - margin;
+            // Default position for window
+            int x = this.AppWindow.Position.X;
+            int y = this.AppWindow.Position.Y;
+
+            TextBoxCaretHelper.GetCaretPosition(out var caretRect);
 
             if (!caretRect.IsEmpty)
             {
@@ -201,21 +254,16 @@ namespace Rememory.Views
                 }
             }
 
-            this.AppWindow.MoveAndResize(new RectInt32(x, y, windowWidth, windowHeight));
+            this.MoveAndResize(x, y, windowWidth, windowHeight);
         }
+    }
 
-        private Rectangle GetWorkAreaRectangle()
-        {
-            NativeHelper.GetCursorPos(out NativeHelper.PointInter point);
-            IntPtr monitor = NativeHelper.MonitorFromPoint(point, NativeHelper.MONITOR_DEFAULTTONEAREST);
-            NativeHelper.MonitorInfoEx info = new();
-            NativeHelper.GetMonitorInfo(monitor, info);
-
-            return new Rectangle(
-                info.rcWork.left,
-                info.rcWork.top,
-                info.rcWork.right - info.rcWork.left,
-                info.rcWork.bottom - info.rcWork.top);
-        }
+    public enum ClipboardWindowPosition
+    {
+        Caret,
+        ScreenCenter,
+        LastPosition,
+        Right,
+        RightCorner
     }
 }

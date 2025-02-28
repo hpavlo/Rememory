@@ -279,6 +279,12 @@
   <data name="SettingsCard_WindowWidth.Description" xml:space="preserve">
     <value>Définir la largeur de la fenêtre du gestionnaire de presse-papiers (en pixels)</value>
   </data>
+  <data name="SettingsCard_WindowHeight.Header" xml:space="preserve">
+    <value>Hauteur de la fenêtre</value>
+  </data>
+  <data name="SettingsCard_WindowHeight.Description" xml:space="preserve">
+    <value>Définir la hauteur de la fenêtre du gestionnaire de presse-papiers (en pixels)</value>
+  </data>
   <data name="SettingsCard_WindowMargin.Header" xml:space="preserve">
     <value>Marges de la fenêtre</value>
   </data>
@@ -519,5 +525,20 @@
   </data>
   <data name="Banner_PausedMonitoring.Text" xml:space="preserve">
     <value>L'enregistrement des données du presse-papiers est suspendu</value>
+  </data>
+  <data name="SettingsComboBox_Position_Caret.Content" xml:space="preserve">
+    <value>Caret</value>
+  </data>
+  <data name="SettingsComboBox_Position_ScreenCenter.Content" xml:space="preserve">
+    <value>Centre de l'écran</value>
+  </data>
+  <data name="SettingsComboBox_Position_LastPosition.Content" xml:space="preserve">
+    <value>Dernière position</value>
+  </data>
+  <data name="SettingsComboBox_Position_Right.Content" xml:space="preserve">
+    <value>Droite</value>
+  </data>
+  <data name="SettingsComboBox_Position_RightCorner.Content" xml:space="preserve">
+    <value>Coin droit</value>
   </data>
 </root>
