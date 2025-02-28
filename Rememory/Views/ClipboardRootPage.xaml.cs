@@ -116,6 +116,79 @@ namespace Rememory.Views
             ((FrameworkElement)sender).SetBinding(SelectorBar.SelectedItemProperty, binding);
         }
 
+        #region Window moving
+
+        private int startPointerX = 0, startPointerY = 0, startWindowX = 0, startWindowY = 0;
+        private bool isWindowMoving = false;
+
+        private void WindowDragArea_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            var properties = e.GetCurrentPoint((UIElement)sender).Properties;
+            if (properties.IsLeftButtonPressed && ViewModel.SettingsContext.ClipboardWindowPositionIndex != (int)ClipboardWindowPosition.Right)
+            {
+                ((UIElement)sender).CapturePointer(e.Pointer);
+                startWindowX = _window.AppWindow.Position.X;
+                startWindowY = _window.AppWindow.Position.Y;
+                NativeHelper.GetCursorPos(out var pt);
+                startPointerX = pt.X;
+                startPointerY = pt.Y;
+                isWindowMoving = true;
+            }
+        }
+
+        private void WindowDragArea_PointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            ((UIElement)sender).ReleasePointerCaptures();
+            isWindowMoving = false;
+
+            var workArea = NativeHelper.GetWorkAreaRectangle(out _, out _);
+            int deltaX = 0;
+            int deltaY = 0;
+
+            // Adjust horisontal position
+            if (_window.AppWindow.Position.X < workArea.Left)
+            {
+                deltaX = workArea.Left - _window.AppWindow.Position.X;
+            }
+            if (_window.AppWindow.Position.Y < workArea.Top)
+            {
+                deltaY = workArea.Top - _window.AppWindow.Position.Y;
+            }
+
+            // Adjust vertical position
+            if (_window.AppWindow.Position.X + _window.AppWindow.Size.Width > workArea.Right)
+            {
+                deltaX = workArea.Right - _window.AppWindow.Position.X - _window.AppWindow.Size.Width;
+            }
+            if (_window.AppWindow.Position.Y + _window.AppWindow.Size.Height > workArea.Bottom)
+            {
+                deltaY = workArea.Bottom - _window.AppWindow.Position.Y - _window.AppWindow.Size.Height;
+            }
+
+            // move window only if there is enough space
+            if (_window.AppWindow.Size.Width < workArea.Width && _window.AppWindow.Size.Height < workArea.Height)
+            {
+                _window.AppWindow.Move(new(_window.AppWindow.Position.X + deltaX, _window.AppWindow.Position.Y + deltaY));
+            }
+        }
+
+        private void WindowDragArea_PointerMoved(object sender, PointerRoutedEventArgs e)
+        {
+            var properties = e.GetCurrentPoint((UIElement)sender).Properties;
+            if (properties.IsLeftButtonPressed)
+            {
+                NativeHelper.GetCursorPos(out var pt);
+
+                if (isWindowMoving)
+                {
+                    _window.AppWindow.Move(new(startWindowX + (pt.X - startPointerX), startWindowY + (pt.Y - startPointerY)));
+                }
+                e.Handled = true;
+            }
+        }
+
+        #endregion
+
         #region Context menu items
 
         private void FavoriteMenuItem_Loading(FrameworkElement sender, object args)

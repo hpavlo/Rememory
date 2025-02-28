@@ -131,7 +131,9 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*"
+                              MinWidth="50" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -165,7 +167,15 @@
                              Background="Transparent" />
         </SelectorBar>
 
-        <StackPanel Grid.Column="1"
+        <Border x:Name="WindowDragArea"
+                Grid.Column="1"
+                Grid.Row="0"
+                Background="Transparent"
+                PointerPressed="WindowDragArea_PointerPressed"
+                PointerReleased="WindowDragArea_PointerReleased"
+                PointerMoved="WindowDragArea_PointerMoved" />
+
+        <StackPanel Grid.Column="2"
                     Grid.Row="0"
                     Margin="5 0"
                     Orientation="Horizontal"
@@ -202,16 +212,17 @@
 
         <AutoSuggestBox x:Name="SearchBox"
                         x:Uid="SearchBox"
-                        Grid.ColumnSpan="2"
+                        Grid.ColumnSpan="3"
                         Grid.Row="1"
                         Margin="6 4"
                         TabIndex="1"
                         VerticalAlignment="Center"
                         IsEnabled="{x:Bind ViewModel.IsSearchEnabled, Mode=OneWay}"
-                        Text="{x:Bind ViewModel.SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        Text="{x:Bind ViewModel.SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
         <Grid x:Name="MonitoringPausedBanner"
-              Grid.ColumnSpan="2"
+              Grid.ColumnSpan="3"
               Grid.Row="2"
               Margin="6 2 6 0"
               Padding="8"
@@ -236,7 +247,7 @@
         </Grid>
 
         <ListView x:Name="ClipboardItemListView"
-                  Grid.ColumnSpan="2"
+                  Grid.ColumnSpan="3"
                   Grid.Row="3"
                   Padding="5 3"
                   TabIndex="2"
