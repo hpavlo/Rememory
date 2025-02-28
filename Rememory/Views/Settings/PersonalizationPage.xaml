@@ -49,7 +49,7 @@
 
                     </ResourceDictionary>
                 </SplitButton.Resources>
-                
+
                 <Grid Width="32"
                       Height="32"
                       Margin="0 2"
@@ -130,7 +130,7 @@
                                ItemsSource="{x:Bind _suggestedBackgroundColors, Mode=OneWay}">
                         <ItemsView.Layout>
                             <UniformGridLayout MinColumnSpacing="6"
-                                               MinRowSpacing="6"/>
+                                               MinRowSpacing="6" />
                         </ItemsView.Layout>
                         <ItemsView.ItemTemplate>
                             <DataTemplate x:DataType="SolidColorBrush">
@@ -152,14 +152,30 @@
         <tkcontrols:SettingsExpander x:Uid="SettingsCard_WindowPosition"
                                      IsExpanded="True"
                                      HeaderIcon="{tk:FontIcon Glyph=&#xE90D;}">
+            <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.ClipboardWindowPositionIndex, Mode=TwoWay}">
+                <ComboBoxItem x:Uid="SettingsComboBox_Position_Caret" />
+                <ComboBoxItem x:Uid="SettingsComboBox_Position_ScreenCenter" />
+                <ComboBoxItem x:Uid="SettingsComboBox_Position_LastPosition" />
+                <ComboBoxItem x:Uid="SettingsComboBox_Position_Right" />
+                <ComboBoxItem x:Uid="SettingsComboBox_Position_RightCorner" />
+            </ComboBox>
+
             <tkcontrols:SettingsExpander.Items>
                 <tkcontrols:SettingsCard x:Uid="SettingsCard_WindowWidth">
                     <NumberBox SpinButtonPlacementMode="Inline"
                                SmallChange="10"
                                LargeChange="100"
-                               Minimum="300"
-                               Maximum="800"
+                               Minimum="320"
+                               Maximum="1200"
                                Value="{x:Bind ViewModel.SettingsContext.WindowWidth, Mode=TwoWay}" />
+                </tkcontrols:SettingsCard>
+                <tkcontrols:SettingsCard x:Uid="SettingsCard_WindowHeight">
+                    <NumberBox SpinButtonPlacementMode="Inline"
+                               SmallChange="10"
+                               LargeChange="100"
+                               Minimum="320"
+                               Maximum="1200"
+                               Value="{x:Bind ViewModel.SettingsContext.WindowHeight, Mode=TwoWay}" />
                 </tkcontrols:SettingsCard>
                 <tkcontrols:SettingsCard x:Uid="SettingsCard_WindowMargin">
                     <NumberBox SpinButtonPlacementMode="Inline"

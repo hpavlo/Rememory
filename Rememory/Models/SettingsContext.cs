@@ -7,6 +7,7 @@ using Microsoft.Windows.Storage;
 using Rememory.Helper;
 using Rememory.Helper.WindowBackdrop;
 using Rememory.Service;
+using Rememory.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -71,12 +72,28 @@ namespace Rememory.Models
             set => SetSettingsProperty(ref _currentWindowBackgroundColor, value.Color.ToHex());
         }
 
+        private int _clipboardWindowPositionIndex;
+        public int ClipboardWindowPositionIndexDefoult { get; private set; } = (int)ClipboardWindowPosition.Caret;
+        public int ClipboardWindowPositionIndex
+        {
+            get => _clipboardWindowPositionIndex;
+            set => SetSettingsProperty(ref _clipboardWindowPositionIndex, value);
+        }
+
         private int _windowWidth;
-        public int WindowWidthDefault { get; private set; } = 500;
+        public int WindowWidthDefault { get; private set; } = 320;
         public int WindowWidth
         {
             get => _windowWidth;
             set => SetSettingsProperty(ref _windowWidth, value);
+        }
+
+        private int _windowHeight;
+        public int WindowHeightDefault { get; private set; } = 400;
+        public int WindowHeight
+        {
+            get => _windowHeight;
+            set => SetSettingsProperty(ref _windowHeight, value);
         }
 
         private int _windowMargin;
@@ -155,7 +172,9 @@ namespace Rememory.Models
             _currentThemeIndex = GetSettingValue(nameof(CurrentThemeIndex), ThemeIndexDefault);
             _currentWindowBackdropIndex = GetSettingValue(nameof(CurrentWindowBackdropIndex), WindowBackdropIndexDefault);
             _currentWindowBackgroundColor = GetSettingValue(nameof(CurrentWindowBackgroundBrush), WindowBackgroundColorDefault);
+            _clipboardWindowPositionIndex = GetSettingValue(nameof(ClipboardWindowPositionIndex), ClipboardWindowPositionIndexDefoult);
             _windowWidth = GetSettingValue(nameof(WindowWidth), WindowWidthDefault);
+            _windowHeight = GetSettingValue(nameof(WindowHeight), WindowHeightDefault);
             _windowMargin = GetSettingValue(nameof(WindowMargin), WindowMarginDefault);
             _cleanupTimeSpanIndex = GetSettingValue(nameof(CleanupTimeSpanIndex), CleanupTimeSpanIndexDefault);
             _activationShortcut = _localSettings.Values.TryGetValue(nameof(ActivationShortcut), out var activationShortcutValue) ?

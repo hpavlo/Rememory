@@ -279,6 +279,12 @@
   <data name="SettingsCard_WindowWidth.Description" xml:space="preserve">
     <value>Встановіть ширину вікна менеджера буфера обміну (у пікселях)</value>
   </data>
+  <data name="SettingsCard_WindowHeight.Header" xml:space="preserve">
+    <value>Висота вікна</value>
+  </data>
+  <data name="SettingsCard_WindowHeight.Description" xml:space="preserve">
+    <value>Встановіть висоту вікна менеджера буфера обміну (у пікселях)</value>
+  </data>
   <data name="SettingsCard_WindowMargin.Header" xml:space="preserve">
     <value>Відступи вікна</value>
   </data>
@@ -519,5 +525,20 @@
   </data>
   <data name="Banner_PausedMonitoring.Text" xml:space="preserve">
     <value>Збереження даних буфера обміну призупинено</value>
+  </data>
+  <data name="SettingsComboBox_Position_Caret.Content" xml:space="preserve">
+    <value>Каретка</value>
+  </data>
+  <data name="SettingsComboBox_Position_ScreenCenter.Content" xml:space="preserve">
+    <value>Центр екрану</value>
+  </data>
+  <data name="SettingsComboBox_Position_LastPosition.Content" xml:space="preserve">
+    <value>Остання позиція</value>
+  </data>
+  <data name="SettingsComboBox_Position_Right.Content" xml:space="preserve">
+    <value>Праворуч</value>
+  </data>
+  <data name="SettingsComboBox_Position_RightCorner.Content" xml:space="preserve">
+    <value>Правий кут</value>
   </data>
 </root>
