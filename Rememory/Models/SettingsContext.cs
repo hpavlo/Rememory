@@ -73,7 +73,7 @@ namespace Rememory.Models
         }
 
         private int _clipboardWindowPositionIndex;
-        public int ClipboardWindowPositionIndexDefoult { get; private set; } = (int)ClipboardWindowPosition.Caret;
+        public int ClipboardWindowPositionIndexDefault { get; private set; } = (int)ClipboardWindowPosition.Caret;
         public int ClipboardWindowPositionIndex
         {
             get => _clipboardWindowPositionIndex;
@@ -172,7 +172,7 @@ namespace Rememory.Models
             _currentThemeIndex = GetSettingValue(nameof(CurrentThemeIndex), ThemeIndexDefault);
             _currentWindowBackdropIndex = GetSettingValue(nameof(CurrentWindowBackdropIndex), WindowBackdropIndexDefault);
             _currentWindowBackgroundColor = GetSettingValue(nameof(CurrentWindowBackgroundBrush), WindowBackgroundColorDefault);
-            _clipboardWindowPositionIndex = GetSettingValue(nameof(ClipboardWindowPositionIndex), ClipboardWindowPositionIndexDefoult);
+            _clipboardWindowPositionIndex = GetSettingValue(nameof(ClipboardWindowPositionIndex), ClipboardWindowPositionIndexDefault);
             _windowWidth = GetSettingValue(nameof(WindowWidth), WindowWidthDefault);
             _windowHeight = GetSettingValue(nameof(WindowHeight), WindowHeightDefault);
             _windowMargin = GetSettingValue(nameof(WindowMargin), WindowMarginDefault);

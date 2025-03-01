@@ -165,7 +165,12 @@ namespace Rememory.Views
             switch ((ClipboardWindowPosition)SettingsContext.ClipboardWindowPositionIndex)
             {
                 case ClipboardWindowPosition.Caret:
-                    PositionWindowRelativeToCaret(workArea, scaledWidth, scaledHeight);
+                    PositionWindowRelativeToCaret(
+                        workArea,
+                        scaledWidth,
+                        scaledHeight,
+                        (int)(workArea.Right - independedWidth - independedMarginX),
+                        (int)(workArea.Bottom - independedHeight - independedMarginY));
                     break;
                 case ClipboardWindowPosition.ScreenCenter:
                     this.MoveAndResize(
@@ -213,11 +218,10 @@ namespace Rememory.Views
             }
         }
 
-        private void PositionWindowRelativeToCaret(Rectangle workArea, int windowWidth, int windowHeight)
+        private void PositionWindowRelativeToCaret(Rectangle workArea, int windowWidth, int windowHeight, int defaultPositionX, int defaultPositionY)
         {
-            // Default position for window
-            int x = this.AppWindow.Position.X;
-            int y = this.AppWindow.Position.Y;
+            int x = defaultPositionX;
+            int y = defaultPositionY;
 
             TextBoxCaretHelper.GetCaretPosition(out var caretRect);
 
