@@ -36,6 +36,8 @@ namespace Rememory.Views
 
             RequestedTheme = ThemeService.Theme;
             ThemeService.ThemeChanged += ThemeChanged;
+
+            ViewModel.SettingsContext.PropertyChanged += SettingsContext_PropertyChanged;
         }
 
         private void Window_Showing(object sender, System.EventArgs e)
@@ -112,6 +114,15 @@ namespace Rememory.Views
                 Mode = BindingMode.TwoWay
             };
             ((FrameworkElement)sender).SetBinding(SelectorBar.SelectedItemProperty, binding);
+        }
+
+        private void SettingsContext_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs a)
+        {
+            // Swap tab indexes between SearchBox and ListView
+            if (a.PropertyName.Equals(nameof(ViewModel.SettingsContext.EnableSearchFocusOnStart)))
+            {
+                (ClipboardItemListView.TabIndex, SearchBox.TabIndex) = (SearchBox.TabIndex, ClipboardItemListView.TabIndex);
+            }
         }
 
         #region Window moving

@@ -222,7 +222,7 @@
 
             <AutoSuggestBox x:Name="SearchBox"
                             x:Uid="SearchBox"
-                            TabIndex="1"
+                            TabIndex="2"
                             VerticalAlignment="Center"
                             IsEnabled="{x:Bind ViewModel.IsSearchEnabled, Mode=OneWay}"
                             Text="{x:Bind ViewModel.SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -307,7 +307,7 @@
                   Grid.ColumnSpan="3"
                   Grid.Row="3"
                   Padding="5 3"
-                  TabIndex="2"
+                  TabIndex="1"
                   SelectionMode="None"
                   ShowsScrollingPlaceholders="False"
                   CanDragItems="{x:Bind ViewModel.SettingsContext.EnableItemDragAndDrop, Mode=OneWay}"
