@@ -172,7 +172,7 @@ namespace Rememory.Service
                     var id = reader.GetInt32(0);
                     var isFavorite = reader.GetInt32(1) > 0;
                     var time = reader.GetDateTime(2);
-                    var ownerPath = reader.IsDBNull(3) ? null : reader.GetString(3);
+                    var ownerPath = reader.IsDBNull(3) ? string.Empty : reader.GetString(3);
                     var ownerIconBitmap = reader.IsDBNull(4) ? null : (byte[])reader.GetValue(4);
                     var dataMap = DeserializeDictionary<ClipboardFormat, string>(reader.GetString(5));
                     var hashMap = DeserializeDictionary<ClipboardFormat, byte[]>(reader.GetString(6));

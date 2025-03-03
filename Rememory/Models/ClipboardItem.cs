@@ -39,7 +39,7 @@ namespace Rememory.Models
             set => SetProperty(ref _time, value);
         }
 
-        public string OwnerPath;
+        public string OwnerPath = string.Empty;
 
         private byte[] _ownerIconBitmap;
 

@@ -541,4 +541,10 @@
   <data name="SettingsComboBox_Position_RightCorner.Content" xml:space="preserve">
     <value>Правий кут</value>
   </data>
+  <data name="FilterButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Фільтр</value>
+  </data>
+  <data name="FilterTreeViewTitle_Apps" xml:space="preserve">
+    <value>Програми</value>
+  </data>
 </root>

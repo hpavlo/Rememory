@@ -36,8 +36,6 @@ namespace Rememory.Views
 
             RequestedTheme = ThemeService.Theme;
             ThemeService.ThemeChanged += ThemeChanged;
-
-            SizeChanged += ClipboardRootPage_SizeChanged;
         }
 
         private void Window_Showing(object sender, System.EventArgs e)
@@ -335,6 +333,30 @@ namespace Rememory.Views
                 ViewModel.EditItemCommand.Execute(button.DataContext);
             }
             args.Handled = true;
+        }
+
+        #endregion
+
+        #region Apps filter
+
+        private void FilterTreeView_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Works only for two layers tree view
+            // It adds selected items from second (child) layer
+            foreach (var app in ViewModel.RootAppNode.Children.Where(app => app.IsSelected))
+            {
+                FilterTreeView.SelectedItems.Add(app);
+            }
+        }
+
+        private void FilterTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
+        {
+            // IsSelected property binding doesn't working for now
+            // We should do it manually
+            args.AddedItems.Cast<AppTreeViewNode>().ToList().ForEach(item => item.IsSelected = true);
+            args.RemovedItems.Cast<AppTreeViewNode>().ToList().ForEach(item => item.IsSelected = false);
+
+            ViewModel.OnFilterTreeViewSelectionChanged();
         }
 
         #endregion

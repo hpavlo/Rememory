@@ -1,11 +1,25 @@
 ﻿using Microsoft.UI.Xaml.Media.Imaging;
 using Rememory.Models;
+using System;
 using System.Collections.Generic;
 
 namespace Rememory.Service
 {
     public interface IOwnerAppService
     {
+        /// <summary>
+        /// Occurs when we registered new app to dictionary
+        /// </summary>
+        event EventHandler<OwnerApp> AppRegistered;
+        /// <summary>
+        /// Occurs when we removed redistered app from dictionary
+        /// </summary>
+        event EventHandler<string> AppUnregistered;
+        /// <summary>
+        /// Occurs when we removed all apps from dictionary
+        /// </summary>
+        event EventHandler AllAppsUnregistered;
+
         /// <returns>Dictionary of owner apps info with owner path as a key</returns>
         Dictionary<string, OwnerApp> GetOwnerApps();
 

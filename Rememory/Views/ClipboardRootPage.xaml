@@ -14,6 +14,7 @@
       x:Name="RootPage"
       DataContext="{x:Bind ViewModel}"
       Background="{x:Bind ViewModel.SettingsContext.CurrentWindowBackgroundBrush, Mode=OneWay}"
+      SizeChanged="ClipboardRootPage_SizeChanged"
       KeyUp="Escape_KeyUp">
     <Page.Resources>
         <tkconverters:BoolNegationConverter x:Key="BoolNegationConverter" />
@@ -147,7 +148,7 @@
                      Grid.Column="0"
                      Grid.Row="0"
                      Margin="5 0"
-                     TabIndex="3"
+                     TabIndex="4"
                      Loaded="NavigationSelectorBar_Loaded">
             <SelectorBarItem x:Name="HomeMenuItem"
                              x:Uid="NavigationMenu_Home"
@@ -210,16 +211,72 @@
                     Style="{ThemeResource AlternateCloseButtonStyle}" />
         </StackPanel>
 
-        <AutoSuggestBox x:Name="SearchBox"
-                        x:Uid="SearchBox"
-                        Grid.ColumnSpan="3"
-                        Grid.Row="1"
-                        Margin="6 4"
-                        TabIndex="1"
-                        VerticalAlignment="Center"
-                        IsEnabled="{x:Bind ViewModel.IsSearchEnabled, Mode=OneWay}"
-                        Text="{x:Bind ViewModel.SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <Grid Grid.ColumnSpan="3"
+              Grid.Row="1"
+              Margin="6 2"
+              ColumnSpacing="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <AutoSuggestBox x:Name="SearchBox"
+                            x:Uid="SearchBox"
+                            TabIndex="1"
+                            VerticalAlignment="Center"
+                            IsEnabled="{x:Bind ViewModel.IsSearchEnabled, Mode=OneWay}"
+                            Text="{x:Bind ViewModel.SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Button x:Name="FilterButton"
+                    x:Uid="FilterButton"
+                    Grid.Column="1"
+                    Height="32"
+                    TabIndex="3"
+                    Content="{tk:FontIcon FontSize=14, Glyph=&#xE71C;}">
+                <Button.Flyout>
+                    <Flyout ShouldConstrainToRootBounds="False">
+                        <Flyout.FlyoutPresenterStyle>
+                            <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}"
+                                   TargetType="FlyoutPresenter">
+                                <Setter Property="MaxHeight"
+                                        Value="500" />
+                            </Style>
+                        </Flyout.FlyoutPresenterStyle>
+                        
+                        <TreeView x:Name="FilterTreeView"
+                                  SelectionMode="Multiple"
+                                  CanDragItems="False"
+                                  CanReorderItems="False"
+                                  ItemsSource="{x:Bind ViewModel.AppTreeViewNodes, Mode=OneWay}"
+                                  Loaded="FilterTreeView_Loaded"
+                                  SelectionChanged="FilterTreeView_SelectionChanged">
+                            <TreeView.ItemTemplate>
+                                <DataTemplate x:DataType="models:AppTreeViewNode">
+                                    <TreeViewItem CanDrag="False"
+                                                  ItemsSource="{x:Bind Children, Mode=OneWay}"
+                                                  IsExpanded="{x:Bind IsExpanded, Mode=TwoWay}"
+                                                  ToolTipService.ToolTip="{x:Bind OwnerPath, Mode=OneWay}">
+                                        <Grid Margin="0 0 8 0"
+                                              ColumnSpacing="8">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Image Width="20"
+                                                   Height="20"
+                                                   Source="{x:Bind Image, Mode=OneWay}" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{x:Bind Title, Mode=OneWay}" />
+                                        </Grid>
+                                    </TreeViewItem>
+                                </DataTemplate>
+                            </TreeView.ItemTemplate>
+                        </TreeView>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </Grid>
 
         <Grid x:Name="MonitoringPausedBanner"
               Grid.ColumnSpan="3"
@@ -236,7 +293,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            
+
             <FontIcon Margin="4 0 0 0"
                       FontSize="16"
                       Glyph="&#xF167;"

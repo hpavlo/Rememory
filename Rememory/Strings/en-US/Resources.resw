@@ -553,4 +553,10 @@
   <data name="SettingsComboBox_Position_RightCorner.Content" xml:space="preserve">
     <value>Right corner</value>
   </data>
+  <data name="FilterButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="FilterTreeViewTitle_Apps" xml:space="preserve">
+    <value>Apps</value>
+  </data>
 </root>

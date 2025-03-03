@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml.Media.Imaging;
 using Rememory.Helper;
 using Rememory.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -9,6 +10,10 @@ namespace Rememory.Service
 {
     public class OwnerAppService : IOwnerAppService
     {
+        public event EventHandler<OwnerApp> AppRegistered;
+        public event EventHandler<string> AppUnregistered;
+        public event EventHandler AllAppsUnregistered;
+
         /// <summary>
         /// Keeps info about owner app.
         /// Key is the owner app path
@@ -46,6 +51,7 @@ namespace Rememory.Service
 
                 ownerApp.ItemsCount++;
                 OwnerAppsDictionary.Add(ownerPath, ownerApp);
+                OnAppRegistered(ownerApp);
             }
         }
 
@@ -57,15 +63,16 @@ namespace Rememory.Service
             {
                 ownerApp.ItemsCount--;
             }
-            else
+            else if (OwnerAppsDictionary.Remove(ownerPath))
             {
-                OwnerAppsDictionary.Remove(ownerPath);
+                OnAppUnregistered(ownerPath);
             }
         }
 
         public void UnregisterAllItems()
         {
             OwnerAppsDictionary.Clear();
+            OnAllAppsUnregistered();
         }
 
         public SoftwareBitmapSource GetOwnerBitmap(string ownerPath)
@@ -76,6 +83,21 @@ namespace Rememory.Service
             }
 
             return OwnerAppsDictionary.GetValueOrDefault(ownerPath)?.IconBitmap;
+        }
+
+        protected void OnAppRegistered(OwnerApp app)
+        {
+            AppRegistered?.Invoke(this, app);
+        }
+
+        protected void OnAppUnregistered(string appPath)
+        {
+            AppUnregistered?.Invoke(this, appPath);
+        }
+
+        protected void OnAllAppsUnregistered()
+        {
+            AllAppsUnregistered?.Invoke(this, new());
         }
     }
 }

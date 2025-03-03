@@ -7,6 +7,7 @@ using Rememory.Models;
 using Rememory.Service;
 using Rememory.Views.Editor;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -29,6 +30,7 @@ namespace Rememory.ViewModels
         private IClipboardService _clipboardService = App.Current.Services.GetService<IClipboardService>();
         private ICleanupDataService _cleanupDataService = App.Current.Services.GetService<ICleanupDataService>();
         private ISearchService _searchService = App.Current.Services.GetService<ISearchService>();
+        private IOwnerAppService _ownerAppService = App.Current.Services.GetService<IOwnerAppService>();
 
         // Using to get last active window if clipboard window is pinned
         private ActiveWindowHook _activeWindowHook = new();
@@ -178,53 +180,150 @@ namespace Rememory.ViewModels
             }
         }
 
+        /// <summary>
+        /// Collection of nodes using for item filtering by owner app
+        /// </summary>
+        public ObservableCollection<AppTreeViewNode> AppTreeViewNodes = [];
+        /// <summary>
+        /// First node in <see cref="AppTreeViewNodes"/> collection. Contains all apps
+        /// </summary>
+        public AppTreeViewNode RootAppNode;
+
         public ClipboardRootPageViewModel()
         {
-            App.Current.ClipboardWindow.Showing += (s, a) =>
-            {
-                _lastActiveWindowHandleBeforeShowing = NativeHelper.GetForegroundWindow();
-            };
-            _clipboardService.NewItemAdded += (s, a) =>
-            {
-                if (ItemFilter(a.ChangedClipboardItem))
-                {
-                    SearchString = string.Empty;
-                    ItemsCollection.Insert(0, a.ChangedClipboardItem);
-                }
-            };
-            _clipboardService.FavoriteItemChanged += (s, a) =>
-            {
-                if (SelectedMenuItem == NavigationMenuItem.Fovorites && !a.ChangedClipboardItem.IsFavorite)
-                {
-                    ItemsCollection.Remove(a.ChangedClipboardItem);
-                }
-            };
-            _clipboardService.ItemMovedToTop += (s, a) =>
-            {
-                int index = ItemsCollection.IndexOf(a.ChangedClipboardItem);
-                if (index >= 0)
-                {
-                    ItemsCollection.RemoveAt(index);
-                    ItemsCollection.Insert(0, a.ChangedClipboardItem);
-                }
-            };
-            _clipboardService.ItemDeleted += (s, a) =>
-            {
-                ItemsCollection.Remove(a.ChangedClipboardItem);
-            };
-            _clipboardService.OldItemsDeleted += (s, a) =>
-            {
-                a.ChangedClipboardItems.ForEach(item => ItemsCollection.Remove(item));
-            };
-            _clipboardService.AllItemsDeleted += (s, a) =>
-            {
-                ItemsCollection.Clear();
-            };
+            App.Current.ClipboardWindow.Showing += ClipboardWindow_Showing;
+
+            _clipboardService.NewItemAdded += ClipboardService_NewItemAdded;
+            _clipboardService.FavoriteItemChanged += ClipboardService_FavoriteItemChanged;
+            _clipboardService.ItemMovedToTop += ClipboardService_ItemMovedToTop;
+            _clipboardService.ItemDeleted += ClipboardService_ItemDeleted;
+            _clipboardService.OldItemsDeleted += ClipboardService_OldItemsDeleted;
+            _clipboardService.AllItemsDeleted += ClipboardService_AllItemsDeleted;
             _clipboardService.StartClipboardMonitor();
+
+            RootAppNode = new AppTreeViewNode { Title = "FilterTreeViewTitle_Apps".GetLocalizedResource(), IsExpanded = true };
+            AppTreeViewNodes.Add(RootAppNode);
+
+            _ownerAppService.AppRegistered += OwnerAppService_AppRegistered;
+            _ownerAppService.AppUnregistered += OwnerAppService_AppUnregistered;
+            _ownerAppService.AllAppsUnregistered += OwnerAppService_AllAppsUnregistered;
+
             UpdateItemsList();
             CleanupOldData();
             InitializeCommands();
         }
+
+        private void UpdateItemsList()
+        {
+            ItemsCollection?.Clear();
+            ItemsCollection = [.. _clipboardService.ClipboardItems.Where(ItemFilterBySelectedMenu)];
+
+            HashSet<string> distinctPathes = [.. ItemsCollection.Select(item => item.OwnerPath).Distinct()];
+            // Update app filter tree view
+            RootAppNode.Children.Clear();
+            RootAppNode.Children = [.._ownerAppService.GetOwnerApps().Values
+                .Where(app => distinctPathes.Contains(app.Path))
+                .Select(app => new AppTreeViewNode(app))
+                .OrderBy(app => app.Title)
+                .ThenBy(app => app.OwnerPath)];
+        }
+
+        private bool ItemFilterBySelectedMenu(ClipboardItem item)
+        {
+            return SelectedMenuItem switch
+            {
+                NavigationMenuItem.Home => true,
+                NavigationMenuItem.Fovorites => item.IsFavorite,
+                NavigationMenuItem.Images => item.DataMap.ContainsKey(ClipboardFormat.Png),
+                NavigationMenuItem.Links => item is ClipboardLinkItem,
+                _ => false
+            };
+        }
+
+        /// <summary>
+        /// Check if the retention period of items has expired
+        /// </summary>
+        /// <returns>true if all items were checked</returns>
+        private bool CleanupOldData() => _cleanupDataService.Cleanup();
+
+        private void ClipboardWindow_Showing(object sender, EventArgs e)
+        {
+            _lastActiveWindowHandleBeforeShowing = NativeHelper.GetForegroundWindow();
+        }
+
+        # region ClipboardService events
+
+        private void ClipboardService_NewItemAdded(object sender, ClipboardEventArgs a)
+        {
+            if (ItemFilterBySelectedMenu(a.ChangedClipboardItem)
+                && RootAppNode.Children.Where(app => app.IsSelected).Select(app => app.OwnerPath).Contains(a.ChangedClipboardItem.OwnerPath))
+            {
+                SearchString = string.Empty;
+                ItemsCollection.Insert(0, a.ChangedClipboardItem);
+            }
+        }
+
+        private void ClipboardService_FavoriteItemChanged(object sender, ClipboardEventArgs a)
+        {
+            if (SelectedMenuItem == NavigationMenuItem.Fovorites && !a.ChangedClipboardItem.IsFavorite)
+            {
+                ItemsCollection.Remove(a.ChangedClipboardItem);
+            }
+        }
+
+        private void ClipboardService_ItemMovedToTop(object sender, ClipboardEventArgs a)
+        {
+            int index = ItemsCollection.IndexOf(a.ChangedClipboardItem);
+            if (index >= 0)
+            {
+                ItemsCollection.RemoveAt(index);
+                ItemsCollection.Insert(0, a.ChangedClipboardItem);
+            }
+        }
+
+        private void ClipboardService_ItemDeleted(object sender, ClipboardEventArgs a)
+        {
+            ItemsCollection.Remove(a.ChangedClipboardItem);
+        }
+
+        private void ClipboardService_OldItemsDeleted(object sender, ClipboardEventArgs a)
+        {
+            a.ChangedClipboardItems.ForEach(item => ItemsCollection.Remove(item));
+        }
+
+        private void ClipboardService_AllItemsDeleted(object sender, ClipboardEventArgs a)
+        {
+            ItemsCollection.Clear();
+        }
+
+        #endregion
+
+        #region OwnerAppService events
+
+        private void OwnerAppService_AppRegistered(object sender, OwnerApp a)
+        {
+            RootAppNode.Children = [.. RootAppNode.Children
+                    .Append(new AppTreeViewNode(a))
+                    .OrderBy(app => app.Title)
+                    .ThenBy(app => app.OwnerPath)];
+        }
+
+        private void OwnerAppService_AppUnregistered(object sender, string a)
+        {
+            if (RootAppNode.Children.FirstOrDefault(app => string.Equals(app.OwnerPath, a)) is AppTreeViewNode nodeToRemove)
+            {
+                RootAppNode.Children.Remove(nodeToRemove);
+            }
+        }
+
+        private void OwnerAppService_AllAppsUnregistered(object sender, EventArgs e)
+        {
+            RootAppNode.Children.Clear();
+        }
+
+        #endregion
+
+        #region Called from View
 
         // Call it from view when window is showing
         public void OnWindowShowing()
@@ -273,29 +372,33 @@ namespace Rememory.ViewModels
             dataPackage.RequestedOperation = DataPackageOperation.Copy;
         }
 
-        /// <summary>
-        /// Check if the retention period of items has expired
-        /// </summary>
-        /// <returns>true if all items were checked</returns>
-        private bool CleanupOldData() => _cleanupDataService.Cleanup();
-
-        private void UpdateItemsList()
+        // Call it from view when filter selection is changed
+        public void OnFilterTreeViewSelectionChanged()
         {
-            ItemsCollection?.Clear();
-            ItemsCollection = new(_clipboardService.ClipboardItems.Where(ItemFilter));
-        }
+            // Pre-calculate the filtered OwnerPaths
+            HashSet<string> selectedOwnerPaths = [.. RootAppNode.Children
+                .Where(app => app.IsSelected)
+                .Select(app => app.OwnerPath)];
 
-        private bool ItemFilter(ClipboardItem item)
-        {
-            return SelectedMenuItem switch
+            // Apply the filters
+            var filteredItems = _clipboardService.ClipboardItems
+                .Where(item => ItemFilterBySelectedMenu(item) && selectedOwnerPaths.Contains(item.OwnerPath))
+                .ToList();
+
+            if (SearchMode)
             {
-                NavigationMenuItem.Home => true,
-                NavigationMenuItem.Fovorites => item.IsFavorite,
-                NavigationMenuItem.Images => item.DataMap.ContainsKey(ClipboardFormat.Png),
-                NavigationMenuItem.Links => item is ClipboardLinkItem,
-                _ => false
-            };
+                _searchContext.Clear();
+                _searchContext = [.. filteredItems];
+                _searchService?.StartSearching(_searchContext, _searchString, ItemsCollection);
+            }
+            else
+            {
+                ItemsCollection?.Clear();
+                ItemsCollection = [.. filteredItems];
+            }
         }
+
+        #endregion
 
         #region Commands
 
