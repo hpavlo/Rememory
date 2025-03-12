@@ -3,7 +3,7 @@ using Rememory.Models;
 using System;
 using System.Collections.Generic;
 
-namespace Rememory.Service
+namespace Rememory.Contracts
 {
     public interface IOwnerAppService
     {

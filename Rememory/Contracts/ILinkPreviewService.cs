@@ -1,6 +1,6 @@
 ﻿using Rememory.Models;
 
-namespace Rememory.Service
+namespace Rememory.Contracts
 {
     public interface ILinkPreviewService
     {

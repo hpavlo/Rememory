@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.Windows.Storage;
+using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Models;
 using System;
@@ -7,7 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 
-namespace Rememory.Service
+namespace Rememory.Services
 {
     public class SqliteService : IStorageService
     {

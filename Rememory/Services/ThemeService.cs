@@ -1,9 +1,10 @@
 ﻿using Microsoft.UI.Xaml;
+using Rememory.Contracts;
 using Rememory.Helper.WindowBackdrop;
 using Rememory.Models;
 using System;
 
-namespace Rememory.Service
+namespace Rememory.Services
 {
     public class ThemeService : IThemeService
     {

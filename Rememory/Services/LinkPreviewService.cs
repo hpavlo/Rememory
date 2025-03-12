@@ -1,13 +1,14 @@
 ﻿using HtmlAgilityPack;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Dispatching;
+using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Models;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Rememory.Service
+namespace Rememory.Services
 {
     public class LinkPreviewService : ILinkPreviewService
     {

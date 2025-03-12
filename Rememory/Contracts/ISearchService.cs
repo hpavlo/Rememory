@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Rememory.Service
+namespace Rememory.Contracts
 {
     public interface ISearchService
     {

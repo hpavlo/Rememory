@@ -2,7 +2,7 @@
 using Rememory.Helper.WindowBackdrop;
 using System;
 
-namespace Rememory.Service
+namespace Rememory.Contracts
 {
     public interface IThemeService
     {

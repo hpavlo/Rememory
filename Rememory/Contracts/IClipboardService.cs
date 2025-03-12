@@ -1,10 +1,11 @@
 ﻿using Rememory.Helper;
 using Rememory.Models;
+using Rememory.Services;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace Rememory.Service
+namespace Rememory.Contracts
 {
     public interface IClipboardService
     {

@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using Rememory.Contracts;
 using Rememory.Models;
-using Rememory.Service;
 using System.Windows.Input;
 
 namespace Rememory.ViewModels

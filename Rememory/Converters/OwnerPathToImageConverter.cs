@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media.Imaging;
+using Rememory.Contracts;
 using Rememory.Helper;
-using Rememory.Service;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;

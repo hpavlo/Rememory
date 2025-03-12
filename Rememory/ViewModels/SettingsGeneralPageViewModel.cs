@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Models;
-using Rememory.Service;
 using Rememory.Views.Settings;
 using System;
 using System.Windows.Input;

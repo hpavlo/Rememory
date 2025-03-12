@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Rememory.Contracts;
 using Rememory.Models;
 using System;
 
-namespace Rememory.Service
+namespace Rememory.Services
 {
     /// <summary>
     /// Cleans the data if the retention period of items has expired.

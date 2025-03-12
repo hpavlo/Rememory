@@ -6,7 +6,7 @@ using Microsoft.Windows.Globalization;
 using Microsoft.Windows.Storage;
 using Rememory.Helper;
 using Rememory.Helper.WindowBackdrop;
-using Rememory.Service;
+using Rememory.Services;
 using Rememory.Views;
 using System;
 using System.Collections.Generic;

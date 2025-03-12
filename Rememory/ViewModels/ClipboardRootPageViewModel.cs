@@ -1,10 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Hooks;
 using Rememory.Models;
-using Rememory.Service;
+using Rememory.Services;
 using Rememory.Views.Editor;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Media.Imaging;
+using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Models;
 using System;
@@ -6,7 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace Rememory.Service
+namespace Rememory.Services
 {
     public class OwnerAppService : IOwnerAppService
     {

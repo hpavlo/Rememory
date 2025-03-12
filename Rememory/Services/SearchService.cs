@@ -1,11 +1,12 @@
-﻿using Rememory.Models;
+﻿using Rememory.Contracts;
+using Rememory.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rememory.Service
+namespace Rememory.Services
 {
     public class SearchService : ISearchService
     {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32.TaskScheduler;
+using Rememory.Contracts;
 using System;
 using System.IO;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Reflection;
 using System.Security.Principal;
 using Windows.ApplicationModel;
 
-namespace Rememory.Service
+namespace Rememory.Services
 {
     public class TaskSchedulerStartupService : IStartupService
     {
@@ -110,7 +111,7 @@ namespace Rememory.Service
             return task is not null && task.Definition.Principal.RunLevel == TaskRunLevel.Highest;
         }
 
-        private Task? GetStartupTask()
+        private Task GetStartupTask()
         {
             var folder = _taskService.RootFolder.EnumerateFolders(folder => folder.Name.Equals(TaskFolderName)).FirstOrDefault();
             return folder?.EnumerateTasks(task => task.Name.Equals(TaskName)).FirstOrDefault();

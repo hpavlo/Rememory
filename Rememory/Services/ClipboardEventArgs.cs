@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace Rememory.Service
+namespace Rememory.Services
 {
     public class ClipboardEventArgs : EventArgs
     {

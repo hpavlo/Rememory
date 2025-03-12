@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Models;
 using System;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
-namespace Rememory.Service
+namespace Rememory.Services
 {
     public class ClipboardService : IClipboardService
     {
@@ -58,7 +59,7 @@ namespace Rememory.Service
             dataInfo.FormatCount = (uint)selectedTypes.Count;
             dataInfo.FirstItem = Marshal.AllocHGlobal(selectedTypes.Count * Marshal.SizeOf(typeof(FormatDataItem)));
 
-            IntPtr currentPtr = dataInfo.FirstItem;
+            nint currentPtr = dataInfo.FirstItem;
             foreach (var dataType in selectedTypes)
             {
                 var dataStr = item.DataMap.GetValueOrDefault(dataType);
@@ -76,7 +77,7 @@ namespace Rememory.Service
                 };
 
                 Marshal.StructureToPtr(formatItem, currentPtr, false);
-                currentPtr = IntPtr.Add(currentPtr, Marshal.SizeOf<FormatDataItem>());
+                currentPtr = nint.Add(currentPtr, Marshal.SizeOf<FormatDataItem>());
             }
 
             var result = RememoryCoreHelper.SetDataToClipboard(ref dataInfo);

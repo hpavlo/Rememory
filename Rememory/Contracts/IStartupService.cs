@@ -1,4 +1,4 @@
-﻿namespace Rememory.Service
+﻿namespace Rememory.Contracts
 {
     public interface IStartupService
     {
