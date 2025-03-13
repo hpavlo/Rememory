@@ -252,7 +252,7 @@ namespace Rememory.ViewModels
             _lastActiveWindowHandleBeforeShowing = NativeHelper.GetForegroundWindow();
         }
 
-        # region ClipboardService events
+        #region ClipboardService events
 
         private void ClipboardService_NewItemAdded(object sender, ClipboardEventArgs a)
         {
@@ -274,11 +274,21 @@ namespace Rememory.ViewModels
 
         private void ClipboardService_ItemMovedToTop(object sender, ClipboardEventArgs a)
         {
-            int index = ItemsCollection.IndexOf(a.ChangedClipboardItem);
-            if (index >= 0)
+            int itemsCollectionIndex = ItemsCollection.IndexOf(a.ChangedClipboardItem);
+            if (itemsCollectionIndex >= 0)
             {
-                ItemsCollection.RemoveAt(index);
+                ItemsCollection.RemoveAt(itemsCollectionIndex);
                 ItemsCollection.Insert(0, a.ChangedClipboardItem);
+            }
+
+            if (SearchMode)
+            {
+                int searchContextIndex = _searchContext.IndexOf(a.ChangedClipboardItem);
+                if (searchContextIndex >= 0)
+                {
+                    _searchContext.RemoveAt(searchContextIndex);
+                    _searchContext.Insert(0, a.ChangedClipboardItem);
+                }
             }
         }
 
