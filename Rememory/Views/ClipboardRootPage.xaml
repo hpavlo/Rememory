@@ -146,7 +146,9 @@
         </MenuFlyout>
     </Page.Resources>
 
-    <Grid>
+    <!-- Using BorderBrush to display border on Windows 10 (not visible on Win11) -->
+    <Grid BorderThickness="1"
+          BorderBrush="{ThemeResource ButtonBorderBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*"
