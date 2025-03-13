@@ -128,6 +128,22 @@
             </Flyout.SystemBackdrop>
             <Image behavior:ImageAutoResizeBehavior.AutoResize="True" />
         </Flyout>
+
+        <MenuFlyout x:Key="ContextMenuFlyout">
+            <ToggleMenuFlyoutItem x:Uid="TitleMenuButton_PinWindow"
+                                  IsChecked="{x:Bind ViewModel.IsWindowPinned, Mode=TwoWay}"
+                                  Icon="{tk:FontIcon FontSize=16, Glyph=&#xE718;}" />
+            <ToggleMenuFlyoutItem x:Uid="TitleMenuButton_PauseMonitoring"
+                                  IsChecked="{x:Bind ViewModel.IsClipboardMonitoringPaused, Mode=TwoWay}"
+                                  Icon="{tk:FontIcon FontSize=16, Glyph=&#xF0E3;}" />
+            <MenuFlyoutSeparator />
+            <MenuFlyoutItem x:Uid="TitleMenuButton_Settings"
+                            Click="SettingsButton_Click"
+                            Icon="{tk:FontIcon FontSize=16, Glyph=&#xE713;}" />
+            <MenuFlyoutItem x:Uid="TitleMenuButton_Quit"
+                            Click="QuitButton_Click"
+                            Icon="{tk:FontIcon FontSize=16, Glyph=&#xEA39;}" />
+        </MenuFlyout>
     </Page.Resources>
 
     <Grid>
@@ -174,7 +190,8 @@
                 Background="Transparent"
                 PointerPressed="WindowDragArea_PointerPressed"
                 PointerReleased="WindowDragArea_PointerReleased"
-                PointerMoved="WindowDragArea_PointerMoved" />
+                PointerMoved="WindowDragArea_PointerMoved"
+                ContextFlyout="{StaticResource ContextMenuFlyout}" />
 
         <StackPanel Grid.Column="2"
                     Grid.Row="0"
@@ -184,26 +201,9 @@
             <!-- Change style to custom one -->
             <Button x:Uid="TitleButton_More"
                     Content="{tk:FontIcon FontSize=16, Glyph=&#xE712;}"
-                    Style="{ThemeResource AlternateCloseButtonStyle}">
-                <Button.Flyout>
-                    <MenuFlyout>
-                        <ToggleMenuFlyoutItem x:Uid="TitleMenuButton_PinWindow"
-                                              IsChecked="{x:Bind ViewModel.IsWindowPinned, Mode=TwoWay}"
-                                              Icon="{tk:FontIcon FontSize=16, Glyph=&#xE718;}" />
-                        <ToggleMenuFlyoutItem x:Uid="TitleMenuButton_PauseMonitoring"
-                                              IsChecked="{x:Bind ViewModel.IsClipboardMonitoringPaused, Mode=TwoWay}"
-                                              Icon="{tk:FontIcon FontSize=16, Glyph=&#xF0E3;}" />
-                        <MenuFlyoutSeparator />
-                        <MenuFlyoutItem x:Uid="TitleMenuButton_Settings"
-                                        Click="SettingsButton_Click"
-                                        Icon="{tk:FontIcon FontSize=16, Glyph=&#xE713;}" />
-                        <MenuFlyoutItem x:Uid="TitleMenuButton_Quit"
-                                        Click="QuitButton_Click"
-                                        Icon="{tk:FontIcon FontSize=16, Glyph=&#xEA39;}" />
-                    </MenuFlyout>
-                </Button.Flyout>
-            </Button>
-            
+                    Style="{ThemeResource AlternateCloseButtonStyle}"
+                    Flyout="{StaticResource ContextMenuFlyout}" />
+
             <Button x:Name="CloseButton"
                     x:Uid="TitleButton_Close"
                     Click="CloseButton_Click"
