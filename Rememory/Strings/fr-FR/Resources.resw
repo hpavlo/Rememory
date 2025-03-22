@@ -479,7 +479,8 @@
     <value>Le gestionnaire du presse-papiers n'enregistrera aucune donnée de ces programmes</value>
   </data>
   <data name="SettingsExpander_OwnerFiltersWarning.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Le filtrage ne fonctionne pas correctement avec les&#x0a;applications UWP et WebView2</value>
+    <value>Le filtrage ne fonctionne pas correctement avec les
+applications UWP et WebView2</value>
   </data>
   <data name="SettingsExpander_OwnerFiltersAddButton.Content" xml:space="preserve">
     <value>Ajouter un filtre</value>
@@ -546,5 +547,8 @@
   </data>
   <data name="FilterTreeViewTitle_Apps" xml:space="preserve">
     <value>Apps</value>
+  </data>
+  <data name="ClipboardItem_NoPreview.Text" xml:space="preserve">
+    <value>Pas d'aperçu</value>
   </data>
 </root>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl x:Class="Rememory.Views.Controls.EmptyPreview"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:Rememory.Views.Controls"
+             Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}">
+    <StackPanel Orientation="Horizontal"
+                HorizontalAlignment="Center"
+                Spacing="8">
+        <FontIcon FontSize="16"
+                  Glyph="&#xE9CE;" />
+        <TextBlock x:Uid="ClipboardItem_NoPreview"
+                   Padding="0 0 0 2"
+                   FontSize="12" />
+    </StackPanel>
+</UserControl>

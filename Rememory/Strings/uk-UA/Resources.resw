@@ -479,7 +479,8 @@
     <value>Менеджер буфера обміну не зберігатиме дані з цих програм</value>
   </data>
   <data name="SettingsExpander_OwnerFiltersWarning.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Фільтрування не працює належним чином&#x0a;із програмами UWP і WebView2</value>
+    <value>Фільтрування не працює належним чином
+із програмами UWP і WebView2</value>
   </data>
   <data name="SettingsExpander_OwnerFiltersAddButton.Content" xml:space="preserve">
     <value>Додати фільтр</value>
@@ -546,5 +547,8 @@
   </data>
   <data name="FilterTreeViewTitle_Apps" xml:space="preserve">
     <value>Програми</value>
+  </data>
+  <data name="ClipboardItem_NoPreview.Text" xml:space="preserve">
+    <value>Немає прев'ю</value>
   </data>
 </root>

@@ -32,7 +32,7 @@ namespace Rememory.Converters
                 }
             }
 
-            return null;
+            return new EmptyPreview();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

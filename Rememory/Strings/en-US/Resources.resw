@@ -491,7 +491,8 @@
     <value>Clipboard manager will not save any data from these programs</value>
   </data>
   <data name="SettingsExpander_OwnerFiltersWarning.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Filtering doesn't work correctly with UWP&#x0a;and WebView2 applications</value>
+    <value>Filtering doesn't work correctly with UWP
+and WebView2 applications</value>
   </data>
   <data name="SettingsExpander_OwnerFiltersAddButton.Content" xml:space="preserve">
     <value>Add filter</value>
@@ -558,5 +559,8 @@
   </data>
   <data name="FilterTreeViewTitle_Apps" xml:space="preserve">
     <value>Apps</value>
+  </data>
+  <data name="ClipboardItem_NoPreview.Text" xml:space="preserve">
+    <value>No preview</value>
   </data>
 </root>
