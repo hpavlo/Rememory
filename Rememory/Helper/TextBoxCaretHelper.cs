@@ -1,8 +1,9 @@
-﻿using System;
+﻿using FlaUI.UIA3;
+using Interop.UIAutomationClient;
+using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using UIAutomationClient;
 
 namespace Rememory.Helper
 {
@@ -12,6 +13,8 @@ namespace Rememory.Helper
     /// </summary>
     public class TextBoxCaretHelper
     {
+        private static UIA3Automation _uiAutomation = new UIA3Automation();
+
         public static bool GetCaretPosition(out Rectangle rect)
         {
             rect = Rectangle.Empty;
@@ -52,63 +55,36 @@ namespace Rememory.Helper
 
         private static bool TryGetCaretPosUIA(ref Rectangle rect)
         {
-            Rectangle tempRect = Rectangle.Empty;
-
             try
             {
-                IUIAutomation uiAutomation = new CUIAutomation();
-                IUIAutomationElement focusedElement = uiAutomation.GetFocusedElement();
+                var focusedElement = _uiAutomation.FocusedElement();
 
-                if (focusedElement is null)
+                if (focusedElement.Patterns.Value.TryGetPattern(out var valuePattern)
+                    && valuePattern.IsReadOnly.TryGetValue(out var _isReadonly)
+                    && _isReadonly)
                 {
                     return false;
                 }
 
-                int UIA_TextPatternId = 10014;
-                object textPatternObj = focusedElement.GetCurrentPattern(UIA_TextPatternId);
-
-                if (textPatternObj is IUIAutomationTextPattern textPattern)
+                if (focusedElement.Patterns.Text.TryGetPattern(out var textPattern) && textPattern.GetSelection() is var selections && selections.Length > 0)
                 {
-                    IUIAutomationTextRangeArray selectionRanges = textPattern.GetSelection();
-
-                    if (selectionRanges is not null && selectionRanges.Length > 0)
+                    var rectangles = selections[0].GetBoundingRectangles();
+                    if (rectangles.Length > 0 && !rectangles[0].IsEmpty)
                     {
-                        IUIAutomationTextRange selectionRange = selectionRanges.GetElement(0);
+                        rect = rectangles[0];
+                        return true;
+                    }
 
-                        if (selectionRange is null)
-                        {
-                            return false;
-                        }
-
-                        double[] boundingRect = (double[])selectionRange.GetBoundingRectangles();
-                        bool isExpanded = false;
-
-                        if (boundingRect.Length == 0)
-                        {
-                            selectionRange.ExpandToEnclosingUnit(TextUnit.TextUnit_Character);
-                            boundingRect = (double[])selectionRange.GetBoundingRectangles();
-                            isExpanded = true;
-                        }
-
-                        if (boundingRect.Length >= 4)
-                        {
-                            int left = (int)boundingRect[0];
-                            int top = (int)boundingRect[1];
-                            int width = (int)boundingRect[2];
-                            int height = (int)boundingRect[3];
-
-                            tempRect = new Rectangle(left, top, isExpanded ? 0 : width, height);
-                        }
+                    selections[0].ExpandToEnclosingUnit(FlaUI.Core.Definitions.TextUnit.Character);
+                    rectangles = selections[0].GetBoundingRectangles();
+                    if (rectangles.Length > 0 && !rectangles[0].IsEmpty)
+                    {
+                        rect = rectangles[0];
+                        return true;
                     }
                 }
             }
             catch { }
-
-            if (!tempRect.IsEmpty)
-            {
-                rect = tempRect;
-                return true;
-            }
 
             return false;
         }

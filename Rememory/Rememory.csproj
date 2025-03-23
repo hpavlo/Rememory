@@ -79,21 +79,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <COMReference Include="UIAutomationClient">
-	    <WrapperTool>tlbimp</WrapperTool>
-	    <VersionMinor>0</VersionMinor>
-	    <VersionMajor>1</VersionMajor>
-	    <Guid>944de083-8fb8-45cf-bcb7-c477acb2f897</Guid>
-	    <Lcid>0</Lcid>
-	    <Isolated>false</Isolated>
-	    <EmbedInteropTypes>true</EmbedInteropTypes>
-	  </COMReference>
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.1.240916" />
 		<PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.1.240916" />
+		<PackageReference Include="FlaUI.UIA3" Version="5.0.0" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.73" />
 		<PackageReference Include="MessageFormat" Version="7.1.2" />
 		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.2" />
