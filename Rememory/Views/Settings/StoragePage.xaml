@@ -53,6 +53,11 @@
             </ComboBox>
         </tkcontrols:SettingsCard>
 
+        <tkcontrols:SettingsCard x:Uid="SettingsCard_FavoriteCleaning"
+                                 HeaderIcon="{tk:FontIcon Glyph=&#xE728;}">
+            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.CleanFavoriteItems, Mode=TwoWay}" />
+        </tkcontrols:SettingsCard>
+
         <tkcontrols:SettingsExpander x:Uid="SettingsExpander_OwnerFilters"
                                      HeaderIcon="{tk:FontIcon Glyph=&#xE71C;}"
                                      IsExpanded="True">

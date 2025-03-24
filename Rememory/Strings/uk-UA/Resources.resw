@@ -551,4 +551,10 @@
   <data name="ClipboardItem_NoPreview.Text" xml:space="preserve">
     <value>Немає прев'ю</value>
   </data>
+  <data name="SettingsCard_FavoriteCleaning.Header" xml:space="preserve">
+    <value>Очистка вибраних елементів</value>
+  </data>
+  <data name="SettingsCard_FavoriteCleaning.Description" xml:space="preserve">
+    <value>Очищати вибрані елементи, термін зберігання яких закінчився</value>
+  </data>
 </root>

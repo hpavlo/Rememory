@@ -112,6 +112,14 @@ namespace Rememory.Models
             set => SetSettingsProperty(ref _cleanupTimeSpanIndex, value);
         }
 
+        private bool _cleanFavoriteItems;
+        public bool CleanFavoriteItemsDefault { get; private set; } = false;
+        public bool CleanFavoriteItems
+        {
+            get => _cleanFavoriteItems;
+            set => SetSettingsProperty(ref _cleanFavoriteItems, value);
+        }
+
         private List<int> _activationShortcut;
         public List<int> ActivationShortcutDefault { get; private set; } = [0x10, 0x56, 0x5B];   // Win + Shift + V
         public List<int> ActivationShortcut
@@ -177,6 +185,7 @@ namespace Rememory.Models
             _windowHeight = GetSettingValue(nameof(WindowHeight), WindowHeightDefault);
             _windowMargin = GetSettingValue(nameof(WindowMargin), WindowMarginDefault);
             _cleanupTimeSpanIndex = GetSettingValue(nameof(CleanupTimeSpanIndex), CleanupTimeSpanIndexDefault);
+            _cleanFavoriteItems = GetSettingValue(nameof(CleanFavoriteItems), CleanFavoriteItemsDefault);
             _activationShortcut = _localSettings.Values.TryGetValue(nameof(ActivationShortcut), out var activationShortcutValue) ?
                 JsonSerializer.Deserialize<List<int>>((string)activationShortcutValue) : ActivationShortcutDefault;
             _enableLinkPreviewLoading = GetSettingValue(nameof(EnableLinkPreviewLoading), EnableLinkPreviewLoadingDefault);

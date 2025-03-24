@@ -551,4 +551,10 @@ applications UWP et WebView2</value>
   <data name="ClipboardItem_NoPreview.Text" xml:space="preserve">
     <value>Pas d'aperçu</value>
   </data>
+  <data name="SettingsCard_FavoriteCleaning.Header" xml:space="preserve">
+    <value>Nettoyage des objets préférés</value>
+  </data>
+  <data name="SettingsCard_FavoriteCleaning.Description" xml:space="preserve">
+    <value>Nettoyez vos articles préférés qui sont hors période de conservation</value>
+  </data>
 </root>

@@ -122,10 +122,10 @@ namespace Rememory.Services
             OnItemDeleted(new ClipboardEventArgs(ClipboardItems, item));
         }
 
-        public bool DeleteOldItems(DateTime cutoffTime)
+        public bool DeleteOldItems(DateTime cutoffTime, bool deleteFavoriteItems)
         {
             var itemsToDelete = ClipboardItems
-                .Where(item => item.Time < cutoffTime)
+                .Where(item => item.Time < cutoffTime && (deleteFavoriteItems || !item.IsFavorite))
                 .ToList();
 
             if (itemsToDelete.Count == 0)

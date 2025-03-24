@@ -90,8 +90,9 @@ namespace Rememory.Contracts
         /// Check and delete all older data for <paramref name="cutoffTime"/>
         /// </summary>
         /// <param name="cutoffTime">Time we will use to compare the data</param>
-        /// <returns></returns>
-        bool DeleteOldItems(DateTime cutoffTime);
+        /// <param name="deleteFavoriteItems">set false if we don't want to delete old favorite items</param>
+        /// <returns>true if some items where delated</returns>
+        bool DeleteOldItems(DateTime cutoffTime, bool deleteFavoriteItems);
 
         /// <summary>
         /// Erase all data from collection and DB

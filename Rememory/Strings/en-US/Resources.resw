@@ -563,4 +563,10 @@ and WebView2 applications</value>
   <data name="ClipboardItem_NoPreview.Text" xml:space="preserve">
     <value>No preview</value>
   </data>
+  <data name="SettingsCard_FavoriteCleaning.Header" xml:space="preserve">
+    <value>Favorite items cleaning</value>
+  </data>
+  <data name="SettingsCard_FavoriteCleaning.Description" xml:space="preserve">
+    <value>Clean favorite items that are out of retention period</value>
+  </data>
 </root>

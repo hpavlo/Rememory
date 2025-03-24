@@ -25,7 +25,7 @@ namespace Rememory.Services
                 DateTime.Now.Subtract(_lastCleanupTime).Days > 0)
             {
                 _lastCleanupTime = DateTime.Now;
-                return _clipboardService.DeleteOldItems(RoundToNearestDay(_lastCleanupTime).Subtract(GetTimeSpanFromSettings()));
+                return _clipboardService.DeleteOldItems(RoundToNearestDay(_lastCleanupTime).Subtract(GetTimeSpanFromSettings()), _settingsContext.CleanFavoriteItems);
             }
             return false;
         }
