@@ -1,4 +1,5 @@
 using Microsoft.UI.Input;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
@@ -42,6 +43,8 @@ namespace Rememory.Views.Settings
         private void ApplyTheme()
         {
             RequestedTheme = ThemeService.Theme;
+            // TitleBarTheme has first Legacy value, we use + 1 to ignore it
+            _window.AppWindow.TitleBar.PreferredTheme = (TitleBarTheme)(ThemeService.Theme + 1);
         }
 
         private void SettingsWindow_Activated(object sender, WindowActivatedEventArgs args)
