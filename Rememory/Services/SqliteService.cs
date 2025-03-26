@@ -6,6 +6,7 @@ using Rememory.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 
 namespace Rememory.Services
@@ -64,7 +65,7 @@ namespace Rememory.Services
             command.Parameters.AddWithValue("$time", item.Time);
             command.Parameters.AddWithValue("$OwnerPath", item.OwnerPath ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("$ownerIconBitmap", item.OwnerIconBitmap ?? (object)DBNull.Value);
-            command.Parameters.AddWithValue("$dataMap", SerializeDictionary(item.DataMap));
+            command.Parameters.AddWithValue("$dataMap", SerializeDataMap(item.DataMap));
             command.Parameters.AddWithValue("$hashMap", SerializeDictionary(item.HashMap));
 
             command.ExecuteNonQuery();
@@ -114,7 +115,7 @@ namespace Rememory.Services
             command.Parameters.AddWithValue("$time", item.Time);
             command.Parameters.AddWithValue("$OwnerPath", item.OwnerPath ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("$ownerIconBitmap", item.OwnerIconBitmap ?? (object)DBNull.Value);
-            command.Parameters.AddWithValue("$dataMap", SerializeDictionary(item.DataMap));
+            command.Parameters.AddWithValue("$dataMap", SerializeDataMap(item.DataMap));
             command.Parameters.AddWithValue("$hashMap", SerializeDictionary(item.HashMap));
 
             command.ExecuteNonQuery();
@@ -175,7 +176,7 @@ namespace Rememory.Services
                     var time = reader.GetDateTime(2);
                     var ownerPath = reader.IsDBNull(3) ? string.Empty : reader.GetString(3);
                     var ownerIconBitmap = reader.IsDBNull(4) ? null : (byte[])reader.GetValue(4);
-                    var dataMap = DeserializeDictionary<ClipboardFormat, string>(reader.GetString(5));
+                    var dataMap = DeserializeDataMap(reader.GetString(5));
                     var hashMap = DeserializeDictionary<ClipboardFormat, byte[]>(reader.GetString(6));
 
                     var title = reader.IsDBNull(7) ? null : reader.GetString(7);
@@ -226,14 +227,46 @@ namespace Rememory.Services
             return items;
         }
 
-        private string SerializeDictionary<T, U>(Dictionary<T, U> dict)
+        // Serialize clipboard data map to JSON string
+        // Convert file paths to file names only
+        private string SerializeDataMap(Dictionary<ClipboardFormat, string> dataMap)
+        {
+            var updatedDataMap = dataMap.ToDictionary(
+                pair => pair.Key,
+                pair => pair.Key == ClipboardFormat.Text ? pair.Value : ClipboardFormatHelper.ConvertFullPathToFileName(pair.Value)
+            );
+
+            return SerializeDictionary(updatedDataMap);
+
+        }
+
+        // Deserialise JSON string to clipboard data map
+        // Convert file names to file paths
+        private Dictionary<ClipboardFormat, string> DeserializeDataMap(string jsonData)
+        {
+            var deserializedData = DeserializeDictionary<ClipboardFormat, string>(jsonData);
+
+            return deserializedData.ToDictionary(
+                pair => pair.Key,
+                pair => pair.Key == ClipboardFormat.Text ? pair.Value : ClipboardFormatHelper.ConvertFileNameToFullPath(pair.Value, pair.Key)
+            );
+        }
+
+        private string SerializeDictionary<T, U>(Dictionary<T, U> dict) where T : notnull
         {
             return JsonSerializer.Serialize(dict);
         }
 
-        private Dictionary<T, U> DeserializeDictionary<T, U>(string jsonData)
+        private Dictionary<T, U> DeserializeDictionary<T, U>(string jsonData) where T : notnull
         {
-            return JsonSerializer.Deserialize<Dictionary<T, U>>(jsonData);
+            try
+            {
+                return JsonSerializer.Deserialize<Dictionary<T, U>>(jsonData) ?? [];
+            }
+            catch
+            {
+                return [];
+            }
         }
     }
 }

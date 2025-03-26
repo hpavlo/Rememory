@@ -160,9 +160,9 @@ namespace Rememory.Services
 
             try
             {
-                var rtfPath = Path.Combine(ClipboardFormatHelper.RootHistoryFolderPath, ClipboardFormatHelper.RTF_FORMAT_FOLDER_NAME);
-                var htmlPath = Path.Combine(ClipboardFormatHelper.RootHistoryFolderPath, ClipboardFormatHelper.HTML_FORMAT_FOLDER_NAME);
-                var pngPath = Path.Combine(ClipboardFormatHelper.RootHistoryFolderPath, ClipboardFormatHelper.PNG_FORMAT_FOLDER_NAME);
+                var rtfPath = Path.Combine(ClipboardFormatHelper.RootHistoryFolderPath, ClipboardFormatHelper.FORMAT_FOLDER_NAME_RTF);
+                var htmlPath = Path.Combine(ClipboardFormatHelper.RootHistoryFolderPath, ClipboardFormatHelper.FORMAT_FOLDER_NAME_HTML);
+                var pngPath = Path.Combine(ClipboardFormatHelper.RootHistoryFolderPath, ClipboardFormatHelper.FORMAT_FOLDER_NAME_PNG);
 
                 DeleteFolder(rtfPath);
                 DeleteFolder(htmlPath);
