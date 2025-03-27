@@ -42,6 +42,7 @@ namespace Rememory
 
         private string[] _launchArguments;
         private IKeyboardMonitor _keyboardMonitor;
+        private bool _closeApp = false;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -68,7 +69,15 @@ namespace Rememory
             ClipboardWindow = new ClipboardWindow();
             ClipboardWindow.Closed += ClipboardWindow_Closed;
             ClipboardWindowHandle = WindowNative.GetWindowHandle(ClipboardWindow);
-            ClipboardWindow.Content = new ClipboardRootPage(ClipboardWindow);
+
+            var rootPage = new ClipboardRootPage(ClipboardWindow);
+            // Return if we closed app during ClipboardRootPage initializing
+            if (_closeApp)
+            {
+                return;
+            }
+
+            ClipboardWindow.Content = rootPage;
             ClipboardWindow.InitSystemBackdrop();
 
             InitializeRememoryCore();
@@ -91,6 +100,7 @@ namespace Rememory
 
         private void ClipboardWindow_Closed(object sender, WindowEventArgs args)
         {
+            _closeApp = true;
             _keyboardMonitor.StopMonitor();
             Exit();
         }

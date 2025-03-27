@@ -194,11 +194,7 @@ namespace Rememory.Helper
                 _ => throw new NotImplementedException()
             };
 
-            string directoryName = Path.GetDirectoryName(filePath)!;
-            if (!Directory.Exists(directoryName))
-            {
-                Directory.CreateDirectory(directoryName);
-            }
+            Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
 
             return filePath;
         }

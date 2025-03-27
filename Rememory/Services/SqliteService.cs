@@ -1,8 +1,8 @@
 ﻿using Microsoft.Data.Sqlite;
-using Microsoft.Windows.Storage;
 using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Models;
+using Rememory.Services.Migrations;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,44 +13,20 @@ namespace Rememory.Services
 {
     public class SqliteService : IStorageService
     {
-        private string _dbPath = Path.Combine(ApplicationData.GetDefault().LocalPath, "History", "ClipboardManager.db");
-        private string _connectionString;
-        private string _createMainTableQuery = @"
-            CREATE TABLE IF NOT EXISTS ClipboardItems (
-                Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                IsFavorite INTEGER NOT NULL,
-                Time TEXT NOT NULL,
-                OwnerPath TEXT,
-                OwnerIconBitmap BLOB,
-                DataMap TEXT NOT NULL,
-                HashMap TEXT NOT NULL
-            )";
-        private string _createLinksPreviewTableQuery = @"
-            CREATE TABLE IF NOT EXISTS LinksPreviewInfo (
-                Id INTEGER PRIMARY KEY,
-                Title TEXT,
-                Description TEXT,
-                ImageUrl TEXT
-            )";
+        private readonly string _connectionString = $"Data Source={Path.Combine(ClipboardFormatHelper.RootHistoryFolderPath, "ClipboardManager.db")}";
+        private int _currentVersion;
 
         public SqliteService()
         {
-            var dirPath = Path.GetDirectoryName(_dbPath);
-            if (!Directory.Exists(dirPath))
-            {
-                Directory.CreateDirectory(dirPath);
-            }
-            _connectionString = $"Data Source={_dbPath}";
+            Directory.CreateDirectory(ClipboardFormatHelper.RootHistoryFolderPath);
 
             using var connection = new SqliteConnection(_connectionString);
             connection.Open();
-            var command = connection.CreateCommand();
-            command.CommandText = _createMainTableQuery;
-            command.ExecuteNonQuery();
 
-            command.CommandText = _createLinksPreviewTableQuery;
-            command.ExecuteNonQuery();
+            _currentVersion = GetDatabaseVersion(connection);
+            ApplyMigrations(connection);
         }
+
         public int SaveClipboardItem(ClipboardItem item)
         {
             using var connection = new SqliteConnection(_connectionString);
@@ -227,6 +203,83 @@ namespace Rememory.Services
             return items;
         }
 
+        #region DB migration
+
+        /// <summary>
+        /// Do database migration if current DB version is no the latest one
+        /// </summary>
+        /// <param name="connection">Connection to Sqlite database</param>
+        private void ApplyMigrations(SqliteConnection connection)
+        {
+            var migrations = GetMigrations();
+            using var transaction = connection.BeginTransaction();
+            try
+            {
+                foreach (var migration in migrations)
+                {
+                    if (migration.Version > _currentVersion)
+                    {
+                        migration.Up(connection);
+                        SetDatabaseVersion(connection, migration.Version);
+                        _currentVersion = migration.Version;
+                    }
+                }
+                transaction.Commit();
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+
+                int res = NativeHelper.MessageBox(IntPtr.Zero,
+                    e.Message,
+                    "Database migration failed",
+                    0x15);   // MB_ICONERROR | MB_RETRYCANCEL
+
+                if (res == 4)   // IDRETRY
+                {
+                    ApplyMigrations(connection);
+                }
+                else
+                {
+                    App.Current.Exit();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Processes all classes that implement ISqliteMigration in the current assembly,
+        /// creates instances of each migration class, sorts them by Version,
+        /// and returns the sorted list
+        /// </summary>
+        /// <returns>The sorted list of ISqliteMigration objects</returns>
+        private IEnumerable<ISqliteMigration> GetMigrations()
+        {
+            var assembly = GetType().Assembly;
+            var migrations = assembly.GetTypes()
+                .Where(type => typeof(ISqliteMigration).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
+                .Select(type => (ISqliteMigration)Activator.CreateInstance(type)!)
+                .OrderBy(migration => migration.Version);
+            return migrations;
+        }
+
+        private int GetDatabaseVersion(SqliteConnection connection)
+        {
+            using var command = connection.CreateCommand();
+            command.CommandText = "PRAGMA user_version;";
+            return (int)(long)(command.ExecuteScalar() ?? 0);
+        }
+
+        private void SetDatabaseVersion(SqliteConnection connection, int version)
+        {
+            using var command = connection.CreateCommand();
+            command.CommandText = $"PRAGMA user_version = {version};";
+            command.ExecuteNonQuery();
+        }
+
+        #endregion
+
+        #region Serialisation
+
         // Serialize clipboard data map to JSON string
         // Convert file paths to file names only
         private string SerializeDataMap(Dictionary<ClipboardFormat, string> dataMap)
@@ -268,5 +321,7 @@ namespace Rememory.Services
                 return [];
             }
         }
+
+        #endregion
     }
 }
