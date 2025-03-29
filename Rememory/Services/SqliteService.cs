@@ -22,8 +22,6 @@ namespace Rememory.Services
 
             using var connection = new SqliteConnection(_connectionString);
             connection.Open();
-
-            _currentVersion = GetDatabaseVersion(connection);
             ApplyMigrations(connection);
         }
 
@@ -138,7 +136,8 @@ namespace Rememory.Services
 
                 var command = connection.CreateCommand();
                 command.CommandText = @"
-                    SELECT items.*, linkInfo.Title, linkInfo.Description, linkInfo.ImageUrl 
+                    SELECT items.Id, items.IsFavorite, items.Time, items.OwnerPath, items.OwnerIconBitmap, items.DataMap, items.HashMap,
+                           linkInfo.Title, linkInfo.Description, linkInfo.ImageUrl 
                     FROM ClipboardItems items LEFT JOIN LinksPreviewInfo linkInfo ON items.Id = linkInfo.Id
                     ORDER BY items.Time DESC";
 
@@ -211,8 +210,8 @@ namespace Rememory.Services
         /// <param name="connection">Connection to Sqlite database</param>
         private void ApplyMigrations(SqliteConnection connection)
         {
+            _currentVersion = GetDatabaseVersion(connection);
             var migrations = GetMigrations();
-            using var transaction = connection.BeginTransaction();
             try
             {
                 foreach (var migration in migrations)
@@ -224,11 +223,12 @@ namespace Rememory.Services
                         _currentVersion = migration.Version;
                     }
                 }
-                transaction.Commit();
             }
-            catch (Exception e)
+            catch (SqliteException e)
             {
-                transaction.Rollback();
+                using var command = connection.CreateCommand();
+                command.CommandText = "ROLLBACK;";
+                command.ExecuteNonQuery();
 
                 int res = NativeHelper.MessageBox(IntPtr.Zero,
                     e.Message,
