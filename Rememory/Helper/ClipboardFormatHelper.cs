@@ -2,6 +2,7 @@
 using Rememory.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -202,9 +203,42 @@ namespace Rememory.Helper
 
     public enum ClipboardFormat
     {
-        Text = 0,
-        Rtf = 1,
-        Html = 2,
-        Png = 3
+        [Description("CF_UNICODETEXT")]
+        Text,
+        [Description("Rich Text Format")]
+        Rtf,
+        [Description("HTML Format")]
+        Html,
+        [Description("PNG")]
+        Png
+    }
+
+    public static class EnumExtensions
+    {
+        public static string GetDescription(this Enum value)
+        {
+            var field = value.GetType().GetField(value.ToString());
+            if (field != null)
+            {
+                var attribute = (DescriptionAttribute?)Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute));
+                if (attribute != null)
+                {
+                    return attribute.Description;
+                }
+            }
+            return value.ToString();
+        }
+
+        public static T? FromDescription<T>(string description) where T : Enum
+        {
+            foreach (T value in Enum.GetValues(typeof(T)))
+            {
+                if (value.GetDescription().Equals(description))
+                {
+                    return value;
+                }
+            }
+            return default;
+        }
     }
 }
