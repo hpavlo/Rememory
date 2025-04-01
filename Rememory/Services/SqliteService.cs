@@ -224,7 +224,7 @@ namespace Rememory.Services
                     }
                 }
             }
-            catch (SqliteException e)
+            catch (Exception e)
             {
                 using var command = connection.CreateCommand();
                 command.CommandText = "ROLLBACK;";
