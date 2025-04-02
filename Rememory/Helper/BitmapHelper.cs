@@ -7,7 +7,7 @@ namespace Rememory.Helper
 {
     public static class BitmapHelper
     {
-        public static SoftwareBitmapSource GetBitmapFromBytes(byte[] pixels)
+        public static SoftwareBitmapSource? GetBitmapFromBytes(byte[] pixels)
         {
             if (pixels is null || pixels.Length == 0)
             {
@@ -19,7 +19,7 @@ namespace Rememory.Helper
             return GetBitmapFromBytes(pixels, imageSide, imageSide);
         }
 
-        public static SoftwareBitmapSource GetBitmapFromBytes(byte[] pixels, int width, int height)
+        public static SoftwareBitmapSource? GetBitmapFromBytes(byte[] pixels, int width, int height)
         {
             if (pixels is null || pixels.Length == 0)
             {
