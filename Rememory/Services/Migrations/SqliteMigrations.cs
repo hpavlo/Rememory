@@ -96,6 +96,7 @@ namespace Rememory.Services.Migrations
               Format TEXT NOT NULL,
               Data TEXT NOT NULL,
               Hash BLOB NOT NULL,
+              MetadataFormat TEXT,
               FOREIGN KEY (ClipId) REFERENCES Clips (Id) ON DELETE CASCADE
             );
 
@@ -123,6 +124,8 @@ namespace Rememory.Services.Migrations
             );
 
             CREATE INDEX IF NOT EXISTS IX_Owners_Path ON Owners (Path);
+
+            CREATE INDEX IF NOT EXISTS IX_Data_ClipId ON Data (ClipId);
 
             INSERT INTO
               Owners (Path, Icon)
@@ -277,9 +280,9 @@ namespace Rememory.Services.Migrations
             var dataInsertCommand = connection.CreateCommand();
             dataInsertCommand.CommandText = @"
             INSERT INTO
-              Data (ClipId, Format, Data, Hash)
+              Data (ClipId, Format, Data, Hash, MetadataFormat)
             VALUES
-              (@clipId, @format, @data, @hash);
+              (@clipId, @format, @data, @hash, @metadataFormat);
             SELECT
               last_insert_rowid();
             ";
@@ -291,7 +294,9 @@ namespace Rememory.Services.Migrations
             dataParameter.ParameterName = "data";
             var hashParameter = dataInsertCommand.CreateParameter();
             hashParameter.ParameterName = "hash";
-            dataInsertCommand.Parameters.AddRange([clipIdParameter, formatParameter, dataParameter, hashParameter]);
+            var metadataFormatParameter = dataInsertCommand.CreateParameter();
+            metadataFormatParameter.ParameterName = "metadataFormat";
+            dataInsertCommand.Parameters.AddRange([clipIdParameter, formatParameter, dataParameter, hashParameter, metadataFormatParameter]);
 
             // Init link metadata insert command
             var linkMetadataInsertCommand = connection.CreateCommand();
@@ -350,6 +355,7 @@ namespace Rememory.Services.Migrations
                     formatParameter.Value = dataItem.Key.GetDescription();
                     dataParameter.Value = dataItem.Value;
                     hashParameter.Value = hashMap[dataItem.Key];
+                    metadataFormatParameter.Value = hasLinkMetadata && dataItem.Key == ClipboardFormat.Text ? "Link" : (object)DBNull.Value;
 
                     long newId = (long)dataInsertCommand.ExecuteScalar()!;
 
