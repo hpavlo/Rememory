@@ -206,6 +206,18 @@ namespace Rememory.Services.NewServices
             command.ExecuteNonQuery();
         }
 
+        public void DeleteAllClips()
+        {
+            using var connection = new SqliteConnection(_connectionString);
+            connection.Open();
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+            DELETE FROM Clips;
+            DELETE FROM Owners;
+            ";
+            command.ExecuteNonQuery();
+        }
+
 
         private IEnumerable<DataModel> GetDataByClipId(int clipId, SqliteConnection connection)
         {
