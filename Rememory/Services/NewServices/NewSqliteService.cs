@@ -13,18 +13,6 @@ namespace Rememory.Services.NewServices
     {
         private readonly string _connectionString = $"Data Source={Path.Combine(ClipboardFormatHelper.RootHistoryFolderPath, "ClipboardManager.db")}";
 
-
-        // move to OwnerService
-        private Dictionary<int, OwnerModel> _owners = [];
-
-        // test method
-        public IEnumerable<ClipModel> ReadClips()
-        {
-            _owners = GetOwners().ToDictionary(o => o.Id);
-
-            return GetClips();
-        }
-
         public IEnumerable<OwnerModel> GetOwners()
         {
             using var connection = new SqliteConnection(_connectionString);
@@ -109,7 +97,7 @@ namespace Rememory.Services.NewServices
         }
 
 
-        public IEnumerable<ClipModel> GetClips()
+        public IEnumerable<ClipModel> GetClips(Dictionary<int, OwnerModel> owners)
         {
             using var connection = new SqliteConnection(_connectionString);
             connection.Open();
@@ -132,14 +120,21 @@ namespace Rememory.Services.NewServices
                 bool isFavorite = reader.GetBoolean(2);
                 int? ownerId = reader.IsDBNull(3) ? null : reader.GetInt32(3);
 
-                yield return new ClipModel()
+                ClipModel clip = new()
                 {
                     Id = id,
                     ClipTime = clipTime,
                     IsFavorite = isFavorite,
-                    Owner = ownerId is not null && _owners.TryGetValue((int)ownerId, out var owner) ? owner : null,
+                    // Using 0 for the empty owner
+                    Owner = owners.TryGetValue(ownerId ?? 0, out var owner) ? owner : null,
                     Data = GetDataByClipId(id, connection).ToDictionary(d => d.Format)
                 };
+
+                if (clip.Owner is not null)
+                {
+                    clip.Owner.ClipsCount++;
+                }
+                yield return clip;
             }
         }
 
@@ -158,9 +153,12 @@ namespace Rememory.Services.NewServices
               last_insert_rowid();
             ";
 
+            // Don't save empty owner id
+            int? ownerId = clip.Owner?.Id != 0 ? clip.Owner?.Id : null;
+
             command.Parameters.AddWithValue("clipTime", clip.ClipTime);
             command.Parameters.AddWithValue("isFavorite", clip.IsFavorite);
-            command.Parameters.AddWithValue("ownerId", clip.Owner?.Id ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("ownerId", ownerId ?? (object)DBNull.Value);
             clip.Id = Convert.ToInt32(command.ExecuteScalar());
 
             if (clip.Data is not null)
@@ -184,10 +182,13 @@ namespace Rememory.Services.NewServices
               Id = @id;
             ";
 
+            // Don't save empty owner id
+            int? ownerId = clip.Owner?.Id != 0 ? clip.Owner?.Id : null;
+
             command.Parameters.AddWithValue("id", clip.Id);
             command.Parameters.AddWithValue("clipTime", clip.ClipTime);
             command.Parameters.AddWithValue("isFavorite", clip.IsFavorite);
-            command.Parameters.AddWithValue("ownerId", clip.Owner?.Id ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("ownerId", ownerId ?? (object)DBNull.Value);
             command.ExecuteNonQuery();
         }
 

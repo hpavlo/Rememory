@@ -9,14 +9,14 @@ namespace Rememory.Models.NewModels
     {
         public int Id { get; set; }
 
-        private DateTime _clipTime;
+        private DateTime _clipTime = DateTime.Now;
         public DateTime ClipTime
         {
             get => _clipTime;
             set => SetProperty(ref _clipTime, value);
         }
 
-        private bool _isFavorite;
+        private bool _isFavorite = false;
         public bool IsFavorite
         {
             get => _isFavorite;
@@ -25,6 +25,6 @@ namespace Rememory.Models.NewModels
 
         public OwnerModel? Owner { get; set; }
 
-        public Dictionary<ClipboardFormat, DataModel>? Data;
+        public Dictionary<ClipboardFormat, DataModel> Data = [];
     }
 }
