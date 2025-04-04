@@ -145,8 +145,13 @@ namespace Rememory.Services.NewServices
                 var hash = new byte[32];
                 Marshal.Copy(dataFormatInfo.Hash, hash, 0, 32);
 
-                // Add creating _Metadata model instead of DataModel if possible
-                DataModel clipData = new(dataFormat.Value, convertedData, hash);
+                DataModel? clipData = null;
+                if (dataFormat.Value == ClipboardFormat.Text
+                    && LinkPreviewService.TryCreateLinkMetadata(dataFormat.Value, convertedData, hash, out LinkMetadataModel? linkMetadata))
+                {
+                    clipData = linkMetadata;
+                }
+                clipData ??= new(dataFormat.Value, convertedData, hash);
                 clip.Data.TryAdd(dataFormat.Value, clipData);
             }
 
