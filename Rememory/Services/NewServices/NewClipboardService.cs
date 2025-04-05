@@ -48,7 +48,7 @@ namespace Rememory.Services.NewServices
         public void DeleteClip(ClipModel clip)
         {
             Clips.Remove(clip);
-            // clip.ClearSavedData();
+            clip.ClearExternalDataFiles();
             _sqliteService.DeleteClip(clip.Id);
             _ownerService.UnregisterClipOwner(clip);
             // OnClipDeleted
@@ -169,7 +169,7 @@ namespace Rememory.Services.NewServices
 
             foreach (var clip in Clips)
             {
-                //if (ClipboardFormatHelper.AreItemsEqual(item, newItem))
+                if (clip.EqualDataTo(newClip))
                 {
                     toBeMoved = clip;
                     break;
@@ -191,7 +191,7 @@ namespace Rememory.Services.NewServices
 
                 _sqliteService.UpdateClip(toBeMoved);
                 newClip.Owner = null;
-                //newClip.ClearSavedData();
+                newClip.ClearExternalDataFiles();
                 //OnClipMovedToTop
                 return true;
             }

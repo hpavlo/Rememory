@@ -1,5 +1,6 @@
 ﻿using Microsoft.Windows.Storage;
 using Rememory.Models;
+using Rememory.Models.NewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -80,7 +81,7 @@ namespace Rememory.Helper
         /// <param name="firstItem">The first ClipboardItem</param>
         /// <param name="secondItem">The second ClipboardItem</param>
         /// <returns>True if the items are equal, false otherwise</returns>
-        public static bool AreItemsEqual(ClipboardItem firstItem, ClipboardItem secondItem)
+        public static bool AreItemsEqual(ClipboardItem firstItem, ClipboardItem secondItem)    // To remove
         {
             return firstItem.HashMap.TryGetValue(ClipboardFormat.Text, out var firstItemText) &&
                    secondItem.HashMap.TryGetValue(ClipboardFormat.Text, out var secondItemText) &&
@@ -88,6 +89,45 @@ namespace Rememory.Helper
                    firstItem.HashMap.TryGetValue(ClipboardFormat.Png, out var firstItemPng) &&
                    secondItem.HashMap.TryGetValue(ClipboardFormat.Png, out var secondItemPng) &&
                    firstItemPng.SequenceEqual(secondItemPng);
+        }
+
+        /// <summary>
+        /// Compares two ClipModel objects for equality based on their text or PNG content
+        /// </summary>
+        /// <param name="firstModel">The first ClipModel</param>
+        /// <param name="secondModel">The second ClipModel</param>
+        /// <returns>True if the models are equal, false otherwise</returns>
+        public static bool EqualDataTo(this ClipModel firstModel, ClipModel secondModel)
+        {
+            return firstModel.Data.TryGetValue(ClipboardFormat.Text, out var firstTextData)
+                && secondModel.Data.TryGetValue(ClipboardFormat.Text, out var secondTextData)
+                && firstTextData.Equals(secondTextData)
+                || firstModel.Data.TryGetValue(ClipboardFormat.Png, out var firstPngData)
+                && secondModel.Data.TryGetValue(ClipboardFormat.Png, out var secondPngData)
+                && firstPngData.Equals(secondPngData);
+        }
+
+        /// <summary>
+        /// Clears external data files associated with a ClipModel
+        /// </summary>
+        /// <param name="clipModel">The ClipModel whose external data files should be cleared</param>
+        public static void ClearExternalDataFiles(this ClipModel clipModel)
+        {
+            foreach (var dataItem in clipModel.Data)
+            {
+                if (dataItem.Key != ClipboardFormat.Text)
+                {
+                    try
+                    {
+                        var fileInfo = new FileInfo(dataItem.Value.Data);
+                        if (fileInfo.Exists)
+                        {
+                            fileInfo.Delete();
+                        }
+                    }
+                    catch { }
+                }
+            }
         }
 
         /// <summary>
