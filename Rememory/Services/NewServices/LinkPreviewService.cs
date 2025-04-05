@@ -1,6 +1,5 @@
 ﻿using HtmlAgilityPack;
 using Microsoft.UI.Dispatching;
-using Rememory.Helper;
 using Rememory.Models;
 using Rememory.Models.NewModels;
 using System;
@@ -9,24 +8,21 @@ using System.Threading.Tasks;
 
 namespace Rememory.Services.NewServices
 {
-    // Move to helpers?
-    public static class LinkPreviewService
+    public class LinkPreviewService
     {
-        public static bool TryCreateLinkMetadata(ClipboardFormat format, string data, byte[] hash, out LinkMetadataModel? linkMetadata)
+        private readonly NewSqliteService _sqliteService = new();
+
+        public void TryAddLinkMetadata(DataModel dataModel)
         {
             if (SettingsContext.Instance.EnableLinkPreviewLoading
-                && Uri.TryCreate(data, UriKind.Absolute, out var uri)
+                && Uri.TryCreate(dataModel.Data, UriKind.Absolute, out var uri)
                 && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
             {
-                linkMetadata = new LinkMetadataModel(format, data, hash);
-                LoadMetaInfo(linkMetadata);
-                return true;
+                LoadMetaInfo(dataModel);
             }
-            linkMetadata = null;
-            return false;
         }
 
-        private static void LoadMetaInfo(LinkMetadataModel linkMetadata)
+        private void LoadMetaInfo(DataModel dataModel)
         {
             var dispatcherQueue = DispatcherQueue.GetForCurrentThread();
             new Task(async () =>
@@ -34,7 +30,7 @@ namespace Rememory.Services.NewServices
                 HttpResponseMessage? response = null;
                 try
                 {
-                    response = await new HttpClient().GetAsync(linkMetadata.Data);
+                    response = await new HttpClient().GetAsync(dataModel.Data);
                 }
                 catch (HttpRequestException) { }
                 catch (TaskCanceledException) { }
@@ -62,9 +58,15 @@ namespace Rememory.Services.NewServices
                 {
                     dispatcherQueue.TryEnqueue(() =>
                     {
-                        linkMetadata.Title = titleNode.GetAttributeValue("content", string.Empty);
-                        linkMetadata.Description = descriptionNode.GetAttributeValue("content", string.Empty);
-                        linkMetadata.Image = imageNode.GetAttributeValue("content", string.Empty);
+                        LinkMetadataModel linkMetadata = new()
+                        {
+                            Url = dataModel.Data,
+                            Title = titleNode.GetAttributeValue("content", string.Empty),
+                            Description = descriptionNode.GetAttributeValue("content", string.Empty),
+                            Image = imageNode.GetAttributeValue("content", string.Empty)
+                        };
+                        dataModel.Metadata = linkMetadata;
+                        _sqliteService.AddLinkMetadata(linkMetadata, dataModel.Id);
                     });
                 }
             }).Start();

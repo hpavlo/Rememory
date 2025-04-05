@@ -11,5 +11,7 @@ namespace Rememory.Models.NewModels
         public string Data { get; set; } = data;
 
         public byte[] Hash { get; set; } = hash;
+
+        public IMetadata? Metadata { get; set; }
     }
 }
