@@ -16,6 +16,7 @@ namespace Rememory.Services.NewServices
 
         private readonly NewSqliteService _sqliteService = new();
         private readonly OwnerService _ownerService = new();
+        private readonly LinkPreviewService _linkPreviewService = new();
 
         public NewClipboardService()
         {
@@ -145,13 +146,11 @@ namespace Rememory.Services.NewServices
                 var hash = new byte[32];
                 Marshal.Copy(dataFormatInfo.Hash, hash, 0, 32);
 
-                DataModel? clipData = null;
-                if (dataFormat.Value == ClipboardFormat.Text
-                    && LinkPreviewService.TryCreateLinkMetadata(dataFormat.Value, convertedData, hash, out LinkMetadataModel? linkMetadata))
+                DataModel clipData = new(dataFormat.Value, convertedData, hash);
+                if (dataFormat.Value == ClipboardFormat.Text)
                 {
-                    clipData = linkMetadata;
+                    _linkPreviewService.TryAddLinkMetadata(clipData);
                 }
-                clipData ??= new(dataFormat.Value, convertedData, hash);
                 clip.Data.TryAdd(dataFormat.Value, clipData);
             }
 

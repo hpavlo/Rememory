@@ -3,7 +3,6 @@ using Rememory.Helper;
 using Rememory.Models.NewModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 
@@ -109,7 +108,9 @@ namespace Rememory.Services.NewServices
               IsFavorite,
               OwnerId
             FROM
-              Clips;
+              Clips
+            ORDER BY
+              ClipTime DESC;
             ";
 
             using var reader = command.ExecuteReader();
@@ -219,6 +220,33 @@ namespace Rememory.Services.NewServices
             command.ExecuteNonQuery();
         }
 
+        public void AddLinkMetadata(LinkMetadataModel linkMetadata, int dataId)
+        {
+            using var connection = new SqliteConnection(_connectionString);
+            connection.Open();
+            var command = connection.CreateCommand();
+            command.CommandText = @"
+            INSERT INTO
+              LinkMetadata (Id, Url, Title, Description, Image)
+            VALUES
+              (@id, @url, @title, @description, @image);
+
+            UPDATE Data
+            SET
+              MetadataFormat = @metadataFormat
+            WHERE
+              Id = @id;
+            ";
+
+            command.Parameters.AddWithValue("id", dataId);
+            command.Parameters.AddWithValue("url", linkMetadata.Url ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("title", linkMetadata.Title ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("description", linkMetadata.Description ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("image", linkMetadata.Image ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("metadataFormat", MetadataFormat.Link.GetDescription());
+            command.ExecuteNonQuery();
+        }
+
 
         private IEnumerable<DataModel> GetDataByClipId(int clipId, SqliteConnection connection)
         {
@@ -246,22 +274,20 @@ namespace Rememory.Services.NewServices
                 byte[] hash = (byte[])reader.GetValue(3);
                 MetadataFormat? metadataFormat = reader.IsDBNull(4) ? null : EnumExtensions.FromDescription<MetadataFormat>(reader.GetString(4));
 
-                if (metadataFormat is null)
-                {
-                    yield return new DataModel(format, data, hash) { Id = id };
-                }
-                else if (metadataFormat == MetadataFormat.Link)
+                IMetadata? metadataModel = null;
+                if (metadataFormat == MetadataFormat.Link)
                 {
                     var linkMetadata = GetLinkMetadataById(id, connection);
-                    yield return new LinkMetadataModel(format, data, hash)
+                    metadataModel = new LinkMetadataModel()
                     {
-                        Id = id,
                         Url = linkMetadata.Item1,
                         Title = linkMetadata.Item2,
                         Description = linkMetadata.Item3,
                         Image = linkMetadata.Item4
                     };
                 }
+
+                yield return new DataModel(format, data, hash) { Id = id, Metadata = metadataModel };
             }
         }
 
@@ -270,9 +296,9 @@ namespace Rememory.Services.NewServices
             using var command = connection.CreateCommand();
             command.CommandText = @"
             INSERT INTO
-              Data (ClipId, Format, Data, Hash, MetadataFormat)
+              Data (ClipId, Format, Data, Hash)
             VALUES
-              (@clipId, @format, @data, @hash, @metadataFormat);
+              (@clipId, @format, @data, @hash);
             SELECT
               last_insert_rowid();
             ";
@@ -282,31 +308,16 @@ namespace Rememory.Services.NewServices
             dataParameter.ParameterName = "data";
             var hashParameter = command.CreateParameter();
             hashParameter.ParameterName = "hash";
-            var metadataFormatParameter = command.CreateParameter();
-            metadataFormatParameter.ParameterName = "metadataFormat";
             command.Parameters.AddWithValue("clipId", clipId);
-            command.Parameters.AddRange([formatParameter, dataParameter, hashParameter, metadataFormatParameter]);
+            command.Parameters.AddRange([formatParameter, dataParameter, hashParameter]);
 
             foreach (var data in dataCollection)
             {
                 formatParameter.Value = data.Format.GetDescription();
                 dataParameter.Value = data.Data;
                 hashParameter.Value = data.Hash;
-                MetadataFormat? metadataFormat = data switch
-                {
-                    LinkMetadataModel => MetadataFormat.Link,
-                    _ => null
-                };
-                metadataFormatParameter.Value = metadataFormat ?? (object)DBNull.Value;
 
                 data.Id = Convert.ToInt32(command.ExecuteScalar());
-
-                switch (metadataFormat)
-                {
-                    case MetadataFormat.Link:
-                        AddLinkMetadata((LinkMetadataModel)data, connection);
-                        break;
-                }
             }
         }
 
@@ -337,30 +348,6 @@ namespace Rememory.Services.NewServices
                 return (url, title, description, image);
             }
             return (null, null, null, null);
-        }
-
-        private void AddLinkMetadata(LinkMetadataModel linkMetadata, SqliteConnection connection)
-        {
-            var command = connection.CreateCommand();
-            command.CommandText = @"
-            INSERT INTO
-              LinkMetadata (Id, Url, Title, Description, Image)
-            VALUES
-              (@id, @url, @title, @description, @image);
-            ";
-
-            command.Parameters.AddWithValue("id", linkMetadata.Id);
-            command.Parameters.AddWithValue("url", linkMetadata.Url ?? (object)DBNull.Value);
-            command.Parameters.AddWithValue("title", linkMetadata.Title ?? (object)DBNull.Value);
-            command.Parameters.AddWithValue("description", linkMetadata.Description ?? (object)DBNull.Value);
-            command.Parameters.AddWithValue("image", linkMetadata.Image ?? (object)DBNull.Value);
-            command.ExecuteNonQuery();
-        }
-
-        private enum MetadataFormat
-        {
-            [Description("Link")]
-            Link
         }
     }
 }
