@@ -236,6 +236,8 @@ namespace Rememory.Services
                 @deleteFavoriteClips
                 OR NOT IsFavorite
               );
+
+            VACUUM;
             ";
 
             command.Parameters.AddWithValue("cutoffTime", cutoffTime);
@@ -250,6 +252,8 @@ namespace Rememory.Services
             command.CommandText = @"
             DELETE FROM Clips;
             DELETE FROM Owners;
+
+            VACUUM;
             ";
             command.ExecuteNonQuery();
         }
