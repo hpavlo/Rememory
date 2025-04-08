@@ -1,5 +1,4 @@
 using Microsoft.UI.Xaml.Controls;
-using Rememory.Helper;
 using Rememory.Models;
 using Rememory.Views.Controls.Behavior;
 using System.Runtime.InteropServices;
@@ -8,13 +7,12 @@ namespace Rememory.Views.Controls
 {
     public sealed partial class TextPreview : UserControl
     {
-        public ClipboardItem ItemContext => (ClipboardItem)DataContext;
+        public string TextData { get; private set; }
 
-        public string TextData => ItemContext.DataMap[ClipboardFormat.Text].Trim();
-
-        public TextPreview(ClipboardItem clipboardItem, [Optional] string searchText)
+        public TextPreview(DataModel dataModel, [Optional] string? searchText)
         {
-            DataContext = clipboardItem;
+            DataContext = dataModel;
+            TextData = dataModel.Data.Trim();
             this.InitializeComponent();
 
             if (searchText is not null)

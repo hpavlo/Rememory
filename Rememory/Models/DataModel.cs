@@ -1,6 +1,7 @@
 ﻿using Rememory.Helper;
+using Rememory.Models.Metadata;
 
-namespace Rememory.Models.NewModels
+namespace Rememory.Models
 {
     public class DataModel(ClipboardFormat format, string data, byte[] hash)
     {

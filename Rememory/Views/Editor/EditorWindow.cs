@@ -10,19 +10,19 @@ namespace Rememory.Views.Editor
 {
     public class EditorWindow
     {
-        private static Window _window;
-        private static ClipboardItem _itemContext;
+        private static Window? _window;
+        private static ClipModel? _clipContext;
 
         private EditorWindow() { }
 
-        public static void ShowEditorWindow(ClipboardItem context)
+        public static void ShowEditorWindow(ClipModel context)
         {
             if (_window is null)
             {
-                _itemContext = context;
-                _itemContext.IsOpenInEditor = true;
+                _clipContext = context;
+                _clipContext.IsOpenInEditor = true;
                 InitializeWindow();
-                _window.Activate();
+                _window!.Activate();
             }
             else
             {
@@ -35,14 +35,16 @@ namespace Rememory.Views.Editor
             _window?.Close();
         }
 
-        public static bool TryGetEditorContext(out ClipboardItem context)
+        public static bool TryGetEditorContext(out ClipModel? context)
         {
-            context = _itemContext;
-            return _itemContext is not null;
+            context = _clipContext;
+            return _clipContext is not null;
         }
 
         private static void InitializeWindow()
         {
+            if (_clipContext is null) return;
+
             _window = new WindowEx()
             {
                 MinHeight = 400,
@@ -50,7 +52,7 @@ namespace Rememory.Views.Editor
                 ExtendsContentIntoTitleBar = true,
                 SystemBackdrop = new MicaBackdrop(),
             };
-            _window.Content = new EditorRootPage(_window, _itemContext);
+            _window.Content = new EditorRootPage(_window, _clipContext);
             _window.Closed += EditorWindow_Closed;
 
             _window.AppWindow.Title = "EditorWindow_Title".GetLocalizedFormatResource(AppInfo.Current.DisplayInfo.DisplayName);
@@ -62,10 +64,10 @@ namespace Rememory.Views.Editor
         private static void EditorWindow_Closed(object sender, WindowEventArgs args)
         {
             _window = null;
-            if (_itemContext is not null)
+            if (_clipContext is not null)
             {
-                _itemContext.IsOpenInEditor = false;
-                _itemContext = null;
+                _clipContext.IsOpenInEditor = false;
+                _clipContext = null;
             }
         }
     }

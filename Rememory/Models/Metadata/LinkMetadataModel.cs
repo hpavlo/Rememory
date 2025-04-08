@@ -1,4 +1,4 @@
-﻿namespace Rememory.Models.NewModels
+﻿namespace Rememory.Models.Metadata
 {
     public class LinkMetadataModel : IMetadata
     {

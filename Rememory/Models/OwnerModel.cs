@@ -2,7 +2,7 @@
 using Microsoft.UI.Xaml.Media.Imaging;
 using Rememory.Helper;
 
-namespace Rememory.Models.NewModels
+namespace Rememory.Models
 {
     public partial class OwnerModel(string path) : ObservableObject
     {

@@ -52,8 +52,8 @@ namespace Rememory
         {
             _launchArguments = args;
             Services = ConfigureServices();
-            ThemeService = Services.GetService<IThemeService>();
-            _keyboardMonitor = Services.GetService<IKeyboardMonitor>();
+            ThemeService = Services.GetService<IThemeService>()!;
+            _keyboardMonitor = Services.GetService<IKeyboardMonitor>()!;
 
             this.InitializeComponent();
             SetCulture(SettingsContext.CurrentLanguageCode.Equals(string.Empty) ?
@@ -147,7 +147,7 @@ namespace Rememory
             services.AddSingleton<ICleanupDataService, CleanupDataService>();
             services.AddSingleton<IThemeService, ThemeService>();
             services.AddSingleton<IKeyboardMonitor, KeyboardMonitor>();
-            services.AddSingleton<IOwnerAppService, OwnerAppService>();
+            services.AddSingleton<IOwnerService, OwnerService>();
             services.AddTransient<IStartupService, TaskSchedulerStartupService>();
 
             return services.BuildServiceProvider();

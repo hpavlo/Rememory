@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Rememory.Contracts;
+﻿using Rememory.Contracts;
 using Rememory.Models;
 using System;
 
@@ -9,25 +8,20 @@ namespace Rememory.Services
     /// Cleans the data if the retention period of items has expired.
     /// Check the data once in 24 hours
     /// </summary>
-    public class CleanupDataService : ICleanupDataService
+    public class CleanupDataService(IClipboardService clipboardService) : ICleanupDataService
     {
         private SettingsContext _settingsContext = SettingsContext.Instance;
-        private IClipboardService _clipboardService = App.Current.Services.GetService<IClipboardService>();
+        private IClipboardService _clipboardService = clipboardService;
         private DateTime _lastCleanupTime = DateTime.MinValue;
 
-        /// <summary>
-        /// Check clean time and delete old items once in 24 hours
-        /// </summary>
-        /// <returns>true if at least one item was deleted</returns>
-        public bool Cleanup()
+        public void Cleanup()
         {
             if ((CleanupTimeSpan)_settingsContext.CleanupTimeSpanIndex != CleanupTimeSpan.None &&
                 DateTime.Now.Subtract(_lastCleanupTime).Days > 0)
             {
                 _lastCleanupTime = DateTime.Now;
-                return _clipboardService.DeleteOldItems(RoundToNearestDay(_lastCleanupTime).Subtract(GetTimeSpanFromSettings()), _settingsContext.CleanFavoriteItems);
+                _clipboardService.DeleteOldClips(RoundToNearestDay(_lastCleanupTime).Subtract(GetTimeSpanFromSettings()), _settingsContext.CleanFavoriteItems);
             }
-            return false;
         }
 
         private DateTime RoundToNearestDay(DateTime dateTime)

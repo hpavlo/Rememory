@@ -11,13 +11,12 @@
                    FontSize="12"
                    TextWrapping="Wrap"
                    TextTrimming="CharacterEllipsis"
-                   Text="{x:Bind ItemContext.LinkValue, Mode=OneWay}" />
+                   Text="{x:Bind LinkUrl, Mode=OneWay}" />
 
         <Grid Height="80"
               CornerRadius="6"
               BorderThickness="{ThemeResource ButtonBorderThemeThickness}"
-              BorderBrush="{ThemeResource SystemControlBaseLowAcrylicElementBrush}"
-              Visibility="{x:Bind ItemContext.HasInfoLoaded, Mode=OneWay}">
+              BorderBrush="{ThemeResource SystemControlBaseLowAcrylicElementBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="3*" />
@@ -31,7 +30,7 @@
                     CornerRadius="6 0 0 6">
                 <Image Stretch="UniformToFill"
                        HorizontalAlignment="Center"
-                       Source="{x:Bind ItemContext.Image, Mode=OneWay}" />
+                       Source="{x:Bind ImageSource, Mode=OneWay}" />
             </Border>
             <TextBlock Grid.Column="1"
                        MaxHeight="34"
@@ -40,7 +39,7 @@
                        FontSize="12"
                        TextWrapping="Wrap"
                        TextTrimming="CharacterEllipsis"
-                       Text="{x:Bind ItemContext.Title, Mode=OneWay}" />
+                       Text="{x:Bind LinkMetadata.Title, Mode=OneWay}" />
             <TextBlock Grid.Column="1"
                        Grid.Row="1"
                        MaxHeight="34"
@@ -50,7 +49,7 @@
                        TextWrapping="Wrap"
                        TextTrimming="CharacterEllipsis"
                        VerticalAlignment="Top"
-                       Text="{x:Bind ItemContext.Description, Mode=OneWay}" />
+                       Text="{x:Bind LinkMetadata.Description, Mode=OneWay}" />
         </Grid>
     </StackPanel>
 </UserControl>

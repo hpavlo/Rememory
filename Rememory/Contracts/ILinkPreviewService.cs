@@ -4,6 +4,6 @@ namespace Rememory.Contracts
 {
     public interface ILinkPreviewService
     {
-        bool TryCreateLinkItem(ClipboardItem item, out ClipboardLinkItem linkItem);
+        void TryAddLinkMetadata(ClipModel clip, DataModel dataModel);
     }
 }

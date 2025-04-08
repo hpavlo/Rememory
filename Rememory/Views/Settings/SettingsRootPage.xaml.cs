@@ -15,9 +15,9 @@ namespace Rememory.Views.Settings
 {
     public sealed partial class SettingsRootPage : Page
     {
-        private IThemeService ThemeService => App.Current.ThemeService;
+        private IThemeService _themeService => App.Current.ThemeService;
         private readonly Window _window;
-        private NavigationViewItemBase _prevSelectedMenuItem;
+        private NavigationViewItemBase? _lastSelectedMenuItem;
         private readonly Dictionary<NavigationViewItemBase, (Type PageType, string Header)> _navigationMap;
 
         public SettingsRootPage(Window window)
@@ -29,7 +29,7 @@ namespace Rememory.Views.Settings
             _window.Activated += SettingsWindow_Activated;
 
             ApplyTheme();
-            ThemeService.ThemeChanged += (s, a) => ApplyTheme();
+            _themeService.ThemeChanged += (s, a) => ApplyTheme();
 
             _navigationMap = new()
             {
@@ -42,9 +42,9 @@ namespace Rememory.Views.Settings
 
         private void ApplyTheme()
         {
-            RequestedTheme = ThemeService.Theme;
+            RequestedTheme = _themeService.Theme;
             // TitleBarTheme has first Legacy value, we use + 1 to ignore it
-            _window.AppWindow.TitleBar.PreferredTheme = (TitleBarTheme)(ThemeService.Theme + 1);
+            _window.AppWindow.TitleBar.PreferredTheme = (TitleBarTheme)(_themeService.Theme + 1);
         }
 
         private void SettingsWindow_Activated(object sender, WindowActivatedEventArgs args)
@@ -96,13 +96,13 @@ namespace Rememory.Views.Settings
             {
                 sender.SelectedItem = currentMenuItem;
                 sender.Header = _navigationMap[currentMenuItem].Header;
-                _prevSelectedMenuItem = currentMenuItem;
+                _lastSelectedMenuItem = currentMenuItem;
             }
         }
 
         private void NavigateTo(NavigationViewItemBase navigationViewItem, [Optional] NavigationTransitionInfo navigationTransitionInfo)
         {
-            if (navigationViewItem != _prevSelectedMenuItem &&
+            if (navigationViewItem != _lastSelectedMenuItem &&
                 _navigationMap.TryGetValue(navigationViewItem, out var navInfo))
             {
                 var navOptions = new FrameNavigationOptions
@@ -114,7 +114,7 @@ namespace Rememory.Views.Settings
                 NavigationViewFrame.NavigateToType(navInfo.PageType, null, navOptions);
                 NavigationViewPanel.Header = navInfo.Header;
 
-                _prevSelectedMenuItem = navigationViewItem;
+                _lastSelectedMenuItem = navigationViewItem;
             }
         }
     }

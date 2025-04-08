@@ -1,5 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Data;
 using Rememory.Helper;
+using Rememory.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,11 +8,11 @@ using Windows.Storage;
 
 namespace Rememory.Converters
 {
-    public class DataFooterInfoConverter : IValueConverter
+    public partial class DataFooterInfoConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return new TaskCompletionNotifier<string>(Task.Run(() => GetFooterInfo((Dictionary<ClipboardFormat, string>)value)));
+            return new TaskCompletionNotifier<string>(Task.Run(() => GetFooterInfo((Dictionary<ClipboardFormat, DataModel>)value)));
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
@@ -19,19 +20,19 @@ namespace Rememory.Converters
             throw new NotImplementedException();
         }
 
-        private async Task<string> GetFooterInfo(Dictionary<ClipboardFormat, string> DataMap)
+        private async Task<string> GetFooterInfo(Dictionary<ClipboardFormat, DataModel> DataMap)
         {
             if (DataMap is not null)
             {
-                if (DataMap.TryGetValue(ClipboardFormat.Text, out string textData))
+                if (DataMap.TryGetValue(ClipboardFormat.Text, out var textData))
                 {
-                    return "CharactersCount".GetLocalizedFormatResource(textData.Length);
+                    return "CharactersCount".GetLocalizedFormatResource(textData.Data.Length);
                 }
-                if (DataMap.TryGetValue(ClipboardFormat.Png, out string pngFile))
+                if (DataMap.TryGetValue(ClipboardFormat.Png, out var pngFile))
                 {
                     try
                     {
-                        var file = await StorageFile.GetFileFromPathAsync(pngFile);
+                        var file = await StorageFile.GetFileFromPathAsync(pngFile.Data);
                         var imageProps = await file.Properties.GetImagePropertiesAsync();
                         return "ImageSize".GetLocalizedFormatResource(imageProps.Width, imageProps.Height);
                     }

@@ -22,7 +22,7 @@ namespace Rememory.Views
         public readonly ClipboardRootPageViewModel ViewModel = new();
 
         private readonly ClipboardWindow _window;
-        private IThemeService ThemeService => App.Current.ThemeService;
+        private IThemeService _themeService => App.Current.ThemeService;
         private Flyout PreviewTextFlyout => (Flyout)this.Resources["PreviewTextFlyout"];
         private Flyout PreviewRtfFlyout => (Flyout)this.Resources["PreviewRtfFlyout"];
         private Flyout PreviewImageFlyout => (Flyout)this.Resources["PreviewImageFlyout"];
@@ -34,8 +34,8 @@ namespace Rememory.Views
             _window.Showing += Window_Showing;
             _window.Hiding += Window_Hiding;
 
-            RequestedTheme = ThemeService.Theme;
-            ThemeService.ThemeChanged += ThemeChanged;
+            RequestedTheme = _themeService.Theme;
+            _themeService.ThemeChanged += ThemeChanged;
 
             ViewModel.SettingsContext.PropertyChanged += SettingsContext_PropertyChanged;
         }
@@ -48,12 +48,12 @@ namespace Rememory.Views
             }
             else
             {
-                ((UIElement)FocusManager.FindFirstFocusableElement(ClipboardItemListView))?.Focus(FocusState.Programmatic);
+                ((UIElement)FocusManager.FindFirstFocusableElement(ClipsListView))?.Focus(FocusState.Programmatic);
             }
 
-            if (ClipboardItemListView.Items.Count != 0)
+            if (ClipsListView.Items.Count != 0)
             {
-                ClipboardItemListView.ScrollIntoView(ClipboardItemListView.Items.First());
+                ClipsListView.ScrollIntoView(ClipsListView.Items.First());
             }
 
             ViewModel.OnWindowShowing();
@@ -64,7 +64,7 @@ namespace Rememory.Views
             ViewModel.OnWindowHiding();
         }
 
-        private void ThemeChanged(object sender, ElementTheme theme)
+        private void ThemeChanged(object? sender, ElementTheme theme)
         {
             this.RequestedTheme = theme;
         }
@@ -116,12 +116,12 @@ namespace Rememory.Views
             ((FrameworkElement)sender).SetBinding(SelectorBar.SelectedItemProperty, binding);
         }
 
-        private void SettingsContext_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs a)
+        private void SettingsContext_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs a)
         {
             // Swap tab indexes between SearchBox and ListView
-            if (a.PropertyName.Equals(nameof(ViewModel.SettingsContext.EnableSearchFocusOnStart)))
+            if ( string.Equals(a.PropertyName, nameof(ViewModel.SettingsContext.EnableSearchFocusOnStart)))
             {
-                (ClipboardItemListView.TabIndex, SearchBox.TabIndex) = (SearchBox.TabIndex, ClipboardItemListView.TabIndex);
+                (ClipsListView.TabIndex, SearchBox.TabIndex) = (SearchBox.TabIndex, ClipsListView.TabIndex);
             }
         }
 
@@ -208,13 +208,13 @@ namespace Rememory.Views
         private void FavoriteMenuItem_Click(object sender, RoutedEventArgs e)
         {
             var menuItem = (MenuFlyoutItem)sender;
-            ViewModel.ChangeItemFavoriteCommand.Execute(menuItem.DataContext);
+            ViewModel.ChangeClipFavoriteCommand.Execute(menuItem.DataContext);
             UpdateFavoriteMenuFlyoutItem(menuItem);
         }
 
         private void UpdateFavoriteMenuFlyoutItem(MenuFlyoutItem menuItem)
         {
-            if (((ClipboardItem)menuItem.DataContext).IsFavorite)
+            if (((ClipModel)menuItem.DataContext).IsFavorite)
             {
                 menuItem.Text = "ContextMenu_RemoveFromFavorite/Text".GetLocalizedResource();
                 menuItem.Icon = new FontIcon() { Glyph = "\uE8D9" };
@@ -232,7 +232,7 @@ namespace Rememory.Views
 
         private void OpenInFlyoutItem_Click(object sender, RoutedEventArgs e)
         {
-            OpenPreviewFlyout((ClipboardItem)((FrameworkElement)sender).DataContext);
+            OpenPreviewFlyout((ClipModel)((FrameworkElement)sender).DataContext);
         }
 
         private void PreviewFlyout_Closed(object sender, object e)
@@ -253,16 +253,16 @@ namespace Rememory.Views
             }
         }
 
-        private void OpenPreviewFlyout(ClipboardItem clipboardItem)
+        private void OpenPreviewFlyout(ClipModel clip)
         {
-            foreach (var data in clipboardItem.DataMap)
+            foreach (var dataItem in clip.Data)
             {
-                switch (data.Key)
+                switch (dataItem.Key)
                 {
                     case ClipboardFormat.Png:
                         try
                         {
-                            ((Image)PreviewImageFlyout.Content).Source = new BitmapImage(new(data.Value));
+                            ((Image)PreviewImageFlyout.Content).Source = new BitmapImage(new(dataItem.Value.Data));
                             PreviewImageFlyout.ShowAt(this);
                             return;
                         }
@@ -273,7 +273,7 @@ namespace Rememory.Views
                         richEditBox.IsReadOnly = false;
                         try
                         {
-                            richEditBox.Document.SetText(TextSetOptions.FormatRtf, File.ReadAllText(data.Value).Replace("{\\rtf", "{\\rtf1"));
+                            richEditBox.Document.SetText(TextSetOptions.FormatRtf, File.ReadAllText(dataItem.Value.Data).Replace("{\\rtf", "{\\rtf1"));
                             richEditBox.SearchHighligh(ViewModel.SearchString);
                             richEditBox.IsReadOnly = true;
                             PreviewRtfFlyout.ShowAt(this);
@@ -283,7 +283,7 @@ namespace Rememory.Views
                         break;
                     case ClipboardFormat.Text:
                         var textBlock = (TextBlock)PreviewTextFlyout.Content;
-                        textBlock.Text = data.Value;
+                        textBlock.Text = dataItem.Value.Data;
                         textBlock.SearchHighlight(ViewModel.SearchString);
                         PreviewTextFlyout.ShowAt(this);
                         return;
@@ -316,15 +316,15 @@ namespace Rememory.Views
                 return;
             }
 
-            OpenPreviewFlyout((ClipboardItem)((FrameworkElement)args.Element).DataContext);
+            OpenPreviewFlyout((ClipModel)((FrameworkElement)args.Element).DataContext);
         }
         private void PastePlainTextKeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
             var button = (Button)args.Element;
-            if (ViewModel.PastePlainTextItemCommand.CanExecute(button.DataContext))
+            if (ViewModel.PasteClipAsPlainTextCommand.CanExecute(button.DataContext))
             {
                 KeyboardHelper.MultiKeyAction([VirtualKey.Shift], KeyboardHelper.KeyAction.Up);
-                ViewModel.PastePlainTextItemCommand.Execute(button.DataContext);
+                ViewModel.PasteClipAsPlainTextCommand.Execute(button.DataContext);
             }
             args.Handled = true;
         }
@@ -332,16 +332,16 @@ namespace Rememory.Views
         private void CopyKeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
             var button = (Button)args.Element;
-            ViewModel.CopyItemCommand.Execute(button.DataContext);
+            ViewModel.CopyClipCommand.Execute(button.DataContext);
             args.Handled = true;
         }
 
         private void EditKeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
             var button = (Button)args.Element;
-            if (ViewModel.EditItemCommand.CanExecute(button.DataContext))
+            if (ViewModel.EditClipCommand.CanExecute(button.DataContext))
             {
-                ViewModel.EditItemCommand.Execute(button.DataContext);
+                ViewModel.EditClipCommand.Execute(button.DataContext);
             }
             args.Handled = true;
         }
@@ -395,21 +395,21 @@ namespace Rememory.Views
             App.Current.ClipboardWindow.HideWindow();
         }
 
-        private void ClipboardItemListView_DragItemsStarting(object sender, DragItemsStartingEventArgs e)
+        private async void ClipsListView_DragItemsStarting(object sender, DragItemsStartingEventArgs e)
         {
-            var item = (ClipboardItem)e.Items.FirstOrDefault();
-            if (item is not null) 
+            var clip = (ClipModel?)e.Items.FirstOrDefault();
+            if (clip is not null) 
             {
-                ViewModel.OnDragItemStarting(item, e.Data);
+                await ViewModel.OnDragClipStartingAsync(clip, e.Data);
             }
         }
 
         // Change preview if user select another item
-        private void ClipboardItemButton_GotFocus(object sender, RoutedEventArgs e)
+        private void ClipButton_GotFocus(object sender, RoutedEventArgs e)
         {
             if (PreviewTextFlyout.IsOpen || PreviewRtfFlyout.IsOpen || PreviewImageFlyout.IsOpen)
             {
-                OpenPreviewFlyout((ClipboardItem)((FrameworkElement)sender).DataContext);
+                OpenPreviewFlyout((ClipModel)((FrameworkElement)sender).DataContext);
             }
         }
     }

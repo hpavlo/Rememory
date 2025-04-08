@@ -14,13 +14,13 @@ namespace Rememory.Views.Editor
     {
         public readonly EditorRootPageViewModel ViewModel;
 
-        private IThemeService ThemeService => App.Current.ThemeService;
+        private IThemeService _themeService => App.Current.ThemeService;
         private readonly Window _window;
 
         // If youser press button to close window
         private bool _requestToClose;
 
-        public EditorRootPage(Window window, ClipboardItem context)
+        public EditorRootPage(Window window, ClipModel context)
         {
             _window = window;
             ViewModel = new EditorRootPageViewModel(context);
@@ -30,12 +30,12 @@ namespace Rememory.Views.Editor
             _window.AppWindow.Closing += EditorWindow_Closing;
 
             ApplyTheme();
-            ThemeService.ThemeChanged += (s, a) => ApplyTheme();
+            _themeService.ThemeChanged += (s, a) => ApplyTheme();
         }
 
         private void ApplyTheme()
         {
-            RequestedTheme = ThemeService.Theme;
+            RequestedTheme = _themeService.Theme;
         }
 
         private async void EditorWindow_Closing(AppWindow sender, AppWindowClosingEventArgs args)

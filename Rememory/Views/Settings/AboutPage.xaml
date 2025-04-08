@@ -7,10 +7,10 @@
       xmlns:tkcontrols="using:CommunityToolkit.WinUI.Controls">
     <StackPanel Margin="56 0"
                 Spacing="5">
-        <tkcontrols:SettingsCard Header="{x:Bind _appName}"
+        <tkcontrols:SettingsCard Header="{x:Bind AppName}"
                                  HeaderIcon="{tk:FontIcon Glyph=&#xE946;}">
             <tkcontrols:SettingsCard.Description>
-                <TextBlock Text="{x:Bind _appVersion}"
+                <TextBlock Text="{x:Bind AppVersion}"
                            IsTextSelectionEnabled="True"
                            HorizontalAlignment="Left" />
             </tkcontrols:SettingsCard.Description>
@@ -18,7 +18,7 @@
 
         <tkcontrols:SettingsCard x:Uid="SettingsCard_GitHubLink"
                                  HeaderIcon="{tk:FontIcon Glyph=&#xE774;}">
-            <HyperlinkButton NavigateUri="{x:Bind _githubLink}">
+            <HyperlinkButton NavigateUri="{x:Bind GithubLink}">
                 <FontIcon Glyph="&#xE8A7;" />
             </HyperlinkButton>
         </tkcontrols:SettingsCard>

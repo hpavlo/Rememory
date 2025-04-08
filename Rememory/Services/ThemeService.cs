@@ -10,8 +10,8 @@ namespace Rememory.Services
     {
         private readonly SettingsContext _settingsContext = SettingsContext.Instance;
 
-        public event EventHandler<ElementTheme> ThemeChanged;
-        public event EventHandler<WindowBackdropType> WindowBackdropChanged;
+        public event EventHandler<ElementTheme>? ThemeChanged;
+        public event EventHandler<WindowBackdropType>? WindowBackdropChanged;
 
         public ElementTheme Theme { get; private set; }
         public WindowBackdropType WindowBackdrop { get; private set; }

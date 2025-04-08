@@ -7,6 +7,7 @@ using Rememory.Views.Settings;
 using System;
 using System.Drawing;
 using Windows.ApplicationModel;
+using Windows.Foundation;
 using Windows.System;
 using WinUIEx;
 using WinUIEx.Messaging;
@@ -18,8 +19,8 @@ namespace Rememory.Views
         public SettingsContext SettingsContext => SettingsContext.Instance;
         public bool IsPinned { get; set; } = false;
 
-        public event EventHandler Showing;
-        public event EventHandler Hiding;
+        public event TypedEventHandler<ClipboardWindow, EventArgs>? Showing;
+        public event TypedEventHandler<ClipboardWindow, EventArgs>? Hiding;
 
         private WindowMessageMonitor _messageMonitor;
 
@@ -77,19 +78,19 @@ namespace Rememory.Views
             if (WindowBackdropHelper.IsSystemBackdropSupported)
             {
                 var backdropHelper = new WindowBackdropHelper(this);
-                return backdropHelper.InitWindowBackdrop();
+                return backdropHelper.TryInitializeBackdrop();
             }
             return false;
         }
 
-        private void WindowMessageReceived(object sender, WindowMessageEventArgs args)
+        private void WindowMessageReceived(object? sender, WindowMessageEventArgs args)
         {
             switch (args.Message.MessageId)
             {
                 case NativeHelper.WM_QUERYENDSESSION:
                     if (args.Message.LParam == 1)   // ENDSESSION_CLOSEAPP
                     {
-                        NativeHelper.RegisterApplicationRestart(null, 0x1011);   // RESTART_NO_CRASH  | RESTART_NO_HANG  | RESTART_NO_REBOOT
+                        NativeHelper.RegisterApplicationRestart(string.Empty, 0x1011);   // RESTART_NO_CRASH  | RESTART_NO_HANG  | RESTART_NO_REBOOT
                     }
                     args.Result = 1;
                     args.Handled = true;

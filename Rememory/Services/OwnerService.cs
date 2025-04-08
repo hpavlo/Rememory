@@ -1,22 +1,30 @@
-﻿using Rememory.Helper;
-using Rememory.Models.NewModels;
+﻿using Rememory.Contracts;
+using Rememory.Helper;
+using Rememory.Models;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
-namespace Rememory.Services.NewServices
+namespace Rememory.Services
 {
-    public class OwnerService
+    public class OwnerService : IOwnerService
     {
-        private readonly NewSqliteService _sqliteService = new();
+        public event EventHandler<OwnerModel>? OwnerRegistered;
+        public event EventHandler<string>? OwnerUnregistered;
+        public event EventHandler? AllOwnersUnregistered;
 
         public Dictionary<string, OwnerModel> Owners { get; private set; }
 
-        public OwnerService()
+        private readonly IStorageService _storageService;
+
+        public OwnerService(IStorageService storageService)
         {
-            Owners = _sqliteService.GetOwners().ToDictionary(o => o.Path);
+            _storageService = storageService;
+
+            Owners = _storageService.GetOwners().ToDictionary(o => o.Path);
 
             OwnerModel emptyOwner = CreateEmptyOwner();
             Owners.Add(emptyOwner.Path, emptyOwner);
@@ -30,22 +38,21 @@ namespace Rememory.Services.NewServices
 
             if (Owners.TryGetValue(path, out var owner))
             {
+                // Trying to update existing info about owner in dictionary and DB
                 bool toUpdate = false;
                 if (!string.Equals(owner.Name, ownerName))
                 {
                     owner.Name = ownerName;
                     toUpdate = true;
                 }
-
                 if (!StructuralComparisons.StructuralEqualityComparer.Equals(owner.Icon, icon))
                 {
                     owner.Icon = icon;
                     toUpdate = true;
                 }
-
                 if (toUpdate)
                 {
-                    _sqliteService.UpdateOwner(owner);
+                    _storageService.UpdateOwner(owner);
                 }
 
                 owner.ClipsCount++;
@@ -58,15 +65,16 @@ namespace Rememory.Services.NewServices
                     Icon = icon,
                     Name = ownerName
                 };
-                _sqliteService.AddOwner(owner);
+                _storageService.AddOwner(owner);
                 Owners.TryAdd(path, owner);
                 owner.ClipsCount++;
                 clip.Owner = owner;
             }
 
+            // If it's a new Owner we will notify about it
             if (owner.ClipsCount == 1)
             {
-                // OwnerRegistered
+                OnOwnerRegistered(owner);
             }
         }
 
@@ -85,13 +93,15 @@ namespace Rememory.Services.NewServices
 
                 if (knownOwner.ClipsCount == 0)
                 {
+                    // Do not remove empty owner from dictionary and DB
                     if (!string.IsNullOrEmpty(path))
                     {
                         Owners.Remove(path);
-                        _sqliteService.DeleteOwner(knownOwner.Id);
+                        _storageService.DeleteOwner(knownOwner.Id);
                     }
 
-                    // OwnerUnregistered
+                    // Notify about unregistered owner, including empty owner
+                    OnOwnerUnregistered(path);
                 }
             }
 
@@ -101,7 +111,22 @@ namespace Rememory.Services.NewServices
         public void UnregisterAllOwners()
         {
             Owners.Clear();
-            // AllOwnersUnregistered
+            OnAllOwnersUnregistered();
+        }
+
+        protected virtual void OnOwnerRegistered(OwnerModel owner)
+        {
+            OwnerRegistered?.Invoke(this, owner);
+        }
+
+        protected virtual void OnOwnerUnregistered(string ownerPath)
+        {
+            OwnerUnregistered?.Invoke(this, ownerPath);
+        }
+
+        protected virtual void OnAllOwnersUnregistered()
+        {
+            AllOwnersUnregistered?.Invoke(this, new());
         }
 
         private OwnerModel CreateEmptyOwner()

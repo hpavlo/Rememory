@@ -1,102 +1,108 @@
 ﻿using Rememory.Helper;
 using Rememory.Models;
-using Rememory.Services;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace Rememory.Contracts
 {
+    /// <summary>
+    /// Defines the contract for the core clipboard management service.
+    /// Handles monitoring, processing new clips, managing the clip collection,
+    /// interacting with storage, and setting data back to the system clipboard.
+    /// </summary>
     public interface IClipboardService
     {
         /// <summary>
-        /// Occurs when clipboard was updated and we recived a new item
+        /// Occurs when a new clip, processed from a system clipboard update, has been added to the collection.
         /// </summary>
-        event EventHandler<ClipboardEventArgs> NewItemAdded;
+        event EventHandler<ClipboardEventArgs> NewClipAdded;
 
         /// <summary>
-        /// Occurs when some item was moved to the top
+        /// Occurs when an existing clip is moved to the top of the collection,
+        /// usually due to being re-copied or explicitly moved by user action.
         /// </summary>
-        event EventHandler<ClipboardEventArgs> ItemMovedToTop;
+        event EventHandler<ClipboardEventArgs> ClipMovedToTop;
 
         /// <summary>
-        /// Occurs when we changed <seealso cref="ClipboardItem.IsFavorite"/> property
+        /// Occurs when the <see cref="ClipModel.IsFavorite"/> status of a clip has been changed.
         /// </summary>
-        event EventHandler<ClipboardEventArgs> FavoriteItemChanged;
+        event EventHandler<ClipboardEventArgs> FavoriteClipChanged;
 
         /// <summary>
-        /// Occurs when one item was deleted
+        /// Occurs when a clip has been deleted from the collection.
         /// </summary>
-        event EventHandler<ClipboardEventArgs> ItemDeleted;
+        event EventHandler<ClipboardEventArgs> ClipDeleted;
 
         /// <summary>
-        /// Occurs when old items were deleted
+        /// Occurs when all clips have been deleted from the collection.
         /// </summary>
-        event EventHandler<ClipboardEventArgs> OldItemsDeleted;
+        event EventHandler<ClipboardEventArgs> AllClipsDeleted;
 
         /// <summary>
-        /// Occurs when all items were deleted
+        /// Gets the in-memory list of tracked clips (<see cref="ClipModel"/>).
+        /// This list represents the current working collection displayed to the user.
         /// </summary>
-        event EventHandler<ClipboardEventArgs> AllItemsDeleted;
+        IList<ClipModel> Clips { get; }
 
         /// <summary>
-        /// Saves all items we have in DB
+        /// Starts monitoring the system clipboard for changes using the specified window handle.
         /// </summary>
-        List<ClipboardItem> ClipboardItems { get; }
+        /// <param name="windowHandle">The handle of the application window to associate with the clipboard monitoring chain.</param>
+        void StartClipboardMonitor(IntPtr windowHandle);
 
         /// <summary>
-        /// Start monitoring the system clipboard
+        /// Stops monitoring the system clipboard associated with the specified window handle.
         /// </summary>
-        void StartClipboardMonitor();
+        /// <param name="windowHandle">The handle of the application window previously used to start monitoring.</param>
+        void StopClipboardMonitor(IntPtr windowHandle);
 
         /// <summary>
-        /// Stop monitoring the system clipboard
+        /// Sets the data from the specified clip model back onto the system clipboard.
         /// </summary>
-        void StopClipboardMonitor();
+        /// <param name="clip">The clip model containing the data to set.</param>
+        /// <param name="type">Optional. If specified, only this data format from the clip will be set; otherwise, all available formats from the clip are attempted.</param>
+        /// <returns><c>true</c> if the clipboard was successfully updated; otherwise, <c>false</c>.</returns>
+        bool SetClipboardData(ClipModel clip, ClipboardFormat? type = null);
 
         /// <summary>
-        /// Update current clipboard data with this item
+        /// Adds a new clip model to the beginning of the collection and persists it to storage.
         /// </summary>
-        /// <param name="item">Item we want to set to clipboard</param>
-        /// <param name="type">Set only specific type of the data</param>
-        /// <returns>true if the clipboard was successfully updated</returns>
-        bool SetClipboardData(ClipboardItem item, [Optional] ClipboardFormat? type);
+        /// <param name="clip">The new clip model to add.</param>
+        void AddClip(ClipModel clip);
 
         /// <summary>
-        /// Adds new item to collection and DB
+        /// Moves the specified existing clip to the beginning (top) of the collection
+        /// and updates its timestamp in persistent storage.
         /// </summary>
-        /// <param name="item">New item we want to add to collection</param>
-        void AddNewItem(ClipboardItem item);
+        /// <param name="clip">The clip model to move.</param>
+        void MoveClipToTop(ClipModel clip);
 
         /// <summary>
-        /// Remove item from the current position and insert it on 0 position
+        /// Toggles the <see cref="ClipModel.IsFavorite"/> status for the specified clip
+        /// and updates the change in persistent storage.
         /// </summary>
-        /// <param name="item">Item we want to move</param>
-        void MoveItemToTop(ClipboardItem item);
+        /// <param name="clip">The clip model whose favorite status should be changed.</param>
+        void ChangeFavoriteClip(ClipModel clip);
 
         /// <summary>
-        /// Update <seealso cref="ClipboardItem.IsFavorite"/> field in item
+        /// Deletes the specified clip from the in-memory collection and optionally from persistent storage.
+        /// Also handles unregistering the associated owner if necessary.
         /// </summary>
-        /// <param name="item">Item we want to update</param>
-        void ChangeFavoriteItem(ClipboardItem item);
+        /// <param name="clip">The clip model to delete.</param>
+        /// <param name="deleteFromDb">If <c>true</c>, also delete the clip from persistent storage; otherwise, only remove from the in-memory collection.</param>
+        void DeleteClip(ClipModel clip, bool deleteFromDb = true);
 
         /// <summary>
-        /// Delete one item from collection and DB
+        /// Deletes clips from the collection and persistent storage that are older than the specified cutoff time.
         /// </summary>
-        /// <param name="item">Item we want to delete</param>
-        void DeleteItem(ClipboardItem item);
+        /// <param name="cutoffTime">The date and time threshold. Clips older than this will be deleted.</param>
+        /// <param name="deleteFavoriteClips">If <c>true</c>, favorite clips older than the cutoff time will also be deleted; otherwise, they will be preserved.</param>
+        void DeleteOldClips(DateTime cutoffTime, bool deleteFavoriteClips);
 
         /// <summary>
-        /// Check and delete all older data for <paramref name="cutoffTime"/>
+        /// Deletes all clips from the collection and persistent storage.
+        /// May also delete associated external files (e.g., images, RTF) and owner records depending on the implementation.
         /// </summary>
-        /// <param name="cutoffTime">Time we will use to compare the data</param>
-        /// <param name="deleteFavoriteItems">set false if we don't want to delete old favorite items</param>
-        /// <returns>true if some items where delated</returns>
-        bool DeleteOldItems(DateTime cutoffTime, bool deleteFavoriteItems);
-
-        /// <summary>
-        /// Erase all data from collection and DB
-        /// </summary>
-        void DeleteAllItems();
+        void DeleteAllClips();
     }
 }

@@ -1,45 +1,35 @@
 ﻿using HtmlAgilityPack;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Dispatching;
 using Rememory.Contracts;
-using Rememory.Helper;
 using Rememory.Models;
+using Rememory.Models.Metadata;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Rememory.Services
 {
-    public class LinkPreviewService : ILinkPreviewService
+    public class LinkPreviewService(IStorageService storageService) : ILinkPreviewService
     {
-        private readonly IStorageService _storageService = App.Current.Services.GetService<IStorageService>();
+        private readonly IStorageService _storageService = storageService;
 
-        public bool TryCreateLinkItem(ClipboardItem item, out ClipboardLinkItem linkItem)
+        public void TryAddLinkMetadata(ClipModel clip, DataModel dataModel)
         {
-            if (item.DataMap.TryGetValue(ClipboardFormat.Text, out string text)
-                    && Uri.TryCreate(text, UriKind.Absolute, out Uri uri)
-                    && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
+            if (SettingsContext.Instance.EnableLinkPreviewLoading && clip.IsLink)
             {
-                linkItem = new ClipboardLinkItem(item);
-                if (SettingsContext.Instance.EnableLinkPreviewLoading)
-                {
-                    LoadMetaInfo(linkItem);
-                }
-                return true;
+                LoadMetaInfo(clip, dataModel);
             }
-            linkItem = null;
-            return false;
         }
 
-        private void LoadMetaInfo(ClipboardLinkItem item)
+        private void LoadMetaInfo(ClipModel clip, DataModel dataModel)
         {
             var dispatcherQueue = DispatcherQueue.GetForCurrentThread();
             new Task(async () =>
             {
-                HttpResponseMessage response = null;
+                HttpResponseMessage? response = null;
                 try
                 {
-                    response = await new HttpClient().GetAsync(item.DataMap[ClipboardFormat.Text]);
+                    response = await new HttpClient().GetAsync(dataModel.Data);
                 }
                 catch (HttpRequestException) { }
                 catch (TaskCanceledException) { }
@@ -67,18 +57,16 @@ namespace Rememory.Services
                 {
                     dispatcherQueue.TryEnqueue(() =>
                     {
-                        item.Title = titleNode.GetAttributeValue("content", string.Empty);
-                        item.Description = descriptionNode.GetAttributeValue("content", string.Empty);
-
-                        try
+                        LinkMetadataModel linkMetadata = new()
                         {
-                            item.Image.UriSource = new Uri(imageNode.GetAttributeValue("content", string.Empty));
-                        }
-                        catch (UriFormatException) { }
-
-                        item.HasInfoLoaded = true;
-
-                        _storageService.SaveLinkPreviewInfo(item);
+                            Url = dataModel.Data,
+                            Title = titleNode.GetAttributeValue("content", string.Empty),
+                            Description = descriptionNode.GetAttributeValue("content", string.Empty),
+                            Image = imageNode.GetAttributeValue("content", string.Empty)
+                        };
+                        dataModel.Metadata = linkMetadata;
+                        _storageService.AddLinkMetadata(linkMetadata, dataModel.Id);
+                        clip.UpdateProperty(nameof(clip.Data));
                     });
                 }
             }).Start();

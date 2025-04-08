@@ -13,7 +13,7 @@ namespace Rememory.Helper.WindowBackdrop
             internal int apartmentType;
         }
 
-        object m_dispatcherQueueController = null;
+        object? m_dispatcherQueueController = null;
         public void EnsureWindowsSystemDispatcherQueueController()
         {
             if (DispatcherQueue.GetForCurrentThread() != null)
@@ -34,6 +34,6 @@ namespace Rememory.Helper.WindowBackdrop
         }
 
         [DllImport("CoreMessaging.dll")]
-        private static extern int CreateDispatcherQueueController([In] DispatcherQueueOptions options, [In, Out, MarshalAs(UnmanagedType.IUnknown)] ref object dispatcherQueueController);
+        private static extern int CreateDispatcherQueueController([In] DispatcherQueueOptions options, [In, Out, MarshalAs(UnmanagedType.IUnknown)] ref object? dispatcherQueueController);
     }
 }

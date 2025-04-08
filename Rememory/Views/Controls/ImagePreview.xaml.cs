@@ -1,18 +1,16 @@
 using Microsoft.UI.Xaml.Controls;
-using Rememory.Helper;
 using Rememory.Models;
 
 namespace Rememory.Views.Controls
 {
     public sealed partial class ImagePreview : UserControl
     {
-        public ClipboardItem ItemContext => (ClipboardItem)DataContext;
+        public string ImageUrl { get; private set; }
 
-        public string ImageUrl => ItemContext.DataMap[ClipboardFormat.Png];
-
-        public ImagePreview(ClipboardItem clipboardItem)
+        public ImagePreview(DataModel dataModel)
         {
-            DataContext = clipboardItem;
+            DataContext = dataModel;
+            ImageUrl = dataModel.Data;
             this.InitializeComponent();
         }
     }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Media.Imaging;
 using Rememory.Contracts;
 using Rememory.Helper;
 using System;
@@ -10,18 +9,18 @@ using System.Runtime.InteropServices.Marshalling;
 
 namespace Rememory.Converters
 {
-    public class OwnerPathToImageConverter : IValueConverter
+    public partial class OwnerPathToImageConverter : IValueConverter
     {
-        private readonly IOwnerAppService _ownerAppService = App.Current.Services.GetService<IOwnerAppService>();
+        private readonly IOwnerService _ownerAppService = App.Current.Services.GetService<IOwnerService>()!;
 
-        public unsafe object Convert(object value, Type targetType, object parameter, string language)
+        public unsafe object? Convert(object value, Type targetType, object parameter, string language)
         {
             var ownerPath = (string)value;
 
             // Try to get cached bitmap value form owner app dictionary
-            if (_ownerAppService.GetOwnerBitmap(ownerPath) is SoftwareBitmapSource cachedBitmap)
+            if (_ownerAppService.Owners.TryGetValue(ownerPath, out var owner) && owner.IconBitmap is not null)
             {
-                return cachedBitmap;
+                return owner.IconBitmap;
             }
 
             if (!Path.Exists(ownerPath))

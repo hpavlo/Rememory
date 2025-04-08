@@ -6,9 +6,9 @@ namespace Rememory.Contracts
 {
     public interface ISearchService
     {
-        void StartSearching(IEnumerable<ClipboardItem> items,
+        void StartSearching(IEnumerable<ClipModel> items,
                             string searchString,
-                            ObservableCollection<ClipboardItem> foundItems);
+                            ObservableCollection<ClipModel> foundItems);
         void StopSearching();
     }
 }

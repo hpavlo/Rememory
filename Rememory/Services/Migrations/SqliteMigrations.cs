@@ -65,7 +65,7 @@ namespace Rememory.Services.Migrations
     /// Migrate ClipboardItems and LinksPreviewInfo to updated tables
     /// App version 1.2._
     /// </summary>
-    public class SplitTablesMigration// : ISqliteMigration
+    public class SplitTablesMigration : ISqliteMigration
     {
         public int Version => 2;
 
