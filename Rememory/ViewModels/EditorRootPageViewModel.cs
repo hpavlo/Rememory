@@ -6,18 +6,18 @@ using Rememory.Helper;
 using Rememory.Models;
 using Rememory.Views.Editor;
 using System;
-using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Input;
 
 namespace Rememory.ViewModels
 {
-    public class EditorRootPageViewModel : ObservableObject
+    public partial class EditorRootPageViewModel : ObservableObject
     {
         private IClipboardService _clipboardService = App.Current.Services.GetService<IClipboardService>();
+        private IOwnerService _ownerService = App.Current.Services.GetService<IOwnerService>();
 
-        private ClipboardItem _context;
+        private readonly ClipModel _context;
 
         private bool _isTextChanged;
         public  bool IsTextChanged
@@ -41,31 +41,29 @@ namespace Rememory.ViewModels
 
         public ICommand SaveTextCommand { get; private set; }
 
-        public EditorRootPageViewModel(ClipboardItem itemContext)
+        public EditorRootPageViewModel(ClipModel clipContext)
         {
-            _context = itemContext;
-            _text = itemContext.DataMap.GetValueOrDefault(ClipboardFormat.Text, string.Empty);
+            _context = clipContext;
+            _text = clipContext.Data.TryGetValue(ClipboardFormat.Text, out DataModel? dataModel) ? dataModel.Data : string.Empty;
 
-            SaveTextCommand = new RelayCommand<ClipboardItem>(_ => SaveChanges());
+            SaveTextCommand = new RelayCommand<ClipModel>(_ => SaveChanges());
         }
 
         private void SaveChanges()
         {
-            var bytes = Encoding.Unicode.GetBytes(Text.EndsWith('\0') ? Text : (Text + '\0'));
-            var hash = SHA256.HashData(bytes);
+            byte[] bytes = Encoding.Unicode.GetBytes(Text.EndsWith('\0') ? Text : (Text + '\0'));
+            byte[] hash = SHA256.HashData(bytes);
 
-            var newItem = new ClipboardItem()
+            ClipModel newClip = new()
             {
-                DataMap = { { ClipboardFormat.Text, Text } },
-                HashMap = { { ClipboardFormat.Text, hash } },
+                Data = { { ClipboardFormat.Text, new DataModel(ClipboardFormat.Text, Text, hash) } },
                 IsFavorite = _context.IsFavorite,
-                Time = DateTime.Now,
-                OwnerPath = _context.OwnerPath,
-                OwnerIconBitmap = _context.OwnerIconBitmap
+                ClipTime = DateTime.Now
             };
 
-            _clipboardService.AddNewItem(newItem);
-            _clipboardService.DeleteItem(_context);
+            _ownerService.RegisterClipOwner(newClip, _context.Owner?.Path, _context.Owner?.Icon);
+            _clipboardService.AddClip(newClip);
+            _clipboardService.DeleteClip(_context);
 
             EditorWindow.CloseEditorWindow();
         }

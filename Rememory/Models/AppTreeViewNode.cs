@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Media.Imaging;
-using Rememory.Helper;
 using System.Collections.ObjectModel;
 using System.IO;
 
@@ -15,8 +14,8 @@ namespace Rememory.Models
             set => SetProperty(ref _title, value);
         }
 
-        private SoftwareBitmapSource _image;
-        public SoftwareBitmapSource Image
+        private SoftwareBitmapSource? _image;
+        public SoftwareBitmapSource? Image
         {
             get => _image;
             set => SetProperty(ref _image, value);
@@ -47,11 +46,11 @@ namespace Rememory.Models
 
         public AppTreeViewNode() { }
 
-        public AppTreeViewNode(OwnerApp app)
+        public AppTreeViewNode(OwnerModel owner)
         {
-            Title = Path.GetFileName(app.Path) is string path && !string.IsNullOrWhiteSpace(path) ? path : "UnknownOwnerAppTitle".GetLocalizedResource();
-            Image = app.IconBitmap;
-            OwnerPath = app.Path;
+            Title = owner.Name ?? Path.GetFileName(owner.Path);
+            Image = owner.IconBitmap;
+            OwnerPath = owner.Path;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Rememory.Models.NewModels
+namespace Rememory.Models.Metadata
 {
     public interface IMetadata
     {

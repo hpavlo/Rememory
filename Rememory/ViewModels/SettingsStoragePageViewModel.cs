@@ -47,7 +47,7 @@ namespace Rememory.ViewModels
 
         private void InitializeCommands()
         {
-            EraseClipboardDataCommand = new RelayCommand(_clipboardService.DeleteAllItems);
+            EraseClipboardDataCommand = new RelayCommand(_clipboardService.DeleteAllClips);
             DeleteOwnerAppFilterCommand = new RelayCommand<OwnerAppFilter>(filter =>
             {
                 SettingsContext.OwnerAppFilters.Remove(filter);

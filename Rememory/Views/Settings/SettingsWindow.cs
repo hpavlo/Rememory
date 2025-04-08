@@ -11,24 +11,17 @@ namespace Rememory.Views.Settings
 {
     public class SettingsWindow
     {
-        public static event EventHandler<WindowActivatedEventArgs> WindowActivated;
+        public static event EventHandler<WindowActivatedEventArgs>? WindowActivated;
         public static IntPtr WindowHandle => _window is not null ? WindowNative.GetWindowHandle(_window) : IntPtr.Zero;
 
-        private static Window _window;
+        private static Window? _window;
 
         private SettingsWindow() { }
 
         public static void ShowSettingsWindow()
         {
-            if (_window is null)
-            {
-                InitializeWindow();
-                _window.Activate();
-            }
-            else
-            {
-                _window.Activate();
-            }
+            _window ??= InitializeWindow();
+            _window.Activate();
         }
 
         public static void CloseSettingsWindow()
@@ -40,23 +33,25 @@ namespace Rememory.Views.Settings
             }
         }
 
-        private static void InitializeWindow()
+        private static Window InitializeWindow()
         {
-            _window = new WindowEx()
+            Window window = new WindowEx()
             {
                 MinHeight = 500,
                 MinWidth = 500,
                 ExtendsContentIntoTitleBar = true,
                 SystemBackdrop = new MicaBackdrop()
             };
-            _window.Content = new SettingsRootPage(_window);
-            _window.Closed += SettingsWindow_Closed;
+            window.Content = new SettingsRootPage(window);
+            window.Closed += SettingsWindow_Closed;
 
-            _window.AppWindow.Title = "SettingsWindow_Title".GetLocalizedFormatResource(AppInfo.Current.DisplayInfo.DisplayName);
-            _window.AppWindow.SetIcon("Assets\\WindowIcon.ico");
-            _window.AppWindow.TitleBar.SetDragRectangles([new RectInt32(0, 0, _window.AppWindow.ClientSize.Width, 48)]);
+            window.AppWindow.Title = "SettingsWindow_Title".GetLocalizedFormatResource(AppInfo.Current.DisplayInfo.DisplayName);
+            window.AppWindow.SetIcon("Assets\\WindowIcon.ico");
+            window.AppWindow.TitleBar.SetDragRectangles([new RectInt32(0, 0, window.AppWindow.ClientSize.Width, 48)]);
 
-            _window.Activated += Window_Activated;
+            window.Activated += Window_Activated;
+
+            return window;
         }
 
         private static void Window_Activated(object sender, WindowActivatedEventArgs args)

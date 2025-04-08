@@ -10,12 +10,12 @@ namespace Rememory.Services
 {
     public class SearchService : ISearchService
     {
-        private Task _searchTask;
-        private CancellationTokenSource _cancellationTokenSource;
+        private Task? _searchTask;
+        private CancellationTokenSource? _cancellationTokenSource;
 
-        public void StartSearching(IEnumerable<ClipboardItem> items,
+        public void StartSearching(IEnumerable<ClipModel> items,
                                    string searchString,
-                                   ObservableCollection<ClipboardItem> foundItems)
+                                   ObservableCollection<ClipModel> foundItems)
         {
             StopSearching();
             _cancellationTokenSource = new CancellationTokenSource();
@@ -28,9 +28,9 @@ namespace Rememory.Services
             _cancellationTokenSource?.Cancel();
         }
 
-        private async void SearchingAsync(IEnumerable<ClipboardItem> items,
+        private async void SearchingAsync(IEnumerable<ClipModel> items,
                                     string searchString,
-                                    ObservableCollection<ClipboardItem> foundItems,
+                                    ObservableCollection<ClipModel> foundItems,
                                     CancellationToken cancellationToken)
         {
             App.Current.DispatcherQueue.TryEnqueue(foundItems.Clear);
@@ -42,8 +42,8 @@ namespace Rememory.Services
                     break;
                 }
 
-                if (item.DataMap.TryGetValue(Helper.ClipboardFormat.Text, out string textData) &&
-                    textData.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                if (item.Data.TryGetValue(Helper.ClipboardFormat.Text, out DataModel? dataModel) &&
+                    dataModel.Data.Contains(searchString, StringComparison.OrdinalIgnoreCase))
                 {
                     App.Current.DispatcherQueue.TryEnqueue(() => foundItems.Add(item));
                 }

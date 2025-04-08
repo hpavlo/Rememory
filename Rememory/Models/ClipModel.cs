@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace Rememory.Models.NewModels
+namespace Rememory.Models
 {
     public partial class ClipModel : ObservableObject
     {
@@ -33,11 +33,19 @@ namespace Rememory.Models.NewModels
         #endregion
 
         private bool _isOpenInEditor = false;
+        /// <summary>
+        /// <c>True</c> if this clip is currently opened in editor 
+        /// </summary>
         public bool IsOpenInEditor
         {
             get => _isOpenInEditor;
             set => SetProperty(ref _isOpenInEditor, value);
         }
+
+        /// <summary>
+        /// Used to show this clip in Links tab
+        /// </summary>
+        public bool IsLink { get; set; } = false;
 
         public void UpdateProperty([CallerMemberName] string propertyName = "")
         {

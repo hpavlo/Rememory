@@ -3,27 +3,37 @@ using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Xaml;
 using Rememory.Contracts;
 using Rememory.Views;
+using System;
 using WinRT;
 
 namespace Rememory.Helper.WindowBackdrop
 {
-    public class WindowBackdropHelper
+    /// <summary>
+    /// Manages system backdrop effects (Mica, Acrylic) for a target Window.
+    /// Handles initialization, switching between backdrop types based on settings or themes,
+    /// responding to window activation/theme changes, and resource cleanup.
+    /// </summary>
+    public class WindowBackdropHelper(ClipboardWindow window)
     {
+        /// <summary>
+        /// Gets a value indicating whether system backdrops (Mica and Acrylic) are supported on the current system.
+        /// Checks if both controller types are supported by the OS version and hardware.
+        /// </summary>
         public static bool IsSystemBackdropSupported => DesktopAcrylicController.IsSupported() && MicaController.IsSupported();
 
-        private ClipboardWindow _window;
-        private WindowsSystemDispatcherQueueHelper _wsdqHelper;
-        private DesktopAcrylicController _acrylicController;
-        private MicaController _micaController;
-        private SystemBackdropConfiguration _configurationSource;
-        private IThemeService ThemeService => App.Current.ThemeService;
+        private readonly ClipboardWindow _window = window;
+        private WindowsSystemDispatcherQueueHelper? _wsdqHelper;
+        private DesktopAcrylicController? _acrylicController;
+        private MicaController? _micaController;
+        private SystemBackdropConfiguration? _configurationSource;
+        private IThemeService _themeService => App.Current.ThemeService;
 
-        public WindowBackdropHelper(ClipboardWindow window)
-        {
-            _window = window;
-        }
-
-        public bool InitWindowBackdrop()
+        /// <summary>
+        /// Initializes the backdrop system for the window if supported.
+        /// Sets up controllers, configuration, and event handlers.
+        /// </summary>
+        /// <returns><c>true</c> if system backdrops are supported and initialization was successful; otherwise, <c>false</c>.</returns>
+        public bool TryInitializeBackdrop()
         {
             if (IsSystemBackdropSupported)
             {
@@ -38,8 +48,8 @@ namespace Rememory.Helper.WindowBackdrop
                 _configurationSource.IsInputActive = true;
                 SetConfigurationSourceTheme();
 
-                ThemeService.WindowBackdropChanged += (s, a) => SetWindowBackdrop(a);
-                SetWindowBackdrop(ThemeService.WindowBackdrop);
+                _themeService.WindowBackdropChanged += (s, a) => SetWindowBackdrop(a);
+                SetWindowBackdrop(_themeService.WindowBackdrop);
 
                 return true;
             }
@@ -104,26 +114,32 @@ namespace Rememory.Helper.WindowBackdrop
             _micaController.AddSystemBackdropTarget(_window.As<ICompositionSupportsSystemBackdrop>());
         }
 
-        private void Window_Showing(object sender, System.EventArgs e)
+        private void Window_Showing(ClipboardWindow sender, EventArgs args)
         {
-            _configurationSource.IsInputActive = true;
+            if (_configurationSource is not null)
+            {
+                _configurationSource.IsInputActive = true;
+            }
         }
 
-        private void Window_Hiding(object sender, System.EventArgs e)
+        private void Window_Hiding(ClipboardWindow sender, EventArgs args)
         {
-            _configurationSource.IsInputActive = false;
+            if (_configurationSource is not null)
+            {
+                _configurationSource.IsInputActive = false;
+            }
         }
 
         private void Window_Closed(object sender, WindowEventArgs args)
         {
             // Make sure any Mica/Acrylic controller is disposed so it doesn't try to
             // use this closed _window.
-            if (_acrylicController != null)
+            if (_acrylicController is not null)
             {
                 _acrylicController.Dispose();
                 _acrylicController = null;
             }
-            if (_micaController != null)
+            if (_micaController is not null)
             {
                 _micaController.Dispose();
                 _micaController = null;
@@ -135,23 +151,27 @@ namespace Rememory.Helper.WindowBackdrop
 
         private void Window_ThemeChanged(FrameworkElement sender, object args)
         {
-            if (_configurationSource != null)
-            {
-                SetConfigurationSourceTheme();
-            }
+            SetConfigurationSourceTheme();
         }
 
         private void SetConfigurationSourceTheme()
         {
-            switch (((FrameworkElement)_window.Content).ActualTheme)
+            if (_configurationSource is not null)
             {
-                case ElementTheme.Dark: _configurationSource.Theme = SystemBackdropTheme.Dark; break;
-                case ElementTheme.Light: _configurationSource.Theme = SystemBackdropTheme.Light; break;
-                case ElementTheme.Default: _configurationSource.Theme = SystemBackdropTheme.Default; break;
+                switch (((FrameworkElement)_window.Content).ActualTheme)
+                {
+                    case ElementTheme.Dark: _configurationSource.Theme = SystemBackdropTheme.Dark; break;
+                    case ElementTheme.Light: _configurationSource.Theme = SystemBackdropTheme.Light; break;
+                    case ElementTheme.Default: _configurationSource.Theme = SystemBackdropTheme.Default; break;
+                }
             }
+            
         }
     }
 
+    /// <summary>
+    /// Defines the types of system backdrops supported.
+    /// </summary>
     public enum WindowBackdropType
     {
         None,

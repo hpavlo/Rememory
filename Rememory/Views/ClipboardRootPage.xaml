@@ -19,9 +19,8 @@
     <Page.Resources>
         <tkconverters:BoolNegationConverter x:Key="BoolNegationConverter" />
         <tkconverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-        <converters:ClipboardItemToControlConverter x:Key="ClipboardItemToControlConverter"
-                                                    SearchString="{x:Bind ViewModel.SearchString, Mode=OneWay}" />
-        <converters:OwnerPathToImageConverter x:Key="OwnerPathToImageConverter" />
+        <converters:ClipToControlConverter x:Key="ClipToControlConverter"
+                                           SearchString="{x:Bind ViewModel.SearchString, Mode=OneWay}" />
         <converters:DateTimeToHumanReadableConverter x:Key="DateTimeToHumanReadableConverter" />
         <converters:DataFooterInfoConverter x:Key="DataFooterInfoConverter" />
 
@@ -163,6 +162,8 @@
         </Grid.RowDefinitions>
 
         <SelectorBar x:Name="NavigationSelectorBar"
+                     AutomationProperties.AutomationId="NavigationSelectorBar"
+                     AutomationProperties.Name="Title Bar Navigation"
                      Grid.Column="0"
                      Grid.Row="0"
                      Margin="5 0"
@@ -170,18 +171,26 @@
                      Loaded="NavigationSelectorBar_Loaded">
             <SelectorBarItem x:Name="HomeMenuItem"
                              x:Uid="NavigationMenu_Home"
+                             AutomationProperties.AutomationId="NavigationSelectorBarItem"
+                             AutomationProperties.Name="Home Menu Item"
                              Icon="Home"
                              Background="Transparent" />
             <SelectorBarItem x:Name="FavoritesMenuItem"
                              x:Uid="NavigationMenu_Favorites"
+                             AutomationProperties.AutomationId="NavigationSelectorBarItem"
+                             AutomationProperties.Name="Favorites Menu Item"
                              Icon="OutlineStar"
                              Background="Transparent" />
             <SelectorBarItem x:Name="ImagesMenuItem"
                              x:Uid="NavigationMenu_Images"
+                             AutomationProperties.AutomationId="NavigationSelectorBarItem"
+                             AutomationProperties.Name="Images Menu Item"
                              Icon="Pictures"
                              Background="Transparent" />
             <SelectorBarItem x:Name="LinksMenuItem"
                              x:Uid="NavigationMenu_Links"
+                             AutomationProperties.AutomationId="NavigationSelectorBarItem"
+                             AutomationProperties.Name="Link Menu Item"
                              Icon="Link"
                              Background="Transparent" />
         </SelectorBar>
@@ -202,12 +211,16 @@
                     VerticalAlignment="Center">
             <!-- Change style to custom one -->
             <Button x:Uid="TitleButton_More"
+                    AutomationProperties.AutomationId="TitleBarButtons"
+                    AutomationProperties.Name="More"
                     Content="{tk:FontIcon FontSize=16, Glyph=&#xE712;}"
                     Style="{ThemeResource AlternateCloseButtonStyle}"
                     Flyout="{StaticResource ContextMenuFlyout}" />
 
             <Button x:Name="CloseButton"
                     x:Uid="TitleButton_Close"
+                    AutomationProperties.AutomationId="TitleBarButtons"
+                    AutomationProperties.Name="Close Window"
                     Click="CloseButton_Click"
                     Content="{tk:FontIcon FontSize=16, Glyph=&#xE711;}"
                     Style="{ThemeResource AlternateCloseButtonStyle}" />
@@ -224,6 +237,8 @@
 
             <AutoSuggestBox x:Name="SearchBox"
                             x:Uid="SearchBox"
+                            AutomationProperties.AutomationId="SearchBox"
+                            AutomationProperties.Name="Search Clips"
                             TabIndex="2"
                             VerticalAlignment="Center"
                             IsEnabled="{x:Bind ViewModel.IsSearchEnabled, Mode=OneWay}"
@@ -231,6 +246,8 @@
 
             <Button x:Name="FilterButton"
                     x:Uid="FilterButton"
+                    AutomationProperties.AutomationId="FilterButton"
+                    AutomationProperties.Name="Filter Clips"
                     Grid.Column="1"
                     Height="32"
                     TabIndex="3"
@@ -258,7 +275,7 @@
                                                   ItemsSource="{x:Bind Children, Mode=OneWay}"
                                                   IsExpanded="{x:Bind IsExpanded, Mode=TwoWay}"
                                                   ToolTipService.ToolTip="{x:Bind OwnerPath, Mode=OneWay}">
-                                        <Grid Margin="0 0 8 0"
+                                        <Grid Margin="-28 0 8 0"
                                               ColumnSpacing="8">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
@@ -269,6 +286,8 @@
                                                    Height="20"
                                                    Source="{x:Bind Image, Mode=OneWay}" />
                                             <TextBlock Grid.Column="1"
+                                                       MaxWidth="200"
+                                                       TextTrimming="CharacterEllipsis"
                                                        Text="{x:Bind Title, Mode=OneWay}" />
                                         </Grid>
                                     </TreeViewItem>
@@ -305,7 +324,9 @@
                        TextWrapping="Wrap" />
         </Grid>
 
-        <ListView x:Name="ClipboardItemListView"
+        <ListView x:Name="ClipsListView"
+                  AutomationProperties.AutomationId="ClipsList"
+                  AutomationProperties.Name="All Clips"
                   Grid.ColumnSpan="3"
                   Grid.Row="3"
                   Padding="5 3"
@@ -313,12 +334,16 @@
                   SelectionMode="None"
                   ShowsScrollingPlaceholders="False"
                   CanDragItems="{x:Bind ViewModel.SettingsContext.EnableItemDragAndDrop, Mode=OneWay}"
-                  ItemsSource="{x:Bind ViewModel.ItemsCollection, Mode=OneWay}"
-                  DragItemsStarting="ClipboardItemListView_DragItemsStarting">
+                  ItemsSource="{x:Bind ViewModel.ClipsCollection, Mode=OneWay}"
+                  DragItemsStarting="ClipsListView_DragItemsStarting">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="IsTabStop"
                             Value="False" />
+                    <Setter Property="AutomationProperties.AutomationId"
+                            Value="ClipItem" />
+                    <Setter Property="AutomationProperties.Name"
+                            Value="Clip Item" />
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListViewItem">
@@ -331,7 +356,7 @@
                                               Margin="-4 0 0 0"
                                               FontSize="16"
                                               Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
-                                              Visibility="{Binding CanDragItems, ElementName=ClipboardItemListView, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                              Visibility="{Binding CanDragItems, ElementName=ClipsListView, Converter={StaticResource BoolToVisibilityConverter}}" />
                                     <ContentPresenter Grid.Column="1" />
                                 </Grid>
                             </ControlTemplate>
@@ -341,16 +366,18 @@
             </ListView.ItemContainerStyle>
 
             <ListView.ItemTemplate>
-                <DataTemplate x:DataType="models:ClipboardItem">
-                    <Button x:Name="ClipboardItemButton"
+                <DataTemplate x:DataType="models:ClipModel">
+                    <Button x:Name="ClipButton"
+                            AutomationProperties.AutomationId="ClipButton"
+                            AutomationProperties.Name="Select Clip"
                             Padding="6"
                             CornerRadius="8"
                             HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Stretch"
                             KeyboardAcceleratorPlacementMode="Hidden"
                             CommandParameter="{x:Bind Mode=OneWay}"
-                            Command="{Binding DataContext.PasteItemCommand, ElementName=ClipboardItemListView}"
-                            GotFocus="ClipboardItemButton_GotFocus"
+                            Command="{Binding DataContext.PasteClipCommand, ElementName=ClipsListView}"
+                            GotFocus="ClipButton_GotFocus"
                             IsEnabled="{x:Bind IsOpenInEditor, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}">
                         <Button.KeyboardAccelerators>
                             <KeyboardAccelerator Key="Space"
@@ -378,35 +405,35 @@
                                 <MenuFlyoutItem x:Uid="ContextMenu_Paste"
                                                 KeyboardAcceleratorTextOverride="Enter"
                                                 CommandParameter="{x:Bind Mode=OneWay}"
-                                                Command="{Binding DataContext.PasteItemCommand, ElementName=ClipboardItemListView}"
+                                                Command="{Binding DataContext.PasteClipCommand, ElementName=ClipsListView}"
                                                 Icon="{tk:FontIcon Glyph=&#xE77F;}" />
                                 <MenuFlyoutItem x:Uid="ContextMenu_PasteAsPlainText"
                                                 KeyboardAcceleratorTextOverride="Shift+Enter"
                                                 CommandParameter="{x:Bind Mode=OneWay}"
-                                                Command="{Binding DataContext.PastePlainTextItemCommand, ElementName=ClipboardItemListView}"
+                                                Command="{Binding DataContext.PasteClipAsPlainTextCommand, ElementName=ClipsListView}"
                                                 Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
                                                 Icon="{tk:FontIcon Glyph=&#xE8D2;}" />
                                 <MenuFlyoutItem x:Uid="ContextMenu_Copy"
                                                 KeyboardAcceleratorTextOverride="Ctrl+C"
                                                 CommandParameter="{x:Bind Mode=OneWay}"
-                                                Command="{Binding DataContext.CopyItemCommand, ElementName=ClipboardItemListView}"
+                                                Command="{Binding DataContext.CopyClipCommand, ElementName=ClipsListView}"
                                                 Icon="{tk:FontIcon Glyph=&#xE8C8;}" />
                                 <MenuFlyoutItem x:Uid="ContextMenu_Edit"
                                                 KeyboardAcceleratorTextOverride="Ctrl+U"
                                                 CommandParameter="{x:Bind Mode=OneWay}"
-                                                Command="{Binding DataContext.EditItemCommand, ElementName=ClipboardItemListView}"
+                                                Command="{Binding DataContext.EditClipCommand, ElementName=ClipsListView}"
                                                 Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
                                                 Icon="{tk:FontIcon Glyph=&#xE70F;}" />
                                 <MenuFlyoutItem x:Uid="ContextMenu_Delete"
                                                 CommandParameter="{x:Bind Mode=OneWay}"
-                                                Command="{Binding DataContext.DeleteItemCommand, ElementName=ClipboardItemListView}"
+                                                Command="{Binding DataContext.DeleteClipCommand, ElementName=ClipsListView}"
                                                 Icon="{tk:FontIcon Glyph=&#xE74D;}" />
                                 <MenuFlyoutSeparator />
                                 <MenuFlyoutSubItem x:Uid="ContextMenu_More"
                                                    Icon="{tk:FontIcon Glyph=&#xE712;}">
                                     <MenuFlyoutItem x:Uid="ContextMenu_Filter"
-                                                    CommandParameter="{x:Bind OwnerPath, Mode=OneWay}"
-                                                    Command="{Binding DataContext.AddOwnerToFiltersCommand, ElementName=ClipboardItemListView}"
+                                                    CommandParameter="{x:Bind Owner, Mode=OneWay}"
+                                                    Command="{Binding DataContext.AddOwnerToFiltersCommand, ElementName=ClipsListView}"
                                                     Icon="{tk:FontIcon Glyph=&#xE71C;}" />
                                 </MenuFlyoutSubItem>
                             </MenuFlyout>
@@ -427,7 +454,7 @@
                                             MaxHeight="120"
                                             IsTabStop="False"
                                             HorizontalContentAlignment="Stretch"
-                                            Content="{Binding Mode=OneWay, Converter={StaticResource ClipboardItemToControlConverter}}" />
+                                            Content="{x:Bind Data, Mode=OneWay, Converter={StaticResource ClipToControlConverter}}" />
                             <TextBlock Grid.Row="1"
                                        Padding="4 0"
                                        FontSize="12"
@@ -435,7 +462,7 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                       DataContext="{x:Bind DataMap, Mode=OneWay, Converter={StaticResource DataFooterInfoConverter}}"
+                                       DataContext="{x:Bind Data, Mode=OneWay, Converter={StaticResource DataFooterInfoConverter}}"
                                        Text="{Binding Result}" />
                             <TextBlock Grid.Column="1"
                                        Grid.Row="1"
@@ -444,11 +471,11 @@
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center"
                                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                       Text="{x:Bind Time, Mode=OneWay, Converter={StaticResource DateTimeToHumanReadableConverter}}" />
+                                       Text="{x:Bind ClipTime, Mode=OneWay, Converter={StaticResource DateTimeToHumanReadableConverter}}" />
                             <Image Grid.Column="2"
                                    Grid.Row="1"
                                    Height="16"
-                                   Source="{x:Bind OwnerPath, Mode=OneWay, Converter={StaticResource OwnerPathToImageConverter}}" />
+                                   Source="{x:Bind Owner.IconBitmap, Mode=OneWay}" />
                         </Grid>
                     </Button>
                 </DataTemplate>

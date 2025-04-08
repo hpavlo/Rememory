@@ -1,10 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Rememory.Contracts;
+﻿using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
@@ -13,62 +11,60 @@ namespace Rememory.Services
 {
     public class ClipboardService : IClipboardService
     {
-        public event EventHandler<ClipboardEventArgs> NewItemAdded;
-        public event EventHandler<ClipboardEventArgs> ItemMovedToTop;
-        public event EventHandler<ClipboardEventArgs> FavoriteItemChanged;
-        public event EventHandler<ClipboardEventArgs> ItemDeleted;
-        public event EventHandler<ClipboardEventArgs> OldItemsDeleted;
-        public event EventHandler<ClipboardEventArgs> AllItemsDeleted;
+        public event EventHandler<ClipboardEventArgs>? NewClipAdded;
+        public event EventHandler<ClipboardEventArgs>? ClipMovedToTop;
+        public event EventHandler<ClipboardEventArgs>? FavoriteClipChanged;
+        public event EventHandler<ClipboardEventArgs>? ClipDeleted;
+        public event EventHandler<ClipboardEventArgs>? AllClipsDeleted;
 
-        public List<ClipboardItem> ClipboardItems { get; private set; }
+        public IList<ClipModel> Clips { get; private set; }
 
-        private ClipboardMonitorCallback _clipboardCallback;
+        private readonly IStorageService _storageService;
+        private readonly IOwnerService _ownerService;
+        private readonly ILinkPreviewService _linkPreviewService;
 
-        private SettingsContext SettingsContext => SettingsContext.Instance;
+        private readonly ClipboardMonitorCallback _clipboardCallback;
 
-        private readonly IStorageService _storageService = App.Current.Services.GetService<IStorageService>();
-        private readonly ILinkPreviewService _linkPreviewService = App.Current.Services.GetService<ILinkPreviewService>();
-        private readonly IOwnerAppService _ownerAppService = App.Current.Services.GetService<IOwnerAppService>();
-
-        public ClipboardService()
+        public ClipboardService(IStorageService storageService, IOwnerService ownerService, ILinkPreviewService linkPreviewService)
         {
+            _storageService = storageService;
+            _ownerService = ownerService;
+            _linkPreviewService = linkPreviewService;
             _clipboardCallback = CallbackFunc;
 
-            // Load items from DB
-            ClipboardItems = _storageService.LoadClipboardItems();
-
-            // Save each owner app info
-            ClipboardItems.ForEach(item => _ownerAppService.RegisterNewItem(item.OwnerPath, item.OwnerIconBitmap));
+            Clips = [.. _storageService.GetClips(_ownerService.Owners.Values.ToDictionary(o => o.Id))];
         }
 
-        public void StartClipboardMonitor()
+        public void StartClipboardMonitor(IntPtr windowHandle)
         {
-            RememoryCoreHelper.StartClipboardMonitor(App.Current.ClipboardWindowHandle, _clipboardCallback);
+            RememoryCoreHelper.StartClipboardMonitor(windowHandle, _clipboardCallback);
         }
 
-        public void StopClipboardMonitor()
+        public void StopClipboardMonitor(IntPtr windowHandle)
         {
-            RememoryCoreHelper.StopClipboardMonitor(App.Current.ClipboardWindowHandle);
+            RememoryCoreHelper.StopClipboardMonitor(windowHandle);
         }
 
-        public unsafe bool SetClipboardData(ClipboardItem item, [Optional] ClipboardFormat? type)
+        public unsafe bool SetClipboardData(ClipModel clip, ClipboardFormat? type = null)
         {
-            List<ClipboardFormat> selectedTypes = type.HasValue ? new() { type.Value } : new(item.DataMap.Keys);
+            List<ClipboardFormat> selectedTypes = type.HasValue ? [type.Value] : [.. clip.Data.Keys];
 
-            ClipboardDataInfo dataInfo = new();
-            dataInfo.FormatCount = (uint)selectedTypes.Count;
-            dataInfo.FirstItem = Marshal.AllocHGlobal(selectedTypes.Count * Marshal.SizeOf(typeof(FormatDataItem)));
+            ClipboardDataInfo dataInfo = new()
+            {
+                FormatCount = (uint)selectedTypes.Count,
+                FirstItem = Marshal.AllocHGlobal(selectedTypes.Count * Marshal.SizeOf(typeof(FormatDataItem)))
+            };
 
             nint currentPtr = dataInfo.FirstItem;
             foreach (var dataType in selectedTypes)
             {
-                var dataStr = item.DataMap.GetValueOrDefault(dataType);
-                if (dataStr == null)
+                var dataStr = clip.Data.GetValueOrDefault(dataType);
+                if (dataStr is null)
                 {
                     continue;
                 }
 
-                var dataPtr = ClipboardFormatHelper.DataTypeToUnmanagedConverters[dataType](dataStr);
+                var dataPtr = ClipboardFormatHelper.DataTypeToUnmanagedConverters[dataType](dataStr.Data);
 
                 var formatItem = new FormatDataItem
                 {
@@ -85,211 +81,192 @@ namespace Rememory.Services
             return result;
         }
 
-        public void AddNewItem(ClipboardItem item)
+        public void AddClip(ClipModel clip)
         {
-            if (_linkPreviewService.TryCreateLinkItem(item, out ClipboardLinkItem newLinkItem))
+            if (clip.Data.TryGetValue(ClipboardFormat.Text, out var textData))
             {
-                item = newLinkItem;
+                // Detect if the new clip contains a link
+                clip.IsLink = Uri.TryCreate(textData.Data, UriKind.Absolute, out var uri)
+                    && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
+
+                _linkPreviewService.TryAddLinkMetadata(clip, textData);
             }
-            ClipboardItems.Insert(0, item);
-            item.Id = _storageService.SaveClipboardItem(item);
-            _ownerAppService.RegisterNewItem(item.OwnerPath, item.OwnerIconBitmap);
-            OnNewItemAdded(new ClipboardEventArgs(ClipboardItems, item));
+
+            Clips.Insert(0, clip);
+            _storageService.AddClip(clip);
+            OnNewClipAdded(Clips, clip);
         }
 
-        public void MoveItemToTop(ClipboardItem item)
+        public void MoveClipToTop(ClipModel clip)
         {
-            ClipboardItems.Remove(item);
-            ClipboardItems.Insert(0, item);
-            item.Time = DateTime.Now;
-            _storageService.UpdateClipboardItem(item);
-            OnItemMovedToTop(new ClipboardEventArgs(ClipboardItems, item));
+            Clips.Remove(clip);
+            Clips.Insert(0, clip);
+            clip.ClipTime = DateTime.Now;
+            _storageService.UpdateClip(clip);
+            OnClipMovedToTop(Clips, clip);
         }
 
-        public void ChangeFavoriteItem(ClipboardItem item)
+        public void ChangeFavoriteClip(ClipModel clip)
         {
-            item.IsFavorite = !item.IsFavorite;
-            _storageService.UpdateClipboardItem(item);
-            OnFavoriteItemChanged(new ClipboardEventArgs(ClipboardItems, item));
+            clip.IsFavorite = !clip.IsFavorite;
+            _storageService.UpdateClip(clip);
+            OnFavoriteClipChanged(Clips, clip);
         }
 
-        public void DeleteItem(ClipboardItem item)
+        public void DeleteClip(ClipModel clip, bool deleteFromDb = true)
         {
-            ClipboardItems.Remove(item);
-            item.ClearSavedData();
-            _storageService.DeleteClipboardItem(item);
-            _ownerAppService.UnregisterItem(item.OwnerPath);
-            OnItemDeleted(new ClipboardEventArgs(ClipboardItems, item));
+            Clips.Remove(clip);
+            clip.ClearExternalDataFiles();
+            if (deleteFromDb)
+            {
+                _storageService.DeleteClip(clip.Id);
+            }
+            _ownerService.UnregisterClipOwner(clip);
+            OnClipDeleted(Clips, clip);
         }
 
-        public bool DeleteOldItems(DateTime cutoffTime, bool deleteFavoriteItems)
+        public void DeleteOldClips(DateTime cutoffTime, bool deleteFavoriteClips)
         {
-            var itemsToDelete = ClipboardItems
-                .Where(item => item.Time < cutoffTime && (deleteFavoriteItems || !item.IsFavorite))
+            _storageService.DeleteOldClips(cutoffTime, deleteFavoriteClips);
+
+            var clipsToDelete = Clips
+                .Where(clip => clip.ClipTime < cutoffTime && (deleteFavoriteClips || !clip.IsFavorite))
                 .ToList();
 
-            if (itemsToDelete.Count == 0)
+            foreach (var clip in clipsToDelete)
             {
-                return false;
+                DeleteClip(clip, false);
             }
-            itemsToDelete.ForEach(item =>
-            {
-                ClipboardItems.Remove(item);
-                item.ClearSavedData();
-                _storageService.DeleteClipboardItem(item);
-                _ownerAppService.UnregisterItem(item.OwnerPath);
-            });
-
-            OnOldItemsDeleted(new ClipboardEventArgs(ClipboardItems, changedClipboardItems: itemsToDelete));
-            return true;
         }
 
-        public void DeleteAllItems()
+        public void DeleteAllClips()
         {
-            void DeleteFolder(string path)
-            {
-                if (Directory.Exists(path))
-                {
-                    Directory.Delete(path, true);
-                }
-            }
+            // Delete all clips with owners and related data
+            Clips.Clear();
+            _storageService.DeleteAllClips();
+            _ownerService.UnregisterAllOwners();
+            ClipboardFormatHelper.ClearAllExternalData();
 
-            _storageService.DeleteAllClipboardItems();
-            _ownerAppService.UnregisterAllItems();
-            ClipboardItems.Clear();
+            OnAllClipsDeleted(Clips);
+        }
 
-            try
-            {
-                var rtfPath = Path.Combine(ClipboardFormatHelper.RootHistoryFolderPath, ClipboardFormatHelper.FORMAT_FOLDER_NAME_RTF);
-                var htmlPath = Path.Combine(ClipboardFormatHelper.RootHistoryFolderPath, ClipboardFormatHelper.FORMAT_FOLDER_NAME_HTML);
-                var pngPath = Path.Combine(ClipboardFormatHelper.RootHistoryFolderPath, ClipboardFormatHelper.FORMAT_FOLDER_NAME_PNG);
-
-                DeleteFolder(rtfPath);
-                DeleteFolder(htmlPath);
-                DeleteFolder(pngPath);
-            }
-            catch { }
-
-            OnAllItemsDeleted(new ClipboardEventArgs(ClipboardItems, changedClipboardItems: []));
+        protected virtual void OnNewClipAdded(IList<ClipModel> clips, ClipModel newClip)
+        {
+            NewClipAdded?.Invoke(this, new(clips, newClip));
+        }
+        protected virtual void OnClipMovedToTop(IList<ClipModel> clips, ClipModel newClip)
+        {
+            ClipMovedToTop?.Invoke(this, new(clips, newClip));
+        }
+        protected virtual void OnFavoriteClipChanged(IList<ClipModel> clips, ClipModel newClip)
+        {
+            FavoriteClipChanged?.Invoke(this, new(clips, newClip));
+        }
+        protected virtual void OnClipDeleted(IList<ClipModel> clips, ClipModel newClip)
+        {
+            ClipDeleted?.Invoke(this, new(clips, newClip));
+        }
+        protected virtual void OnAllClipsDeleted(IList<ClipModel> clips)
+        {
+            AllClipsDeleted?.Invoke(this, new(clips));
         }
 
         private bool CallbackFunc(ref ClipboardDataInfo dataInfo)
         {
-            ClipboardItem newItem = new()
-            {
-                Time = DateTime.Now
-            };
-
-            string ownerPathStr = Marshal.PtrToStringUni(dataInfo.OwnerPath);
-            if (!string.IsNullOrEmpty(ownerPathStr))
+            string? ownerPath = Marshal.PtrToStringUni(dataInfo.OwnerPath);
+            byte[]? iconPixels = null;
+            if (!string.IsNullOrEmpty(ownerPath))
             {
                 // Check should filter this source app or not
-                var replacedOwnerPath = ownerPathStr.Replace('\\', '/');
+                var replacedOwnerPath = ownerPath.Replace('\\', '/');
                 try
                 {
-                    var ownerFilter = SettingsContext.OwnerAppFilters.FirstOrDefault(filter => ownerPathStr.Equals(filter.Pattern)
+                    var ownerFilter = SettingsContext.Instance.OwnerAppFilters.FirstOrDefault(filter => ownerPath.Equals(filter.Pattern)
                         || Regex.IsMatch(replacedOwnerPath, $"^{filter.Pattern.Replace('\\', '/').Replace("*", ".*")}$"));
                     if (ownerFilter is not null)
                     {
                         ownerFilter.FilteredCount++;
-                        SettingsContext.OwnerAppFiltersSave();
+                        SettingsContext.Instance.OwnerAppFiltersSave();
                         return false;
                     }
                 }
                 catch { }
 
-                newItem.OwnerPath = ownerPathStr;
+                if (dataInfo.IconPixels != 0)
+                {
+                    iconPixels = new byte[dataInfo.IconLength];
+                    Marshal.Copy(dataInfo.IconPixels, iconPixels, 0, dataInfo.IconLength);
+                }
             }
 
-            if (dataInfo.IconPixels != 0)
-            {
-                newItem.OwnerIconBitmap = GetIconBitmap(dataInfo);
-            }
-            
+            ClipModel clip = new();
+            _ownerService.RegisterClipOwner(clip, ownerPath, iconPixels);
+
             for (uint i = 0; i < dataInfo.FormatCount; i++)
             {
                 var dataFormatInfo = Marshal.PtrToStructure<FormatDataItem>((nint)(dataInfo.FirstItem + i * Marshal.SizeOf<FormatDataItem>()));
 
-                var dataType = ClipboardFormatHelper.GetFormatKeyByValue(dataFormatInfo.Format).Value;
-                string str = ClipboardFormatHelper.DataTypeToStringConverters[dataType]((dataFormatInfo.Data, dataFormatInfo.Size));
-                if (string.IsNullOrEmpty(str))
+                ClipboardFormat? dataFormat = ClipboardFormatHelper.GetFormatKeyByValue(dataFormatInfo.Format);
+                if (dataFormat is null)
+                {
+                    continue;
+                }
+
+                string convertedData = ClipboardFormatHelper.DataTypeToStringConverters[dataFormat.Value]((dataFormatInfo.Data, dataFormatInfo.Size));
+                if (string.IsNullOrEmpty(convertedData))
                 {
                     return false;
                 }
-                newItem.DataMap.Add(dataType, str);
 
                 var hash = new byte[32];
                 Marshal.Copy(dataFormatInfo.Hash, hash, 0, 32);
-                newItem.HashMap.Add(dataType, hash);
+
+                DataModel clipData = new(dataFormat.Value, convertedData, hash);
+                clip.Data.TryAdd(dataFormat.Value, clipData);
             }
 
-            if (!RemoveDuplicateItem(newItem))
+            if (!RemoveDuplicateItem(clip))
             {
-                AddNewItem(newItem);
+                AddClip(clip);
             }
-            
+
             return true;
         }
 
-        private bool RemoveDuplicateItem(ClipboardItem newItem)
+        private bool RemoveDuplicateItem(ClipModel newClip)
         {
-            ClipboardItem toBeMoved = null;
+            ClipModel? toBeMoved = null;
 
-            foreach (var item in ClipboardItems)
+            foreach (var clip in Clips)
             {
-                if (ClipboardFormatHelper.AreItemsEqual(item, newItem))
+                if (clip.EqualDataTo(newClip))
                 {
-                    toBeMoved = item;
+                    toBeMoved = clip;
                     break;
                 }
             }
 
             if (toBeMoved is not null)
             {
-                ClipboardItems.Remove(toBeMoved);
-                ClipboardItems.Insert(0, toBeMoved);
-                toBeMoved.Time = newItem.Time;
-                toBeMoved.OwnerPath = newItem.OwnerPath;
-                toBeMoved.OwnerIconBitmap = newItem.OwnerIconBitmap;
-                _storageService.UpdateClipboardItem(toBeMoved);
-                newItem.ClearSavedData();
-                OnItemMovedToTop(new ClipboardEventArgs(ClipboardItems, toBeMoved));
+                Clips.Remove(toBeMoved);
+                Clips.Insert(0, toBeMoved);
+
+                toBeMoved.ClipTime = newClip.ClipTime;
+
+                if (toBeMoved.Owner != newClip.Owner)
+                {
+                    _ownerService.UnregisterClipOwner(toBeMoved);
+                    toBeMoved.Owner = newClip.Owner;   // newClip.Owner is already registered
+                }
+
+                _storageService.UpdateClip(toBeMoved);
+                newClip.Owner = null;
+                newClip.ClearExternalDataFiles();
+                OnClipMovedToTop(Clips, toBeMoved);
                 return true;
             }
 
             return false;
-        }
-
-        private byte[] GetIconBitmap(ClipboardDataInfo dataInfo)
-        {
-            byte[] pixels = new byte[dataInfo.IconLength];
-            Marshal.Copy(dataInfo.IconPixels, pixels, 0, dataInfo.IconLength);
-            return pixels;
-        }
-
-        protected void OnNewItemAdded(ClipboardEventArgs e)
-        {
-            NewItemAdded?.Invoke(this, e);
-        }
-        protected void OnItemMovedToTop(ClipboardEventArgs e)
-        {
-            ItemMovedToTop?.Invoke(this, e);
-        }
-        protected void OnFavoriteItemChanged(ClipboardEventArgs e)
-        {
-            FavoriteItemChanged?.Invoke(this, e);
-        }
-        protected void OnItemDeleted(ClipboardEventArgs e)
-        {
-            ItemDeleted?.Invoke(this, e);
-        }
-        protected void OnOldItemsDeleted(ClipboardEventArgs e)
-        {
-            OldItemsDeleted?.Invoke(this, e);
-        }
-        protected void OnAllItemsDeleted(ClipboardEventArgs e)
-        {
-            AllItemsDeleted?.Invoke(this, e);
         }
     }
 }

@@ -6,9 +6,8 @@
     public interface ICleanupDataService
     {
         /// <summary>
-        /// Check clean time and delete old items
+        /// Check clean time and delete old clips
         /// </summary>
-        /// <returns>true if at least one item was deleted</returns>
-        bool Cleanup();
+        void Cleanup();
     }
 }

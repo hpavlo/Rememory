@@ -1,33 +1,38 @@
 ﻿using Microsoft.UI.Xaml.Data;
 using Rememory.Helper;
 using Rememory.Models;
+using Rememory.Models.Metadata;
 using Rememory.Views.Controls;
 using System;
+using System.Collections.Generic;
 
 namespace Rememory.Converters
 {
-    public class ClipboardItemToControlConverter : IValueConverter
+    public partial class ClipToControlConverter : IValueConverter
     {
         /// <summary>
         /// Using to highlight search text in items
         /// </summary>
-        public string SearchString { get; set; }
+        public string? SearchString { get; set; }
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var item = (ClipboardItem)value;
+            var data = (Dictionary<ClipboardFormat, DataModel>)value;
 
-            foreach (var dataItem in item.DataMap)
+            foreach (var dataItem in data)
             {
                 switch (dataItem.Key)
                 {
                     case ClipboardFormat.Text:
                         {
-                            return item is ClipboardLinkItem ? new LinkPreview(item, SearchString) : new TextPreview(item, SearchString);
+                            // Put not whole clip but only related DataModel
+                            return dataItem.Value.Metadata is LinkMetadataModel
+                                ? new LinkPreview(dataItem.Value, SearchString)
+                                : new TextPreview(dataItem.Value, SearchString);
                         }
                     case ClipboardFormat.Png:
                         {
-                            return new ImagePreview(item);
+                            return new ImagePreview(dataItem.Value);
                         }
                 }
             }
