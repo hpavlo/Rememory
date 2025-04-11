@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 using System.Text.RegularExpressions;
 
 namespace Rememory.Services
@@ -55,6 +56,10 @@ namespace Rememory.Services
                 FirstItem = Marshal.AllocHGlobal(selectedTypes.Count * Marshal.SizeOf(typeof(FormatDataItem)))
             };
 
+            // Temporarily using it to free the bitmap path after SetDataToClipboard
+            // Logic refactor is required on Core side
+            IntPtr bitmapUnmanagedPath = IntPtr.Zero;
+
             nint currentPtr = dataInfo.FirstItem;
             foreach (var dataType in selectedTypes)
             {
@@ -65,6 +70,10 @@ namespace Rememory.Services
                 }
 
                 var dataPtr = ClipboardFormatHelper.DataTypeToUnmanagedConverters[dataType](dataStr.Data);
+                if (dataType == ClipboardFormat.Bitmap)
+                {
+                    bitmapUnmanagedPath = dataPtr;
+                }
 
                 var formatItem = new FormatDataItem
                 {
@@ -78,6 +87,13 @@ namespace Rememory.Services
 
             var result = RememoryCoreHelper.SetDataToClipboard(ref dataInfo);
             Marshal.FreeHGlobal(dataInfo.FirstItem);
+
+            // For bitmap only we use file path. We have to free it after
+            if (bitmapUnmanagedPath != IntPtr.Zero)
+            {
+                Utf16StringMarshaller.Free((ushort*)bitmapUnmanagedPath);
+            }
+
             return result;
         }
 

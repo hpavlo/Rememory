@@ -96,6 +96,11 @@ namespace Rememory
                         KeyboardHelper.ShortcutToString(SettingsContext.ActivationShortcut, "+")))
                     .BuildNotification());
             }
+
+            UnhandledException += (s, a) =>
+            {
+
+            };
         }
 
         private void ClipboardWindow_Closed(object sender, WindowEventArgs args)

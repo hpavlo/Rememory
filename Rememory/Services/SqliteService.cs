@@ -21,6 +21,7 @@ namespace Rememory.Services
 
         public SqliteService()
         {
+            Directory.CreateDirectory(ClipboardFormatHelper.RootHistoryFolderPath);
             using var connection = CreateAndOpenConnection();
             ApplyMigrations(connection);
         }
@@ -410,8 +411,6 @@ namespace Rememory.Services
         /// </summary>
         private void ApplyMigrations(SqliteConnection connection)
         {
-            Directory.CreateDirectory(ClipboardFormatHelper.RootHistoryFolderPath);
-
             _currentVersion = GetDatabaseVersion(connection);
             var migrations = GetMigrations();
             try

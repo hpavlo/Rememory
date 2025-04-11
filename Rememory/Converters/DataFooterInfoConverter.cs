@@ -28,11 +28,11 @@ namespace Rememory.Converters
                 {
                     return "CharactersCount".GetLocalizedFormatResource(textData.Data.Length);
                 }
-                if (DataMap.TryGetValue(ClipboardFormat.Png, out var pngFile))
+                if (DataMap.TryGetValue(ClipboardFormat.Png, out var imageFile) || DataMap.TryGetValue(ClipboardFormat.Bitmap, out imageFile))
                 {
                     try
                     {
-                        var file = await StorageFile.GetFileFromPathAsync(pngFile.Data);
+                        var file = await StorageFile.GetFileFromPathAsync(imageFile.Data);
                         var imageProps = await file.Properties.GetImagePropertiesAsync();
                         return "ImageSize".GetLocalizedFormatResource(imageProps.Width, imageProps.Height);
                     }

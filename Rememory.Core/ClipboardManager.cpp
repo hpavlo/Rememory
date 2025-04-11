@@ -72,7 +72,18 @@ bool ClipboardManager::SetDataToClipboard(ClipboardDataInfo& dataInfo)
     for (int i = 0; i < dataInfo.formatCount; i++)
     {
         FormatDataItem* formatDataItem = dataInfo.firstItem + i;
-        SetClipboardData(formatDataItem->format, formatDataItem->data);
+
+        if (formatDataItem->format == CF_BITMAP)
+        {
+            WCHAR* path = static_cast<WCHAR*>(formatDataItem->data);
+            HBITMAP hBitmap = (HBITMAP)LoadImage(NULL, path, IMAGE_BITMAP, 0, 0, LR_DEFAULTSIZE | LR_LOADFROMFILE);
+            
+            if (hBitmap)
+            {
+                SetClipboardData(formatDataItem->format, hBitmap);
+            }
+        }
+        else SetClipboardData(formatDataItem->format, formatDataItem->data);
     }
 
     _isMyChanges = true;
@@ -117,12 +128,18 @@ void CALLBACK ClipboardManager::MonitorTimerProc(HWND hWnd, UINT uMsg, UINT_PTR 
     monitor.HandleClipboardData();
 }
 
+#define PNG_FORMAT RegisterClipboardFormat(L"PNG")
+#define IMAGE_PNG_FORMAT RegisterClipboardFormat(L"image/png")
+
 void ClipboardManager::HandleClipboardData()
 {
     if (!TryOpenClipboard())
     {
         return;
     }
+
+    bool isPngAvailable = IsClipboardFormatAvailable(PNG_FORMAT);
+    bool isImagePngAvailable = IsClipboardFormatAvailable(IMAGE_PNG_FORMAT);
 
     UINT format = 0;
     while ((format = EnumClipboardFormats(format)) != 0)
@@ -131,10 +148,30 @@ void ClipboardManager::HandleClipboardData()
         {
             continue;
         }
-
+        
         HANDLE hData = GetClipboardData(format);
         if (!hData)
         {
+            continue;
+        }
+
+        // Save bitmap only if we don't have a png format
+        if (format == CF_BITMAP) {
+            if (isPngAvailable || isImagePngAvailable)
+                continue;
+
+            // Create FormatDataItem manually to avoid GlobalSize calculating
+            FormatDataItem fdi = {};
+            fdi.format = format;
+            fdi.data = hData;
+
+            ClipboardData.push_back(fdi);
+            continue;
+        }
+
+        if (format == IMAGE_PNG_FORMAT && !isPngAvailable) {
+            // Put "image/png" as "PNG" format
+            ClipboardData.push_back(FormatDataItem(PNG_FORMAT, hData));
             continue;
         }
 
