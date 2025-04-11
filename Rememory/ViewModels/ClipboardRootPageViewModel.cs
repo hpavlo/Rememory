@@ -5,21 +5,17 @@ using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Hooks;
 using Rememory.Models;
-using Rememory.Models.Metadata;
 using Rememory.Views;
 using Rememory.Views.Editor;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
-using Windows.Storage.Streams;
 using Windows.System;
 
 namespace Rememory.ViewModels
@@ -251,7 +247,7 @@ namespace Rememory.ViewModels
             {
                 NavigationMenuItem.Home => true,   // Show all clips
                 NavigationMenuItem.Fovorites => item.IsFavorite,   // Show only favorites
-                NavigationMenuItem.Images => item.Data.ContainsKey(ClipboardFormat.Png),   // Show only clips containing PNG data
+                NavigationMenuItem.Images => item.Data.ContainsKey(ClipboardFormat.Png) || item.Data.ContainsKey(ClipboardFormat.Bitmap),   // Show only clips containing image data
                 NavigationMenuItem.Links => item.IsLink,   // Show only links
                 _ => false   // Default case, should not happen if enum is handled completely
             };

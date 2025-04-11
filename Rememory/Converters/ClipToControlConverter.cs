@@ -31,6 +31,7 @@ namespace Rememory.Converters
                                 : new TextPreview(dataItem.Value, SearchString);
                         }
                     case ClipboardFormat.Png:
+                    case ClipboardFormat.Bitmap:
                         {
                             return new ImagePreview(dataItem.Value);
                         }

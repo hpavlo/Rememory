@@ -32,7 +32,7 @@ namespace Rememory.Views
             IsResizable = false;
             IsMaximizable = false;
             IsMinimizable = false;
-            TaskBarIcon = Icon.FromFile(AppContext.BaseDirectory + "Assets\\WindowIcon.ico");
+            TaskBarIcon = WinUIEx.Icon.FromFile(AppContext.BaseDirectory + "Assets\\WindowIcon.ico");
 
             this.SetWindowStyle(WindowStyle.Popup);
             int cornerPreference = (int)NativeHelper.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;

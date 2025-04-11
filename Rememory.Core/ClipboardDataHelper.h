@@ -38,5 +38,6 @@ private:
 	static std::vector<UINT> RequiredClipboardFormats;
 
 	ClipboardDataHelper();
+    static bool GetBitmapAndPixels(HBITMAP hBitmap, BITMAP& outBitmap, std::vector<BYTE>& outPixelData);
     static void FreeClipboardData(DataItemsRef clipboardData);
 };

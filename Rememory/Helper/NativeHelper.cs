@@ -16,6 +16,19 @@ namespace Rememory.Helper
         public const uint WM_USER = 0x0400;
 
         internal static uint CF_UNICODETEXT = 0x000D;
+        internal static uint CF_BITMAP = 0x0002;
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct BITMAP
+        {
+            public Int32 bmType;
+            public Int32 bmWidth;
+            public Int32 bmHeight;
+            public Int32 bmWidthBytes;
+            public UInt16 bmPlanes;
+            public UInt16 bmBitsPixel;
+            public IntPtr bmBits;
+        }
 
         [DllImport("user32.dll")]
         internal static extern uint RegisterClipboardFormat(string format);

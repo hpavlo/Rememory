@@ -4,6 +4,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -39,6 +41,11 @@ namespace Rememory.Helper
         /// </summary>
         public const string FORMAT_FOLDER_NAME_PNG = "PngFormat";
 
+        /// <summary>
+        /// The subfolder name within the history root for storing BITMAP format files.
+        /// </summary>
+        public const string FORMAT_FOLDER_NAME_BITMAP = "BitmapFormat";
+
         #endregion
 
         #region Constants for File Naming
@@ -64,6 +71,11 @@ namespace Rememory.Helper
         /// </summary>
         public const string FILE_NAME_FORMAT_PNG = $"{FILE_NAME_FORMAT}.png";
 
+        /// <summary>
+        /// The complete filename format string for BITMAP files, including the extension.
+        /// </summary>
+        public const string FILE_NAME_FORMAT_BITMAP = $"{FILE_NAME_FORMAT}.bmp";
+
         #endregion
 
         /// <summary>
@@ -80,6 +92,7 @@ namespace Rememory.Helper
         public static readonly Dictionary<ClipboardFormat, uint> DataTypeFormats = new()
         {
             { ClipboardFormat.Text, NativeHelper.CF_UNICODETEXT },
+            { ClipboardFormat.Bitmap, NativeHelper.CF_BITMAP },
             { ClipboardFormat.Rtf, NativeHelper.RegisterClipboardFormat("Rich Text Format") },
             { ClipboardFormat.Html, NativeHelper.RegisterClipboardFormat("HTML Format") },
             { ClipboardFormat.Png, NativeHelper.RegisterClipboardFormat("PNG") }
@@ -93,6 +106,7 @@ namespace Rememory.Helper
         public static unsafe readonly Dictionary<ClipboardFormat, Func<(IntPtr, UIntPtr), string>> DataTypeToStringConverters = new()
         {
             { ClipboardFormat.Text, _ => Marshal.PtrToStringUni(_.Item1) ?? string.Empty },
+            { ClipboardFormat.Bitmap, _ => ConvertBitmapToFile(_.Item1) },
             { ClipboardFormat.Rtf, _ => ConvertPointerToFile(_.Item1, _.Item2, ClipboardFormat.Rtf) },   // Marshal.PtrToStringUTF8 to directly convert the data
             { ClipboardFormat.Html, _ => ConvertPointerToFile(_.Item1, _.Item2, ClipboardFormat.Html) },   // Marshal.PtrToStringUTF8
             { ClipboardFormat.Png, _ => ConvertPointerToFile(_.Item1, _.Item2, ClipboardFormat.Png) }
@@ -106,6 +120,7 @@ namespace Rememory.Helper
         public static unsafe readonly Dictionary<ClipboardFormat, Func<string, IntPtr>> DataTypeToUnmanagedConverters = new()
         {
             { ClipboardFormat.Text, _ => (IntPtr)Utf16StringMarshaller.ConvertToUnmanaged(_) },
+            { ClipboardFormat.Bitmap, _ => (IntPtr)Utf16StringMarshaller.ConvertToUnmanaged(_) },
             { ClipboardFormat.Rtf, ConvertFileToPointer },   // Utf8StringMarshaller
             { ClipboardFormat.Html, ConvertFileToPointer },   // Utf8StringMarshaller
             { ClipboardFormat.Png, ConvertFileToPointer }
@@ -145,6 +160,14 @@ namespace Rememory.Helper
 
             // If text matches, they are equal
             if (textMatch) return true;
+
+            // Check if both have Bitmap data and their hashes match
+            bool bitmapMatch = firstModel.Data.TryGetValue(ClipboardFormat.Bitmap, out var firstBitmapData)
+                          && secondModel.Data.TryGetValue(ClipboardFormat.Bitmap, out var secondBitmapData)
+                          && StructuralComparisons.StructuralEqualityComparer.Equals(firstBitmapData?.Hash, secondBitmapData?.Hash);
+
+            // If bitmap matches, they are equal
+            if (bitmapMatch) return true;
 
             // Check if both have Png data and their hashes match
             bool pngMatch = firstModel.Data.TryGetValue(ClipboardFormat.Png, out var firstPngData)
@@ -191,6 +214,7 @@ namespace Rememory.Helper
                 DeleteFolder(Path.Combine(RootHistoryFolderPath, FORMAT_FOLDER_NAME_RTF));
                 DeleteFolder(Path.Combine(RootHistoryFolderPath, FORMAT_FOLDER_NAME_HTML));
                 DeleteFolder(Path.Combine(RootHistoryFolderPath, FORMAT_FOLDER_NAME_PNG));
+                DeleteFolder(Path.Combine(RootHistoryFolderPath, FORMAT_FOLDER_NAME_BITMAP));
             }
             catch { }
 
@@ -256,6 +280,7 @@ namespace Rememory.Helper
                 ClipboardFormat.Rtf => FORMAT_FOLDER_NAME_RTF,
                 ClipboardFormat.Html => FORMAT_FOLDER_NAME_HTML,
                 ClipboardFormat.Png => FORMAT_FOLDER_NAME_PNG,
+                ClipboardFormat.Bitmap => FORMAT_FOLDER_NAME_BITMAP,
                 // Explicitly handle Text or throw for unsupported formats intended for file storage.
                 ClipboardFormat.Text => throw new ArgumentException("Text format should not be stored as an external file.", nameof(format)),
                 _ => throw new NotImplementedException($"Folder mapping not implemented for format: {format}")
@@ -346,6 +371,46 @@ namespace Rememory.Helper
         }
 
         /// <summary>
+        /// Writes bitmap data from an unmanaged memory pointer with BITMAP struct and the pixels to a new file.
+        /// A unique filename is generated based on the current timestamp and format.
+        /// </summary>
+        /// <param name="dataPointer"> pointing to the unmanaged BITMAP struct and the pixels.</param>
+        /// <returns>The full path to the newly created file, or <see cref="string.Empty"/> if an error occurs.</returns>
+        private static unsafe string ConvertBitmapToFile(IntPtr dataPointer)
+        {
+            try
+            {
+                NativeHelper.BITMAP bitmapStruct = Marshal.PtrToStructure<NativeHelper.BITMAP>(dataPointer);
+                IntPtr pData = dataPointer + Marshal.SizeOf<NativeHelper.BITMAP>();
+                int stride = ((bitmapStruct.bmWidth * bitmapStruct.bmBitsPixel + 31) / 32) * 4;
+
+                using Bitmap bitmap = new(
+                    bitmapStruct.bmWidth,
+                    bitmapStruct.bmHeight,
+                    stride,
+                    bitmapStruct.bmBitsPixel switch
+                    {
+                        1 => PixelFormat.Format1bppIndexed,
+                        4 => PixelFormat.Format4bppIndexed,
+                        8 => PixelFormat.Format8bppIndexed,
+                        16 => PixelFormat.Format16bppRgb565,
+                        24 => PixelFormat.Format24bppRgb,
+                        32 => PixelFormat.Format32bppArgb,
+                        _ => throw new NotSupportedException($"Bit depth {bitmapStruct.bmBitsPixel} is not supported.")
+                    },
+                    pData);
+
+                string filePath = GenerateFilePath(ClipboardFormat.Bitmap);
+                bitmap.Save(filePath, ImageFormat.Bmp);
+                return filePath;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
         /// Generates a unique, absolute file path for storing external clipboard data based on the format.
         /// Ensures the target directory exists.
         /// </summary>
@@ -360,6 +425,7 @@ namespace Rememory.Helper
                 ClipboardFormat.Rtf => FILE_NAME_FORMAT_RTF,
                 ClipboardFormat.Html => FILE_NAME_FORMAT_HTML,
                 ClipboardFormat.Png => FILE_NAME_FORMAT_PNG,
+                ClipboardFormat.Bitmap => FILE_NAME_FORMAT_BITMAP,
                 _ => throw new NotImplementedException($"File path generation not implemented for format: {format}")
             };
 
@@ -392,6 +458,8 @@ namespace Rememory.Helper
     {
         [Description("CF_UNICODETEXT")]
         Text,
+        [Description("CF_BITMAP")]
+        Bitmap,
         [Description("Rich Text Format")]
         Rtf,
         [Description("HTML Format")]
@@ -448,5 +516,4 @@ namespace Rememory.Helper
             return default;
         }
     }
-
 }
