@@ -260,6 +260,7 @@ namespace Rememory.Views
                 switch (dataItem.Key)
                 {
                     case ClipboardFormat.Png:
+                    case ClipboardFormat.Bitmap:
                         try
                         {
                             ((Image)PreviewImageFlyout.Content).Source = new BitmapImage(new(dataItem.Value.Data));
