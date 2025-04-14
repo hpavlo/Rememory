@@ -4,45 +4,53 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:Rememory.Views.Controls">
     <StackPanel Spacing="6">
-        <TextBlock x:Name="PreviewTextBlock"
+        <TextBlock x:Name="PreviewUrl"
                    Grid.ColumnSpan="2"
                    Padding="4 0"
-                   MaxHeight="34"
+                   MaxLines="2"
                    FontSize="12"
                    TextWrapping="Wrap"
                    TextTrimming="CharacterEllipsis"
                    Text="{x:Bind LinkUrl, Mode=OneWay}" />
 
-        <Grid Height="80"
+        <Grid x:Name="PreviewGrid"
+              Height="82"
               CornerRadius="6"
               BorderThickness="{ThemeResource ButtonBorderThemeThickness}"
-              BorderBrush="{ThemeResource SystemControlBaseLowAcrylicElementBrush}">
+              BorderBrush="{ThemeResource AccentAAFillColorDisabled}">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            
-            <Border Grid.RowSpan="2"
-                    CornerRadius="6 0 0 6">
-                <Image Stretch="UniformToFill"
+
+            <Border x:Name="PreviewImageBorder"
+                    Grid.RowSpan="2"
+                    Width="{x:Bind PreviewGrid.Height}"
+                    CornerRadius="6 0 0 6"
+                    Visibility="Collapsed">
+                <Image x:Name="PreviewImage"
+                       Stretch="UniformToFill"
                        HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       ImageOpened="PreviewImage_ImageOpened"
                        Source="{x:Bind ImageSource, Mode=OneWay}" />
             </Border>
-            <TextBlock Grid.Column="1"
-                       MaxHeight="34"
+            <TextBlock x:Name="PreviewTitle"
+                       Grid.Column="1"
                        Margin="8 5 8 0"
+                       MaxLines="2"
                        FontWeight="SemiBold"
                        FontSize="12"
                        TextWrapping="Wrap"
                        TextTrimming="CharacterEllipsis"
                        Text="{x:Bind LinkMetadata.Title, Mode=OneWay}" />
-            <TextBlock Grid.Column="1"
+            <TextBlock x:Name="PreviewDescription"
+                       Grid.Column="1"
                        Grid.Row="1"
-                       MaxHeight="34"
                        Margin="8 5 8 0"
                        FontWeight="Thin"
                        FontSize="12"

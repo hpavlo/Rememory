@@ -1,3 +1,4 @@
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Rememory.Models;
@@ -23,7 +24,7 @@ namespace Rememory.Views.Controls
 
             if (searchText is not null)
             {
-                PreviewTextBlock.SearchHighlight(searchText, LinkUrl);
+                PreviewUrl.SearchHighlight(searchText, LinkUrl);
             }
 
             if (IsValidUrl(LinkMetadata?.Image, out var uri))
@@ -42,6 +43,11 @@ namespace Rememory.Views.Controls
 
             return Uri.TryCreate(url, UriKind.Absolute, out uri)
                 && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
+        }
+
+        private void PreviewImage_ImageOpened(object sender, RoutedEventArgs e)
+        {
+            PreviewImageBorder.Visibility = Visibility.Visible;
         }
     }
 }
