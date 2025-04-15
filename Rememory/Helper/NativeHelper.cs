@@ -11,6 +11,8 @@ namespace Rememory.Helper
     {
         public const uint WM_QUERYENDSESSION = 0x0011;
         public const uint WM_ENDSESSION = 0x16;
+        public const uint WM_SETTINGCHANGE = 0x001A;
+        public const uint SPI_SETLOGICALDPIOVERRIDE = 0x009F;
         public const uint WM_COMMAND = 0x0111;
         public const uint WM_LBUTTONUP = 0x0202;
         public const uint WM_USER = 0x0400;

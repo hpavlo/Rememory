@@ -87,6 +87,12 @@ namespace Rememory.Views
         {
             switch (args.Message.MessageId)
             {
+                case NativeHelper.WM_SETTINGCHANGE:
+                    if (args.Message.WParam == NativeHelper.SPI_SETLOGICALDPIOVERRIDE)   // Update position and size on DPI update
+                    {
+                        MoveToStartPosition();
+                    }
+                    break;
                 case NativeHelper.WM_QUERYENDSESSION:
                     if (args.Message.LParam == 1)   // ENDSESSION_CLOSEAPP
                     {
