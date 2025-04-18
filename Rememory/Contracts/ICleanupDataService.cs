@@ -8,6 +8,6 @@
         /// <summary>
         /// Check clean time and delete old clips
         /// </summary>
-        void Cleanup();
+        void CleanupByRetentionPeriod();
     }
 }

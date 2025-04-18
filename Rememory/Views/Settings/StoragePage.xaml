@@ -15,6 +15,7 @@
         <converters:OwnerPathToImageConverter x:Key="OwnerPathToImageConverter" />
         <converters:StringFormatResourceConverter x:Key="StringFormatResourceConverter" />
         <tkconverters:StringVisibilityConverter x:Key="StringVisibilityConverter" />
+        <tkconverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </Page.Resources>
 
     <StackPanel Margin="56 0"
@@ -43,20 +44,44 @@
             </StackPanel>
         </tkcontrols:SettingsCard>
 
-        <tkcontrols:SettingsCard x:Uid="SettingsCard_RetentionPeriod"
-                                 HeaderIcon="{tk:FontIcon Glyph=&#xE74E;}">
-            <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.CleanupTimeSpanIndex, Mode=TwoWay}">
-                <ComboBoxItem x:Uid="SettingsComboBox_RetentionPeriod_Daily" />
-                <ComboBoxItem x:Uid="SettingsComboBox_RetentionPeriod_Weekly" />
-                <ComboBoxItem x:Uid="SettingsComboBox_RetentionPeriod_Monthly" />
-                <ComboBoxItem x:Uid="SettingsComboBox_RetentionPeriod_Always" />
+        <tkcontrols:SettingsExpander x:Uid="SettingsCard_CleanupType"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xE74E;}"
+                                     IsExpanded="True">
+            <ComboBox SelectedIndex="{x:Bind ViewModel.CleanupTypeIndex, Mode=TwoWay}">
+                <ComboBoxItem x:Uid="SettingsComboBox_CleanupType_RetentionPeriod" />
+                <ComboBoxItem x:Uid="SettingsComboBox_CleanupType_Quantity" />
             </ComboBox>
-        </tkcontrols:SettingsCard>
 
-        <tkcontrols:SettingsCard x:Uid="SettingsCard_FavoriteCleaning"
-                                 HeaderIcon="{tk:FontIcon Glyph=&#xE728;}">
-            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.CleanFavoriteItems, Mode=TwoWay}" />
-        </tkcontrols:SettingsCard>
+            <tkcontrols:SettingsExpander.Items>
+                <tkcontrols:SettingsCard x:Uid="SettingsCard_RetentionPeriod"
+                                         IsEnabled="{x:Bind ViewModel.IsRetentionPeriodParametersEnabled, Mode=OneWay}"
+                                         Visibility="{x:Bind ViewModel.IsRetentionPeriodParametersEnabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.CleanupTimeSpanIndex, Mode=TwoWay}">
+                        <ComboBoxItem x:Uid="SettingsComboBox_RetentionPeriod_Daily" />
+                        <ComboBoxItem x:Uid="SettingsComboBox_RetentionPeriod_Weekly" />
+                        <ComboBoxItem x:Uid="SettingsComboBox_RetentionPeriod_Monthly" />
+                        <ComboBoxItem x:Uid="SettingsComboBox_RetentionPeriod_Always" />
+                    </ComboBox>
+                </tkcontrols:SettingsCard>
+
+                <tkcontrols:SettingsCard x:Uid="SettingsCard_FavoriteCleaning"
+                                         IsEnabled="{x:Bind ViewModel.IsRetentionPeriodParametersEnabled, Mode=OneWay}"
+                                         Visibility="{x:Bind ViewModel.IsRetentionPeriodParametersEnabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.CleanFavoriteItems, Mode=TwoWay}" />
+                </tkcontrols:SettingsCard>
+
+                <tkcontrols:SettingsCard x:Uid="SettingsCard_CleanupQuantity"
+                                         IsEnabled="{x:Bind ViewModel.IsQuantityParametersEnabled, Mode=OneWay}"
+                                         Visibility="{x:Bind ViewModel.IsQuantityParametersEnabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <NumberBox SpinButtonPlacementMode="Inline"
+                               SmallChange="10"
+                               LargeChange="100"
+                               Minimum="10"
+                               Maximum="10000"
+                               Value="{x:Bind ViewModel.SettingsContext.CleanupQuantity, Mode=TwoWay}" />
+                </tkcontrols:SettingsCard>
+            </tkcontrols:SettingsExpander.Items>
+        </tkcontrols:SettingsExpander>
 
         <tkcontrols:SettingsExpander x:Uid="SettingsExpander_OwnerFilters"
                                      HeaderIcon="{tk:FontIcon Glyph=&#xE71C;}"

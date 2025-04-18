@@ -97,7 +97,13 @@ namespace Rememory.Contracts
         /// </summary>
         /// <param name="cutoffTime">The date and time threshold. Clips older than this will be deleted.</param>
         /// <param name="deleteFavoriteClips">If <c>true</c>, favorite clips older than the cutoff time will also be deleted; otherwise, they will be preserved.</param>
-        void DeleteOldClips(DateTime cutoffTime, bool deleteFavoriteClips);
+        void DeleteOldClipsByTime(DateTime cutoffTime, bool deleteFavoriteClips);
+
+        /// <summary>
+        /// Deletes old clips from the collection and persistent storage if there are more than <paramref name="quantity"/>.
+        /// </summary>
+        /// <param name="quantity">Number of clips to leave.</param>
+        void DeleteOldClipsByQuantity(int quantity);
 
         /// <summary>
         /// Deletes all clips from the collection and persistent storage.

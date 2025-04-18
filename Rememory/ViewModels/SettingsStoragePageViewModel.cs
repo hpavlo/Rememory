@@ -3,15 +3,33 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using Rememory.Contracts;
 using Rememory.Models;
+using Rememory.Services;
 using System.Windows.Input;
 
 namespace Rememory.ViewModels
 {
     public class SettingsStoragePageViewModel : ObservableObject
     {
+        private readonly IClipboardService _clipboardService = App.Current.Services.GetService<IClipboardService>()!;
+
         public SettingsContext SettingsContext => SettingsContext.Instance;
 
-        private IClipboardService _clipboardService = App.Current.Services.GetService<IClipboardService>();
+        public bool IsRetentionPeriodParametersEnabled => SettingsContext.CleanupTypeIndex == (int)CleanupType.RetentionPeriod;
+        public bool IsQuantityParametersEnabled => SettingsContext.CleanupTypeIndex == (int)CleanupType.Quantity;
+
+        public int CleanupTypeIndex
+        {
+            get => SettingsContext.CleanupTypeIndex;
+            set
+            {
+                if (SettingsContext.CleanupTypeIndex != value) {
+                    SettingsContext.CleanupTypeIndex = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsRetentionPeriodParametersEnabled));
+                    OnPropertyChanged(nameof(IsQuantityParametersEnabled));
+                }
+            }
+        }
 
         public SettingsStoragePageViewModel()
         {

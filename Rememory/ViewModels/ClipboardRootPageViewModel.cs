@@ -256,7 +256,7 @@ namespace Rememory.ViewModels
         /// <summary>
         /// Check if the retention period of clips has expired
         /// </summary>
-        private void CleanupOldData() => _cleanupDataService.Cleanup();
+        private void CleanupOldData() => _cleanupDataService.CleanupByRetentionPeriod();
 
         private void ClipboardWindow_Showing(ClipboardWindow sender, EventArgs args)
         {

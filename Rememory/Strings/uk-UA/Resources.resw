@@ -557,4 +557,22 @@
   <data name="SettingsCard_FavoriteCleaning.Description" xml:space="preserve">
     <value>Очищати вибрані елементи, термін зберігання яких закінчився</value>
   </data>
+  <data name="SettingsCard_CleanupType.Header" xml:space="preserve">
+    <value>Тип очищення</value>
+  </data>
+  <data name="SettingsCard_CleanupType.Description" xml:space="preserve">
+    <value>Визначає спосіб видалення старих кліпів</value>
+  </data>
+  <data name="SettingsComboBox_CleanupType_RetentionPeriod.Content" xml:space="preserve">
+    <value>Термін зберігання</value>
+  </data>
+  <data name="SettingsComboBox_CleanupType_Quantity.Content" xml:space="preserve">
+    <value>Кількість</value>
+  </data>
+  <data name="SettingsCard_CleanupQuantity.Header" xml:space="preserve">
+    <value>Максимальна кількість кліпів</value>
+  </data>
+  <data name="SettingsCard_CleanupQuantity.Description" xml:space="preserve">
+    <value>Визначає максимальну кількість кліпів, які можуть зберігатися на вашому диску</value>
+  </data>
 </root>

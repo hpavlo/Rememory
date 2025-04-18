@@ -569,4 +569,22 @@ and WebView2 applications</value>
   <data name="SettingsCard_FavoriteCleaning.Description" xml:space="preserve">
     <value>Clean favorite items that are out of retention period</value>
   </data>
+  <data name="SettingsCard_CleanupType.Header" xml:space="preserve">
+    <value>Cleanup type</value>
+  </data>
+  <data name="SettingsCard_CleanupType.Description" xml:space="preserve">
+    <value>Specifies the type of deletion of old clips</value>
+  </data>
+  <data name="SettingsComboBox_CleanupType_RetentionPeriod.Content" xml:space="preserve">
+    <value>Retention period</value>
+  </data>
+  <data name="SettingsComboBox_CleanupType_Quantity.Content" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="SettingsCard_CleanupQuantity.Header" xml:space="preserve">
+    <value>Maximum quantity of clips</value>
+  </data>
+  <data name="SettingsCard_CleanupQuantity.Description" xml:space="preserve">
+    <value>Determines the maximum number of clips that can be stored on your disk</value>
+  </data>
 </root>
