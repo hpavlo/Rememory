@@ -85,7 +85,13 @@ namespace Rememory.Models
         public int WindowWidth
         {
             get => _windowWidth;
-            set => SetSettingsProperty(ref _windowWidth, value);
+            set
+            {
+                if (value >= 320 && value <= 1200)
+                {
+                    SetSettingsProperty(ref _windowWidth, value);
+                }
+            }
         }
 
         private int _windowHeight;
@@ -93,7 +99,13 @@ namespace Rememory.Models
         public int WindowHeight
         {
             get => _windowHeight;
-            set => SetSettingsProperty(ref _windowHeight, value);
+            set
+            {
+                if (value >= 320 && value <= 1200)
+                {
+                    SetSettingsProperty(ref _windowHeight, value);
+                }
+            }
         }
 
         private int _windowMargin;
@@ -101,7 +113,21 @@ namespace Rememory.Models
         public int WindowMargin
         {
             get => _windowMargin;
-            set => SetSettingsProperty(ref _windowMargin, value);
+            set
+            {
+                if (value >= 0 && value <= 50)
+                {
+                    SetSettingsProperty(ref _windowMargin, value);
+                }
+            }
+        }
+
+        private int _cleanupTypeIndex;
+        public int CleanupTypeIndexDefault { get; private set; } = (int)CleanupType.RetentionPeriod;
+        public int CleanupTypeIndex
+        {
+            get => _cleanupTypeIndex;
+            set => SetSettingsProperty(ref _cleanupTypeIndex, value);
         }
 
         private int _cleanupTimeSpanIndex;
@@ -118,6 +144,20 @@ namespace Rememory.Models
         {
             get => _cleanFavoriteItems;
             set => SetSettingsProperty(ref _cleanFavoriteItems, value);
+        }
+
+        private int _cleanupQuantity;
+        public int CleanupQuantityDefault { get; private set; } = 50;
+        public int CleanupQuantity
+        {
+            get => _cleanupQuantity;
+            set
+            {
+                if (value >= 10 && value <= 10_000)
+                {
+                    SetSettingsProperty(ref _cleanupQuantity, value);
+                }
+            }
         }
 
         private List<int> _activationShortcut;
@@ -184,8 +224,10 @@ namespace Rememory.Models
             _windowWidth = GetSettingValue(nameof(WindowWidth), WindowWidthDefault);
             _windowHeight = GetSettingValue(nameof(WindowHeight), WindowHeightDefault);
             _windowMargin = GetSettingValue(nameof(WindowMargin), WindowMarginDefault);
+            _cleanupTypeIndex = GetSettingValue(nameof(CleanupTypeIndex), CleanupTypeIndexDefault);
             _cleanupTimeSpanIndex = GetSettingValue(nameof(CleanupTimeSpanIndex), CleanupTimeSpanIndexDefault);
             _cleanFavoriteItems = GetSettingValue(nameof(CleanFavoriteItems), CleanFavoriteItemsDefault);
+            _cleanupQuantity = GetSettingValue(nameof(CleanupQuantity), CleanupQuantityDefault);
             _activationShortcut = _localSettings.Values.TryGetValue(nameof(ActivationShortcut), out var activationShortcutValue) ?
                 JsonSerializer.Deserialize<List<int>>((string)activationShortcutValue) : ActivationShortcutDefault;
             _enableLinkPreviewLoading = GetSettingValue(nameof(EnableLinkPreviewLoading), EnableLinkPreviewLoadingDefault);

@@ -14,13 +14,14 @@ namespace Rememory.Services
         private IClipboardService _clipboardService = clipboardService;
         private DateTime _lastCleanupTime = DateTime.MinValue;
 
-        public void Cleanup()
+        public void CleanupByRetentionPeriod()
         {
-            if ((CleanupTimeSpan)_settingsContext.CleanupTimeSpanIndex != CleanupTimeSpan.None &&
-                DateTime.Now.Subtract(_lastCleanupTime).Days > 0)
+            if (_settingsContext.CleanupTypeIndex == (int)CleanupType.RetentionPeriod
+                && _settingsContext.CleanupTimeSpanIndex != (int)CleanupTimeSpan.None
+                && DateTime.Now.Subtract(_lastCleanupTime).Days > 0)
             {
                 _lastCleanupTime = DateTime.Now;
-                _clipboardService.DeleteOldClips(RoundToNearestDay(_lastCleanupTime).Subtract(GetTimeSpanFromSettings()), _settingsContext.CleanFavoriteItems);
+                _clipboardService.DeleteOldClipsByTime(RoundToNearestDay(_lastCleanupTime).Subtract(GetTimeSpanFromSettings()), _settingsContext.CleanFavoriteItems);
             }
         }
 
@@ -53,5 +54,11 @@ namespace Rememory.Services
         Week = 1,
         Month = 2,
         None = 3
+    }
+
+    public enum CleanupType
+    {
+        RetentionPeriod = 0,
+        Quantity = 1
     }
 }

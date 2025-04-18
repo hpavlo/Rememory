@@ -225,7 +225,7 @@ namespace Rememory.Services
             command.ExecuteNonQuery();
         }
 
-        public void DeleteOldClips(DateTime cutoffTime, bool deleteFavoriteClips)
+        public void DeleteOldClipsByTime(DateTime cutoffTime, bool deleteFavoriteClips)
         {
             using var connection = CreateAndOpenConnection();
             using var command = connection.CreateCommand();
@@ -243,6 +243,29 @@ namespace Rememory.Services
 
             command.Parameters.AddWithValue("cutoffTime", cutoffTime);
             command.Parameters.AddWithValue("deleteFavoriteClips", deleteFavoriteClips);
+            command.ExecuteNonQuery();
+        }
+
+        public void DeleteOldClipsByQuantity(int quantity)
+        {
+            using var connection = CreateAndOpenConnection();
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+            DELETE FROM Clips
+            WHERE
+              Id NOT IN (
+                SELECT
+                  Id
+                FROM
+                  Clips
+                ORDER BY
+                  ClipTime DESC
+                LIMIT
+                  @quantity
+              );
+            ";
+
+            command.Parameters.AddWithValue("quantity", quantity);
             command.ExecuteNonQuery();
         }
 

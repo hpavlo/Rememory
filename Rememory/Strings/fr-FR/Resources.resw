@@ -557,4 +557,22 @@ applications UWP et WebView2</value>
   <data name="SettingsCard_FavoriteCleaning.Description" xml:space="preserve">
     <value>Nettoyez vos articles préférés qui sont hors période de conservation</value>
   </data>
+  <data name="SettingsCard_CleanupType.Header" xml:space="preserve">
+    <value>Type de nettoyage</value>
+  </data>
+  <data name="SettingsCard_CleanupType.Description" xml:space="preserve">
+    <value>Spécifie le type de suppression des anciens clips</value>
+  </data>
+  <data name="SettingsComboBox_CleanupType_RetentionPeriod.Content" xml:space="preserve">
+    <value>Période de conservation</value>
+  </data>
+  <data name="SettingsComboBox_CleanupType_Quantity.Content" xml:space="preserve">
+    <value>Quantité</value>
+  </data>
+  <data name="SettingsCard_CleanupQuantity.Header" xml:space="preserve">
+    <value>Quantité maximale de clips</value>
+  </data>
+  <data name="SettingsCard_CleanupQuantity.Description" xml:space="preserve">
+    <value>Détermine le nombre maximal de clips pouvant être stockés sur votre disque</value>
+  </data>
 </root>

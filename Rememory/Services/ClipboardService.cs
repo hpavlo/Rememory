@@ -111,6 +111,11 @@ namespace Rememory.Services
             Clips.Insert(0, clip);
             _storageService.AddClip(clip);
             OnNewClipAdded(Clips, clip);
+
+            if (SettingsContext.Instance.CleanupTypeIndex == (int)CleanupType.Quantity)
+            {
+                DeleteOldClipsByQuantity(SettingsContext.Instance.CleanupQuantity);
+            }
         }
 
         public void MoveClipToTop(ClipModel clip)
@@ -141,12 +146,32 @@ namespace Rememory.Services
             OnClipDeleted(Clips, clip);
         }
 
-        public void DeleteOldClips(DateTime cutoffTime, bool deleteFavoriteClips)
+        public void DeleteOldClipsByTime(DateTime cutoffTime, bool deleteFavoriteClips)
         {
-            _storageService.DeleteOldClips(cutoffTime, deleteFavoriteClips);
+            _storageService.DeleteOldClipsByTime(cutoffTime, deleteFavoriteClips);
 
             var clipsToDelete = Clips
                 .Where(clip => clip.ClipTime < cutoffTime && (deleteFavoriteClips || !clip.IsFavorite))
+                .ToList();
+
+            foreach (var clip in clipsToDelete)
+            {
+                DeleteClip(clip, false);
+            }
+        }
+
+        public void DeleteOldClipsByQuantity(int quantity)
+        {
+            if (Clips.Count <= quantity)
+            {
+                return;
+            }
+
+            _storageService.DeleteOldClipsByQuantity(quantity);
+
+            var clipsToDelete = Clips
+                .OrderByDescending(clip => clip.ClipTime)
+                .TakeLast(Clips.Count - quantity)
                 .ToList();
 
             foreach (var clip in clipsToDelete)
