@@ -10,60 +10,9 @@ using System.Text.Json;
 namespace Rememory.Services.Migrations
 {
     /// <summary>
-    /// Creates ClipboardItems and LinksPreviewInfo tables.
-    /// App version 1.0.0
-    /// </summary>
-    public class InitialCreate : ISqliteMigration
-    {
-        public int Version => 1;
-
-        public void Up(SqliteConnection connection)
-        {
-            using var command = connection.CreateCommand();
-            command.CommandText = @"
-            BEGIN TRANSACTION;
-
-            CREATE TABLE IF NOT EXISTS ClipboardItems (
-              Id INTEGER PRIMARY KEY AUTOINCREMENT,
-              IsFavorite INTEGER NOT NULL,
-              Time TEXT NOT NULL,
-              OwnerPath TEXT,
-              OwnerIconBitmap BLOB,
-              DataMap TEXT NOT NULL,
-              HashMap TEXT NOT NULL
-            );
-
-            CREATE TABLE IF NOT EXISTS LinksPreviewInfo (
-              Id INTEGER PRIMARY KEY,
-              Title TEXT,
-              Description TEXT,
-              ImageUrl TEXT
-            );
-
-            COMMIT;
-            ";
-            command.ExecuteNonQuery();
-        }
-
-        public void Down(SqliteConnection connection)
-        {
-            using var command = connection.CreateCommand();
-            command.CommandText = @"
-            BEGIN TRANSACTION;
-
-            DROP TABLE IF EXISTS ClipboardItems;
-            DROP TABLE IF EXISTS LinksPreviewInfo;
-
-            COMMIT;
-            ";
-            command.ExecuteNonQuery();
-        }
-    }
-
-    /// <summary>
-    /// Creates Owners, Data, Tags tables
+    /// Creates separate Owners and Data tables
     /// Migrate ClipboardItems and LinksPreviewInfo to updated tables
-    /// App version 1.2._
+    /// App version 1.2.2
     /// </summary>
     public class SplitTablesMigration : ISqliteMigration
     {
@@ -98,20 +47,6 @@ namespace Rememory.Services.Migrations
               Hash BLOB NOT NULL,
               MetadataFormat TEXT,
               FOREIGN KEY (ClipId) REFERENCES Clips (Id) ON DELETE CASCADE
-            );
-
-            CREATE TABLE IF NOT EXISTS Tags (
-              Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-              Name TEXT UNIQUE NOT NULL,
-              Icon BLOB
-            );
-
-            CREATE TABLE IF NOT EXISTS ClipTags (
-              ClipId INTEGER NOT NULL,
-              TagId INTEGER NOT NULL,
-              PRIMARY KEY (ClipId, TagId),
-              FOREIGN KEY (ClipId) REFERENCES Clips (Id) ON DELETE CASCADE,
-              FOREIGN KEY (TagId) REFERENCES Tags (Id) ON DELETE CASCADE
             );
 
             CREATE TABLE IF NOT EXISTS LinkMetadata (
@@ -216,8 +151,6 @@ namespace Rememory.Services.Migrations
 
             using var clearCommand = connection.CreateCommand();
             clearCommand.CommandText = @"
-            DROP TABLE ClipTags;
-            DROP TABLE Tags;
             DROP TABLE LinkMetadata;
             DROP TABLE Data;
             DROP TABLE Clips;
