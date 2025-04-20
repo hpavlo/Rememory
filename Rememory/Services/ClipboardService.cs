@@ -120,11 +120,18 @@ namespace Rememory.Services
 
         public void MoveClipToTop(ClipModel clip)
         {
+            clip.ClipTime = DateTime.Now;
+            _storageService.UpdateClip(clip);
+
+            // Move the clip only if it's not on the top
+            if (Clips.First() != clip)
+            {
             Clips.Remove(clip);
             Clips.Insert(0, clip);
             clip.ClipTime = DateTime.Now;
             _storageService.UpdateClip(clip);
             OnClipMovedToTop(Clips, clip);
+        }
         }
 
         public void ChangeFavoriteClip(ClipModel clip)
