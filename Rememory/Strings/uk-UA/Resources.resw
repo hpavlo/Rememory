@@ -132,8 +132,29 @@
   <data name="ContextMenu_Delete.Text" xml:space="preserve">
     <value>Видалити</value>
   </data>
+  <data name="ContextMenu_PasteAs.Text" xml:space="preserve">
+    <value>Вставити як</value>
+  </data>
   <data name="ContextMenu_PasteAsPlainText.Text" xml:space="preserve">
-    <value>Вставити без форматування</value>
+    <value>Простий текст</value>
+  </data>
+  <data name="ContextMenu_PasteAsUpperCase.Text" xml:space="preserve">
+    <value>ВЕРХНІЙ РЕГІСТР</value>
+  </data>
+  <data name="ContextMenu_PasteAsLowerCase.Text" xml:space="preserve">
+    <value>нижній регістр</value>
+  </data>
+  <data name="ContextMenu_PasteAsCapitalizeCase.Text" xml:space="preserve">
+    <value>Слова З Великої</value>
+  </data>
+  <data name="ContextMenu_PasteAsSentenceCase.Text" xml:space="preserve">
+    <value>Як речення</value>
+  </data>
+  <data name="ContextMenu_PasteAsInvertCase.Text" xml:space="preserve">
+    <value>Інвертувати регістр</value>
+  </data>
+  <data name="ContextMenu_PasteAsTrimWhitespace.Text" xml:space="preserve">
+    <value>Видалити пробіли</value>
   </data>
   <data name="NavigationMenu_Home.ToolTipService.ToolTip" xml:space="preserve">
     <value>Головна</value>

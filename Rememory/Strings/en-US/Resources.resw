@@ -132,8 +132,29 @@
   <data name="ContextMenu_Delete.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="ContextMenu_PasteAs.Text" xml:space="preserve">
+    <value>Paste as</value>
+  </data>
   <data name="ContextMenu_PasteAsPlainText.Text" xml:space="preserve">
-    <value>Paste as Plain Text</value>
+    <value>Plain text</value>
+  </data>
+  <data name="ContextMenu_PasteAsUpperCase.Text" xml:space="preserve">
+    <value>UPPER CASE</value>
+  </data>
+  <data name="ContextMenu_PasteAsLowerCase.Text" xml:space="preserve">
+    <value>lower case</value>
+  </data>
+  <data name="ContextMenu_PasteAsCapitalizeCase.Text" xml:space="preserve">
+    <value>Capitalize Case</value>
+  </data>
+  <data name="ContextMenu_PasteAsSentenceCase.Text" xml:space="preserve">
+    <value>Sentence case</value>
+  </data>
+  <data name="ContextMenu_PasteAsInvertCase.Text" xml:space="preserve">
+    <value>Invert case</value>
+  </data>
+  <data name="ContextMenu_PasteAsTrimWhitespace.Text" xml:space="preserve">
+    <value>Trim whitespace</value>
   </data>
   <data name="NavigationMenu_Home.ToolTipService.ToolTip" xml:space="preserve">
     <value>Home</value>

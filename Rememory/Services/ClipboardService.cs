@@ -46,14 +46,14 @@ namespace Rememory.Services
             RememoryCoreHelper.StopClipboardMonitor(windowHandle);
         }
 
-        public unsafe bool SetClipboardData(ClipModel clip, ClipboardFormat? type = null)
+        public unsafe bool SetClipboardData(ClipModel clip, ClipboardFormat? format = null, TextCaseType? caseType = null)
         {
-            List<ClipboardFormat> selectedTypes = type.HasValue ? [type.Value] : [.. clip.Data.Keys];
+            List<ClipboardFormat> selectedFormats = format.HasValue ? [format.Value] : [.. clip.Data.Keys];
 
             ClipboardDataInfo dataInfo = new()
             {
-                FormatCount = (uint)selectedTypes.Count,
-                FirstItem = Marshal.AllocHGlobal(selectedTypes.Count * Marshal.SizeOf(typeof(FormatDataItem)))
+                FormatCount = (uint)selectedFormats.Count,
+                FirstItem = Marshal.AllocHGlobal(selectedFormats.Count * Marshal.SizeOf(typeof(FormatDataItem)))
             };
 
             // Temporarily using it to free the bitmap path after SetDataToClipboard
@@ -61,23 +61,27 @@ namespace Rememory.Services
             IntPtr bitmapUnmanagedPath = IntPtr.Zero;
 
             nint currentPtr = dataInfo.FirstItem;
-            foreach (var dataType in selectedTypes)
+            foreach (var currentFormat in selectedFormats)
             {
-                var dataStr = clip.Data.GetValueOrDefault(dataType);
+                var dataStr =  clip.Data.GetValueOrDefault(currentFormat);
                 if (dataStr is null)
                 {
                     continue;
                 }
 
-                var dataPtr = ClipboardFormatHelper.DataTypeToUnmanagedConverters[dataType](dataStr.Data);
-                if (dataType == ClipboardFormat.Bitmap)
+                var dataPtr = ClipboardFormatHelper.DataTypeToUnmanagedConverters[currentFormat](
+                    currentFormat == ClipboardFormat.Text && caseType.HasValue
+                    ? dataStr.Data.ConvertText(caseType.Value)
+                    : dataStr.Data);
+
+                if (currentFormat == ClipboardFormat.Bitmap)
                 {
                     bitmapUnmanagedPath = dataPtr;
                 }
 
                 var formatItem = new FormatDataItem
                 {
-                    Format = ClipboardFormatHelper.DataTypeFormats[dataType],
+                    Format = ClipboardFormatHelper.DataTypeFormats[currentFormat],
                     Data = dataPtr
                 };
 
@@ -126,12 +130,10 @@ namespace Rememory.Services
             // Move the clip only if it's not on the top
             if (Clips.First() != clip)
             {
-            Clips.Remove(clip);
-            Clips.Insert(0, clip);
-            clip.ClipTime = DateTime.Now;
-            _storageService.UpdateClip(clip);
-            OnClipMovedToTop(Clips, clip);
-        }
+                Clips.Remove(clip);
+                Clips.Insert(0, clip);
+                OnClipMovedToTop(Clips, clip);
+            }
         }
 
         public void ChangeFavoriteClip(ClipModel clip)

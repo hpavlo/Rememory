@@ -407,12 +407,36 @@
                                                 CommandParameter="{x:Bind Mode=OneWay}"
                                                 Command="{Binding DataContext.PasteClipCommand, ElementName=ClipsListView}"
                                                 Icon="{tk:FontIcon Glyph=&#xE77F;}" />
-                                <MenuFlyoutItem x:Uid="ContextMenu_PasteAsPlainText"
-                                                KeyboardAcceleratorTextOverride="Shift+Enter"
-                                                CommandParameter="{x:Bind Mode=OneWay}"
-                                                Command="{Binding DataContext.PasteClipAsPlainTextCommand, ElementName=ClipsListView}"
-                                                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
-                                                Icon="{tk:FontIcon Glyph=&#xE8D2;}" />
+                                <MenuFlyoutSubItem x:Uid="ContextMenu_PasteAs"
+                                                   Icon="{tk:FontIcon Glyph=&#xE8D2;}"
+                                                   IsEnabled="{Binding IsEnabled, ElementName=PasteAsPlainTextMenuFlyoutItem}"
+                                                   Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <MenuFlyoutItem x:Name="PasteAsPlainTextMenuFlyoutItem"
+                                                    x:Uid="ContextMenu_PasteAsPlainText"
+                                                    KeyboardAcceleratorTextOverride="Shift+Enter"
+                                                    CommandParameter="{x:Bind Mode=OneWay}"
+                                                    Command="{Binding DataContext.PasteClipAsPlainTextCommand, ElementName=ClipsListView}" />
+                                    <MenuFlyoutSeparator />
+                                    <MenuFlyoutItem x:Uid="ContextMenu_PasteAsUpperCase"
+                                                    CommandParameter="{x:Bind Mode=OneWay}"
+                                                    Command="{Binding DataContext.PasteClipWithUpperCaseCommand, ElementName=ClipsListView}" />
+                                    <MenuFlyoutItem x:Uid="ContextMenu_PasteAsLowerCase"
+                                                    CommandParameter="{x:Bind Mode=OneWay}"
+                                                    Command="{Binding DataContext.PasteClipWithLowerCaseCommand, ElementName=ClipsListView}" />
+                                    <MenuFlyoutItem x:Uid="ContextMenu_PasteAsCapitalizeCase"
+                                                    CommandParameter="{x:Bind Mode=OneWay}"
+                                                    Command="{Binding DataContext.PasteClipWithCapitalizeCaseCommand, ElementName=ClipsListView}" />
+                                    <MenuFlyoutItem x:Uid="ContextMenu_PasteAsSentenceCase"
+                                                    CommandParameter="{x:Bind Mode=OneWay}"
+                                                    Command="{Binding DataContext.PasteClipWithSentenceCaseCommand, ElementName=ClipsListView}" />
+                                    <MenuFlyoutItem x:Uid="ContextMenu_PasteAsInvertCase"
+                                                    CommandParameter="{x:Bind Mode=OneWay}"
+                                                    Command="{Binding DataContext.PasteClipWithInvertCaseCommand, ElementName=ClipsListView}" />
+                                    <MenuFlyoutItem x:Uid="ContextMenu_PasteAsTrimWhitespace"
+                                                    CommandParameter="{x:Bind Mode=OneWay}"
+                                                    Command="{Binding DataContext.PasteClipWithTrimWhitespaceCommand, ElementName=ClipsListView}" />
+                                </MenuFlyoutSubItem>
+
                                 <MenuFlyoutItem x:Uid="ContextMenu_Copy"
                                                 KeyboardAcceleratorTextOverride="Ctrl+C"
                                                 CommandParameter="{x:Bind Mode=OneWay}"

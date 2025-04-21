@@ -473,9 +473,51 @@ namespace Rememory.ViewModels
         public void PasteClipAsPlainText(ClipModel? clip)
         {
             if (clip is null) return;
-            SendDataToClipboard(clip, ClipboardFormat.Text, true);
+            SendDataToClipboard(clip, ClipboardFormat.Text, paste: true);
         }
         private bool CanPasteClipAsPlainText(ClipModel? clip) => clip is not null && clip.Data.ContainsKey(ClipboardFormat.Text);
+
+        [RelayCommand(CanExecute = nameof(CanPasteClipAsPlainText))]
+        public void PasteClipWithUpperCase(ClipModel? clip)
+        {
+            if (clip is null) return;
+            SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.UpperCase, true);
+        }
+
+        [RelayCommand(CanExecute = nameof(CanPasteClipAsPlainText))]
+        public void PasteClipWithLowerCase(ClipModel? clip)
+        {
+            if (clip is null) return;
+            SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.LowerCase, true);
+        }
+
+        [RelayCommand(CanExecute = nameof(CanPasteClipAsPlainText))]
+        public void PasteClipWithCapitalizeCase(ClipModel? clip)
+        {
+            if (clip is null) return;
+            SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.CapitalizeCase, true);
+        }
+
+        [RelayCommand(CanExecute = nameof(CanPasteClipAsPlainText))]
+        public void PasteClipWithSentenceCase(ClipModel? clip)
+        {
+            if (clip is null) return;
+            SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.SentenceCase, true);
+        }
+
+        [RelayCommand(CanExecute = nameof(CanPasteClipAsPlainText))]
+        public void PasteClipWithInvertCase(ClipModel? clip)
+        {
+            if (clip is null) return;
+            SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.InvertCase, true);
+        }
+
+        [RelayCommand(CanExecute = nameof(CanPasteClipAsPlainText))]
+        public void PasteClipWithTrimWhitespace(ClipModel? clip)
+        {
+            if (clip is null) return;
+            SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.TrimWhitespace, true);
+        }
 
         [RelayCommand]
         public void CopyClip(ClipModel? clip)
@@ -522,9 +564,9 @@ namespace Rememory.ViewModels
             && !string.IsNullOrEmpty(owner.Path)
             && !owner.Path.EndsWith("svchost.exe");   // check svchost.exe for UWP app sources
 
-        private void SendDataToClipboard(ClipModel clip, [Optional] ClipboardFormat? type, bool paste = false)
+        private void SendDataToClipboard(ClipModel clip, [Optional] ClipboardFormat? format, [Optional] TextCaseType? caseType, bool paste = false)
         {
-            if (_clipboardService.SetClipboardData(clip, type) && paste)
+            if (_clipboardService.SetClipboardData(clip, format, caseType) && paste)
             {
                 var windowToActivate = IntPtr.Zero;
 
