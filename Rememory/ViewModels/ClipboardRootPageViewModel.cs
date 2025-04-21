@@ -462,6 +462,19 @@ namespace Rememory.ViewModels
             _clipboardService.ChangeFavoriteClip(clip);
         }
 
+        [RelayCommand(CanExecute = nameof(CanOpenInBrowser))]
+        public async Task OpenInBrowser(ClipModel? clip)
+        {
+            if (clip is null || !clip.IsLink) return;
+            
+            if (clip.Data.TryGetValue(ClipboardFormat.Text, out var textData)
+                && Uri.TryCreate(textData.Data, UriKind.Absolute, out var uri))
+            {
+                await Launcher.LaunchUriAsync(uri);
+            }
+        }
+        private bool CanOpenInBrowser(ClipModel? clip) => clip is not null && clip.IsLink;
+
         [RelayCommand]
         public void PasteClip(ClipModel? clip)
         {

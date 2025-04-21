@@ -189,6 +189,9 @@
   <data name="ImageSize" xml:space="preserve">
     <value>Size: {0} x {1}</value>
   </data>
+  <data name="ContextMenu_OpenInBrowser.Text" xml:space="preserve">
+    <value>Open in browser</value>
+  </data>
   <data name="ContextMenu_OpenInFlyout.Text" xml:space="preserve">
     <value>Open in flyout</value>
   </data>

@@ -189,6 +189,9 @@
   <data name="ImageSize" xml:space="preserve">
     <value>Розмір: {0} x {1}</value>
   </data>
+  <data name="ContextMenu_OpenInBrowser.Text" xml:space="preserve">
+    <value>Відкрити в браузері</value>
+  </data>
   <data name="ContextMenu_OpenInFlyout.Text" xml:space="preserve">
     <value>Попередній перегляд</value>
   </data>

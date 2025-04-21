@@ -397,6 +397,11 @@
                             <MenuFlyout>
                                 <MenuFlyoutItem Click="FavoriteMenuItem_Click"
                                                 Loading="FavoriteMenuItem_Loading" />
+                                <MenuFlyoutItem x:Uid="ContextMenu_OpenInBrowser"
+                                                CommandParameter="{x:Bind Mode=OneWay}"
+                                                Command="{Binding DataContext.OpenInBrowserCommand, ElementName=ClipsListView}"
+                                                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                Icon="{tk:FontIcon Glyph=&#xF6FA;}" />
                                 <MenuFlyoutItem x:Uid="ContextMenu_OpenInFlyout"
                                                 KeyboardAcceleratorTextOverride="Space"
                                                 Click="OpenInFlyoutItem_Click"
