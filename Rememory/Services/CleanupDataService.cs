@@ -1,4 +1,5 @@
 ﻿using Rememory.Contracts;
+using Rememory.Helper;
 using Rememory.Models;
 using System;
 
@@ -21,7 +22,19 @@ namespace Rememory.Services
                 && DateTime.Now.Subtract(_lastCleanupTime).Days > 0)
             {
                 _lastCleanupTime = DateTime.Now;
-                _clipboardService.DeleteOldClipsByTime(RoundToNearestDay(_lastCleanupTime).Subtract(GetTimeSpanFromSettings()), _settingsContext.CleanFavoriteItems);
+                try
+                {
+                    _clipboardService.DeleteOldClipsByTime(RoundToNearestDay(_lastCleanupTime).Subtract(GetTimeSpanFromSettings()), _settingsContext.CleanFavoriteItems);
+                }
+                catch
+                {
+                    NativeHelper.MessageBox(IntPtr.Zero,
+                        "Unable to delete old clips from the database!\nIt may be corrupted. Try to reinstall the app",
+                        "Rememory - Database error",
+                        0x10);   // MB_ICONERROR | MB_OK
+
+                    App.Current.Exit();
+                }
             }
         }
 

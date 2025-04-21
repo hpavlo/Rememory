@@ -24,7 +24,7 @@ namespace Rememory.Services
         {
             _storageService = storageService;
 
-            Owners = _storageService.GetOwners().ToDictionary(o => o.Path);
+            Owners = ReadOwnersFromStorage().ToDictionary(o => o.Path);
 
             OwnerModel emptyOwner = CreateEmptyOwner();
             Owners.Add(emptyOwner.Path, emptyOwner);
@@ -127,6 +127,25 @@ namespace Rememory.Services
         protected virtual void OnAllOwnersUnregistered()
         {
             AllOwnersUnregistered?.Invoke(this, new());
+        }
+
+        private IList<OwnerModel> ReadOwnersFromStorage()
+        {
+            try
+            {
+                return [.._storageService.GetOwners()];
+            }
+            catch
+            {
+                _ = NativeHelper.MessageBox(IntPtr.Zero,
+                    "The data could not be retrieved from the database!\nIt may be corrupted. Try to reinstall the app",
+                    "Rememory - Database error",
+                    0x10);   // MB_ICONERROR | MB_OK
+
+                App.Current.Exit();
+            }
+
+            return [];
         }
 
         private OwnerModel CreateEmptyOwner()

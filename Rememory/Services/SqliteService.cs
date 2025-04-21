@@ -436,6 +436,18 @@ namespace Rememory.Services
         {
             _currentVersion = GetDatabaseVersion(connection);
             var migrations = GetMigrations();
+
+            // If the app version is older than database
+            if (migrations.Last().Version < _currentVersion)
+            {
+                NativeHelper.MessageBox(IntPtr.Zero,
+                    "Current app version doesn't support this database!\nPlease update the app or reinstall it",
+                    "Database error",
+                    0x10);   // MB_ICONERROR | MB_OK
+
+                App.Current.Exit();
+            }
+
             try
             {
                 foreach (var migration in migrations)

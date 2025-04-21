@@ -33,7 +33,7 @@ namespace Rememory.Services
             _linkPreviewService = linkPreviewService;
             _clipboardCallback = CallbackFunc;
 
-            Clips = [.. _storageService.GetClips(_ownerService.Owners.Values.ToDictionary(o => o.Id))];
+            Clips = ReadClipsFromStorage();
         }
 
         public void StartClipboardMonitor(IntPtr windowHandle)
@@ -219,6 +219,25 @@ namespace Rememory.Services
         protected virtual void OnAllClipsDeleted(IList<ClipModel> clips)
         {
             AllClipsDeleted?.Invoke(this, new(clips));
+        }
+
+        private IList<ClipModel> ReadClipsFromStorage()
+        {
+            try
+            {
+                return [.. _storageService.GetClips(_ownerService.Owners.Values.ToDictionary(o => o.Id))];
+            }
+            catch
+            {
+                _ = NativeHelper.MessageBox(IntPtr.Zero,
+                    "The data could not be retrieved from the database!\nIt may be corrupted. Try to reinstall the app",
+                    "Rememory - Database error",
+                    0x10);   // MB_ICONERROR | MB_OK
+
+                App.Current.Exit();
+            }
+
+            return [];
         }
 
         private bool CallbackFunc(ref ClipboardDataInfo dataInfo)
