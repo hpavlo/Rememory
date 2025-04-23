@@ -2,7 +2,12 @@
 <UserControl x:Class="Rememory.Views.Controls.LinkPreview"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="using:Rememory.Views.Controls">
+             xmlns:local="using:Rememory.Views.Controls"
+             xmlns:tkconverters="using:CommunityToolkit.WinUI.Converters">
+    <UserControl.Resources>
+        <tkconverters:StringVisibilityConverter x:Key="StringVisibilityConverter" />
+    </UserControl.Resources>
+    
     <StackPanel Spacing="6">
         <TextBlock x:Name="PreviewUrl"
                    Grid.ColumnSpan="2"
@@ -14,7 +19,7 @@
                    Text="{x:Bind LinkUrl, Mode=OneWay}" />
 
         <Grid x:Name="PreviewGrid"
-              Height="82"
+              MaxHeight="82"
               CornerRadius="6"
               BorderThickness="{ThemeResource ButtonBorderThemeThickness}"
               BorderBrush="{ThemeResource AccentAAFillColorDisabled}">
@@ -29,7 +34,8 @@
 
             <Border x:Name="PreviewImageBorder"
                     Grid.RowSpan="2"
-                    Width="{x:Bind PreviewGrid.Height}"
+                    Width="82"
+                    Height="82"
                     CornerRadius="6 0 0 6"
                     Visibility="Collapsed">
                 <Image x:Name="PreviewImage"
@@ -41,7 +47,7 @@
             </Border>
             <TextBlock x:Name="PreviewTitle"
                        Grid.Column="1"
-                       Margin="8 5 8 0"
+                       Margin="8 5 8 5"
                        MaxLines="2"
                        FontWeight="SemiBold"
                        FontSize="12"
@@ -51,13 +57,14 @@
             <TextBlock x:Name="PreviewDescription"
                        Grid.Column="1"
                        Grid.Row="1"
-                       Margin="8 5 8 0"
+                       Margin="8 0 8 5"
                        FontWeight="Thin"
                        FontSize="12"
                        TextWrapping="Wrap"
                        TextTrimming="CharacterEllipsis"
                        VerticalAlignment="Top"
-                       Text="{x:Bind LinkMetadata.Description, Mode=OneWay}" />
+                       Text="{x:Bind LinkMetadata.Description, Mode=OneWay}"
+                       Visibility="{x:Bind LinkMetadata.Description, Mode=OneWay, Converter={StaticResource StringVisibilityConverter}}"/>
         </Grid>
     </StackPanel>
 </UserControl>

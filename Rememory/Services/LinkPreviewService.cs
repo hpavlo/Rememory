@@ -6,12 +6,22 @@ using Rememory.Models.Metadata;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Rememory.Services
 {
-    public class LinkPreviewService(IStorageService storageService) : ILinkPreviewService
+    public class LinkPreviewService : ILinkPreviewService
     {
-        private readonly IStorageService _storageService = storageService;
+        private readonly IStorageService _storageService;
+        private readonly HttpClient _httpClient;
+
+        public LinkPreviewService(IStorageService storageService)
+        {
+            _storageService = storageService;
+
+            _httpClient = new HttpClient();
+            _httpClient.DefaultRequestHeaders.Add("User-Agent", "Other");
+        }
 
         public void TryAddLinkMetadata(ClipModel clip, DataModel dataModel)
         {
@@ -29,7 +39,7 @@ namespace Rememory.Services
                 HttpResponseMessage? response = null;
                 try
                 {
-                    response = await new HttpClient().GetAsync(dataModel.Data);
+                    response = await _httpClient.GetAsync(dataModel.Data);
                 }
                 catch (HttpRequestException) { }
                 catch (TaskCanceledException) { }
@@ -40,29 +50,39 @@ namespace Rememory.Services
                     return;
                 }
 
-                string str = string.Empty;
+                string htmlContent = string.Empty;
                 try
                 {
-                    str = await response.Content.ReadAsStringAsync();
+                    htmlContent = await response.Content.ReadAsStringAsync();
                 }
                 catch (InvalidOperationException) { }
 
+                if (string.IsNullOrEmpty(htmlContent))
+                {
+                    return;
+                }
+
                 HtmlDocument html = new();
-                html.LoadHtml(str);
-                var titleNode = html.DocumentNode.SelectSingleNode("//meta[@property='og:title']");
-                var descriptionNode = html.DocumentNode.SelectSingleNode("//meta[@property='og:description']");
+                html.LoadHtml(htmlContent);
+
+                var ogTitleNode = html.DocumentNode.SelectSingleNode("//meta[@property='og:title']");
+                var titleNode = ogTitleNode ?? html.DocumentNode.SelectSingleNode("//title");
+
+                var ogDescriptionNode = html.DocumentNode.SelectSingleNode("//meta[@property='og:description']");
+                var descriptionNode = ogDescriptionNode ?? html.DocumentNode.SelectSingleNode("//meta[@name='description']");
+
                 var imageNode = html.DocumentNode.SelectSingleNode("//meta[@property='og:image']");
 
-                if (titleNode != null && descriptionNode != null && imageNode != null)
+                if (titleNode != null)
                 {
                     dispatcherQueue.TryEnqueue(() =>
                     {
                         LinkMetadataModel linkMetadata = new()
                         {
                             Url = dataModel.Data,
-                            Title = titleNode.GetAttributeValue("content", string.Empty),
-                            Description = descriptionNode.GetAttributeValue("content", string.Empty),
-                            Image = imageNode.GetAttributeValue("content", string.Empty)
+                            Title = HtmlDecode(titleNode?.GetAttributeValue("content", titleNode?.InnerText ?? string.Empty))?.Trim(),
+                            Description = HtmlDecode(descriptionNode?.GetAttributeValue("content", string.Empty))?.Trim(),
+                            Image = imageNode?.GetAttributeValue("content", string.Empty)?.Trim()
                         };
                         dataModel.Metadata = linkMetadata;
                         _storageService.AddLinkMetadata(linkMetadata, dataModel.Id);
@@ -70,6 +90,17 @@ namespace Rememory.Services
                     });
                 }
             }).Start();
+        }
+
+        private string? HtmlDecode(string? input)
+        {
+            var temp = HttpUtility.HtmlDecode(input);
+            while (!string.Equals(temp, input))
+            {
+                input = temp;
+                temp = HttpUtility.HtmlDecode(input);
+            }
+            return input;
         }
     }
 }
