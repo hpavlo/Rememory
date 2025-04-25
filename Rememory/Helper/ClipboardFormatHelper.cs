@@ -411,6 +411,38 @@ namespace Rememory.Helper
         }
 
         /// <summary>
+        /// Generates a temporary Bitmap file from PNG data if available and required.
+        /// </summary>
+        /// <param name="clip">The clip model.</param>
+        /// <param name="tempBitmapPath">Output parameter for the path of the generated bitmap file.</param>
+        /// <returns>True if a bitmap was generated, false otherwise.</returns>
+        public static bool TryGenerateBitmapFromPng(ClipModel clip, out string tempBitmapPath)
+        {
+            tempBitmapPath = string.Empty;
+
+            if (!clip.Data.TryGetValue(ClipboardFormat.Png, out var pngClipData))
+            {
+                return false;
+            }
+
+            try
+            {
+                // Generate a unique temporary file path for the bitmap
+                tempBitmapPath = Path.Combine(ApplicationData.GetDefault().TemporaryPath, string.Format(FILE_NAME_FORMAT_BITMAP, DateTime.Now));
+
+                // Create a Bitmap from the PNG data and save it as a BMP file
+                using Bitmap bitmap = new(pngClipData.Data);
+                bitmap.Save(tempBitmapPath, ImageFormat.Bmp);
+                return true;
+            }
+            catch
+            {
+                tempBitmapPath = string.Empty; // Ensure path is empty on error
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Generates a unique, absolute file path for storing external clipboard data based on the format.
         /// Ensures the target directory exists.
         /// </summary>

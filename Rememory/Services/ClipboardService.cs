@@ -4,10 +4,13 @@ using Rememory.Models;
 using Rememory.Models.Metadata;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Rememory.Services
 {
@@ -48,56 +51,104 @@ namespace Rememory.Services
             RememoryCoreHelper.StopClipboardMonitor(windowHandle);
         }
 
-        public unsafe bool SetClipboardData(ClipModel clip, ClipboardFormat? format = null, TextCaseType? caseType = null)
+        public bool SetClipboardData(ClipModel clip, ClipboardFormat? format = null, TextCaseType? caseType = null)
         {
+            // Determine the list of formats to process
             List<ClipboardFormat> selectedFormats = format.HasValue ? [format.Value] : [.. clip.Data.Keys];
 
+            string tempBitmapPath = string.Empty;
+            bool generateBitmapFromPng = false;
+
+            // Handle special case: if PNG is requested, also add Bitmap format and generate the bitmap file
+            if (selectedFormats.Contains(ClipboardFormat.Png))
+            {
+                generateBitmapFromPng = ClipboardFormatHelper.TryGenerateBitmapFromPng(clip, out tempBitmapPath);
+                if (generateBitmapFromPng && !selectedFormats.Contains(ClipboardFormat.Bitmap))
+                {
+                    // Insert Bitmap before Png if Png is present but Bitmap isn't explicitly requested
+                    int pngIndex = selectedFormats.IndexOf(ClipboardFormat.Png);
+                    if (pngIndex >= 0)
+                    {
+                        selectedFormats.Insert(pngIndex, ClipboardFormat.Bitmap);
+                    }
+                }
+            }
+
+            // Prepare the unmanaged structure for clipboard data info
             ClipboardDataInfo dataInfo = new()
             {
                 FormatCount = (uint)selectedFormats.Count,
                 FirstItem = Marshal.AllocHGlobal(selectedFormats.Count * Marshal.SizeOf(typeof(FormatDataItem)))
             };
 
-            // Temporarily using it to free the bitmap path after SetDataToClipboard
-            // Logic refactor is required on Core side
-            IntPtr bitmapUnmanagedPath = IntPtr.Zero;
-
+            IntPtr bitmapUnmanagedPathPointer = IntPtr.Zero;
             nint currentPtr = dataInfo.FirstItem;
+
+            // Process each selected format, convert data, and populate the unmanaged structure
             foreach (var currentFormat in selectedFormats)
             {
-                var dataStr =  clip.Data.GetValueOrDefault(currentFormat);
-                if (dataStr is null)
+                IntPtr dataPtr = IntPtr.Zero;
+
+                try
                 {
-                    continue;
+                    // Convert data for the current format to unmanaged memory
+                    if (currentFormat == ClipboardFormat.Bitmap && !string.IsNullOrEmpty(tempBitmapPath))
+                    {
+                        dataPtr = ClipboardFormatHelper.DataTypeToUnmanagedConverters[currentFormat](tempBitmapPath);
+                    }
+                    else if (clip.Data.TryGetValue(currentFormat, out var dataModel))
+                    {
+                        dataPtr = ClipboardFormatHelper.DataTypeToUnmanagedConverters[currentFormat](
+                            currentFormat == ClipboardFormat.Text && caseType.HasValue
+                            ? dataModel.Data.ConvertText(caseType.Value)
+                            : dataModel.Data);
+                    }
+
+                    // Keep track of the unmanaged path for the bitmap
+                    if (currentFormat == ClipboardFormat.Bitmap)
+                    {
+                        bitmapUnmanagedPathPointer = dataPtr;
+                    }
+
+                    Marshal.StructureToPtr(new FormatDataItem
+                    {
+                        Format = ClipboardFormatHelper.DataTypeFormats[currentFormat],
+                        Data = dataPtr
+                    }, currentPtr, false);
+                    // Move the pointer to the next position in the unmanaged memory block
+                    currentPtr = nint.Add(currentPtr, Marshal.SizeOf<FormatDataItem>());
                 }
-
-                var dataPtr = ClipboardFormatHelper.DataTypeToUnmanagedConverters[currentFormat](
-                    currentFormat == ClipboardFormat.Text && caseType.HasValue
-                    ? dataStr.Data.ConvertText(caseType.Value)
-                    : dataStr.Data);
-
-                if (currentFormat == ClipboardFormat.Bitmap)
-                {
-                    bitmapUnmanagedPath = dataPtr;
-                }
-
-                var formatItem = new FormatDataItem
-                {
-                    Format = ClipboardFormatHelper.DataTypeFormats[currentFormat],
-                    Data = dataPtr
-                };
-
-                Marshal.StructureToPtr(formatItem, currentPtr, false);
-                currentPtr = nint.Add(currentPtr, Marshal.SizeOf<FormatDataItem>());
+                catch { }
             }
 
-            var result = RememoryCoreHelper.SetDataToClipboard(ref dataInfo);
-            Marshal.FreeHGlobal(dataInfo.FirstItem);
+            bool result = RememoryCoreHelper.SetDataToClipboard(ref dataInfo);
 
-            // For bitmap only we use file path. We have to free it after
-            if (bitmapUnmanagedPath != IntPtr.Zero)
+            // Clean up allocated unmanaged memory
+            if (dataInfo.FirstItem != IntPtr.Zero)
             {
-                Utf16StringMarshaller.Free((ushort*)bitmapUnmanagedPath);
+                Marshal.FreeHGlobal(dataInfo.FirstItem);
+            }
+            if (bitmapUnmanagedPathPointer != IntPtr.Zero)
+            {
+                unsafe
+                {
+                    Utf16StringMarshaller.Free((ushort*)bitmapUnmanagedPathPointer);
+                }                
+            }
+
+            // Schedule asynchronous cleanup of the temporary bitmap file
+            if (!string.IsNullOrEmpty(tempBitmapPath))
+            {
+                Task.Run(async () =>
+                {
+                    // Wait for a short period to ensure the native clipboard operation is complete
+                    await Task.Delay(5_000);
+                    try
+                    {
+                        File.Delete(tempBitmapPath);
+                    }
+                    catch { }
+                });
             }
 
             return result;
