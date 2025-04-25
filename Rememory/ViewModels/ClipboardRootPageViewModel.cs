@@ -16,6 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.System;
 
 namespace Rememory.ViewModels
@@ -386,7 +387,7 @@ namespace Rememory.ViewModels
             {
                 try
                 {
-                    if (dataItem.Value.IsFile())
+                    if (dataItem.Value.IsFile() && !clip.IsLink)
                     {
                         var storageFile = await StorageFile.GetFileFromPathAsync(dataItem.Value.Data);
                         // Set only one storage file with the most priority format
@@ -403,6 +404,9 @@ namespace Rememory.ViewModels
                                 break;
                             case ClipboardFormat.Png:
                                 dataPackage.SetData("PNG", storageStream);
+                                break;
+                            case ClipboardFormat.Bitmap:
+                                dataPackage.SetBitmap(RandomAccessStreamReference.CreateFromStream(storageStream));
                                 break;
                         }
                     }
