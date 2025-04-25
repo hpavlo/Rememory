@@ -10,6 +10,9 @@ namespace Rememory.Models.Metadata
     public enum MetadataFormat
     {
         [Description("Link")]
-        Link
+        Link,
+
+        [Description("Color")]
+        Color
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Models;
+using Rememory.Models.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using System.Text.RegularExpressions;
 
 namespace Rememory.Services
 {
-    public class ClipboardService : IClipboardService
+    public partial class ClipboardService : IClipboardService
     {
         public event EventHandler<ClipboardEventArgs>? NewClipAdded;
         public event EventHandler<ClipboardEventArgs>? ClipMovedToTop;
@@ -25,6 +26,7 @@ namespace Rememory.Services
         private readonly ILinkPreviewService _linkPreviewService;
 
         private readonly ClipboardMonitorCallback _clipboardCallback;
+        private readonly Regex _hexColorRegex = HexColorRegex();
 
         public ClipboardService(IStorageService storageService, IOwnerService ownerService, ILinkPreviewService linkPreviewService)
         {
@@ -103,17 +105,27 @@ namespace Rememory.Services
 
         public void AddClip(ClipModel clip)
         {
-            if (clip.Data.TryGetValue(ClipboardFormat.Text, out var textData))
-            {
-                // Detect if the new clip contains a link
-                clip.IsLink = Uri.TryCreate(textData.Data, UriKind.Absolute, out var uri)
-                    && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
-
-                _linkPreviewService.TryAddLinkMetadata(clip, textData);
-            }
-
             Clips.Insert(0, clip);
             _storageService.AddClip(clip);
+
+            if (clip.Data.TryGetValue(ClipboardFormat.Text, out var textData))
+            {
+                if (_hexColorRegex.IsMatch(textData.Data))
+                {
+                    ColorMetadataModel colorMetadata = new();
+                    textData.Metadata = colorMetadata;
+                    _storageService.AddColorMetadata(colorMetadata, textData.Id);
+                }
+                else
+                {
+                    // Detect if the new clip contains a link
+                    clip.IsLink = Uri.TryCreate(textData.Data, UriKind.Absolute, out var uri)
+                        && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
+
+                    _linkPreviewService.TryAddLinkMetadata(clip, textData);
+                }
+            }
+
             OnNewClipAdded(Clips, clip);
 
             if (SettingsContext.Instance.CleanupTypeIndex == (int)CleanupType.Quantity)
@@ -337,5 +349,8 @@ namespace Rememory.Services
 
             return false;
         }
+
+        [GeneratedRegex(@"^#([a-fA-F0-9]{8}|[a-fA-F0-9]{6}|[a-fA-F0-9]{4}|[a-fA-F0-9]{3})$")]
+        private static partial Regex HexColorRegex();
     }
 }

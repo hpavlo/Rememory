@@ -312,6 +312,23 @@ namespace Rememory.Services
             command.ExecuteNonQuery();
         }
 
+        public void AddColorMetadata(ColorMetadataModel colorMetadataModel, int dataId)
+        {
+            using var connection = CreateAndOpenConnection();
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+            UPDATE Data
+            SET
+              MetadataFormat = @metadataFormat
+            WHERE
+              Id = @id;
+            ";
+
+            command.Parameters.AddWithValue("id", dataId);
+            command.Parameters.AddWithValue("metadataFormat", MetadataFormat.Color.GetDescription());
+            command.ExecuteNonQuery();
+        }
+
         #endregion
 
         private IEnumerable<DataModel> GetDataByClipId(int clipId, SqliteConnection connection)
@@ -343,6 +360,7 @@ namespace Rememory.Services
                 IMetadata? metadataModel = metadataFormat switch
                 {
                     MetadataFormat.Link => GetLinkMetadataById(id, connection),
+                    MetadataFormat.Color => new ColorMetadataModel(),
                     _ => null
                 };
 

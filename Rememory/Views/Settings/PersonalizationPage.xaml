@@ -46,7 +46,6 @@
                                                  Color="Black" />
                             </ResourceDictionary>
                         </ResourceDictionary.ThemeDictionaries>
-
                     </ResourceDictionary>
                 </SplitButton.Resources>
 
@@ -69,7 +68,6 @@
                     </Grid.RowDefinitions>
 
                     <Grid.Resources>
-
                         <Style TargetType="Rectangle">
                             <Setter Property="Width"
                                     Value="8" />

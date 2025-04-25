@@ -25,10 +25,12 @@ namespace Rememory.Converters
                 {
                     case ClipboardFormat.Text:
                         {
-                            // Put not whole clip but only related DataModel
-                            return dataItem.Value.Metadata is LinkMetadataModel
-                                ? new LinkPreview(dataItem.Value, SearchString)
-                                : new TextPreview(dataItem.Value, SearchString);
+                            return dataItem.Value.Metadata switch
+                            {
+                                LinkMetadataModel => new LinkPreview(dataItem.Value, SearchString),
+                                ColorMetadataModel => new ColorPreview(dataItem.Value, SearchString),
+                                _ => new TextPreview(dataItem.Value, SearchString)
+                            };
                         }
                     case ClipboardFormat.Png:
                     case ClipboardFormat.Bitmap:

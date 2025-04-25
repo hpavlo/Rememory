@@ -84,5 +84,12 @@ namespace Rememory.Contracts
         /// <param name="linkMetadata">The <see cref="LinkMetadataModel"/> containing the metadata to add.</param>
         /// <param name="dataId">The unique identifier of the <see cref="DataModel"/> item to which this metadata belongs.</param>
         void AddLinkMetadata(LinkMetadataModel linkMetadata, int dataId);
+
+        /// <summary>
+        /// Adds color-specific metadata associated with a specific data item within a clip.
+        /// </summary>
+        /// <param name="colorMetadataModel">The <see cref="ColorMetadataModel"/> containing the metadata to add.</param>
+        /// <param name="dataId">The unique identifier of the <see cref="DataModel"/> item to which this metadata belongs.</param>
+        void AddColorMetadata(ColorMetadataModel colorMetadataModel, int dataId);
     }
 }
