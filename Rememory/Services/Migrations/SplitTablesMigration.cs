@@ -64,14 +64,16 @@ namespace Rememory.Services.Migrations
 
             INSERT INTO
               Owners (Path, Icon)
-            SELECT DISTINCT
+            SELECT
               OwnerPath,
-              OwnerIconBitmap
+              MAX(OwnerIconBitmap) AS OwnerIconBitmap
             FROM
               ClipboardItems
             WHERE
               OwnerPath IS NOT NULL
-              AND OwnerPath NOT LIKE '';
+              AND OwnerPath NOT LIKE ''
+            GROUP BY
+              OwnerPath;
 
             INSERT INTO
               Clips (Id, ClipTime, IsFavorite, OwnerId)
