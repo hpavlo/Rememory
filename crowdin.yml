@@ -1,0 +1,3 @@
+files:
+  - source: /Rememory/Strings/en-US/*.resw
+    translation: /Rememory/Strings/%locale%/%original_file_name%
