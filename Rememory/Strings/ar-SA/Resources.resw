@@ -118,320 +118,320 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ContextMenu_AddToFavorite.Text" xml:space="preserve">
-    <value>Ajouter aux favoris</value>
+    <value>Add to favorite</value>
   </data>
   <data name="ContextMenu_RemoveFromFavorite.Text" xml:space="preserve">
-    <value>Retirer des favoris</value>
+    <value>Remove from favorite</value>
   </data>
   <data name="ContextMenu_Paste.Text" xml:space="preserve">
-    <value>Coller</value>
+    <value>Paste</value>
   </data>
   <data name="ContextMenu_Copy.Text" xml:space="preserve">
-    <value>Copier</value>
+    <value>Copy</value>
   </data>
   <data name="ContextMenu_Delete.Text" xml:space="preserve">
-    <value>Supprimer</value>
+    <value>Delete</value>
   </data>
   <data name="ContextMenu_PasteAs.Text" xml:space="preserve">
-    <value>Coller comme</value>
+    <value>Paste as</value>
   </data>
   <data name="ContextMenu_PasteAsPlainText.Text" xml:space="preserve">
-    <value>Texte brut</value>
+    <value>Plain text</value>
   </data>
   <data name="ContextMenu_PasteAsUpperCase.Text" xml:space="preserve">
-    <value>MAJUSCULES</value>
+    <value>UPPER CASE</value>
   </data>
   <data name="ContextMenu_PasteAsLowerCase.Text" xml:space="preserve">
-    <value>minuscules</value>
+    <value>lower case</value>
   </data>
   <data name="ContextMenu_PasteAsCapitalizeCase.Text" xml:space="preserve">
-    <value>Majuscule à chaque mot</value>
+    <value>Capitalize Case</value>
   </data>
   <data name="ContextMenu_PasteAsSentenceCase.Text" xml:space="preserve">
-    <value>Comme une phrase</value>
+    <value>Sentence case</value>
   </data>
   <data name="ContextMenu_PasteAsInvertCase.Text" xml:space="preserve">
-    <value>Inverser la casse</value>
+    <value>Invert case</value>
   </data>
   <data name="ContextMenu_PasteAsTrimWhitespace.Text" xml:space="preserve">
-    <value>Supprimer les espaces</value>
+    <value>Trim whitespace</value>
   </data>
   <data name="NavigationMenu_Home.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Accueil</value>
+    <value>Home</value>
   </data>
   <data name="NavigationMenu_Links.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Liens</value>
+    <value>Links</value>
   </data>
   <data name="NavigationMenu_Images.ToolTipService.ToolTip" xml:space="preserve">
     <value>Images</value>
   </data>
   <data name="NavigationMenu_Favorites.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Favoris</value>
+    <value>Favorites</value>
   </data>
   <data name="DaysAgo" xml:space="preserve">
-    <value>{0, plural, one {il y a # jour} other {il y a # jours}}</value>
+    <value>{0, plural, one {# day ago} other {# days ago}}</value>
   </data>
   <data name="HoursAgo" xml:space="preserve">
-    <value>{0, plural, one {il y a # heure} other {il y a # heures}}</value>
+    <value>{0, plural, one {# hour ago} other {# hours ago}}</value>
   </data>
   <data name="MinutesAgo" xml:space="preserve">
-    <value>{0, plural, one {il y a # minute} other {il y a # minutes}}</value>
+    <value>{0, plural, one {# minute ago} other {# minutes ago}}</value>
   </data>
   <data name="SecondsAgo" xml:space="preserve">
-    <value>{0, plural, one {il y a # seconde} other {il y a # secondes}}</value>
+    <value>{0, plural, one {# second ago} other {# seconds ago}}</value>
   </data>
   <data name="Now" xml:space="preserve">
-    <value>Maintenant</value>
+    <value>Now</value>
   </data>
   <data name="CharactersCount" xml:space="preserve">
-    <value>{0, plural, one {# caractère} other {# caractères}}</value>
+    <value>{0, plural, one {# character} other {# characters}}</value>
   </data>
   <data name="ImageSize" xml:space="preserve">
-    <value>Taille: {0} x {1}</value>
+    <value>Size: {0} x {1}</value>
   </data>
   <data name="ContextMenu_OpenInBrowser.Text" xml:space="preserve">
-    <value>Ouvrir dans le navigateur</value>
+    <value>Open in browser</value>
   </data>
   <data name="ContextMenu_OpenInFlyout.Text" xml:space="preserve">
-    <value>Ouvrir en survol</value>
+    <value>Open in flyout</value>
   </data>
   <data name="ShortcutDialogBox_Title" xml:space="preserve">
-    <value>Raccourci d'activation</value>
+    <value>Activation shortcut</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Enregistrer</value>
+    <value>Save</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>Réinitialiser</value>
+    <value>Reset</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Annuler</value>
+    <value>Cancel</value>
   </data>
   <data name="ShortcutDialogBox_Subtitle.Text" xml:space="preserve">
-    <value>Appuyez sur une combinaison de touches pour changer ce raccourci</value>
+    <value>Press a combination of keys to change this shortcut</value>
   </data>
   <data name="ShortcutDialogBox_ErrorInfoBar.Message" xml:space="preserve">
-    <value>Le raccourci doit commencer par la touche Windows, Ctrl, Alt ou Shift</value>
+    <value>Shortcut should start with Windows key, Ctrl, Alt or Shift</value>
   </data>
   <data name="ShortcutDialogBox_ErrorInfoBar.Title" xml:space="preserve">
-    <value>Raccourci invalide</value>
+    <value>Invalid shortcut</value>
   </data>
   <data name="MessageBox_UnableToOpenApp.Caption" xml:space="preserve">
-    <value>Impossible d'ouvrir cette application</value>
+    <value>Unable to open this app</value>
   </data>
   <data name="MessageBox_UnableToOpenApp.Text" xml:space="preserve">
-    <value>Impossible d'ouvrir cette application en mode actuel</value>
+    <value>Unable to open this app in current mode</value>
   </data>
   <data name="SettingsFlyoutText_EraseData.Text" xml:space="preserve">
-    <value>Êtes-vous sûr de vouloir supprimer toutes les données enregistrées?</value>
+    <value>Are you sure you want to delete all saved data?</value>
   </data>
   <data name="Yes" xml:space="preserve">
-    <value>Oui</value>
+    <value>Yes</value>
   </data>
   <data name="TitleButton_Close.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Fermer</value>
+    <value>Close</value>
   </data>
   <data name="SettingsExpanderHeader_RestartAsAdministrator" xml:space="preserve">
-    <value>Redémarrer en tant qu'administrateur</value>
+    <value>Restart as administrator</value>
   </data>
   <data name="SettingsExpanderHeader_RunningAsAdministrator" xml:space="preserve">
-    <value>Exécution en tant qu'administrateur</value>
+    <value>Running as administrator</value>
   </data>
   <data name="SettingsPageTitle_General.Content" xml:space="preserve">
-    <value>Général</value>
+    <value>General</value>
   </data>
   <data name="SettingsPageTitle_Personalization.Content" xml:space="preserve">
-    <value>Personnalisation</value>
+    <value>Personalization</value>
   </data>
   <data name="SettingsPageTitle_Storage.Content" xml:space="preserve">
-    <value>Stockage</value>
+    <value>Storage</value>
   </data>
   <data name="SettingsPageTitle_About.Content" xml:space="preserve">
-    <value>À propos</value>
+    <value>About</value>
   </data>
   <data name="SettingsCard_ActivationShortcut.Header" xml:space="preserve">
-    <value>Raccourci d'activation</value>
+    <value>Activation shortcut</value>
   </data>
   <data name="SettingsCard_ActivationShortcut.Description" xml:space="preserve">
-    <value>Définir la combinaison de touches pour ouvrir le gestionnaire de presse-papiers</value>
+    <value>Set the shortcut combination to open Clipboard Manager</value>
   </data>
   <data name="SettingsShortcutCotrol_ActivationShortcut.ButtonText" xml:space="preserve">
-    <value>Changer le raccourci</value>
+    <value>Change shortcut</value>
   </data>
   <data name="SettingsExpander_RestartAsAdmin.Description" xml:space="preserve">
-    <value>Paramètres avancés nécessitant des privilèges administrateur</value>
+    <value>Advanced settings that require administrator privileges</value>
   </data>
   <data name="SettingsButton_RestartAsAdmin.Content" xml:space="preserve">
-    <value>Redémarrer en tant qu'administrateur</value>
+    <value>Restart as Administrator</value>
   </data>
   <data name="SettingsCard_AlwaysRunAsAdmin.Header" xml:space="preserve">
-    <value>Toujours exécuter en tant qu'administrateur</value>
+    <value>Always run as Administrator</value>
   </data>
   <data name="SettingsCard_AlwaysRunAsAdmin.Description" xml:space="preserve">
-    <value>Activer cette option pour toujours exécuter l'application avec des privilèges administrateur</value>
+    <value>Enable this option to always run the app with administrator privileges</value>
   </data>
   <data name="SettingsCard_RunAtStartup.Header" xml:space="preserve">
-    <value>Démarrage automatique</value>
+    <value>Run at startup</value>
   </data>
   <data name="SettingsCard_RunAtStartup.Description" xml:space="preserve">
-    <value>Activer cette option pour lancer automatiquement Rememory au démarrage de l'ordinateur</value>
+    <value>Enable this option to automatically launch Rememory when your computer starts</value>
   </data>
   <data name="SettingsCard_AppTheme.Header" xml:space="preserve">
-    <value>Thème de l'application</value>
+    <value>Application theme</value>
   </data>
   <data name="SettingsCard_AppTheme.Description" xml:space="preserve">
-    <value>Sélectionnez votre thème préféré pour l'interface de l'application</value>
+    <value>Select your preferred theme for the application interface</value>
   </data>
   <data name="SettingsComboBox_AppTheme_Default.Content" xml:space="preserve">
-    <value>Par défaut</value>
+    <value>Default</value>
   </data>
   <data name="SettingsComboBox_AppTheme_Light.Content" xml:space="preserve">
-    <value>Clair</value>
+    <value>Light</value>
   </data>
   <data name="SettingsComboBox_AppTheme_Dark.Content" xml:space="preserve">
-    <value>Sombre</value>
+    <value>Dark</value>
   </data>
   <data name="SettingsCard_WindowPosition.Header" xml:space="preserve">
-    <value>Position de la fenêtre du presse-papiers</value>
+    <value>Clipboard window position</value>
   </data>
   <data name="SettingsCard_WindowPosition.Description" xml:space="preserve">
-    <value>Personnaliser la position de la fenêtre du gestionnaire de presse-papiers sur votre écran</value>
+    <value>Customize the position of the Clipboard Manager window on your screen</value>
   </data>
   <data name="SettingsCard_WindowWidth.Header" xml:space="preserve">
-    <value>Largeur de la fenêtre</value>
+    <value>Window width</value>
   </data>
   <data name="SettingsCard_WindowWidth.Description" xml:space="preserve">
-    <value>Définir la largeur de la fenêtre du gestionnaire de presse-papiers (en pixels)</value>
+    <value>Set the width of the Clipboard Manager window (in pixels)</value>
   </data>
   <data name="SettingsCard_WindowHeight.Header" xml:space="preserve">
-    <value>Hauteur de la fenêtre</value>
+    <value>Window height</value>
   </data>
   <data name="SettingsCard_WindowHeight.Description" xml:space="preserve">
-    <value>Définir la hauteur de la fenêtre du gestionnaire de presse-papiers (en pixels)</value>
+    <value>Set the height of the Clipboard Manager window (in pixels)</value>
   </data>
   <data name="SettingsCard_WindowMargin.Header" xml:space="preserve">
-    <value>Marges de la fenêtre</value>
+    <value>Window margin</value>
   </data>
   <data name="SettingsCard_WindowMargin.Description" xml:space="preserve">
-    <value>Définir les marges autour de la fenêtre du gestionnaire de presse-papiers (en pixels)</value>
+    <value>Set the margin around the Clipboard Manager window (in pixels)</value>
   </data>
   <data name="SettingsCard_EraseData.Header" xml:space="preserve">
-    <value>Effacer les données du presse-papiers</value>
+    <value>Erase clipboard data</value>
   </data>
   <data name="SettingsCard_EraseData.Description" xml:space="preserve">
-    <value>Supprimer toutes les données enregistrées du presse-papiers de votre ordinateur</value>
+    <value>Remove all saved clipboard data from your computer</value>
   </data>
   <data name="SettingsButton_EraseData.Content" xml:space="preserve">
-    <value>Supprimer toutes les données</value>
+    <value>Delete all data</value>
   </data>
   <data name="SettingsCard_RetentionPeriod.Header" xml:space="preserve">
-    <value>Période de conservation des données</value>
+    <value>Data retention period</value>
   </data>
   <data name="SettingsCard_RetentionPeriod.Description" xml:space="preserve">
-    <value>Spécifiez la durée de conservation des données du presse-papiers sur votre disque</value>
+    <value>Specify how long clipboard data should be kept on your disk</value>
   </data>
   <data name="SettingsComboBox_RetentionPeriod_Daily.Content" xml:space="preserve">
-    <value>Quotidien</value>
+    <value>Daily</value>
   </data>
   <data name="SettingsComboBox_RetentionPeriod_Weekly.Content" xml:space="preserve">
-    <value>Hebdomadaire</value>
+    <value>Weekly</value>
   </data>
   <data name="SettingsComboBox_RetentionPeriod_Monthly.Content" xml:space="preserve">
-    <value>Mensuel</value>
+    <value>Monthly</value>
   </data>
   <data name="SettingsComboBox_RetentionPeriod_Always.Content" xml:space="preserve">
-    <value>Toujours</value>
+    <value>Always</value>
   </data>
   <data name="AppDescription" xml:space="preserve">
-    <value>Rememory - Gestionnaire de presse-papiers</value>
+    <value>Rememory - Clipboard Manager</value>
     <comment>Max number of characters is 120. Using this value in tray icon</comment>
   </data>
   <data name="AppVersion" xml:space="preserve">
     <value>Version: {0}</value>
   </data>
   <data name="SettingsCard_GitHubLink.Header" xml:space="preserve">
-    <value>Répertoire GitHub</value>
+    <value>GitHub repository</value>
   </data>
   <data name="TrayIconMenu_Open" xml:space="preserve">
-    <value>Ouvrir</value>
+    <value>Open</value>
   </data>
   <data name="TrayIconMenu_Settings" xml:space="preserve">
-    <value>Paramètres</value>
+    <value>Settings</value>
   </data>
   <data name="TrayIconMenu_Exit" xml:space="preserve">
-    <value>Quitter</value>
+    <value>Exit</value>
   </data>
   <data name="SearchBox.PlaceholderText" xml:space="preserve">
-    <value>Rechercher</value>
+    <value>Search</value>
   </data>
   <data name="MessageBox_AccessDenied.Caption" xml:space="preserve">
-    <value>Accès refusé</value>
+    <value>Access denied</value>
   </data>
   <data name="MessageBox_AccessDenied.Text" xml:space="preserve">
-    <value>Pour effectuer cette action, veuillez redémarrer cette application en tant qu'administrateur</value>
+    <value>To do this action please restart this app as Administrator</value>
   </data>
   <data name="AppNotification_AppIsRunning" xml:space="preserve">
-    <value>L'application est en cours d'exécution</value>
+    <value>The app is running</value>
   </data>
   <data name="AppNotification_UseShortcutToOpen" xml:space="preserve">
-    <value>Utilisez le raccourci pour l'ouvrir: {0}</value>
+    <value>Use shortcut to open it: {0}</value>
   </data>
   <data name="SettingsWindow_Title" xml:space="preserve">
-    <value>{0} - Paramètres</value>
+    <value>{0} - Settings</value>
   </data>
   <data name="SettingsCard_Language.Header" xml:space="preserve">
-    <value>Langue de l'application</value>
+    <value>Application language</value>
   </data>
   <data name="SettingsCard_Language.Description" xml:space="preserve">
-    <value>Sélectionnez la langue de l'application ou utilisez la langue du système d'exploitation par défaut</value>
+    <value>Select the application language or use OS language by default</value>
   </data>
   <data name="SettingsTeachingTip_Language.Title" xml:space="preserve">
-    <value>Redémarrage requis</value>
+    <value>Restart required</value>
   </data>
   <data name="SettingsTeachingTip_Language.Subtitle" xml:space="preserve">
-    <value>Pour changer la langue de l'application, vous devez redémarrer le programme</value>
+    <value>To change the application language, you need to restart the program</value>
   </data>
   <data name="SettingsTeachingTipButton_Restart.Content" xml:space="preserve">
-    <value>Redémarrer l'application</value>
+    <value>Restart application</value>
   </data>
   <data name="SettingsCard_LinkPreview.Header" xml:space="preserve">
-    <value>Aperçu du lien</value>
+    <value>Link preview</value>
   </data>
   <data name="SettingsCard_LinkPreview.Description" xml:space="preserve">
-    <value>Charger les informations d'aperçu du lien. Cela n'affectera pas les données précédemment chargées</value>
+    <value>Load link preview information. This will not affect previously loaded data</value>
   </data>
   <data name="SettingsCard_ItemDragAndDrop.Header" xml:space="preserve">
-    <value>Glisser-déposer</value>
+    <value>Drag and Drop</value>
   </data>
   <data name="SettingsCard_ItemDragAndDrop.Description" xml:space="preserve">
-    <value>Activer le glisser-déposer pour les éléments</value>
+    <value>Enable drag and drop for items</value>
   </data>
   <data name="SettingsCard_Backdrop.Header" xml:space="preserve">
-    <value>Arrière-plan</value>
+    <value>Backdrop</value>
   </data>
   <data name="SettingsCard_Backdrop.Description" xml:space="preserve">
-    <value>Modifier l'arrière-plan dans la fenêtre du gestionnaire du presse-papiers</value>
+    <value>Change backdrop in the Clipboard Manager window</value>
   </data>
   <data name="SettingsCard_BackgroundColor.Header" xml:space="preserve">
-    <value>Couleur d'arrière-plan</value>
+    <value>Background color</value>
   </data>
   <data name="SettingsCard_BackgroundColor.Description" xml:space="preserve">
-    <value>Modifier la couleur d'arrière-plan dans la fenêtre du gestionnaire du presse-papiers</value>
+    <value>Change background color in the Clipboard Manager window</value>
   </data>
   <data name="SettingsComboBox_Language_Default.Content" xml:space="preserve">
-    <value>Langue par défaut</value>
+    <value>Default language</value>
   </data>
   <data name="SettingsComboBox_Language_English.Content" xml:space="preserve">
-    <value>Anglais</value>
+    <value>English</value>
   </data>
   <data name="SettingsComboBox_Language_French.Content" xml:space="preserve">
-    <value>Français</value>
+    <value>French</value>
   </data>
   <data name="SettingsComboBox_Language_Ukrainian.Content" xml:space="preserve">
-    <value>Ukrainien</value>
+    <value>Ukrainian</value>
   </data>
   <data name="SettingsComboBox_Backdrop_None.Content" xml:space="preserve">
-    <value>Aucun</value>
+    <value>None</value>
   </data>
   <data name="SettingsComboBox_Backdrop_Acrylic.Content" xml:space="preserve">
     <value>Acrylic</value>
@@ -446,169 +446,169 @@
     <value>Mica Alt</value>
   </data>
   <data name="EditorWindow_Title" xml:space="preserve">
-    <value>{0} Éditeur</value>
+    <value>{0} Editor</value>
   </data>
   <data name="ContextMenu_Edit.Text" xml:space="preserve">
-    <value>Modifier</value>
+    <value>Edit</value>
   </data>
   <data name="EditorDialogBox_Content" xml:space="preserve">
-    <value>Voulez-vous enregistrer vos modifications?</value>
+    <value>Do you want to save your changes?</value>
   </data>
   <data name="DoNotSave" xml:space="preserve">
-    <value>Ne pas enregistrer</value>
+    <value>Don't save</value>
   </data>
   <data name="EditorWindowFooter_CharactersCount" xml:space="preserve">
-    <value>{0, plural, one {# caractère} other {# caractères}}</value>
+    <value>{0, plural, one {# character} other {# characters}}</value>
   </data>
   <data name="EditorWindowFooter_SelectedCharactersCount" xml:space="preserve">
-    <value>{0} of {1, plural, one {# caractère} other {# caractères}}</value>
+    <value>{0} of {1, plural, one {# character} other {# characters}}</value>
   </data>
   <data name="Editor_SaveButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Enregistrer les modifications</value>
+    <value>Save changes</value>
   </data>
   <data name="Editor_SaveButtonContent.Text" xml:space="preserve">
-    <value>Enregistrer</value>
+    <value>Save</value>
   </data>
   <data name="Editor_UndoButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Défaire</value>
+    <value>Undo</value>
   </data>
   <data name="Editor_RedoButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Refaire</value>
+    <value>Redo</value>
   </data>
   <data name="Editor_MoreButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Voir plus</value>
+    <value>See more</value>
   </data>
   <data name="EditorMenuFlyout_More_TextWrapping.Text" xml:space="preserve">
-    <value>Retour à la ligne</value>
+    <value>Word wrap</value>
   </data>
   <data name="EditorMenuFlyout_More_SpellCheck.Text" xml:space="preserve">
-    <value>Vérification orthographique</value>
+    <value>Spell check</value>
   </data>
   <data name="Editor_ExtendButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Fenêtre étendue</value>
+    <value>Extended window</value>
   </data>
   <data name="Editor_CompactButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Fenêtre compacte</value>
+    <value>Compact window</value>
   </data>
   <data name="Editor_ZoomInButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Zoom sur</value>
+    <value>Zoom in</value>
   </data>
   <data name="Editor_ZoomOutButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Zoom arrière</value>
+    <value>Zoom out</value>
   </data>
   <data name="SettingsCard_SearchFocus.Header" xml:space="preserve">
-    <value>Focus sur la zone de recherche</value>
+    <value>Search box focus</value>
   </data>
   <data name="SettingsCard_SearchFocus.Description" xml:space="preserve">
-    <value>Lorsque la fenêtre s'ouvre, le champ de recherche sera toujours focalisé</value>
+    <value>When the window opens, the search field will always be focused</value>
   </data>
   <data name="SettingsFlyoutButton_EraseData.Content" xml:space="preserve">
-    <value>Oui, supprimer toutes les données</value>
+    <value>Yes, delete all data</value>
   </data>
   <data name="SettingsFilterList_FilteredCount" xml:space="preserve">
-    <value>Articles filtrés: {0}</value>
+    <value>Filtered items: {0}</value>
   </data>
   <data name="SettingsExpander_OwnerFilters.Header" xml:space="preserve">
-    <value>Filtres d'application du propriétaire</value>
+    <value>Owner app filters</value>
   </data>
   <data name="SettingsExpander_OwnerFilters.Description" xml:space="preserve">
-    <value>Le gestionnaire du presse-papiers n'enregistrera aucune donnée de ces programmes</value>
+    <value>Clipboard manager will not save any data from these programs</value>
   </data>
   <data name="SettingsExpander_OwnerFiltersWarning.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Le filtrage ne fonctionne pas correctement avec les
-applications UWP et WebView2</value>
+    <value>Filtering doesn't work correctly with UWP
+and WebView2 applications</value>
   </data>
   <data name="SettingsExpander_OwnerFiltersAddButton.Content" xml:space="preserve">
-    <value>Ajouter un filtre</value>
+    <value>Add filter</value>
   </data>
   <data name="FilterDialogBox_Title" xml:space="preserve">
-    <value>Modifier le filtre</value>
+    <value>Edit filter</value>
   </data>
   <data name="FilterDialogBox_TeachingTip.Title" xml:space="preserve">
-    <value>Exemples de patterns</value>
+    <value>Pattern examples</value>
   </data>
   <data name="FilterDialogBox_ExampleButton.Content" xml:space="preserve">
-    <value>Exemples de patterns</value>
+    <value>Pattern examples</value>
   </data>
   <data name="FilterDialogBox_NameTextBox.PlaceholderText" xml:space="preserve">
-    <value>Nom du filtre</value>
+    <value>Filter name</value>
   </data>
   <data name="FilterDialogBox_PatternTextBox.PlaceholderText" xml:space="preserve">
-    <value>Pattern de filtre</value>
+    <value>Filter pattern</value>
   </data>
   <data name="ContextMenu_More.Text" xml:space="preserve">
-    <value>Plus</value>
+    <value>More</value>
   </data>
   <data name="ContextMenu_Filter.Text" xml:space="preserve">
-    <value>Filtrer cette source</value>
+    <value>Filter this source</value>
   </data>
   <data name="UnknownOwnerAppTitle" xml:space="preserve">
-    <value>Inconnu</value>
+    <value>Unknown</value>
   </data>
   <data name="TitleButton_More.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Plus</value>
+    <value>More</value>
   </data>
   <data name="TitleMenuButton_PinWindow.Text" xml:space="preserve">
-    <value>Fenêtre d'épingle</value>
+    <value>Pin window</value>
   </data>
   <data name="TitleMenuButton_PauseMonitoring.Text" xml:space="preserve">
-    <value>Suspendre la surveillance</value>
+    <value>Pause monitoring</value>
   </data>
   <data name="TitleMenuButton_Settings.Text" xml:space="preserve">
-    <value>Paramètres</value>
+    <value>Settings</value>
   </data>
   <data name="TitleMenuButton_Quit.Text" xml:space="preserve">
-    <value>Quitter</value>
+    <value>Quit</value>
   </data>
   <data name="Banner_PausedMonitoring.Text" xml:space="preserve">
-    <value>L'enregistrement des données du presse-papiers est suspendu</value>
+    <value>Saving clipboard data is paused</value>
   </data>
   <data name="SettingsComboBox_Position_Caret.Content" xml:space="preserve">
     <value>Caret</value>
   </data>
   <data name="SettingsComboBox_Position_ScreenCenter.Content" xml:space="preserve">
-    <value>Centre de l'écran</value>
+    <value>Screen center</value>
   </data>
   <data name="SettingsComboBox_Position_LastPosition.Content" xml:space="preserve">
-    <value>Dernière position</value>
+    <value>Last position</value>
   </data>
   <data name="SettingsComboBox_Position_Right.Content" xml:space="preserve">
-    <value>Droite</value>
+    <value>Right</value>
   </data>
   <data name="SettingsComboBox_Position_RightCorner.Content" xml:space="preserve">
-    <value>Coin droit</value>
+    <value>Right corner</value>
   </data>
   <data name="FilterButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Filtre</value>
+    <value>Filter</value>
   </data>
   <data name="FilterTreeViewTitle_Apps" xml:space="preserve">
     <value>Apps</value>
   </data>
   <data name="ClipboardItem_NoPreview.Text" xml:space="preserve">
-    <value>Pas d'aperçu</value>
+    <value>No preview</value>
   </data>
   <data name="SettingsCard_FavoriteCleaning.Header" xml:space="preserve">
-    <value>Nettoyage des objets préférés</value>
+    <value>Favorite items cleaning</value>
   </data>
   <data name="SettingsCard_FavoriteCleaning.Description" xml:space="preserve">
-    <value>Nettoyez vos articles préférés qui sont hors période de conservation</value>
+    <value>Clean favorite items that are out of retention period</value>
   </data>
   <data name="SettingsCard_CleanupType.Header" xml:space="preserve">
-    <value>Type de nettoyage</value>
+    <value>Cleanup type</value>
   </data>
   <data name="SettingsCard_CleanupType.Description" xml:space="preserve">
-    <value>Spécifie le type de suppression des anciens clips</value>
+    <value>Specifies the type of deletion of old clips</value>
   </data>
   <data name="SettingsComboBox_CleanupType_RetentionPeriod.Content" xml:space="preserve">
-    <value>Période de conservation</value>
+    <value>Retention period</value>
   </data>
   <data name="SettingsComboBox_CleanupType_Quantity.Content" xml:space="preserve">
-    <value>Quantité</value>
+    <value>Quantity</value>
   </data>
   <data name="SettingsCard_CleanupQuantity.Header" xml:space="preserve">
-    <value>Quantité maximale de clips</value>
+    <value>Maximum quantity of clips</value>
   </data>
   <data name="SettingsCard_CleanupQuantity.Description" xml:space="preserve">
-    <value>Détermine le nombre maximal de clips pouvant être stockés sur votre disque</value>
+    <value>Determines the maximum number of clips that can be stored on your disk</value>
   </data>
 </root>
