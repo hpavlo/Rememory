@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ContextMenu_AddToFavorite.Text" xml:space="preserve">
-    <value>Add to favorites</value>
+    <value>Додати до вибраних</value>
   </data>
   <data name="ContextMenu_RemoveFromFavorite.Text" xml:space="preserve">
-    <value>Remove from favorites</value>
+    <value>Видалити з вибраних</value>
   </data>
   <data name="ContextMenu_Paste.Text" xml:space="preserve">
     <value>Вставити</value>
@@ -253,7 +253,7 @@
     <value>Комбінація клавіш для активації</value>
   </data>
   <data name="SettingsCard_ActivationShortcut.Description" xml:space="preserve">
-    <value>Set the shortcut combination to open clipboard manager</value>
+    <value>Встановити комбінацію клавіш для відкриття менеджера буфера обміну</value>
   </data>
   <data name="SettingsShortcutCotrol_ActivationShortcut.ButtonText" xml:space="preserve">
     <value>Змінити комбінацію клавіш</value>
@@ -295,25 +295,25 @@
     <value>Розташування вікна буфера обміну</value>
   </data>
   <data name="SettingsCard_WindowPosition.Description" xml:space="preserve">
-    <value>Customize the position of the window on your screen</value>
+    <value>Налаштуйте позицію вікна на вашому екрані</value>
   </data>
   <data name="SettingsCard_WindowWidth.Header" xml:space="preserve">
     <value>Ширина вікна</value>
   </data>
   <data name="SettingsCard_WindowWidth.Description" xml:space="preserve">
-    <value>Set the width of the window (in pixels)</value>
+    <value>Встановити ширину вікна (у пікселях)</value>
   </data>
   <data name="SettingsCard_WindowHeight.Header" xml:space="preserve">
     <value>Висота вікна</value>
   </data>
   <data name="SettingsCard_WindowHeight.Description" xml:space="preserve">
-    <value>Set the height of the window (in pixels)</value>
+    <value>Встановити висоту вікна (у пікселях)</value>
   </data>
   <data name="SettingsCard_WindowMargin.Header" xml:space="preserve">
     <value>Відступи вікна</value>
   </data>
   <data name="SettingsCard_WindowMargin.Description" xml:space="preserve">
-    <value>Set the margin around the window (in pixels)</value>
+    <value>Встановити відступ навколо вікна (у пікселях)</value>
   </data>
   <data name="SettingsCard_EraseData.Header" xml:space="preserve">
     <value>Очистити буфер обміну</value>
@@ -404,19 +404,19 @@
     <value>Перетягування</value>
   </data>
   <data name="SettingsCard_ItemDragAndDrop.Description" xml:space="preserve">
-    <value>Enable drag and drop for clips</value>
+    <value>Увімкнути перетягування для кліпів</value>
   </data>
   <data name="SettingsCard_Backdrop.Header" xml:space="preserve">
     <value>Фон</value>
   </data>
   <data name="SettingsCard_Backdrop.Description" xml:space="preserve">
-    <value>Change backdrop in the window</value>
+    <value>Змінити фон вікна</value>
   </data>
   <data name="SettingsCard_BackgroundColor.Header" xml:space="preserve">
     <value>Колір фону</value>
   </data>
   <data name="SettingsCard_BackgroundColor.Description" xml:space="preserve">
-    <value>Change background color in the window</value>
+    <value>Змінити колір фону вікна</value>
   </data>
   <data name="SettingsComboBox_Language_Default.Content" xml:space="preserve">
     <value>Мова за замовчуванням</value>
@@ -588,10 +588,10 @@
     <value>Немає прев'ю</value>
   </data>
   <data name="SettingsCard_FavoriteCleaning.Header" xml:space="preserve">
-    <value>Favorite clips cleaning</value>
+    <value>Очищення вибраних кліпів</value>
   </data>
   <data name="SettingsCard_FavoriteCleaning.Description" xml:space="preserve">
-    <value>Clean favorite clips that are out of retention period</value>
+    <value>Очищати вибрані кліпи, термін зберігання яких закінчився</value>
   </data>
   <data name="SettingsCard_CleanupType.Header" xml:space="preserve">
     <value>Тип очищення</value>
