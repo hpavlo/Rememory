@@ -28,6 +28,12 @@ Get Rememory today and never lose track of copied information again!
 
 [Privace Policy](./PRIVACY.md)
 
+## Translation
+
+[![Crowdin](https://badges.crowdin.net/rememory/localized.svg)](https://crowdin.com/project/rememory)
+
+[Translate the project on Crowdin](https://crowdin.com/project/rememory)
+
 ## Screenshots
 ### Drag and Drop
 
