@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ContextMenu_AddToFavorite.Text" xml:space="preserve">
-    <value>Add to favorites</value>
+    <value>إضافة إلى المفضلات</value>
   </data>
   <data name="ContextMenu_RemoveFromFavorite.Text" xml:space="preserve">
-    <value>Remove from favorites</value>
+    <value>إزالة من المفضلات</value>
   </data>
   <data name="ContextMenu_Paste.Text" xml:space="preserve">
-    <value>Paste</value>
+    <value>لصق</value>
   </data>
   <data name="ContextMenu_Copy.Text" xml:space="preserve">
     <value>نسخ</value>
@@ -133,16 +133,16 @@
     <value>حذف</value>
   </data>
   <data name="ContextMenu_PasteAs.Text" xml:space="preserve">
-    <value>Paste as</value>
+    <value>لصق كـ</value>
   </data>
   <data name="ContextMenu_PasteAsPlainText.Text" xml:space="preserve">
-    <value>Plain text</value>
+    <value>نص عادي</value>
   </data>
   <data name="ContextMenu_PasteAsUpperCase.Text" xml:space="preserve">
-    <value>UPPER CASE</value>
+    <value>أحرف كبيرة</value>
   </data>
   <data name="ContextMenu_PasteAsLowerCase.Text" xml:space="preserve">
-    <value>lower case</value>
+    <value>أحرف صغيرة</value>
   </data>
   <data name="ContextMenu_PasteAsCapitalizeCase.Text" xml:space="preserve">
     <value>Capitalize Case</value>
@@ -157,16 +157,16 @@
     <value>Trim whitespace</value>
   </data>
   <data name="NavigationMenu_Home.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Home</value>
+    <value>الرئيسية</value>
   </data>
   <data name="NavigationMenu_Links.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Links</value>
+    <value>روابط</value>
   </data>
   <data name="NavigationMenu_Images.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Images</value>
+    <value>صور</value>
   </data>
   <data name="NavigationMenu_Favorites.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Favorites</value>
+    <value>مفضلات</value>
   </data>
   <data name="DaysAgo" xml:space="preserve">
     <value>{0, plural, one {# day ago} other {# days ago}}</value>
@@ -181,7 +181,7 @@
     <value>{0, plural, one {# second ago} other {# seconds ago}}</value>
   </data>
   <data name="Now" xml:space="preserve">
-    <value>Now</value>
+    <value>الآن</value>
   </data>
   <data name="CharactersCount" xml:space="preserve">
     <value>{0, plural, one {# character} other {# characters}}</value>
@@ -190,7 +190,7 @@
     <value>Size: {0} x {1}</value>
   </data>
   <data name="ContextMenu_OpenInBrowser.Text" xml:space="preserve">
-    <value>Open in browser</value>
+    <value>فتح في المتصفح</value>
   </data>
   <data name="ContextMenu_OpenInFlyout.Text" xml:space="preserve">
     <value>Open in flyout</value>
@@ -205,7 +205,7 @@
     <value>Reset</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>إلغاء</value>
   </data>
   <data name="ShortcutDialogBox_Subtitle.Text" xml:space="preserve">
     <value>Press a combination of keys to change this shortcut</value>
@@ -226,10 +226,10 @@
     <value>Are you sure you want to delete all saved data?</value>
   </data>
   <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
+    <value>نعم</value>
   </data>
   <data name="TitleButton_Close.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Close</value>
+    <value>إغلاق</value>
   </data>
   <data name="SettingsExpanderHeader_RestartAsAdministrator" xml:space="preserve">
     <value>Restart as administrator</value>
@@ -244,10 +244,10 @@
     <value>Personalization</value>
   </data>
   <data name="SettingsPageTitle_Storage.Content" xml:space="preserve">
-    <value>Storage</value>
+    <value>تخزين</value>
   </data>
   <data name="SettingsPageTitle_About.Content" xml:space="preserve">
-    <value>About</value>
+    <value>حول</value>
   </data>
   <data name="SettingsCard_ActivationShortcut.Header" xml:space="preserve">
     <value>Activation shortcut</value>
@@ -271,7 +271,7 @@
     <value>Enable this option to always run the app with administrator privileges</value>
   </data>
   <data name="SettingsCard_RunAtStartup.Header" xml:space="preserve">
-    <value>Run at startup</value>
+    <value>تشغيل عند البدء</value>
   </data>
   <data name="SettingsCard_RunAtStartup.Description" xml:space="preserve">
     <value>Enable this option to automatically launch Rememory when your computer starts</value>
