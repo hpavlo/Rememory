@@ -118,326 +118,329 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ContextMenu_AddToFavorite.Text" xml:space="preserve">
-    <value>Add to favorite</value>
+    <value>添加到收藏</value>
   </data>
   <data name="ContextMenu_RemoveFromFavorite.Text" xml:space="preserve">
-    <value>Remove from favorite</value>
+    <value>从收藏中移除</value>
   </data>
   <data name="ContextMenu_Paste.Text" xml:space="preserve">
-    <value>Paste</value>
+    <value>粘贴</value>
   </data>
   <data name="ContextMenu_Copy.Text" xml:space="preserve">
-    <value>Copy</value>
+    <value>复制</value>
   </data>
   <data name="ContextMenu_Delete.Text" xml:space="preserve">
-    <value>Delete</value>
+    <value>删除</value>
   </data>
   <data name="ContextMenu_PasteAs.Text" xml:space="preserve">
-    <value>Paste as</value>
+    <value>粘贴为</value>
   </data>
   <data name="ContextMenu_PasteAsPlainText.Text" xml:space="preserve">
-    <value>Plain text</value>
+    <value>纯文本</value>
   </data>
   <data name="ContextMenu_PasteAsUpperCase.Text" xml:space="preserve">
-    <value>UPPER CASE</value>
+    <value>大写字母</value>
   </data>
   <data name="ContextMenu_PasteAsLowerCase.Text" xml:space="preserve">
-    <value>lower case</value>
+    <value>小写字母</value>
   </data>
   <data name="ContextMenu_PasteAsCapitalizeCase.Text" xml:space="preserve">
-    <value>Capitalize Case</value>
+    <value>首字母大写</value>
   </data>
   <data name="ContextMenu_PasteAsSentenceCase.Text" xml:space="preserve">
-    <value>Sentence case</value>
+    <value>句首大写</value>
   </data>
   <data name="ContextMenu_PasteAsInvertCase.Text" xml:space="preserve">
-    <value>Invert case</value>
+    <value>反转大小写</value>
   </data>
   <data name="ContextMenu_PasteAsTrimWhitespace.Text" xml:space="preserve">
-    <value>Trim whitespace</value>
+    <value>无空白字符</value>
   </data>
   <data name="NavigationMenu_Home.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Home</value>
+    <value>主页</value>
   </data>
   <data name="NavigationMenu_Links.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Links</value>
+    <value>链接</value>
   </data>
   <data name="NavigationMenu_Images.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Images</value>
+    <value>图片</value>
   </data>
   <data name="NavigationMenu_Favorites.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Favorites</value>
+    <value>收藏</value>
   </data>
   <data name="DaysAgo" xml:space="preserve">
-    <value>{0, plural, one {# day ago} other {# days ago}}</value>
+    <value>{0, plural, other {# 天前}}</value>
   </data>
   <data name="HoursAgo" xml:space="preserve">
-    <value>{0, plural, one {# hour ago} other {# hours ago}}</value>
+    <value>{0, plural, other {# 小时前}}</value>
   </data>
   <data name="MinutesAgo" xml:space="preserve">
-    <value>{0, plural, one {# minute ago} other {# minutes ago}}</value>
+    <value>{0, plural, other {# 分钟前}}</value>
   </data>
   <data name="SecondsAgo" xml:space="preserve">
-    <value>{0, plural, one {# second ago} other {# seconds ago}}</value>
+    <value>{0, plural, other {# 秒前}}</value>
   </data>
   <data name="Now" xml:space="preserve">
-    <value>Now</value>
+    <value>现在</value>
   </data>
   <data name="CharactersCount" xml:space="preserve">
-    <value>{0, plural, one {# character} other {# characters}}</value>
+    <value>{0, plural, other {# 个字符}}</value>
   </data>
   <data name="ImageSize" xml:space="preserve">
-    <value>Size: {0} x {1}</value>
+    <value>图片大小：{0}×{1}</value>
   </data>
   <data name="ContextMenu_OpenInBrowser.Text" xml:space="preserve">
-    <value>Open in browser</value>
+    <value>在浏览器中打开</value>
   </data>
   <data name="ContextMenu_OpenInFlyout.Text" xml:space="preserve">
-    <value>Open in flyout</value>
+    <value>新窗口打开</value>
   </data>
   <data name="ShortcutDialogBox_Title" xml:space="preserve">
-    <value>Activation shortcut</value>
+    <value>触发快捷键</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Save</value>
+    <value>保存</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
+    <value>重置</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>取消</value>
   </data>
   <data name="ShortcutDialogBox_Subtitle.Text" xml:space="preserve">
-    <value>Press a combination of keys to change this shortcut</value>
+    <value>按下一组按键来改变这个快捷键</value>
   </data>
   <data name="ShortcutDialogBox_ErrorInfoBar.Message" xml:space="preserve">
-    <value>Shortcut should start with Windows key, Ctrl, Alt or Shift</value>
+    <value>快捷键应以 Windows 徽标键、Ctrl、Alt 或 Shift 开头</value>
   </data>
   <data name="ShortcutDialogBox_ErrorInfoBar.Title" xml:space="preserve">
-    <value>Invalid shortcut</value>
+    <value>不明确的快捷键</value>
   </data>
   <data name="MessageBox_UnableToOpenApp.Caption" xml:space="preserve">
-    <value>Unable to open this app</value>
+    <value>无法打开这个应用程序</value>
   </data>
   <data name="MessageBox_UnableToOpenApp.Text" xml:space="preserve">
-    <value>Unable to open this app in current mode</value>
+    <value>无法在当前模式下打开这个应用程序</value>
   </data>
   <data name="SettingsFlyoutText_EraseData.Text" xml:space="preserve">
-    <value>Are you sure you want to delete all saved data?</value>
+    <value>你确定要删除所有的数据吗？</value>
   </data>
   <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
+    <value>是</value>
   </data>
   <data name="TitleButton_Close.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Close</value>
+    <value>关闭</value>
   </data>
   <data name="SettingsExpanderHeader_RestartAsAdministrator" xml:space="preserve">
-    <value>Restart as administrator</value>
+    <value>以管理员身份重启</value>
   </data>
   <data name="SettingsExpanderHeader_RunningAsAdministrator" xml:space="preserve">
-    <value>Running as administrator</value>
+    <value>以管理员身份运行</value>
   </data>
   <data name="SettingsPageTitle_General.Content" xml:space="preserve">
-    <value>General</value>
+    <value>通用</value>
   </data>
   <data name="SettingsPageTitle_Personalization.Content" xml:space="preserve">
-    <value>Personalization</value>
+    <value>个性化</value>
   </data>
   <data name="SettingsPageTitle_Storage.Content" xml:space="preserve">
-    <value>Storage</value>
+    <value>存储</value>
   </data>
   <data name="SettingsPageTitle_About.Content" xml:space="preserve">
-    <value>About</value>
+    <value>关于</value>
   </data>
   <data name="SettingsCard_ActivationShortcut.Header" xml:space="preserve">
-    <value>Activation shortcut</value>
+    <value>快捷键触发方式</value>
   </data>
   <data name="SettingsCard_ActivationShortcut.Description" xml:space="preserve">
-    <value>Set the shortcut combination to open Clipboard Manager</value>
+    <value>设置打开剪贴板管理器的快捷键组合</value>
   </data>
   <data name="SettingsShortcutCotrol_ActivationShortcut.ButtonText" xml:space="preserve">
-    <value>Change shortcut</value>
+    <value>更改快捷键</value>
   </data>
   <data name="SettingsExpander_RestartAsAdmin.Description" xml:space="preserve">
-    <value>Advanced settings that require administrator privileges</value>
+    <value>需要管理员权限的进阶设置</value>
   </data>
   <data name="SettingsButton_RestartAsAdmin.Content" xml:space="preserve">
-    <value>Restart as Administrator</value>
+    <value>以管理员身份重启</value>
   </data>
   <data name="SettingsCard_AlwaysRunAsAdmin.Header" xml:space="preserve">
-    <value>Always run as Administrator</value>
+    <value>总是以管理员身份运行</value>
   </data>
   <data name="SettingsCard_AlwaysRunAsAdmin.Description" xml:space="preserve">
-    <value>Enable this option to always run the app with administrator privileges</value>
+    <value>开启这个选项来始终以管理员身份运行</value>
   </data>
   <data name="SettingsCard_RunAtStartup.Header" xml:space="preserve">
-    <value>Run at startup</value>
+    <value>开机启动</value>
   </data>
   <data name="SettingsCard_RunAtStartup.Description" xml:space="preserve">
-    <value>Enable this option to automatically launch Rememory when your computer starts</value>
+    <value>开启这个选项使 Rememory 在开机时自动启动</value>
   </data>
   <data name="SettingsCard_AppTheme.Header" xml:space="preserve">
-    <value>Application theme</value>
+    <value>应用程序主题</value>
   </data>
   <data name="SettingsCard_AppTheme.Description" xml:space="preserve">
-    <value>Select your preferred theme for the application interface</value>
+    <value>为这个应用程序界面选择你喜爱的主题</value>
   </data>
   <data name="SettingsComboBox_AppTheme_Default.Content" xml:space="preserve">
-    <value>Default</value>
+    <value>默认</value>
   </data>
   <data name="SettingsComboBox_AppTheme_Light.Content" xml:space="preserve">
-    <value>Light</value>
+    <value>明亮</value>
   </data>
   <data name="SettingsComboBox_AppTheme_Dark.Content" xml:space="preserve">
-    <value>Dark</value>
+    <value>深色</value>
   </data>
   <data name="SettingsCard_WindowPosition.Header" xml:space="preserve">
-    <value>Clipboard window position</value>
+    <value>剪贴板窗口位置</value>
   </data>
   <data name="SettingsCard_WindowPosition.Description" xml:space="preserve">
-    <value>Customize the position of the Clipboard Manager window on your screen</value>
+    <value>自定义窗口在你屏幕上的位置</value>
   </data>
   <data name="SettingsCard_WindowWidth.Header" xml:space="preserve">
-    <value>Window width</value>
+    <value>窗口宽度</value>
   </data>
   <data name="SettingsCard_WindowWidth.Description" xml:space="preserve">
-    <value>Set the width of the Clipboard Manager window (in pixels)</value>
+    <value>设置窗口宽度（像素）</value>
   </data>
   <data name="SettingsCard_WindowHeight.Header" xml:space="preserve">
-    <value>Window height</value>
+    <value>窗口高度</value>
   </data>
   <data name="SettingsCard_WindowHeight.Description" xml:space="preserve">
-    <value>Set the height of the Clipboard Manager window (in pixels)</value>
+    <value>设置窗口高度（像素）</value>
   </data>
   <data name="SettingsCard_WindowMargin.Header" xml:space="preserve">
-    <value>Window margin</value>
+    <value>窗口边距</value>
   </data>
   <data name="SettingsCard_WindowMargin.Description" xml:space="preserve">
-    <value>Set the margin around the Clipboard Manager window (in pixels)</value>
+    <value>设置窗口边距（像素）</value>
   </data>
   <data name="SettingsCard_EraseData.Header" xml:space="preserve">
-    <value>Erase clipboard data</value>
+    <value>擦除剪贴板数据</value>
   </data>
   <data name="SettingsCard_EraseData.Description" xml:space="preserve">
-    <value>Remove all saved clipboard data from your computer</value>
+    <value>从你的计算机中移除所有保存的剪贴板数据</value>
   </data>
   <data name="SettingsButton_EraseData.Content" xml:space="preserve">
-    <value>Delete all data</value>
+    <value>删除所有数据</value>
   </data>
   <data name="SettingsCard_RetentionPeriod.Header" xml:space="preserve">
-    <value>Data retention period</value>
+    <value>数据保留时间</value>
   </data>
   <data name="SettingsCard_RetentionPeriod.Description" xml:space="preserve">
-    <value>Specify how long clipboard data should be kept on your disk</value>
+    <value>设置剪贴板数据应当保留在你硬盘上的时间</value>
   </data>
   <data name="SettingsComboBox_RetentionPeriod_Daily.Content" xml:space="preserve">
-    <value>Daily</value>
+    <value>一天</value>
   </data>
   <data name="SettingsComboBox_RetentionPeriod_Weekly.Content" xml:space="preserve">
-    <value>Weekly</value>
+    <value>一周</value>
   </data>
   <data name="SettingsComboBox_RetentionPeriod_Monthly.Content" xml:space="preserve">
-    <value>Monthly</value>
+    <value>一个月</value>
   </data>
   <data name="SettingsComboBox_RetentionPeriod_Always.Content" xml:space="preserve">
-    <value>Always</value>
+    <value>总是</value>
   </data>
   <data name="AppDescription" xml:space="preserve">
-    <value>Rememory - Clipboard Manager</value>
+    <value>Rememory - 剪贴板管理器</value>
     <comment>Max number of characters is 120. Using this value in tray icon</comment>
   </data>
   <data name="AppVersion" xml:space="preserve">
-    <value>Version: {0}</value>
+    <value>版本号：{0}</value>
   </data>
   <data name="SettingsCard_GitHubLink.Header" xml:space="preserve">
-    <value>GitHub repository</value>
+    <value>Github 仓库</value>
   </data>
   <data name="TrayIconMenu_Open" xml:space="preserve">
-    <value>Open</value>
+    <value>打开</value>
   </data>
   <data name="TrayIconMenu_Settings" xml:space="preserve">
-    <value>Settings</value>
+    <value>设置</value>
   </data>
   <data name="TrayIconMenu_Exit" xml:space="preserve">
-    <value>Exit</value>
+    <value>退出</value>
   </data>
   <data name="SearchBox.PlaceholderText" xml:space="preserve">
-    <value>Search</value>
+    <value>搜索</value>
   </data>
   <data name="MessageBox_AccessDenied.Caption" xml:space="preserve">
-    <value>Access denied</value>
+    <value>访问拒绝</value>
   </data>
   <data name="MessageBox_AccessDenied.Text" xml:space="preserve">
-    <value>To do this action please restart this app as Administrator</value>
+    <value>要执行这个操作请以管理员身份重启应用</value>
   </data>
   <data name="AppNotification_AppIsRunning" xml:space="preserve">
-    <value>The app is running</value>
+    <value>正在运行</value>
   </data>
   <data name="AppNotification_UseShortcutToOpen" xml:space="preserve">
-    <value>Use shortcut to open it: {0}</value>
+    <value>用快捷键打开：{0}</value>
   </data>
   <data name="SettingsWindow_Title" xml:space="preserve">
-    <value>{0} - Settings</value>
+    <value>{0} - 设置</value>
   </data>
   <data name="SettingsCard_Language.Header" xml:space="preserve">
-    <value>Application language</value>
+    <value>应用程序语言</value>
   </data>
   <data name="SettingsCard_Language.Description" xml:space="preserve">
-    <value>Select the application language or use OS language by default</value>
+    <value>选择应用程序语言或遵循操作系统设置</value>
   </data>
   <data name="SettingsTeachingTip_Language.Title" xml:space="preserve">
-    <value>Restart required</value>
+    <value>需要重启</value>
   </data>
   <data name="SettingsTeachingTip_Language.Subtitle" xml:space="preserve">
-    <value>To change the application language, you need to restart the program</value>
+    <value>为了更改应用程序显示语言，你需要重启应用</value>
   </data>
   <data name="SettingsTeachingTipButton_Restart.Content" xml:space="preserve">
-    <value>Restart application</value>
+    <value>重启应用</value>
   </data>
   <data name="SettingsCard_LinkPreview.Header" xml:space="preserve">
-    <value>Link preview</value>
+    <value>链接预览</value>
   </data>
   <data name="SettingsCard_LinkPreview.Description" xml:space="preserve">
-    <value>Load link preview information. This will not affect previously loaded data</value>
+    <value>加载链接预览信息。这个选项不会影响已经加载的信息</value>
   </data>
   <data name="SettingsCard_ItemDragAndDrop.Header" xml:space="preserve">
-    <value>Drag and Drop</value>
+    <value>拖放</value>
   </data>
   <data name="SettingsCard_ItemDragAndDrop.Description" xml:space="preserve">
-    <value>Enable drag and drop for items</value>
+    <value>允许拖放剪贴内容</value>
   </data>
   <data name="SettingsCard_Backdrop.Header" xml:space="preserve">
-    <value>Backdrop</value>
+    <value>背景</value>
   </data>
   <data name="SettingsCard_Backdrop.Description" xml:space="preserve">
-    <value>Change backdrop in the Clipboard Manager window</value>
+    <value>更改窗口背景</value>
   </data>
   <data name="SettingsCard_BackgroundColor.Header" xml:space="preserve">
-    <value>Background color</value>
+    <value>背景颜色</value>
   </data>
   <data name="SettingsCard_BackgroundColor.Description" xml:space="preserve">
-    <value>Change background color in the Clipboard Manager window</value>
+    <value>更改窗口背景颜色</value>
   </data>
   <data name="SettingsComboBox_Language_Default.Content" xml:space="preserve">
-    <value>Default language</value>
+    <value>默认语言</value>
   </data>
   <data name="SettingsComboBox_Language_English.Content" xml:space="preserve">
-    <value>English</value>
+    <value>英语</value>
   </data>
   <data name="SettingsComboBox_Language_French.Content" xml:space="preserve">
-    <value>French</value>
+    <value>法语</value>
   </data>
   <data name="SettingsComboBox_Language_Ukrainian.Content" xml:space="preserve">
-    <value>Ukrainian</value>
+    <value>乌克兰语</value>
+  </data>
+  <data name="SettingsComboBox_Language_ChineseSimplified.Content" xml:space="preserve">
+    <value>中文 (简体)</value>
   </data>
   <data name="SettingsComboBox_Backdrop_None.Content" xml:space="preserve">
-    <value>None</value>
+    <value>无</value>
   </data>
   <data name="SettingsComboBox_Backdrop_Acrylic.Content" xml:space="preserve">
-    <value>Acrylic</value>
+    <value>亚克力</value>
   </data>
   <data name="SettingsComboBox_Backdrop_ThinAcrylic.Content" xml:space="preserve">
-    <value>Thin Acrylic</value>
+    <value>薄亚力克</value>
   </data>
   <data name="SettingsComboBox_Backdrop_Mica.Content" xml:space="preserve">
     <value>Mica</value>
@@ -446,169 +449,168 @@
     <value>Mica Alt</value>
   </data>
   <data name="EditorWindow_Title" xml:space="preserve">
-    <value>{0} Editor</value>
+    <value>第{0}个编辑器</value>
   </data>
   <data name="ContextMenu_Edit.Text" xml:space="preserve">
-    <value>Edit</value>
+    <value>编辑</value>
   </data>
   <data name="EditorDialogBox_Content" xml:space="preserve">
-    <value>Do you want to save your changes?</value>
+    <value>你想保持你的变更吗？</value>
   </data>
   <data name="DoNotSave" xml:space="preserve">
-    <value>Don't save</value>
+    <value>不保存</value>
   </data>
   <data name="EditorWindowFooter_CharactersCount" xml:space="preserve">
-    <value>{0, plural, one {# character} other {# characters}}</value>
+    <value>{0, plural, other {# 个字符}}</value>
   </data>
   <data name="EditorWindowFooter_SelectedCharactersCount" xml:space="preserve">
-    <value>{0} of {1, plural, one {# character} other {# characters}}</value>
+    <value>{1, plural, other {# 个字符}}中选中 {0} 个字符</value>
   </data>
   <data name="Editor_SaveButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Save changes</value>
+    <value>保存更改</value>
   </data>
   <data name="Editor_SaveButtonContent.Text" xml:space="preserve">
-    <value>Save</value>
+    <value>保存</value>
   </data>
   <data name="Editor_UndoButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Undo</value>
+    <value>撤销</value>
   </data>
   <data name="Editor_RedoButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Redo</value>
+    <value>重做</value>
   </data>
   <data name="Editor_MoreButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>See more</value>
+    <value>查看更多</value>
   </data>
   <data name="EditorMenuFlyout_More_TextWrapping.Text" xml:space="preserve">
-    <value>Word wrap</value>
+    <value>自动换行</value>
   </data>
   <data name="EditorMenuFlyout_More_SpellCheck.Text" xml:space="preserve">
-    <value>Spell check</value>
+    <value>拼写检查</value>
   </data>
   <data name="Editor_ExtendButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Extended window</value>
+    <value>宽松布局</value>
   </data>
   <data name="Editor_CompactButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Compact window</value>
+    <value>紧凑布局</value>
   </data>
   <data name="Editor_ZoomInButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Zoom in</value>
+    <value>放大</value>
   </data>
   <data name="Editor_ZoomOutButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Zoom out</value>
+    <value>缩小</value>
   </data>
   <data name="SettingsCard_SearchFocus.Header" xml:space="preserve">
-    <value>Search box focus</value>
+    <value>聚焦搜索框</value>
   </data>
   <data name="SettingsCard_SearchFocus.Description" xml:space="preserve">
-    <value>When the window opens, the search field will always be focused</value>
+    <value>当窗口打开时，总是聚焦到搜索框</value>
   </data>
   <data name="SettingsFlyoutButton_EraseData.Content" xml:space="preserve">
-    <value>Yes, delete all data</value>
+    <value>确认，删除所有数据</value>
   </data>
   <data name="SettingsFilterList_FilteredCount" xml:space="preserve">
-    <value>Filtered items: {0}</value>
+    <value>筛选项：{0}</value>
   </data>
   <data name="SettingsExpander_OwnerFilters.Header" xml:space="preserve">
-    <value>Owner app filters</value>
+    <value>剪贴内容来源应用程序过滤器</value>
   </data>
   <data name="SettingsExpander_OwnerFilters.Description" xml:space="preserve">
-    <value>Clipboard manager will not save any data from these programs</value>
+    <value>剪贴板管理器不会从这些应用程序保留数据</value>
   </data>
   <data name="SettingsExpander_OwnerFiltersWarning.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Filtering doesn't work correctly with UWP
-and WebView2 applications</value>
+    <value>筛选不会在 UWP 和 WebView2 应用程序上正常工作</value>
   </data>
   <data name="SettingsExpander_OwnerFiltersAddButton.Content" xml:space="preserve">
-    <value>Add filter</value>
+    <value>增加筛选项</value>
   </data>
   <data name="FilterDialogBox_Title" xml:space="preserve">
-    <value>Edit filter</value>
+    <value>编辑筛选项</value>
   </data>
   <data name="FilterDialogBox_TeachingTip.Title" xml:space="preserve">
-    <value>Pattern examples</value>
+    <value>筛选模板</value>
   </data>
   <data name="FilterDialogBox_ExampleButton.Content" xml:space="preserve">
-    <value>Pattern examples</value>
+    <value>筛选模板</value>
   </data>
   <data name="FilterDialogBox_NameTextBox.PlaceholderText" xml:space="preserve">
-    <value>Filter name</value>
+    <value>筛选项名称</value>
   </data>
   <data name="FilterDialogBox_PatternTextBox.PlaceholderText" xml:space="preserve">
-    <value>Filter pattern</value>
+    <value>筛选项模式</value>
   </data>
   <data name="ContextMenu_More.Text" xml:space="preserve">
-    <value>More</value>
+    <value>更多</value>
   </data>
   <data name="ContextMenu_Filter.Text" xml:space="preserve">
-    <value>Filter this source</value>
+    <value>过滤这个来源</value>
   </data>
   <data name="UnknownOwnerAppTitle" xml:space="preserve">
-    <value>Unknown</value>
+    <value>未知</value>
   </data>
   <data name="TitleButton_More.ToolTipService.ToolTip" xml:space="preserve">
-    <value>More</value>
+    <value>更多</value>
   </data>
   <data name="TitleMenuButton_PinWindow.Text" xml:space="preserve">
-    <value>Pin window</value>
+    <value>固定窗口</value>
   </data>
   <data name="TitleMenuButton_PauseMonitoring.Text" xml:space="preserve">
-    <value>Pause monitoring</value>
+    <value>停止监控</value>
   </data>
   <data name="TitleMenuButton_Settings.Text" xml:space="preserve">
-    <value>Settings</value>
+    <value>设置</value>
   </data>
   <data name="TitleMenuButton_Quit.Text" xml:space="preserve">
-    <value>Quit</value>
+    <value>退出</value>
   </data>
   <data name="Banner_PausedMonitoring.Text" xml:space="preserve">
-    <value>Saving clipboard data is paused</value>
+    <value>已暂停保存剪贴板数据</value>
   </data>
   <data name="SettingsComboBox_Position_Caret.Content" xml:space="preserve">
-    <value>Caret</value>
+    <value>浮现位置</value>
   </data>
   <data name="SettingsComboBox_Position_ScreenCenter.Content" xml:space="preserve">
-    <value>Screen center</value>
+    <value>屏幕中心</value>
   </data>
   <data name="SettingsComboBox_Position_LastPosition.Content" xml:space="preserve">
-    <value>Last position</value>
+    <value>上次的位置</value>
   </data>
   <data name="SettingsComboBox_Position_Right.Content" xml:space="preserve">
-    <value>Right</value>
+    <value>右侧</value>
   </data>
   <data name="SettingsComboBox_Position_RightCorner.Content" xml:space="preserve">
-    <value>Right corner</value>
+    <value>右上角</value>
   </data>
   <data name="FilterButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Filter</value>
+    <value>筛选项</value>
   </data>
   <data name="FilterTreeViewTitle_Apps" xml:space="preserve">
-    <value>Apps</value>
+    <value>应用程序</value>
   </data>
   <data name="ClipboardItem_NoPreview.Text" xml:space="preserve">
-    <value>No preview</value>
+    <value>无预览</value>
   </data>
   <data name="SettingsCard_FavoriteCleaning.Header" xml:space="preserve">
-    <value>Favorite items cleaning</value>
+    <value>清理收藏的粘贴内容</value>
   </data>
   <data name="SettingsCard_FavoriteCleaning.Description" xml:space="preserve">
-    <value>Clean favorite items that are out of retention period</value>
+    <value>清理超出保留时间的收藏的粘贴内容</value>
   </data>
   <data name="SettingsCard_CleanupType.Header" xml:space="preserve">
-    <value>Cleanup type</value>
+    <value>清理类型</value>
   </data>
   <data name="SettingsCard_CleanupType.Description" xml:space="preserve">
-    <value>Specifies the type of deletion of old clips</value>
+    <value>选择要清理的粘贴内容类型</value>
   </data>
   <data name="SettingsComboBox_CleanupType_RetentionPeriod.Content" xml:space="preserve">
-    <value>Retention period</value>
+    <value>保留时长</value>
   </data>
   <data name="SettingsComboBox_CleanupType_Quantity.Content" xml:space="preserve">
-    <value>Quantity</value>
+    <value>数量</value>
   </data>
   <data name="SettingsCard_CleanupQuantity.Header" xml:space="preserve">
-    <value>Maximum quantity of clips</value>
+    <value>最大数量的粘贴内容</value>
   </data>
   <data name="SettingsCard_CleanupQuantity.Description" xml:space="preserve">
-    <value>Determines the maximum number of clips that can be stored on your disk</value>
+    <value>决定能保留在你硬盘上的最多粘贴内容</value>
   </data>
 </root>

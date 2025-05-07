@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ContextMenu_AddToFavorite.Text" xml:space="preserve">
-    <value>Add to favorite</value>
+    <value>Add to favorites</value>
   </data>
   <data name="ContextMenu_RemoveFromFavorite.Text" xml:space="preserve">
-    <value>Remove from favorite</value>
+    <value>Remove from favorites</value>
   </data>
   <data name="ContextMenu_Paste.Text" xml:space="preserve">
     <value>Paste</value>
@@ -253,7 +253,7 @@
     <value>Activation shortcut</value>
   </data>
   <data name="SettingsCard_ActivationShortcut.Description" xml:space="preserve">
-    <value>Set the shortcut combination to open Clipboard Manager</value>
+    <value>Set the shortcut combination to open clipboard manager</value>
   </data>
   <data name="SettingsShortcutCotrol_ActivationShortcut.ButtonText" xml:space="preserve">
     <value>Change shortcut</value>
@@ -295,25 +295,25 @@
     <value>Clipboard window position</value>
   </data>
   <data name="SettingsCard_WindowPosition.Description" xml:space="preserve">
-    <value>Customize the position of the Clipboard Manager window on your screen</value>
+    <value>Customize the position of the window on your screen</value>
   </data>
   <data name="SettingsCard_WindowWidth.Header" xml:space="preserve">
     <value>Window width</value>
   </data>
   <data name="SettingsCard_WindowWidth.Description" xml:space="preserve">
-    <value>Set the width of the Clipboard Manager window (in pixels)</value>
+    <value>Set the width of the window (in pixels)</value>
   </data>
   <data name="SettingsCard_WindowHeight.Header" xml:space="preserve">
     <value>Window height</value>
   </data>
   <data name="SettingsCard_WindowHeight.Description" xml:space="preserve">
-    <value>Set the height of the Clipboard Manager window (in pixels)</value>
+    <value>Set the height of the window (in pixels)</value>
   </data>
   <data name="SettingsCard_WindowMargin.Header" xml:space="preserve">
     <value>Window margin</value>
   </data>
   <data name="SettingsCard_WindowMargin.Description" xml:space="preserve">
-    <value>Set the margin around the Clipboard Manager window (in pixels)</value>
+    <value>Set the margin around the window (in pixels)</value>
   </data>
   <data name="SettingsCard_EraseData.Header" xml:space="preserve">
     <value>Erase clipboard data</value>
@@ -404,19 +404,19 @@
     <value>Drag and Drop</value>
   </data>
   <data name="SettingsCard_ItemDragAndDrop.Description" xml:space="preserve">
-    <value>Enable drag and drop for items</value>
+    <value>Enable drag and drop for clips</value>
   </data>
   <data name="SettingsCard_Backdrop.Header" xml:space="preserve">
     <value>Backdrop</value>
   </data>
   <data name="SettingsCard_Backdrop.Description" xml:space="preserve">
-    <value>Change backdrop in the Clipboard Manager window</value>
+    <value>Change backdrop in the window</value>
   </data>
   <data name="SettingsCard_BackgroundColor.Header" xml:space="preserve">
     <value>Background color</value>
   </data>
   <data name="SettingsCard_BackgroundColor.Description" xml:space="preserve">
-    <value>Change background color in the Clipboard Manager window</value>
+    <value>Change background color in the window</value>
   </data>
   <data name="SettingsComboBox_Language_Default.Content" xml:space="preserve">
     <value>Default language</value>
@@ -429,6 +429,9 @@
   </data>
   <data name="SettingsComboBox_Language_Ukrainian.Content" xml:space="preserve">
     <value>Ukrainian</value>
+  </data>
+  <data name="SettingsComboBox_Language_ChineseSimplified.Content" xml:space="preserve">
+    <value>Chinese (Simplified)</value>
   </data>
   <data name="SettingsComboBox_Backdrop_None.Content" xml:space="preserve">
     <value>None</value>
@@ -588,10 +591,10 @@ and WebView2 applications</value>
     <value>No preview</value>
   </data>
   <data name="SettingsCard_FavoriteCleaning.Header" xml:space="preserve">
-    <value>Favorite items cleaning</value>
+    <value>Favorite clips cleaning</value>
   </data>
   <data name="SettingsCard_FavoriteCleaning.Description" xml:space="preserve">
-    <value>Clean favorite items that are out of retention period</value>
+    <value>Clean favorite clips that are out of retention period</value>
   </data>
   <data name="SettingsCard_CleanupType.Header" xml:space="preserve">
     <value>Cleanup type</value>

@@ -121,7 +121,7 @@
     <value>Ajouter aux favoris</value>
   </data>
   <data name="ContextMenu_RemoveFromFavorite.Text" xml:space="preserve">
-    <value>Retirer des favoris</value>
+    <value>Supprimer des favoris</value>
   </data>
   <data name="ContextMenu_Paste.Text" xml:space="preserve">
     <value>Coller</value>
@@ -295,25 +295,25 @@
     <value>Position de la fenêtre du presse-papiers</value>
   </data>
   <data name="SettingsCard_WindowPosition.Description" xml:space="preserve">
-    <value>Personnaliser la position de la fenêtre du gestionnaire de presse-papiers sur votre écran</value>
+    <value>Personnaliser la position de la fenêtre sur votre écran</value>
   </data>
   <data name="SettingsCard_WindowWidth.Header" xml:space="preserve">
     <value>Largeur de la fenêtre</value>
   </data>
   <data name="SettingsCard_WindowWidth.Description" xml:space="preserve">
-    <value>Définir la largeur de la fenêtre du gestionnaire de presse-papiers (en pixels)</value>
+    <value>Définir la largeur de la fenêtre (en pixels)</value>
   </data>
   <data name="SettingsCard_WindowHeight.Header" xml:space="preserve">
     <value>Hauteur de la fenêtre</value>
   </data>
   <data name="SettingsCard_WindowHeight.Description" xml:space="preserve">
-    <value>Définir la hauteur de la fenêtre du gestionnaire de presse-papiers (en pixels)</value>
+    <value>Définir la hauteur de la fenêtre (en pixels)</value>
   </data>
   <data name="SettingsCard_WindowMargin.Header" xml:space="preserve">
     <value>Marges de la fenêtre</value>
   </data>
   <data name="SettingsCard_WindowMargin.Description" xml:space="preserve">
-    <value>Définir les marges autour de la fenêtre du gestionnaire de presse-papiers (en pixels)</value>
+    <value>Définir la marge autour de la fenêtre (en pixels)</value>
   </data>
   <data name="SettingsCard_EraseData.Header" xml:space="preserve">
     <value>Effacer les données du presse-papiers</value>
@@ -404,19 +404,19 @@
     <value>Glisser-déposer</value>
   </data>
   <data name="SettingsCard_ItemDragAndDrop.Description" xml:space="preserve">
-    <value>Activer le glisser-déposer pour les éléments</value>
+    <value>Activer le glisser-déposer pour les clips</value>
   </data>
   <data name="SettingsCard_Backdrop.Header" xml:space="preserve">
     <value>Arrière-plan</value>
   </data>
   <data name="SettingsCard_Backdrop.Description" xml:space="preserve">
-    <value>Modifier l'arrière-plan dans la fenêtre du gestionnaire du presse-papiers</value>
+    <value>Changer l'arrière-plan de la fenêtre</value>
   </data>
   <data name="SettingsCard_BackgroundColor.Header" xml:space="preserve">
     <value>Couleur d'arrière-plan</value>
   </data>
   <data name="SettingsCard_BackgroundColor.Description" xml:space="preserve">
-    <value>Modifier la couleur d'arrière-plan dans la fenêtre du gestionnaire du presse-papiers</value>
+    <value>Changer la couleur d'arrière-plan dans la fenêtre</value>
   </data>
   <data name="SettingsComboBox_Language_Default.Content" xml:space="preserve">
     <value>Langue par défaut</value>
@@ -430,14 +430,17 @@
   <data name="SettingsComboBox_Language_Ukrainian.Content" xml:space="preserve">
     <value>Ukrainien</value>
   </data>
+  <data name="SettingsComboBox_Language_ChineseSimplified.Content" xml:space="preserve">
+    <value>Chinois (Simplifié)</value>
+  </data>
   <data name="SettingsComboBox_Backdrop_None.Content" xml:space="preserve">
     <value>Aucun</value>
   </data>
   <data name="SettingsComboBox_Backdrop_Acrylic.Content" xml:space="preserve">
-    <value>Acrylic</value>
+    <value>Acrylique</value>
   </data>
   <data name="SettingsComboBox_Backdrop_ThinAcrylic.Content" xml:space="preserve">
-    <value>Thin Acrylic</value>
+    <value>Acrylique fin</value>
   </data>
   <data name="SettingsComboBox_Backdrop_Mica.Content" xml:space="preserve">
     <value>Mica</value>
@@ -582,16 +585,16 @@ applications UWP et WebView2</value>
     <value>Filtre</value>
   </data>
   <data name="FilterTreeViewTitle_Apps" xml:space="preserve">
-    <value>Apps</value>
+    <value>Applis</value>
   </data>
   <data name="ClipboardItem_NoPreview.Text" xml:space="preserve">
     <value>Pas d'aperçu</value>
   </data>
   <data name="SettingsCard_FavoriteCleaning.Header" xml:space="preserve">
-    <value>Nettoyage des objets préférés</value>
+    <value>Nettoyage des clips favoris</value>
   </data>
   <data name="SettingsCard_FavoriteCleaning.Description" xml:space="preserve">
-    <value>Nettoyez vos articles préférés qui sont hors période de conservation</value>
+    <value>Nettoyer les clips favoris en dehors de la période de rétention</value>
   </data>
   <data name="SettingsCard_CleanupType.Header" xml:space="preserve">
     <value>Type de nettoyage</value>

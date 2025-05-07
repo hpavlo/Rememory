@@ -295,25 +295,25 @@
     <value>Розташування вікна буфера обміну</value>
   </data>
   <data name="SettingsCard_WindowPosition.Description" xml:space="preserve">
-    <value>Налаштуйте позицію вікна менеджера буфера обміну на вашому екрані</value>
+    <value>Налаштуйте позицію вікна на вашому екрані</value>
   </data>
   <data name="SettingsCard_WindowWidth.Header" xml:space="preserve">
     <value>Ширина вікна</value>
   </data>
   <data name="SettingsCard_WindowWidth.Description" xml:space="preserve">
-    <value>Встановіть ширину вікна менеджера буфера обміну (у пікселях)</value>
+    <value>Встановити ширину вікна (у пікселях)</value>
   </data>
   <data name="SettingsCard_WindowHeight.Header" xml:space="preserve">
     <value>Висота вікна</value>
   </data>
   <data name="SettingsCard_WindowHeight.Description" xml:space="preserve">
-    <value>Встановіть висоту вікна менеджера буфера обміну (у пікселях)</value>
+    <value>Встановити висоту вікна (у пікселях)</value>
   </data>
   <data name="SettingsCard_WindowMargin.Header" xml:space="preserve">
     <value>Відступи вікна</value>
   </data>
   <data name="SettingsCard_WindowMargin.Description" xml:space="preserve">
-    <value>Встановіть відступ навколо вікна менеджера буфера обміну (у пікселях)</value>
+    <value>Встановити відступ навколо вікна (у пікселях)</value>
   </data>
   <data name="SettingsCard_EraseData.Header" xml:space="preserve">
     <value>Очистити буфер обміну</value>
@@ -404,19 +404,19 @@
     <value>Перетягування</value>
   </data>
   <data name="SettingsCard_ItemDragAndDrop.Description" xml:space="preserve">
-    <value>Увімкніть перетягування елементів</value>
+    <value>Увімкнути перетягування для кліпів</value>
   </data>
   <data name="SettingsCard_Backdrop.Header" xml:space="preserve">
     <value>Фон</value>
   </data>
   <data name="SettingsCard_Backdrop.Description" xml:space="preserve">
-    <value>Змінити фон у вікні диспетчера буфера обміну</value>
+    <value>Змінити фон вікна</value>
   </data>
   <data name="SettingsCard_BackgroundColor.Header" xml:space="preserve">
     <value>Колір фону</value>
   </data>
   <data name="SettingsCard_BackgroundColor.Description" xml:space="preserve">
-    <value>Змініть колір фону у вікні диспетчера буфера обміну</value>
+    <value>Змінити колір фону вікна</value>
   </data>
   <data name="SettingsComboBox_Language_Default.Content" xml:space="preserve">
     <value>Мова за замовчуванням</value>
@@ -429,6 +429,9 @@
   </data>
   <data name="SettingsComboBox_Language_Ukrainian.Content" xml:space="preserve">
     <value>Українська</value>
+  </data>
+  <data name="SettingsComboBox_Language_ChineseSimplified.Content" xml:space="preserve">
+    <value>Китайська (спрощена)</value>
   </data>
   <data name="SettingsComboBox_Backdrop_None.Content" xml:space="preserve">
     <value>Немає</value>
@@ -588,10 +591,10 @@
     <value>Немає прев'ю</value>
   </data>
   <data name="SettingsCard_FavoriteCleaning.Header" xml:space="preserve">
-    <value>Очистка вибраних елементів</value>
+    <value>Очищення вибраних кліпів</value>
   </data>
   <data name="SettingsCard_FavoriteCleaning.Description" xml:space="preserve">
-    <value>Очищати вибрані елементи, термін зберігання яких закінчився</value>
+    <value>Очищати вибрані кліпи, термін зберігання яких закінчився</value>
   </data>
   <data name="SettingsCard_CleanupType.Header" xml:space="preserve">
     <value>Тип очищення</value>

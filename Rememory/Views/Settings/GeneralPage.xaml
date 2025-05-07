@@ -29,6 +29,7 @@
                 <ComboBoxItem x:Uid="SettingsComboBox_Language_English" />
                 <ComboBoxItem x:Uid="SettingsComboBox_Language_French" />
                 <ComboBoxItem x:Uid="SettingsComboBox_Language_Ukrainian" />
+                <ComboBoxItem x:Uid="SettingsComboBox_Language_ChineseSimplified" />
             </ComboBox>
         </tkcontrols:SettingsCard>
 

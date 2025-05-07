@@ -27,6 +27,7 @@
 		<Resource Language="en-US"/>
 		<Resource Language="fr-FR"/>
 		<Resource Language="uk-UA"/>
+		<Resource Language="zh-CN"/>
 	</Resources>
 
 	<Applications>

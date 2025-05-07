@@ -430,6 +430,9 @@
   <data name="SettingsComboBox_Language_Ukrainian.Content" xml:space="preserve">
     <value>Ukrainian</value>
   </data>
+  <data name="SettingsComboBox_Language_ChineseSimplified.Content" xml:space="preserve">
+    <value>Chinese (Simplified)</value>
+  </data>
   <data name="SettingsComboBox_Backdrop_None.Content" xml:space="preserve">
     <value>None</value>
   </data>
