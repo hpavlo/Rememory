@@ -40,12 +40,12 @@ namespace Rememory.Services
             {
                 // Trying to update existing info about owner in dictionary and DB
                 bool toUpdate = false;
-                if (!string.Equals(owner.Name, ownerName))
+                if (ownerName is not null && !string.Equals(owner.Name, ownerName))
                 {
                     owner.Name = ownerName;
                     toUpdate = true;
                 }
-                if (!StructuralComparisons.StructuralEqualityComparer.Equals(owner.Icon, icon))
+                if (icon is not null && !StructuralComparisons.StructuralEqualityComparer.Equals(owner.Icon, icon))
                 {
                     owner.Icon = icon;
                     toUpdate = true;
