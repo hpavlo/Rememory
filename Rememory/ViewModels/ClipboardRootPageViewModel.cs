@@ -26,7 +26,7 @@ namespace Rememory.ViewModels
     /// Manages the collection of clips, handles filtering, searching, UI commands,
     /// and orchestrates interactions with various application services.
     /// </summary>
-        public partial class ClipboardRootPageViewModel : ObservableObject
+    public partial class ClipboardRootPageViewModel : ObservableObject
     {
         // Services
         private readonly IClipboardService _clipboardService = App.Current.Services.GetService<IClipboardService>()!;

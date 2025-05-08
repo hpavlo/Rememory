@@ -365,8 +365,15 @@ namespace Rememory.Views
         {
             // IsSelected property binding doesn't working for now
             // We should do it manually
-            args.AddedItems.Cast<AppTreeViewNode>().ToList().ForEach(item => item.IsSelected = true);
-            args.RemovedItems.Cast<AppTreeViewNode>().ToList().ForEach(item => item.IsSelected = false);
+            foreach (var item in args.AddedItems.Cast<AppTreeViewNode>())
+            {
+                item.IsSelected = true;
+            }
+
+            foreach (var item in args.RemovedItems.Cast<AppTreeViewNode>())
+            {
+                item.IsSelected = false;
+            }
 
             ViewModel.OnFilterTreeViewSelectionChanged();
         }
