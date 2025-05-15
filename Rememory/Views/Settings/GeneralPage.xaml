@@ -60,6 +60,11 @@
             <ToggleSwitch IsOn="{x:Bind ViewModel.RunAtStartupToggle, Mode=TwoWay}" />
         </tkcontrols:SettingsCard>
 
+        <tkcontrols:SettingsCard x:Uid="SettingsCard_NotificationOnStartup"
+                                 HeaderIcon="{tk:FontIcon Glyph=&#xE91C;}">
+            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.ShowNotificationOnStart, Mode=TwoWay}" />
+        </tkcontrols:SettingsCard>
+
         <tkcontrols:SettingsCard x:Uid="SettingsCard_LinkPreview"
                                  HeaderIcon="{tk:FontIcon Glyph=&#xE8A1;}">
             <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.EnableLinkPreviewLoading, Mode=TwoWay}" />

@@ -276,6 +276,12 @@
   <data name="SettingsCard_RunAtStartup.Description" xml:space="preserve">
     <value>Enable this option to automatically launch Rememory when your computer starts</value>
   </data>
+  <data name="SettingsCard_NotificationOnStartup.Header" xml:space="preserve">
+    <value>Notification on startup</value>
+  </data>
+  <data name="SettingsCard_NotificationOnStartup.Description" xml:space="preserve">
+    <value>Show notification after opening the app</value>
+  </data>
   <data name="SettingsCard_AppTheme.Header" xml:space="preserve">
     <value>Application theme</value>
   </data>

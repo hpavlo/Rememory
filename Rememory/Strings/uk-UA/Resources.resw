@@ -276,6 +276,12 @@
   <data name="SettingsCard_RunAtStartup.Description" xml:space="preserve">
     <value>Увімкніть цю опцію, щоб Rememory запускався автоматично під час увімкнення комп'ютера</value>
   </data>
+  <data name="SettingsCard_NotificationOnStartup.Header" xml:space="preserve">
+    <value>Сповіщення при старті</value>
+  </data>
+  <data name="SettingsCard_NotificationOnStartup.Description" xml:space="preserve">
+    <value>Показувати сповіщення після відкриття програми</value>
+  </data>
   <data name="SettingsCard_AppTheme.Header" xml:space="preserve">
     <value>Тема інтерфейсу</value>
   </data>

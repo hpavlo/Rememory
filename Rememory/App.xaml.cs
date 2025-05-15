@@ -45,8 +45,7 @@ namespace Rememory
         private bool _closeApp = false;
 
         /// <summary>
-        /// Initializes the singleton application object.  This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
+        /// Initializes the singleton application object.
         /// </summary>
         public App(string[] args)
         {
@@ -88,7 +87,7 @@ namespace Rememory
                 SettingsWindow.ShowSettingsWindow();
             }
 
-            if (!_launchArguments.Contains("-silent"))
+            if (!_launchArguments.Contains("-silent") && SettingsContext.ShowNotificationOnStart)
             {
                 AppNotificationManager.Default.Show(new AppNotificationBuilder()
                     .AddText("AppNotification_AppIsRunning".GetLocalizedResource())
@@ -96,11 +95,6 @@ namespace Rememory
                         KeyboardHelper.ShortcutToString(SettingsContext.ActivationShortcut, "+")))
                     .BuildNotification());
             }
-
-            UnhandledException += (s, a) =>
-            {
-
-            };
         }
 
         private void ClipboardWindow_Closed(object sender, WindowEventArgs args)

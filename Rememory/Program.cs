@@ -42,7 +42,7 @@ namespace Rememory
                     _ = new App(args);
                 });
             }
-            else
+            else if (SettingsContext.Instance.ShowNotificationOnStart)
             {
                 AppNotificationManager.Default.Show(new AppNotificationBuilder()
                     .AddText("AppNotification_AppIsRunning".GetLocalizedResource())

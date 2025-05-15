@@ -205,6 +205,14 @@ namespace Rememory.Models
             set => SetSettingsProperty(ref _enableSearchFocusOnStart, value);
         }
 
+        private bool _showNotificationOnStart;
+        public bool ShowNotificationOnStartDefault { get; private set; } = true;
+        public bool ShowNotificationOnStart
+        {
+            get => _showNotificationOnStart;
+            set => SetSettingsProperty(ref _showNotificationOnStart, value);
+        }
+
         /// <summary>
         /// Use <see cref="OwnerAppFiltersSave"/> to save changes
         /// </summary>
@@ -235,6 +243,7 @@ namespace Rememory.Models
             _enableSearchFocusOnStart = GetSettingValue(nameof(EnableSearchFocusOnStart), EnableSearchFocusOnStartDefault);
             OwnerAppFilters = _localSettings.Values.TryGetValue(nameof(OwnerAppFilters), out var filterSourceValue) ?
                 JsonSerializer.Deserialize<ObservableCollection<OwnerAppFilter>>((string)filterSourceValue) : [];
+            _showNotificationOnStart = GetSettingValue(nameof(ShowNotificationOnStart), ShowNotificationOnStartDefault);
         }
 
         private T GetSettingValue<T>(string key, T defaultValue)

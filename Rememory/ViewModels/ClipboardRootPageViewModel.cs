@@ -225,11 +225,11 @@ namespace Rememory.ViewModels
             ClipsCollection?.Clear();
             ClipsCollection = [.. _clipboardService.Clips.Where(ClipFilterBySelectedMenu)];
 
-            HashSet<string> distinctPathes = [.. ClipsCollection.Select(item => item.Owner?.Path).Distinct()];
+            HashSet<string> distinctPaths = [.. ClipsCollection.Select(item => item.Owner?.Path).Distinct()];
             // Update app filter tree view
             RootAppNode.Children.Clear();
             RootAppNode.Children = [.._ownerService.Owners.Values
-                .Where(owner => distinctPathes.Contains(owner.Path))
+                .Where(owner => distinctPaths.Contains(owner.Path))
                 .Select(owner => new AppTreeViewNode(owner))
                 .OrderBy(owner => owner.Title)
                 .ThenBy(owner => owner.OwnerPath)];
