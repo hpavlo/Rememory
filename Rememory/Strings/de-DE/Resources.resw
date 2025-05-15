@@ -620,4 +620,10 @@ and WebView2 applications</value>
   <data name="SettingsCard_CleanupQuantity.Description" xml:space="preserve">
     <value>Determines the maximum number of clips that can be stored on your disk</value>
   </data>
+  <data name="SettingsCard_RequireHexColorPrefix.Header" xml:space="preserve">
+    <value>Require Hex color prefix</value>
+  </data>
+  <data name="SettingsCard_RequireHexColorPrefix.Description" xml:space="preserve">
+    <value>If enabled, only hexadecimal color codes starting with '#' will be recognized as valid colors</value>
+  </data>
 </root>

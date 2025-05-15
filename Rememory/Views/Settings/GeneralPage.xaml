@@ -79,5 +79,10 @@
                                  HeaderIcon="{tk:FontIcon Glyph=&#xE721;}">
             <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.EnableSearchFocusOnStart, Mode=TwoWay}" />
         </tkcontrols:SettingsCard>
+
+        <tkcontrols:SettingsCard x:Uid="SettingsCard_RequireHexColorPrefix"
+                                 HeaderIcon="{tk:FontIcon Glyph=&#xE621;}">
+            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.RequireHexColorPrefix, Mode=TwoWay}" />
+        </tkcontrols:SettingsCard>
     </StackPanel>
 </Page>

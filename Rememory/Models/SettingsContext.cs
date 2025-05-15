@@ -213,6 +213,14 @@ namespace Rememory.Models
             set => SetSettingsProperty(ref _showNotificationOnStart, value);
         }
 
+        private bool _requireHexColorPrefix;
+        public bool RequireHexColorPrefixDefault { get; private set; } = true;
+        public bool RequireHexColorPrefix
+        {
+            get => _requireHexColorPrefix;
+            set => SetSettingsProperty(ref _requireHexColorPrefix, value);
+        }
+
         /// <summary>
         /// Use <see cref="OwnerAppFiltersSave"/> to save changes
         /// </summary>
@@ -244,6 +252,7 @@ namespace Rememory.Models
             OwnerAppFilters = _localSettings.Values.TryGetValue(nameof(OwnerAppFilters), out var filterSourceValue) ?
                 JsonSerializer.Deserialize<ObservableCollection<OwnerAppFilter>>((string)filterSourceValue) : [];
             _showNotificationOnStart = GetSettingValue(nameof(ShowNotificationOnStart), ShowNotificationOnStartDefault);
+            _requireHexColorPrefix = GetSettingValue(nameof(RequireHexColorPrefix), RequireHexColorPrefixDefault);
         }
 
         private T GetSettingValue<T>(string key, T defaultValue)

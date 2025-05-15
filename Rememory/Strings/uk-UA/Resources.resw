@@ -620,4 +620,10 @@
   <data name="SettingsCard_CleanupQuantity.Description" xml:space="preserve">
     <value>Визначає максимальну кількість кліпів, які можуть зберігатися на вашому диску</value>
   </data>
+  <data name="SettingsCard_RequireHexColorPrefix.Header" xml:space="preserve">
+    <value>Вимагати префікс Hex-кольору</value>
+  </data>
+  <data name="SettingsCard_RequireHexColorPrefix.Description" xml:space="preserve">
+    <value>Якщо увімкнено, лише шістнадцяткові коди кольорів, починаючи з «#» будуть розпізнані як дійсні кольори</value>
+  </data>
 </root>

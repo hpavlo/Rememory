@@ -619,4 +619,10 @@
   <data name="SettingsCard_CleanupQuantity.Description" xml:space="preserve">
     <value>决定能保留在你硬盘上的最多粘贴内容</value>
   </data>
+  <data name="SettingsCard_RequireHexColorPrefix.Header" xml:space="preserve">
+    <value>需要十六进制颜色前缀</value>
+  </data>
+  <data name="SettingsCard_RequireHexColorPrefix.Description" xml:space="preserve">
+    <value>如果启用，只有以 '#' 开头的十六进制颜色代码将被识别为有效颜色</value>
+  </data>
 </root>

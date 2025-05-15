@@ -30,6 +30,7 @@ namespace Rememory.Services
 
         private readonly ClipboardMonitorCallback _clipboardCallback;
         private readonly Regex _hexColorRegex = HexColorRegex();
+        private readonly Regex _hexColorRegexOptionalPrefix = HexColorRegexOptionalPrefix();
 
         public ClipboardService(IStorageService storageService, IOwnerService ownerService, ILinkPreviewService linkPreviewService)
         {
@@ -161,7 +162,7 @@ namespace Rememory.Services
 
             if (clip.Data.TryGetValue(ClipboardFormat.Text, out var textData))
             {
-                if (_hexColorRegex.IsMatch(textData.Data))
+                if ((SettingsContext.Instance.RequireHexColorPrefix ? _hexColorRegex : _hexColorRegexOptionalPrefix).IsMatch(textData.Data))
                 {
                     ColorMetadataModel colorMetadata = new();
                     textData.Metadata = colorMetadata;
@@ -403,5 +404,8 @@ namespace Rememory.Services
 
         [GeneratedRegex(@"^#([a-fA-F0-9]{8}|[a-fA-F0-9]{6}|[a-fA-F0-9]{4}|[a-fA-F0-9]{3})$")]
         private static partial Regex HexColorRegex();
+
+        [GeneratedRegex(@"^#?([a-fA-F0-9]{8}|[a-fA-F0-9]{6}|[a-fA-F0-9]{4}|[a-fA-F0-9]{3})$")]
+        private static partial Regex HexColorRegexOptionalPrefix();
     }
 }

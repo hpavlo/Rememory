@@ -620,4 +620,10 @@ applications UWP et WebView2</value>
   <data name="SettingsCard_CleanupQuantity.Description" xml:space="preserve">
     <value>Détermine le nombre maximal de clips pouvant être stockés sur votre disque</value>
   </data>
+  <data name="SettingsCard_RequireHexColorPrefix.Header" xml:space="preserve">
+    <value>Requiert un préfixe de couleur hexadécimal</value>
+  </data>
+  <data name="SettingsCard_RequireHexColorPrefix.Description" xml:space="preserve">
+    <value>Si activé, seuls les codes de couleur hexadécimal commençant par '#' seront reconnus comme des couleurs valides</value>
+  </data>
 </root>
