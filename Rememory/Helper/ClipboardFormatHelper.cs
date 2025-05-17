@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
@@ -186,20 +187,20 @@ namespace Rememory.Helper
         /// <param name="clipModel">The <see cref="ClipModel"/> whose external data files should be deleted.</param>
         public static void ClearExternalDataFiles(this ClipModel clipModel)
         {
-            foreach (var dataItem in clipModel.Data)
+            var filesToDelete = clipModel.Data.Values.Where(IsFile).ToArray();
+
+            foreach (var dataModel in filesToDelete)
             {
-                if (dataItem.Value.IsFile())
+                try
                 {
-                    try
+                    var fileInfo = new FileInfo(dataModel.Data);
+                    if (fileInfo.Exists)
                     {
-                        var fileInfo = new FileInfo(dataItem.Value.Data);
-                        if (fileInfo.Exists)
-                        {
-                            fileInfo.Delete();
-                        }
+                        fileInfo.Delete();
                     }
-                    catch { }
+                    clipModel.Data.Remove(dataModel.Format);
                 }
+                catch { }
             }
         }
 

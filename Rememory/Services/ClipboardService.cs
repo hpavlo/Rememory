@@ -358,7 +358,7 @@ namespace Rememory.Services
                 clip.Data.TryAdd(dataFormat.Value, clipData);
             }
 
-            if (!RemoveDuplicateItem(clip))
+            if (!TryMoveDuplicateItem(clip))
             {
                 AddClip(clip);
             }
@@ -366,36 +366,25 @@ namespace Rememory.Services
             return true;
         }
 
-        private bool RemoveDuplicateItem(ClipModel newClip)
+        private bool TryMoveDuplicateItem(ClipModel newClip)
         {
-            ClipModel? toBeMoved = null;
-
-            foreach (var clip in Clips)
+            if (Clips.FirstOrDefault(clip => clip.EqualDataTo(newClip)) is ClipModel toMove)
             {
-                if (clip.EqualDataTo(newClip))
+                Clips.Remove(toMove);
+                Clips.Insert(0, toMove);
+
+                toMove.ClipTime = newClip.ClipTime;
+
+                if (toMove.Owner != newClip.Owner)
                 {
-                    toBeMoved = clip;
-                    break;
-                }
-            }
-
-            if (toBeMoved is not null)
-            {
-                Clips.Remove(toBeMoved);
-                Clips.Insert(0, toBeMoved);
-
-                toBeMoved.ClipTime = newClip.ClipTime;
-
-                if (toBeMoved.Owner != newClip.Owner)
-                {
-                    _ownerService.UnregisterClipOwner(toBeMoved);
-                    toBeMoved.Owner = newClip.Owner;   // newClip.Owner is already registered
+                    _ownerService.UnregisterClipOwner(toMove);
+                    toMove.Owner = newClip.Owner;   // newClip.Owner is already registered
                 }
 
-                _storageService.UpdateClip(toBeMoved);
+                _storageService.UpdateClip(toMove);
                 newClip.Owner = null;
                 newClip.ClearExternalDataFiles();
-                OnClipMovedToTop(Clips, toBeMoved);
+                OnClipMovedToTop(Clips, toMove);
                 return true;
             }
 
