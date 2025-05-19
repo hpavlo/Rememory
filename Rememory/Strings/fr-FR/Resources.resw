@@ -156,6 +156,18 @@
   <data name="ContextMenu_PasteAsTrimWhitespace.Text" xml:space="preserve">
     <value>Supprimer les espaces</value>
   </data>
+  <data name="ContextMenu_PasteAsCamelCase.Text" xml:space="preserve">
+    <value>camelCase</value>
+  </data>
+  <data name="ContextMenu_PasteAsPascalCase.Text" xml:space="preserve">
+    <value>PascalCase</value>
+  </data>
+  <data name="ContextMenu_PasteAsSnakeCase.Text" xml:space="preserve">
+    <value>snake_case</value>
+  </data>
+  <data name="ContextMenu_PasteAsKebabCase.Text" xml:space="preserve">
+    <value>kebab-case</value>
+  </data>
   <data name="NavigationMenu_Home.ToolTipService.ToolTip" xml:space="preserve">
     <value>Accueil</value>
   </data>
@@ -625,5 +637,11 @@ applications UWP et WebView2</value>
   </data>
   <data name="SettingsCard_RequireHexColorPrefix.Description" xml:space="preserve">
     <value>Si activé, seuls les codes de couleur hexadécimal commençant par '#' seront reconnus comme des couleurs valides</value>
+  </data>
+  <data name="SettingsCard_DeveloperStringCaseConverions.Header" xml:space="preserve">
+    <value>Conversion de casse pour les développeurs</value>
+  </data>
+  <data name="SettingsCard_DeveloperStringCaseConverions.Description" xml:space="preserve">
+    <value>Activer les commandes avancées pour convertir du texte en Camel Case, Pascal Case, Snake Case et Kebab Case</value>
   </data>
 </root>

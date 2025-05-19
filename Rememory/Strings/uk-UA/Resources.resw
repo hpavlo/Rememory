@@ -156,6 +156,18 @@
   <data name="ContextMenu_PasteAsTrimWhitespace.Text" xml:space="preserve">
     <value>Видалити пробіли</value>
   </data>
+  <data name="ContextMenu_PasteAsCamelCase.Text" xml:space="preserve">
+    <value>camelCase</value>
+  </data>
+  <data name="ContextMenu_PasteAsPascalCase.Text" xml:space="preserve">
+    <value>PascalCase</value>
+  </data>
+  <data name="ContextMenu_PasteAsSnakeCase.Text" xml:space="preserve">
+    <value>snake_case</value>
+  </data>
+  <data name="ContextMenu_PasteAsKebabCase.Text" xml:space="preserve">
+    <value>kebab-case</value>
+  </data>
   <data name="NavigationMenu_Home.ToolTipService.ToolTip" xml:space="preserve">
     <value>Головна</value>
   </data>
@@ -625,5 +637,11 @@
   </data>
   <data name="SettingsCard_RequireHexColorPrefix.Description" xml:space="preserve">
     <value>Якщо увімкнено, лише шістнадцяткові коди кольорів, починаючи з «#» будуть розпізнані як дійсні кольори</value>
+  </data>
+  <data name="SettingsCard_DeveloperStringCaseConverions.Header" xml:space="preserve">
+    <value>Перетворення рядків для розробників</value>
+  </data>
+  <data name="SettingsCard_DeveloperStringCaseConverions.Description" xml:space="preserve">
+    <value>Увімкнути розширені команди для перетворення тексту в Camel Case, Pascal Case, Snake Case і Kebab Case</value>
   </data>
 </root>

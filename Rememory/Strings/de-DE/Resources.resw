@@ -156,6 +156,18 @@
   <data name="ContextMenu_PasteAsTrimWhitespace.Text" xml:space="preserve">
     <value>Trim whitespace</value>
   </data>
+  <data name="ContextMenu_PasteAsCamelCase.Text" xml:space="preserve">
+    <value>camelCase</value>
+  </data>
+  <data name="ContextMenu_PasteAsPascalCase.Text" xml:space="preserve">
+    <value>PascalCase</value>
+  </data>
+  <data name="ContextMenu_PasteAsSnakeCase.Text" xml:space="preserve">
+    <value>snake_case</value>
+  </data>
+  <data name="ContextMenu_PasteAsKebabCase.Text" xml:space="preserve">
+    <value>kebab-case</value>
+  </data>
   <data name="NavigationMenu_Home.ToolTipService.ToolTip" xml:space="preserve">
     <value>Home</value>
   </data>
@@ -625,5 +637,11 @@ and WebView2 applications</value>
   </data>
   <data name="SettingsCard_RequireHexColorPrefix.Description" xml:space="preserve">
     <value>If enabled, only hexadecimal color codes starting with '#' will be recognized as valid colors</value>
+  </data>
+  <data name="SettingsCard_DeveloperStringCaseConverions.Header" xml:space="preserve">
+    <value>String case converions for Developers</value>
+  </data>
+  <data name="SettingsCard_DeveloperStringCaseConverions.Description" xml:space="preserve">
+    <value>Enable advanced commands for converting text to Camel Case, Pascal Case, Snake Case and Kebab Case</value>
   </data>
 </root>

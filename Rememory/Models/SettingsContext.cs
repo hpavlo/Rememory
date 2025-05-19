@@ -221,6 +221,14 @@ namespace Rememory.Models
             set => SetSettingsProperty(ref _requireHexColorPrefix, value);
         }
 
+        private bool _enableDeveloperStringCaseConversions;
+        public bool EnableDeveloperStringCaseConversionsDefault { get; private set; } = false;
+        public bool EnableDeveloperStringCaseConversions
+        {
+            get => _enableDeveloperStringCaseConversions;
+            set => SetSettingsProperty(ref _enableDeveloperStringCaseConversions, value);
+        }
+
         /// <summary>
         /// Use <see cref="OwnerAppFiltersSave"/> to save changes
         /// </summary>
@@ -253,6 +261,7 @@ namespace Rememory.Models
                 JsonSerializer.Deserialize<ObservableCollection<OwnerAppFilter>>((string)filterSourceValue) : [];
             _showNotificationOnStart = GetSettingValue(nameof(ShowNotificationOnStart), ShowNotificationOnStartDefault);
             _requireHexColorPrefix = GetSettingValue(nameof(RequireHexColorPrefix), RequireHexColorPrefixDefault);
+            _enableDeveloperStringCaseConversions = GetSettingValue(nameof(EnableDeveloperStringCaseConversions), EnableDeveloperStringCaseConversionsDefault);
         }
 
         private T GetSettingValue<T>(string key, T defaultValue)

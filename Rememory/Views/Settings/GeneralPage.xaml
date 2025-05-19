@@ -84,5 +84,10 @@
                                  HeaderIcon="{tk:FontIcon Glyph=&#xE621;}">
             <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.RequireHexColorPrefix, Mode=TwoWay}" />
         </tkcontrols:SettingsCard>
+
+        <tkcontrols:SettingsCard x:Uid="SettingsCard_DeveloperStringCaseConverions"
+                                 HeaderIcon="{tk:FontIcon Glyph=&#xE943;}">
+            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.EnableDeveloperStringCaseConversions, Mode=TwoWay}" />
+        </tkcontrols:SettingsCard>
     </StackPanel>
 </Page>

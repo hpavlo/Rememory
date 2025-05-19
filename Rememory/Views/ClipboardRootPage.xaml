@@ -440,6 +440,23 @@
                                     <MenuFlyoutItem x:Uid="ContextMenu_PasteAsTrimWhitespace"
                                                     CommandParameter="{x:Bind Mode=OneWay}"
                                                     Command="{Binding DataContext.PasteClipWithTrimWhitespaceCommand, ElementName=ClipsListView}" />
+                                    <MenuFlyoutSeparator Visibility="{Binding DataContext.SettingsContext.EnableDeveloperStringCaseConversions, ElementName=ClipsListView, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                    <MenuFlyoutItem x:Uid="ContextMenu_PasteAsCamelCase"
+                                                    CommandParameter="{x:Bind Mode=OneWay}"
+                                                    Command="{Binding DataContext.PasteClipWithCamelCaseCommand, ElementName=ClipsListView}"
+                                                    Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                    <MenuFlyoutItem x:Uid="ContextMenu_PasteAsPascalCase"
+                                                    CommandParameter="{x:Bind Mode=OneWay}"
+                                                    Command="{Binding DataContext.PasteClipWithPascalCaseCommand, ElementName=ClipsListView}"
+                                                    Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                    <MenuFlyoutItem x:Uid="ContextMenu_PasteAsSnakeCase"
+                                                    CommandParameter="{x:Bind Mode=OneWay}"
+                                                    Command="{Binding DataContext.PasteClipWithSnakeCaseCommand, ElementName=ClipsListView}"
+                                                    Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                    <MenuFlyoutItem x:Uid="ContextMenu_PasteAsKebabCase"
+                                                    CommandParameter="{x:Bind Mode=OneWay}"
+                                                    Command="{Binding DataContext.PasteClipWithKebabCaseCommand, ElementName=ClipsListView}"
+                                                    Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}" />
                                 </MenuFlyoutSubItem>
 
                                 <MenuFlyoutItem x:Uid="ContextMenu_Copy"

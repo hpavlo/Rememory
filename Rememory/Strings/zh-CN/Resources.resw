@@ -156,6 +156,18 @@
   <data name="ContextMenu_PasteAsTrimWhitespace.Text" xml:space="preserve">
     <value>无空白字符</value>
   </data>
+  <data name="ContextMenu_PasteAsCamelCase.Text" xml:space="preserve">
+    <value>camelCase</value>
+  </data>
+  <data name="ContextMenu_PasteAsPascalCase.Text" xml:space="preserve">
+    <value>PascalCase</value>
+  </data>
+  <data name="ContextMenu_PasteAsSnakeCase.Text" xml:space="preserve">
+    <value>snake_case</value>
+  </data>
+  <data name="ContextMenu_PasteAsKebabCase.Text" xml:space="preserve">
+    <value>kebab-case</value>
+  </data>
   <data name="NavigationMenu_Home.ToolTipService.ToolTip" xml:space="preserve">
     <value>主页</value>
   </data>
@@ -624,5 +636,11 @@
   </data>
   <data name="SettingsCard_RequireHexColorPrefix.Description" xml:space="preserve">
     <value>如果启用，只有以 '#' 开头的十六进制颜色代码将被识别为有效颜色</value>
+  </data>
+  <data name="SettingsCard_DeveloperStringCaseConverions.Header" xml:space="preserve">
+    <value>为开发者字符串大小写转换</value>
+  </data>
+  <data name="SettingsCard_DeveloperStringCaseConverions.Description" xml:space="preserve">
+    <value>启用高级命令将文本转换为 Camel Case, Pascal Case, Snake Case 和 Kebab Case</value>
   </data>
 </root>

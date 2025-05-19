@@ -486,13 +486,14 @@ namespace Rememory.ViewModels
             SendDataToClipboard(clip, paste: true);
         }
 
+        private bool CanPasteClipAsPlainText(ClipModel? clip) => clip is not null && clip.Data.ContainsKey(ClipboardFormat.Text);
+
         [RelayCommand(CanExecute = nameof(CanPasteClipAsPlainText))]
         public void PasteClipAsPlainText(ClipModel? clip)
         {
             if (clip is null) return;
             SendDataToClipboard(clip, ClipboardFormat.Text, paste: true);
         }
-        private bool CanPasteClipAsPlainText(ClipModel? clip) => clip is not null && clip.Data.ContainsKey(ClipboardFormat.Text);
 
         [RelayCommand(CanExecute = nameof(CanPasteClipAsPlainText))]
         public void PasteClipWithUpperCase(ClipModel? clip)
@@ -534,6 +535,36 @@ namespace Rememory.ViewModels
         {
             if (clip is null) return;
             SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.TrimWhitespace, true);
+        }
+
+        private bool CanPasteClipWithDeveloperCase(ClipModel? clip) => SettingsContext.EnableDeveloperStringCaseConversions && CanPasteClipAsPlainText(clip);
+
+        [RelayCommand(CanExecute = nameof(CanPasteClipWithDeveloperCase))]
+        public void PasteClipWithCamelCase(ClipModel? clip)
+        {
+            if (clip is null) return;
+            SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.CamelCase, true);
+        }
+
+        [RelayCommand(CanExecute = nameof(CanPasteClipWithDeveloperCase))]
+        public void PasteClipWithPascalCase(ClipModel? clip)
+        {
+            if (clip is null) return;
+            SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.PascalCase, true);
+        }
+
+        [RelayCommand(CanExecute = nameof(CanPasteClipWithDeveloperCase))]
+        public void PasteClipWithSnakeCase(ClipModel? clip)
+        {
+            if (clip is null) return;
+            SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.SnakeCase, true);
+        }
+
+        [RelayCommand(CanExecute = nameof(CanPasteClipWithDeveloperCase))]
+        public void PasteClipWithKebabCase(ClipModel? clip)
+        {
+            if (clip is null) return;
+            SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.KebabCase, true);
         }
 
         [RelayCommand]
