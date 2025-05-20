@@ -34,50 +34,25 @@
               Height="32"
               CornerRadius="3"
               Background="{ThemeResource DefaultThemeBackgroundBrush}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
+            <Path Width="32"
+                  Height="32"
+                  Stroke="Transparent"
+                  Fill="#60888888">
+                <Path.Data>
+                    <GeometryGroup>
+                        <RectangleGeometry Rect="0 0 8 8" />
+                        <RectangleGeometry Rect="8 8 8 8" />
+                        <RectangleGeometry Rect="16 16 8 8" />
+                        <RectangleGeometry Rect="24 24 8 8" />
+                        <RectangleGeometry Rect="16 0 8 8" />
+                        <RectangleGeometry Rect="24 8 8 8" />
+                        <RectangleGeometry Rect="0 16 8 8" />
+                        <RectangleGeometry Rect="8 24 8 8" />
+                    </GeometryGroup>
+                </Path.Data>
+            </Path>
 
-            <Grid.Resources>
-                <Style TargetType="Rectangle">
-                    <Setter Property="Width"
-                            Value="8" />
-                    <Setter Property="Height"
-                            Value="8" />
-                    <Setter Property="Fill"
-                            Value="#60888888" />
-                </Style>
-            </Grid.Resources>
-
-            <Rectangle Grid.Column="0"
-                       Grid.Row="0" />
-            <Rectangle Grid.Column="1"
-                       Grid.Row="1" />
-            <Rectangle Grid.Column="2"
-                       Grid.Row="2" />
-            <Rectangle Grid.Column="3"
-                       Grid.Row="3" />
-            <Rectangle Grid.Column="2"
-                       Grid.Row="0" />
-            <Rectangle Grid.Column="3"
-                       Grid.Row="1" />
-            <Rectangle Grid.Column="0"
-                       Grid.Row="2" />
-            <Rectangle Grid.Column="1"
-                       Grid.Row="3" />
-
-            <Border Grid.ColumnSpan="4"
-                    Grid.RowSpan="4"
-                    Background="{x:Bind ColorBrush, Mode=OneWay}" />
+            <Border Background="{x:Bind ColorBrush, Mode=OneWay}" />
         </Grid>
 
         <TextBlock x:Name="ColorCodeTextBlock"
