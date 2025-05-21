@@ -1,11 +1,12 @@
-﻿using Microsoft.UI.Windowing;
+﻿using System;
+using System.Drawing;
+using System.Runtime.InteropServices.Marshalling;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Rememory.Helper;
 using Rememory.Helper.WindowBackdrop;
 using Rememory.Models;
 using Rememory.Views.Settings;
-using System;
-using System.Drawing;
 using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.System;
@@ -22,6 +23,7 @@ namespace Rememory.Views
         public event TypedEventHandler<ClipboardWindow, EventArgs>? Showing;
         public event TypedEventHandler<ClipboardWindow, EventArgs>? Hiding;
 
+        private static int WM_TASKBARCREATED = NativeHelper.RegisterWindowMessage("TaskbarCreated");
         private WindowMessageMonitor _messageMonitor;
 
         public ClipboardWindow()
@@ -37,6 +39,9 @@ namespace Rememory.Views
             this.SetWindowStyle(WindowStyle.Popup);
             int cornerPreference = (int)NativeHelper.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
             NativeHelper.DwmSetWindowAttribute(this.GetWindowHandle(), NativeHelper.DWMWA_WINDOW_CORNER_PREFERENCE, ref cornerPreference, sizeof(int));
+
+            RememoryCoreHelper.AddWindowProc(this.GetWindowHandle());
+            AddTrayIcon();
 
             _messageMonitor = new WindowMessageMonitor(this.GetWindowHandle());
             _messageMonitor.WindowMessageReceived += WindowMessageReceived;
@@ -127,6 +132,12 @@ namespace Rememory.Views
                     if (args.Message.LParam == NativeHelper.WM_LBUTTONUP)
                         ShowWindow();
                     break;
+                default:
+                    if (args.Message.MessageId == WM_TASKBARCREATED)
+                    {
+                        AddTrayIcon();
+                    }
+                    break;
             }
         }
 
@@ -149,6 +160,21 @@ namespace Rememory.Views
             SettingsWindow.CloseSettingsWindow();
             this.Activated -= Window_Activated;
             _messageMonitor.WindowMessageReceived -= WindowMessageReceived;
+        }
+
+        private unsafe void AddTrayIcon()
+        {
+            RememoryCoreHelper.CreateTrayIcon(this.GetWindowHandle(),
+                new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged(
+                    $"{"TrayIconMenu_Open".GetLocalizedResource()}\t{KeyboardHelper.ShortcutToString(SettingsContext.ActivationShortcut, "+")}")),
+                new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged("TrayIconMenu_Settings".GetLocalizedResource())),
+                new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged("TrayIconMenu_Exit".GetLocalizedResource())),
+#if DEBUG
+                new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged($"{"AppDescription".GetLocalizedResource()} (Dev)"))
+#else
+                new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged("AppDescription".GetLocalizedResource()))
+#endif
+                );
         }
 
         private void MoveToStartPosition()

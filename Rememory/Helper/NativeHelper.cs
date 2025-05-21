@@ -50,6 +50,9 @@ namespace Rememory.Helper
         [DllImport("kernel32.dll", SetLastError = true)]
         internal static extern uint RegisterApplicationRestart(string pwzCommandline, int dwFlags);
 
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        internal static extern int RegisterWindowMessage(string msg);
+
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
         internal static extern IntPtr LoadLibrary(string lpFileName);

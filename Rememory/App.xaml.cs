@@ -13,7 +13,6 @@ using Rememory.Views.Settings;
 using System;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.InteropServices.Marshalling;
 using System.Threading;
 using WinRT.Interop;
 
@@ -79,7 +78,6 @@ namespace Rememory
             ClipboardWindow.Content = rootPage;
             ClipboardWindow.InitSystemBackdrop();
 
-            InitializeRememoryCore();
             _keyboardMonitor.StartMonitor();
 
             if (_launchArguments.Contains("-settings"))
@@ -117,22 +115,6 @@ namespace Rememory
             CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
             ApplicationLanguages.PrimaryLanguageOverride = culture;
-        }
-
-        private unsafe void InitializeRememoryCore()
-        {
-            RememoryCoreHelper.AddWindowProc(ClipboardWindowHandle);
-            RememoryCoreHelper.CreateTrayIcon(ClipboardWindowHandle,
-                new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged(
-                    $"{"TrayIconMenu_Open".GetLocalizedResource()}\t{KeyboardHelper.ShortcutToString(SettingsContext.ActivationShortcut, "+")}")),
-                new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged("TrayIconMenu_Settings".GetLocalizedResource())),
-                new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged("TrayIconMenu_Exit".GetLocalizedResource())),
-#if DEBUG
-                new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged($"{"AppDescription".GetLocalizedResource()} (Dev)"))
-#else
-                new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged("AppDescription".GetLocalizedResource()))
-#endif
-                );
         }
 
         private static IServiceProvider ConfigureServices()
