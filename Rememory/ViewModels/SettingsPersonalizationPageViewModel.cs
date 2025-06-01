@@ -4,7 +4,7 @@ using Rememory.Models;
 
 namespace Rememory.ViewModels
 {
-    public class SettingsPersonalizationPageViewModel : ObservableObject
+    public partial class SettingsPersonalizationPageViewModel : ObservableObject
     {
         public SettingsContext SettingsContext => SettingsContext.Instance;
         public bool IsBackgropSupported => WindowBackdropHelper.IsSystemBackdropSupported;

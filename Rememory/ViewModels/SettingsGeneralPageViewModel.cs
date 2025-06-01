@@ -6,15 +6,14 @@ using Rememory.Helper;
 using Rememory.Models;
 using Rememory.Views.Settings;
 using System;
-using System.Windows.Input;
 
 namespace Rememory.ViewModels
 {
-    public class SettingsGeneralPageViewModel : ObservableObject
+    public partial class SettingsGeneralPageViewModel : ObservableObject
     {
         public SettingsContext SettingsContext => SettingsContext.Instance;
 
-        private IStartupService _startupService = App.Current.Services.GetService<IStartupService>();
+        private IStartupService _startupService = App.Current.Services.GetService<IStartupService>()!;
 
         public bool IsAdministratorSettingsEnabled => AdministratorHelper.IsAppRunningAsAdministrator() && RunAtStartupToggle;
 
@@ -66,21 +65,19 @@ namespace Rememory.ViewModels
         {
             _runAtStartupToggle = _startupService.IsStartupEnabled;
             _runAsAdministratorToggle = _startupService.IsStartupAsAdministratorEnabled;
-
-            InitializeCommands();
         }
 
-        public ICommand RestartCommand { get; private set; }
-        public ICommand RestartAsAdministratorCommand { get; private set; }
+        #region Commands
 
-        private void InitializeCommands()
-        {
-            RestartAsAdministratorCommand = new RelayCommand(
-                () => AdministratorHelper.TryToRestartApp(true, "-settings -silent"),
-                () => !AdministratorHelper.IsAppRunningAsAdministrator());
+        [RelayCommand]
+        private void Restart() => AdministratorHelper.TryToRestartApp(false, "-settings -silent");
 
-            RestartCommand = new RelayCommand(() => AdministratorHelper.TryToRestartApp(false, "-settings -silent"));
-        }
+        private bool CanRestartAsAdministrator() => !AdministratorHelper.IsAppRunningAsAdministrator();
+
+        [RelayCommand(CanExecute = nameof(CanRestartAsAdministrator))]
+        private void RestartAsAdministrator() => AdministratorHelper.TryToRestartApp(true, "-settings -silent");
+
+        #endregion
 
         private void ShowAccessExceptionMessageBox()
         {
