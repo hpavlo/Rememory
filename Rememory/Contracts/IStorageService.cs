@@ -39,8 +39,9 @@ namespace Rememory.Contracts
         /// Retrieves all clip records from the storage.
         /// </summary>
         /// <param name="owners">A dictionary of pre-loaded owners (Id -> OwnerModel) used to efficiently associate clips with their owners during retrieval.</param>
-        /// <returns>An enumerable collection of <see cref="ClipModel"/>, including associated data and owner information.</returns>
-        IEnumerable<ClipModel> GetClips(Dictionary<int, OwnerModel> owners);
+        /// <param name="tags">A list of pre-loaded tags used to efficiently associate clips with their tags during retrieval.</param>
+        /// <returns>An enumerable collection of <see cref="ClipModel"/>, including associated data, tags and owner information.</returns>
+        IEnumerable<ClipModel> GetClips(Dictionary<int, OwnerModel> owners, IList<TagModel> tags);
 
         /// <summary>
         /// Adds a new clip record to the storage, including its associated data formats. The Id property of the clip object might be updated after insertion.
@@ -77,6 +78,44 @@ namespace Rememory.Contracts
         /// Deletes all clip records from the storage. This might also clear related data like owners depending on the implementation.
         /// </summary>
         void DeleteAllClips();
+
+        /// <summary>
+        /// Retrieves all tags from the database.
+        /// </summary>
+        /// <returns>An enumerable collection of TagModel objects.</returns>
+        IEnumerable<TagModel> GetTags();
+
+        /// <summary>
+        /// Adds a new tag to the database and assigns it an ID.
+        /// </summary>
+        /// <param name="tag">The tag to add.</param>
+        void AddTag(TagModel tag);
+
+        /// <summary>
+        /// Updates an existing tag's name in the database.
+        /// </summary>
+        /// <param name="tag">The tag with updated properties.</param>
+        void UpdateTag(TagModel tag);
+
+        /// <summary>
+        /// Deletes a tag from the database by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the tag to delete.</param>
+        void DeleteTag(int id);
+
+        /// <summary>
+        /// Associates a clip with a tag in the database.
+        /// </summary>
+        /// <param name="clipId">The clip's ID.</param>
+        /// <param name="tagId">The tag's ID.</param>
+        void AddClipTag(int clipId, int tagId);
+
+        /// <summary>
+        /// Removes the association between a clip and a tag from the database.
+        /// </summary>
+        /// <param name="clipId">The clip's ID.</param>
+        /// <param name="tagId">The tag's ID.</param>
+        void DeleteClipTag(int clipId, int tagId);
 
         /// <summary>
         /// Adds link-specific metadata (URL, Title, Description, Image) associated with a specific data item within a clip.

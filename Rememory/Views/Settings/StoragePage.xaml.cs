@@ -12,23 +12,34 @@ namespace Rememory.Views.Settings
     {
         public readonly SettingsStoragePageViewModel ViewModel = new();
 
-        private ContentDialog _ownerAppFilterDialog;
+        private readonly ContentDialog _ownerFilterEditorDialog;
+        private readonly ContentDialog _tagEditorDialog;
 
         public StoragePage()
         {
-            this.InitializeComponent();
-        }
+            InitializeComponent();
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            _ownerAppFilterDialog = new()
+            _ownerFilterEditorDialog = new()
             {
                 Title = "FilterDialogBox_Title".GetLocalizedResource(),
                 PrimaryButtonText = "Save".GetLocalizedResource(),
                 CloseButtonText = "Cancel".GetLocalizedResource(),
-                DefaultButton = ContentDialogButton.Primary,
-                XamlRoot = this.XamlRoot
+                DefaultButton = ContentDialogButton.Primary
             };
+
+            _tagEditorDialog = new()
+            {
+                Title = "Edit tag name",   // Update to localisation
+                PrimaryButtonText = "Save".GetLocalizedResource(),
+                CloseButtonText = "Cancel".GetLocalizedResource(),
+                DefaultButton = ContentDialogButton.Primary
+            };
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            _ownerFilterEditorDialog.XamlRoot = XamlRoot;
+            _tagEditorDialog.XamlRoot = XamlRoot;
         }
 
         private void EraseDataButton_Click(object sender, RoutedEventArgs e)
@@ -43,10 +54,10 @@ namespace Rememory.Views.Settings
 
         private async void AddOwnerAppFilterButton_Click(object sender, RoutedEventArgs e)
         {
-            var dialogContent = new FilterEditorDialogContent(_ownerAppFilterDialog);
-            _ownerAppFilterDialog.IsPrimaryButtonEnabled = false;
-            _ownerAppFilterDialog.Content = dialogContent;
-            var dialogResult = await _ownerAppFilterDialog.ShowAsync();
+            var dialogContent = new FilterEditorDialog();
+            _ownerFilterEditorDialog.IsPrimaryButtonEnabled = false;
+            _ownerFilterEditorDialog.Content = dialogContent;
+            var dialogResult = await _ownerFilterEditorDialog.ShowAsync();
 
             if (dialogResult == ContentDialogResult.Primary)
             {
@@ -57,17 +68,46 @@ namespace Rememory.Views.Settings
         private async void EditOwnerAppFilterButton_Click(object sender, RoutedEventArgs e)
         {
             var filter = (OwnerAppFilter)((Button)sender).DataContext;
-            var dialogContent = new FilterEditorDialogContent(_ownerAppFilterDialog)
+            var dialogContent = new FilterEditorDialog()
             {
                 FilterName = filter.Name,
                 FilterPattern = filter.Pattern
             };
-            _ownerAppFilterDialog.Content = dialogContent;
-            var dialogResult = await _ownerAppFilterDialog.ShowAsync();
+            _ownerFilterEditorDialog.Content = dialogContent;
+            var dialogResult = await _ownerFilterEditorDialog.ShowAsync();
 
             if (dialogResult == ContentDialogResult.Primary)
             {
                 ViewModel.EditOwnerAppFilter(filter, dialogContent.FilterName, dialogContent.FilterPattern);
+            }
+        }
+
+        private async void AddTagButton_Click(object sender, RoutedEventArgs e)
+        {
+            var dialogContent = new TagEditorDialog();
+            _tagEditorDialog.IsPrimaryButtonEnabled = false;
+            _tagEditorDialog.Content = dialogContent;
+            var dialogResult = await _tagEditorDialog.ShowAsync();
+
+            if (dialogResult == ContentDialogResult.Primary)
+            {
+                ViewModel.AddTag(dialogContent.TagName);
+            }
+        }
+
+        private async void EditTagButton_Click(object sender, RoutedEventArgs e)
+        {
+            var tag = (TagModel)((Button)sender).DataContext;
+            var dialogContent = new TagEditorDialog()
+            {
+                TagName = tag.Name
+            };
+            _tagEditorDialog.Content = dialogContent;
+            var dialogResult = await _tagEditorDialog.ShowAsync();
+
+            if (dialogResult == ContentDialogResult.Primary)
+            {
+                ViewModel.EditTag(tag, dialogContent.TagName);
             }
         }
     }

@@ -83,7 +83,7 @@ namespace Rememory.Contracts
         /// and updates the change in persistent storage.
         /// </summary>
         /// <param name="clip">The clip model whose favorite status should be changed.</param>
-        void ChangeFavoriteClip(ClipModel clip);
+        void ToggleClipFavorite(ClipModel clip);
 
         /// <summary>
         /// Deletes the specified clip from the in-memory collection and optionally from persistent storage.

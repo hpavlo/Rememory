@@ -11,6 +11,7 @@ using Rememory.Models;
 using Rememory.ViewModels;
 using Rememory.Views.Controls.Behavior;
 using Rememory.Views.Settings;
+using System;
 using System.IO;
 using System.Linq;
 using Windows.System;
@@ -200,29 +201,21 @@ namespace Rememory.Views
 
         #region Context menu items
 
-        private void FavoriteMenuItem_Loading(FrameworkElement sender, object args)
+        private void MenuFlyoutTags_Loaded(object sender, RoutedEventArgs e)
         {
-            UpdateFavoriteMenuFlyoutItem((MenuFlyoutItem)sender);
-        }
+            var menuItem = (MenuFlyoutSubItem)sender;
+            var clip = (ClipModel)menuItem.DataContext;
 
-        private void FavoriteMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            var menuItem = (MenuFlyoutItem)sender;
-            ViewModel.ChangeClipFavoriteCommand.Execute(menuItem.DataContext);
-            UpdateFavoriteMenuFlyoutItem(menuItem);
-        }
-
-        private void UpdateFavoriteMenuFlyoutItem(MenuFlyoutItem menuItem)
-        {
-            if (((ClipModel)menuItem.DataContext).IsFavorite)
+            menuItem.Items.Clear();
+            foreach (var tag in ViewModel.GetTags())
             {
-                menuItem.Text = "ContextMenu_RemoveFromFavorite/Text".GetLocalizedResource();
-                menuItem.Icon = new FontIcon() { Glyph = "\uE8D9" };
-            }
-            else
-            {
-                menuItem.Text = "ContextMenu_AddToFavorite/Text".GetLocalizedResource();
-                menuItem.Icon = new FontIcon() { Glyph = "\uE734" };
+                menuItem.Items.Add(new ToggleMenuFlyoutItem()
+                {
+                    Text = tag.Name,
+                    IsChecked = clip.Tags.Contains(tag),
+                    Command = ViewModel.ToggleClipTagCommand,
+                    CommandParameter = new Tuple<ClipModel, TagModel>(clip, tag)
+                });
             }
         }
 
