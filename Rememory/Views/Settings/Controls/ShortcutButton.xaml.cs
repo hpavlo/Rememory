@@ -11,11 +11,11 @@ using Windows.System;
 
 namespace Rememory.Views.Settings.Controls
 {
-    public sealed partial class ShortcutControl : UserControl
+    public sealed partial class ShortcutButton : UserControl
     {
         private IKeyboardMonitor _keyboardMonitor = App.Current.Services.GetService<IKeyboardMonitor>();
         private ContentDialog _dialogBox;
-        private ShortcutDialogContentControl _dialogContent;
+        private ShortcutDialog _dialogContent;
         private List<int> _currentPressedKeys = [];
 
         public string ButtonText
@@ -25,7 +25,7 @@ namespace Rememory.Views.Settings.Controls
         }
 
         public static readonly DependencyProperty ButtonTextProperty =
-            DependencyProperty.Register("ButtonText", typeof(string), typeof(ShortcutControl),
+            DependencyProperty.Register("ButtonText", typeof(string), typeof(ShortcutButton),
                 new PropertyMetadata(default(string)));
 
         public IList<int> ActivationShortcut
@@ -35,7 +35,7 @@ namespace Rememory.Views.Settings.Controls
         }
 
         public static readonly DependencyProperty ActivationShortcutProperty =
-            DependencyProperty.Register("ActivationShortcut", typeof(IList<int>), typeof(ShortcutControl),
+            DependencyProperty.Register("ActivationShortcut", typeof(IList<int>), typeof(ShortcutButton),
                 new PropertyMetadata(default(IList<int>)));
 
         public IList<int> ActivationShortcutDefault
@@ -45,14 +45,14 @@ namespace Rememory.Views.Settings.Controls
         }
 
         public static readonly DependencyProperty ActivationShortcutDefaultProperty =
-            DependencyProperty.Register("ActivationShortcutDefault", typeof(IList<int>), typeof(ShortcutControl),
+            DependencyProperty.Register("ActivationShortcutDefault", typeof(IList<int>), typeof(ShortcutButton),
                 new PropertyMetadata(default(IList<int>)));
 
-        public ShortcutControl()
+        public ShortcutButton()
         {
             this.InitializeComponent();
 
-            _dialogContent = new ShortcutDialogContentControl();
+            _dialogContent = new ShortcutDialog();
             _dialogBox = new()
             {
                 Title = "ShortcutDialogBox_Title".GetLocalizedResource(),
@@ -133,7 +133,7 @@ namespace Rememory.Views.Settings.Controls
                     _currentPressedKeys.Add(key);
                 }
 
-                _dialogContent.ShortcutKeys = new List<int>(_currentPressedKeys);
+                _dialogContent.ShortcutKeys = [.. _currentPressedKeys];
                 if (IsShortcutValid(_dialogContent.ShortcutKeys))
                 {
                     _dialogContent.IsError = false;

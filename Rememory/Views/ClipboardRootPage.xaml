@@ -8,6 +8,7 @@
       xmlns:vm="using:Rememory.ViewModels"
       xmlns:tk="using:CommunityToolkit.WinUI"
       xmlns:tkconverters="using:CommunityToolkit.WinUI.Converters"
+      xmlns:tkcontrols="using:CommunityToolkit.WinUI.Controls"
       xmlns:converters="using:Rememory.Converters"
       xmlns:controls="using:Rememory.Views.Controls"
       xmlns:behavior="using:Rememory.Views.Controls.Behavior"
@@ -130,16 +131,20 @@
 
         <MenuFlyout x:Key="ContextMenuFlyout">
             <ToggleMenuFlyoutItem x:Uid="TitleMenuButton_PinWindow"
+                                  AccessKey="T"
                                   IsChecked="{x:Bind ViewModel.IsWindowPinned, Mode=TwoWay}"
                                   Icon="{tk:FontIcon FontSize=16, Glyph=&#xE718;}" />
             <ToggleMenuFlyoutItem x:Uid="TitleMenuButton_PauseMonitoring"
+                                  AccessKey="P"
                                   IsChecked="{x:Bind ViewModel.IsClipboardMonitoringPaused, Mode=TwoWay}"
                                   Icon="{tk:FontIcon FontSize=16, Glyph=&#xF0E3;}" />
             <MenuFlyoutSeparator />
             <MenuFlyoutItem x:Uid="TitleMenuButton_Settings"
+                            AccessKey="S"
                             Click="SettingsButton_Click"
                             Icon="{tk:FontIcon FontSize=16, Glyph=&#xE713;}" />
             <MenuFlyoutItem x:Uid="TitleMenuButton_Quit"
+                            AccessKey="Q"
                             Click="QuitButton_Click"
                             Icon="{tk:FontIcon FontSize=16, Glyph=&#xEA39;}" />
         </MenuFlyout>
@@ -173,24 +178,28 @@
                              x:Uid="NavigationMenu_Home"
                              AutomationProperties.AutomationId="NavigationSelectorBarItem"
                              AutomationProperties.Name="Home Menu Item"
+                             AccessKey="H"
                              Icon="Home"
                              Background="Transparent" />
             <SelectorBarItem x:Name="FavoritesMenuItem"
                              x:Uid="NavigationMenu_Favorites"
                              AutomationProperties.AutomationId="NavigationSelectorBarItem"
                              AutomationProperties.Name="Favorites Menu Item"
+                             AccessKey="F"
                              Icon="OutlineStar"
                              Background="Transparent" />
             <SelectorBarItem x:Name="ImagesMenuItem"
                              x:Uid="NavigationMenu_Images"
                              AutomationProperties.AutomationId="NavigationSelectorBarItem"
                              AutomationProperties.Name="Images Menu Item"
+                             AccessKey="I"
                              Icon="Pictures"
                              Background="Transparent" />
             <SelectorBarItem x:Name="LinksMenuItem"
                              x:Uid="NavigationMenu_Links"
                              AutomationProperties.AutomationId="NavigationSelectorBarItem"
                              AutomationProperties.Name="Link Menu Item"
+                             AccessKey="L"
                              Icon="Link"
                              Background="Transparent" />
         </SelectorBar>
@@ -213,6 +222,7 @@
             <Button x:Uid="TitleButton_More"
                     AutomationProperties.AutomationId="TitleBarButtons"
                     AutomationProperties.Name="More"
+                    AccessKey="M"
                     Content="{tk:FontIcon FontSize=16, Glyph=&#xE712;}"
                     Style="{ThemeResource AlternateCloseButtonStyle}"
                     Flyout="{StaticResource ContextMenuFlyout}" />
@@ -221,6 +231,7 @@
                     x:Uid="TitleButton_Close"
                     AutomationProperties.AutomationId="TitleBarButtons"
                     AutomationProperties.Name="Close Window"
+                    AccessKey="E"
                     Click="CloseButton_Click"
                     Content="{tk:FontIcon FontSize=16, Glyph=&#xE711;}"
                     Style="{ThemeResource AlternateCloseButtonStyle}" />
@@ -395,8 +406,18 @@
 
                         <Button.ContextFlyout>
                             <MenuFlyout>
-                                <MenuFlyoutItem Click="FavoriteMenuItem_Click"
-                                                Loading="FavoriteMenuItem_Loading" />
+                                <MenuFlyoutItem x:Uid="ContextMenu_AddToFavorite"
+                                                CommandParameter="{x:Bind Mode=OneWay}"
+                                                Command="{Binding DataContext.ToggleClipFavoriteCommand, ElementName=ClipsListView}"
+                                                IsEnabled="{x:Bind IsFavorite, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
+                                                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                Icon="{tk:FontIcon Glyph=&#xE734;}" />
+                                <MenuFlyoutItem x:Uid="ContextMenu_RemoveFromFavorite"
+                                                CommandParameter="{x:Bind Mode=OneWay}"
+                                                Command="{Binding DataContext.ToggleClipFavoriteCommand, ElementName=ClipsListView}"
+                                                IsEnabled="{x:Bind IsFavorite, Mode=OneWay}"
+                                                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                Icon="{tk:FontIcon Glyph=&#xE8D9;}" />
                                 <MenuFlyoutItem x:Uid="ContextMenu_OpenInBrowser"
                                                 CommandParameter="{x:Bind Mode=OneWay}"
                                                 Command="{Binding DataContext.OpenInBrowserCommand, ElementName=ClipsListView}"
@@ -475,6 +496,9 @@
                                                 Command="{Binding DataContext.DeleteClipCommand, ElementName=ClipsListView}"
                                                 Icon="{tk:FontIcon Glyph=&#xE74D;}" />
                                 <MenuFlyoutSeparator />
+                                <MenuFlyoutSubItem Text="Tags"
+                                                   Icon="{tk:FontIcon Glyph=&#xE8EC;}"
+                                                   Loaded="MenuFlyoutTags_Loaded" />
                                 <MenuFlyoutSubItem x:Uid="ContextMenu_More"
                                                    Icon="{tk:FontIcon Glyph=&#xE712;}">
                                     <MenuFlyoutItem x:Uid="ContextMenu_Filter"
@@ -484,25 +508,76 @@
                                 </MenuFlyoutSubItem>
                             </MenuFlyout>
                         </Button.ContextFlyout>
-                        <Grid ColumnSpacing="10"
-                              RowSpacing="4">
+                        <Grid ColumnSpacing="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" /> 
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
-                            <ContentControl Grid.ColumnSpan="3"
+                            <ContentControl Grid.Column="0"
+                                            Grid.Row="0"
+                                            Grid.ColumnSpan="3"
                                             MaxHeight="120"
+                                            Margin="0 0 0 4"
                                             IsTabStop="False"
                                             HorizontalContentAlignment="Stretch"
                                             Content="{x:Bind Data, Mode=OneWay, Converter={StaticResource ClipToControlConverter}}" />
-                            <TextBlock Grid.Row="1"
-                                       Padding="4 0"
+
+                            <ListView Grid.Column="0"
+                                      Grid.Row="1"
+                                      Grid.ColumnSpan="3"
+                                      Margin="0 2 0 4"
+                                      SelectionMode="None"
+                                      ItemsSource="{x:Bind Tags}"
+                                      Visibility="{x:Bind HasTags, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <tkcontrols:WrapPanel Orientation="Horizontal"
+                                                              HorizontalSpacing="4"
+                                                              VerticalSpacing="4" />
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="IsTabStop" Value="False" />
+                                        <Setter Property="MinWidth" Value="30" />
+                                        <Setter Property="MinHeight" Value="0" />
+                                        <Setter Property="MaxWidth" Value="150" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate>
+                                                    <ContentPresenter />
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+
+                                <ListView.ItemTemplate>
+                                    <DataTemplate x:DataType="models:TagModel">
+                                        <Border Background="#8CCC"
+                                                CornerRadius="8"
+                                                Padding="6 1 6 3">
+                                            <TextBlock Text="{x:Bind Name, Mode=OneWay}"
+                                                       FontSize="12"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Center" />
+                                        </Border>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+
+                            <TextBlock Grid.Column="0"
+                                       Grid.Row="2"
+                                       Padding="4 0 0 0"
                                        FontSize="12"
                                        TextWrapping="Wrap"
                                        HorizontalAlignment="Left"
@@ -511,7 +586,7 @@
                                        DataContext="{x:Bind Data, Mode=OneWay, Converter={StaticResource DataFooterInfoConverter}}"
                                        Text="{Binding Result}" />
                             <TextBlock Grid.Column="1"
-                                       Grid.Row="1"
+                                       Grid.Row="2"
                                        FontSize="12"
                                        TextWrapping="Wrap"
                                        HorizontalAlignment="Right"
@@ -519,7 +594,7 @@
                                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                                        Text="{x:Bind ClipTime, Mode=OneWay, Converter={StaticResource DateTimeToHumanReadableConverter}}" />
                             <Image Grid.Column="2"
-                                   Grid.Row="1"
+                                   Grid.Row="2"
                                    Height="16"
                                    Source="{x:Bind Owner.IconBitmap, Mode=OneWay}" />
                         </Grid>

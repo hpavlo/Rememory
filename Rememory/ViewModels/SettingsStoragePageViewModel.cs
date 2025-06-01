@@ -4,15 +4,19 @@ using Microsoft.Extensions.DependencyInjection;
 using Rememory.Contracts;
 using Rememory.Models;
 using Rememory.Services;
-using System.Windows.Input;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Rememory.ViewModels
 {
-    public class SettingsStoragePageViewModel : ObservableObject
+    public partial class SettingsStoragePageViewModel : ObservableObject
     {
         private readonly IClipboardService _clipboardService = App.Current.Services.GetService<IClipboardService>()!;
+        private readonly ITagService _tagService = App.Current.Services.GetService<ITagService>()!;
 
         public SettingsContext SettingsContext => SettingsContext.Instance;
+
+        public ObservableCollection<TagModel> Tags;
 
         public bool IsRetentionPeriodParametersEnabled => SettingsContext.CleanupTypeIndex == (int)CleanupType.RetentionPeriod;
         public bool IsQuantityParametersEnabled => SettingsContext.CleanupTypeIndex == (int)CleanupType.Quantity;
@@ -33,7 +37,28 @@ namespace Rememory.ViewModels
 
         public SettingsStoragePageViewModel()
         {
-            InitializeCommands();
+            Tags = [.. _tagService.Tags];
+        }
+
+        [RelayCommand]
+        public void EraseClipboardData() => _clipboardService.DeleteAllClips();
+
+        [RelayCommand]
+        public void DeleteOwnerAppFilter(OwnerAppFilter? filter)
+        {
+            if (filter is null) return;
+
+            SettingsContext.OwnerAppFilters.Remove(filter);
+            SettingsContext.OwnerAppFiltersSave();
+        }
+
+        [RelayCommand]
+        public void DeleteTag(TagModel? tag)
+        {
+            if (tag is null) return;
+
+            _tagService.UnregisterTag(tag);
+            Tags.Remove(tag);
         }
 
         public void AddOwnerAppFilter(string name, string pattern)
@@ -44,13 +69,9 @@ namespace Rememory.ViewModels
 
         public void EditOwnerAppFilter(OwnerAppFilter filter, string newName, string newPattern)
         {
-            newName = newName.Trim();
-            newPattern = newPattern.Trim();
+            filter.Name = newName.Trim();
 
-            if (!newName.Equals(filter.Name))
-            {
-                filter.Name = newName;
-            }
+            newPattern = newPattern.Trim();
             if (!newPattern.Equals(filter.Pattern))
             {
                 filter.Pattern = newPattern;
@@ -60,17 +81,16 @@ namespace Rememory.ViewModels
             SettingsContext.OwnerAppFiltersSave();
         }
 
-        public ICommand EraseClipboardDataCommand { get; private set; }
-        public ICommand DeleteOwnerAppFilterCommand { get; private set; }
-
-        private void InitializeCommands()
+        public void AddTag(string name)
         {
-            EraseClipboardDataCommand = new RelayCommand(_clipboardService.DeleteAllClips);
-            DeleteOwnerAppFilterCommand = new RelayCommand<OwnerAppFilter>(filter =>
-            {
-                SettingsContext.OwnerAppFilters.Remove(filter);
-                SettingsContext.OwnerAppFiltersSave();
-            });
+            _tagService.RegisterTag(name.Trim());
+            Tags.Add(_tagService.Tags.Where(t => t.Name.Equals(name.Trim())).First());
+        }
+
+        public void EditTag(TagModel tag, string name)
+        {
+            tag.Name = name.Trim();
+            _tagService.UpdateTag(tag);
         }
     }
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl x:Class="Rememory.Views.Settings.Controls.TagEditorDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:Rememory.Views.Settings.Controls"
+             Width="400"
+             Loaded="Dialog_Loaded">
+    <TextBox PlaceholderText="Tag name"
+             Text="{x:Bind TagName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+             TextChanged="Name_TextChanged" />
+</UserControl>

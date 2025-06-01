@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Rememory.Views.Settings.Controls
 {
-    public sealed partial class ShortcutDialogContentControl : UserControl
+    public sealed partial class ShortcutDialog : UserControl
     {
         public IList<int> ShortcutKeys
         {
@@ -13,7 +13,7 @@ namespace Rememory.Views.Settings.Controls
         }
 
         public static readonly DependencyProperty ShortcutKeysProperty = 
-            DependencyProperty.Register("ShortcutKeys", typeof(IList<int>), typeof(ShortcutDialogContentControl), 
+            DependencyProperty.Register("ShortcutKeys", typeof(IList<int>), typeof(ShortcutDialog), 
                 new PropertyMetadata(default(IList<int>)));
 
         public bool IsError
@@ -23,10 +23,10 @@ namespace Rememory.Views.Settings.Controls
         }
 
         public static readonly DependencyProperty IsErrorProperty =
-            DependencyProperty.Register("IsError", typeof(bool), typeof(ShortcutDialogContentControl),
+            DependencyProperty.Register("IsError", typeof(bool), typeof(ShortcutDialog),
                 new PropertyMetadata(default(bool), OnIsErrorChanged));
 
-        public ShortcutDialogContentControl()
+        public ShortcutDialog()
         {
             this.InitializeComponent();
         }

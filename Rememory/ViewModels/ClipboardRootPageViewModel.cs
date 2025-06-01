@@ -33,6 +33,7 @@ namespace Rememory.ViewModels
         private readonly ICleanupDataService _cleanupDataService = App.Current.Services.GetService<ICleanupDataService>()!;
         private readonly ISearchService _searchService = App.Current.Services.GetService<ISearchService>()!;
         private readonly IOwnerService _ownerService = App.Current.Services.GetService<IOwnerService>()!;
+        public readonly ITagService _tagService = App.Current.Services.GetService<ITagService>()!;
 
         // Using to get last active window if clipboard window is pinned
         private readonly ActiveWindowHook _activeWindowHook = new();
@@ -219,6 +220,8 @@ namespace Rememory.ViewModels
             UpdateClipsList();
             CleanupOldData();
         }
+
+        public IList<TagModel> GetTags() => _tagService.Tags;
 
         private void UpdateClipsList()
         {
@@ -460,10 +463,10 @@ namespace Rememory.ViewModels
         #region Commands
 
         [RelayCommand]
-        public void ChangeClipFavorite(ClipModel? clip)
+        public void ToggleClipFavorite(ClipModel? clip)
         {
             if (clip is null) return;
-            _clipboardService.ChangeFavoriteClip(clip);
+            _clipboardService.ToggleClipFavorite(clip);
         }
 
         [RelayCommand(CanExecute = nameof(CanOpenInBrowser))]
@@ -611,6 +614,24 @@ namespace Rememory.ViewModels
         private bool CanAddOwnerToFilters(OwnerModel? owner) => owner is not null
             && !string.IsNullOrEmpty(owner.Path)
             && !owner.Path.EndsWith("svchost.exe");   // check svchost.exe for UWP app sources
+
+        [RelayCommand]
+        public void ToggleClipTag(Tuple<ClipModel, TagModel>? clipTagData)
+        {
+            if (clipTagData is null) return;
+
+            var clip = clipTagData.Item1;
+            var tag = clipTagData.Item2;
+
+            if (clip.Tags.Contains(tag))
+            {
+                _tagService.RemoveClipFromTag(tag, clip);
+            }
+            else
+            {
+                _tagService.AddClipToTag(tag, clip);
+            }
+        }
 
         private void SendDataToClipboard(ClipModel clip, [Optional] ClipboardFormat? format, [Optional] TextCaseType? caseType, bool paste = false)
         {

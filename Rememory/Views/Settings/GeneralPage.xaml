@@ -35,7 +35,7 @@
 
         <tkcontrols:SettingsCard x:Uid="SettingsCard_ActivationShortcut"
                                  HeaderIcon="{tk:FontIcon Glyph=&#xEDA7;}">
-            <controls:ShortcutControl x:Uid="SettingsShortcutCotrol_ActivationShortcut"
+            <controls:ShortcutButton x:Uid="SettingsShortcutCotrol_ActivationShortcut"
                                       ActivationShortcut="{x:Bind ViewModel.SettingsContext.ActivationShortcut, Mode=TwoWay}"
                                       ActivationShortcutDefault="{x:Bind ViewModel.SettingsContext.ActivationShortcutDefault, Mode=OneWay}" />
         </tkcontrols:SettingsCard>

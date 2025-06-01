@@ -26,16 +26,18 @@ namespace Rememory.Services
 
         private readonly IStorageService _storageService;
         private readonly IOwnerService _ownerService;
+        private readonly ITagService _tagService;
         private readonly ILinkPreviewService _linkPreviewService;
 
         private readonly ClipboardMonitorCallback _clipboardCallback;
         private readonly Regex _hexColorRegex = HexColorRegex();
         private readonly Regex _hexColorRegexOptionalPrefix = HexColorRegexOptionalPrefix();
 
-        public ClipboardService(IStorageService storageService, IOwnerService ownerService, ILinkPreviewService linkPreviewService)
+        public ClipboardService(IStorageService storageService, IOwnerService ownerService, ITagService tagService, ILinkPreviewService linkPreviewService)
         {
             _storageService = storageService;
             _ownerService = ownerService;
+            _tagService = tagService;
             _linkPreviewService = linkPreviewService;
             _clipboardCallback = CallbackFunc;
 
@@ -200,7 +202,7 @@ namespace Rememory.Services
             }
         }
 
-        public void ChangeFavoriteClip(ClipModel clip)
+        public void ToggleClipFavorite(ClipModel clip)
         {
             clip.IsFavorite = !clip.IsFavorite;
             _storageService.UpdateClip(clip);
@@ -289,7 +291,7 @@ namespace Rememory.Services
         {
             try
             {
-                return [.. _storageService.GetClips(_ownerService.Owners.Values.ToDictionary(o => o.Id))];
+                return [.. _storageService.GetClips(_ownerService.Owners.Values.ToDictionary(o => o.Id), _tagService.Tags)];
             }
             catch
             {
