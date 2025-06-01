@@ -129,6 +129,7 @@ namespace Rememory
             services.AddSingleton<IThemeService, ThemeService>();
             services.AddSingleton<IKeyboardMonitor, KeyboardMonitor>();
             services.AddSingleton<IOwnerService, OwnerService>();
+            services.AddSingleton<ITagService, TagService>();
             services.AddTransient<IStartupService, TaskSchedulerStartupService>();
 
             return services.BuildServiceProvider();

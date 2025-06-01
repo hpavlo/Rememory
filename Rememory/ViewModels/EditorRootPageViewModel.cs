@@ -8,14 +8,13 @@ using Rememory.Views.Editor;
 using System;
 using System.Security.Cryptography;
 using System.Text;
-using System.Windows.Input;
 
 namespace Rememory.ViewModels
 {
     public partial class EditorRootPageViewModel : ObservableObject
     {
-        private IClipboardService _clipboardService = App.Current.Services.GetService<IClipboardService>();
-        private IOwnerService _ownerService = App.Current.Services.GetService<IOwnerService>();
+        private IClipboardService _clipboardService = App.Current.Services.GetService<IClipboardService>()!;
+        private IOwnerService _ownerService = App.Current.Services.GetService<IOwnerService>()!;
 
         private readonly ClipModel _context;
 
@@ -39,17 +38,14 @@ namespace Rememory.ViewModels
             }
         }
 
-        public ICommand SaveTextCommand { get; private set; }
-
         public EditorRootPageViewModel(ClipModel clipContext)
         {
             _context = clipContext;
             _text = clipContext.Data.TryGetValue(ClipboardFormat.Text, out DataModel? dataModel) ? dataModel.Data : string.Empty;
-
-            SaveTextCommand = new RelayCommand<ClipModel>(_ => SaveChanges());
         }
 
-        private void SaveChanges()
+        [RelayCommand]
+        private void SaveText()
         {
             byte[] bytes = Encoding.Unicode.GetBytes(Text.EndsWith('\0') ? Text : (Text + '\0'));
             byte[] hash = SHA256.HashData(bytes);

@@ -27,7 +27,7 @@
                 <InfoBadge x:Name="EraseDataInfoBadge"
                            VerticalAlignment="Center"
                            Visibility="Collapsed"
-                           Style="{ThemeResource SuccessIconInfoBadgeStyle}"/>
+                           Style="{ThemeResource SuccessIconInfoBadgeStyle}" />
                 <Button x:Uid="SettingsButton_EraseData">
                     <Button.Flyout>
                         <Flyout x:Name="EraseDataFlyout"
@@ -91,10 +91,10 @@
                 <FontIcon x:Uid="SettingsExpander_OwnerFiltersWarning"
                           Glyph="&#xE946;"
                           VerticalAlignment="Center"
-                          Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+                          Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
                 <Button x:Uid="SettingsExpander_OwnerFiltersAddButton"
                         Style="{ThemeResource AccentButtonStyle}"
-                        Click="AddOwnerAppFilterButton_Click"/>
+                        Click="AddOwnerAppFilterButton_Click" />
             </StackPanel>
 
             <tkcontrols:SettingsExpander.Items>
@@ -119,7 +119,7 @@
                                 </Setter>
                             </Style>
                         </ListView.ItemContainerStyle>
-                        
+
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="models:OwnerAppFilter">
                                 <tkcontrols:SettingsCard HorizontalAlignment="Stretch"
@@ -147,7 +147,7 @@
                                         <StackPanel Grid.Column="1">
                                             <TextBlock TextWrapping="Wrap"
                                                        Text="{x:Bind Name, Mode=OneWay}"
-                                                       Visibility="{Binding Text, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource StringVisibilityConverter}}"/>
+                                                       Visibility="{Binding Text, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource StringVisibilityConverter}}" />
                                             <TextBlock FontSize="12"
                                                        TextWrapping="Wrap"
                                                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
@@ -166,6 +166,82 @@
                                             <Button Content="{tk:FontIcon FontSize=14, Glyph=&#xE74D;}"
                                                     CommandParameter="{x:Bind Mode=OneWay}"
                                                     Command="{Binding DataContext.DeleteOwnerAppFilterCommand, ElementName=OwnerAppFiltersListView}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </tkcontrols:SettingsCard>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </tkcontrols:SettingsCard>
+            </tkcontrols:SettingsExpander.Items>
+        </tkcontrols:SettingsExpander>
+
+        <!--Localise this region-->
+        <tkcontrols:SettingsExpander HeaderIcon="{tk:FontIcon Glyph=&#xE8EC;}"
+                                     IsExpanded="True"
+                                     Header="Tags">
+            <Button Content="Add tag"
+                    Style="{ThemeResource AccentButtonStyle}"
+                    Click="AddTagButton_Click" />
+            <tkcontrols:SettingsExpander.Items>
+                <tkcontrols:SettingsCard MinHeight="0">
+                    <tkcontrols:SettingsCard.Template>
+                        <ControlTemplate TargetType="tkcontrols:SettingsCard">
+                            <ContentPresenter Background="{TemplateBinding Background}" />
+                        </ControlTemplate>
+                    </tkcontrols:SettingsCard.Template>
+
+                    <ListView x:Name="TagsListView"
+                              SelectionMode="None"
+                              ItemsSource="{x:Bind ViewModel.Tags}">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <ContentPresenter />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="models:TagModel">
+                                <tkcontrols:SettingsCard HorizontalAlignment="Stretch"
+                                                         MinHeight="16">
+                                    <tkcontrols:SettingsCard.Template>
+                                        <ControlTemplate TargetType="tkcontrols:SettingsCard">
+                                            <ContentPresenter Background="{TemplateBinding Background}"
+                                                              BorderBrush="{TemplateBinding BorderBrush}"
+                                                              Padding="16 8"
+                                                              BorderThickness="0 1 0 0" />
+                                        </ControlTemplate>
+                                    </tkcontrols:SettingsCard.Template>
+                                    <Grid ColumnSpacing="16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <FontIcon Width="20"
+                                                  Height="20"
+                                                  Margin="3 0"
+                                                  Glyph="&#xE8EC;" />
+
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{x:Bind Name, Mode=OneWay}"
+                                                   VerticalAlignment="Center" />
+
+                                        <StackPanel Grid.Column="2"
+                                                    Spacing="8"
+                                                    Orientation="Horizontal">
+                                            <Button Content="{tk:FontIcon FontSize=14, Glyph=&#xE70F;}"
+                                                    Click="EditTagButton_Click" />
+                                            <Button Content="{tk:FontIcon FontSize=14, Glyph=&#xE74D;}"
+                                                    CommandParameter="{x:Bind Mode=OneWay}"
+                                                    Command="{Binding DataContext.DeleteTagCommand, ElementName=TagsListView}" />
                                         </StackPanel>
                                     </Grid>
                                 </tkcontrols:SettingsCard>

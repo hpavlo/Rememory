@@ -2,6 +2,8 @@
 using Rememory.Helper;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Rememory.Models
@@ -28,7 +30,9 @@ namespace Rememory.Models
 
         public OwnerModel? Owner { get; set; }
 
-        public Dictionary<ClipboardFormat, DataModel> Data = [];
+        public Dictionary<ClipboardFormat, DataModel> Data { get; set; } = [];
+
+        public ObservableCollection<TagModel> Tags { get; set; } = [];
 
         #endregion
 
@@ -46,6 +50,11 @@ namespace Rememory.Models
         /// Used to show this clip in Links tab
         /// </summary>
         public bool IsLink { get; set; } = false;
+
+        /// <summary>
+        /// Using to hide tag list if the clip has no tags
+        /// </summary>
+        public bool HasTags => Tags.Any();
 
         public void UpdateProperty([CallerMemberName] string propertyName = "")
         {

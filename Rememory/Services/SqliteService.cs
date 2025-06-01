@@ -111,9 +111,15 @@ namespace Rememory.Services
 
         #region Clips
 
-        public IEnumerable<ClipModel> GetClips(Dictionary<int, OwnerModel> owners)
+        public IEnumerable<ClipModel> GetClips(Dictionary<int, OwnerModel> owners, IList<TagModel> tags)
         {
             using var connection = CreateAndOpenConnection();
+
+            Dictionary<int, TagModel> tagsDictionary = tags.ToDictionary(tag => tag.Id);
+            Dictionary<int, List<int>> clipTagsDictionary = GetClipTags(connection)
+                .GroupBy(pair => pair.Item1)
+                .ToDictionary(group => group.Key, group => group.Select(pair => pair.Item2).ToList());
+
             using var command = connection.CreateCommand();
             command.CommandText = @"
             SELECT
@@ -142,8 +148,14 @@ namespace Rememory.Services
                     IsFavorite = isFavorite,
                     // Using 0 for the empty owner
                     Owner = owners.TryGetValue(ownerId ?? 0, out var owner) ? owner : null,
-                    Data = GetDataByClipId(id, connection).ToDictionary(d => d.Format)
+                    Data = GetDataByClipId(id, connection).ToDictionary(d => d.Format),
+                    Tags = clipTagsDictionary.TryGetValue(id, out var tagIds) ? [.. tagIds.Where(tagsDictionary.ContainsKey).Select(id => tagsDictionary[id])] : []
                 };
+
+                foreach (var tag in clip.Tags)
+                {
+                    tag.Clips.Add(clip);
+                }
 
                 if (clip.Owner is not null)
                 {
@@ -284,6 +296,113 @@ namespace Rememory.Services
 
         #endregion
 
+        #region Tags
+
+        public IEnumerable<TagModel> GetTags()
+        {
+            using var connection = CreateAndOpenConnection();
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+            SELECT
+              Id,
+              Name
+            FROM
+              Tags;
+            ";
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                int id = reader.GetInt32(0);
+                string name = reader.GetString(1);
+
+                yield return new TagModel(name) { Id = id };
+            }
+        }
+
+        public void AddTag(TagModel tag)
+        {
+            using var connection = CreateAndOpenConnection();
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+            INSERT INTO
+              Tags (Name)
+            VALUES
+              (@name);
+
+            SELECT
+              last_insert_rowid();
+            ";
+
+            command.Parameters.AddWithValue("name", tag.Name);
+            tag.Id = Convert.ToInt32(command.ExecuteScalar());
+        }
+
+        public void UpdateTag(TagModel tag)
+        {
+            using var connection = CreateAndOpenConnection();
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+            UPDATE Tags
+            SET
+              Name = @name
+            WHERE
+              Id = @id;
+            ";
+
+            command.Parameters.AddWithValue("id", tag.Id);
+            command.Parameters.AddWithValue("name", tag.Name);
+            command.ExecuteNonQuery();
+        }
+
+        public void DeleteTag(int id)
+        {
+            using var connection = CreateAndOpenConnection();
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+            DELETE FROM Tags
+            WHERE
+              Id = @id;
+            ";
+
+            command.Parameters.AddWithValue("id", id);
+            command.ExecuteNonQuery();
+        }
+
+        public void AddClipTag(int clipId, int tagId)
+        {
+            using var connection = CreateAndOpenConnection();
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+            INSERT INTO
+              ClipTags (ClipId, TagId)
+            VALUES
+              (@clipId, @tagId);
+            ";
+
+            command.Parameters.AddWithValue("clipId", clipId);
+            command.Parameters.AddWithValue("tagId", tagId);
+            command.ExecuteNonQuery();
+        }
+
+        public void DeleteClipTag(int clipId, int tagId)
+        {
+            using var connection = CreateAndOpenConnection();
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+            DELETE FROM ClipTags
+            WHERE
+              ClipId = @clipId
+              AND TagId = @tagId;
+            ";
+
+            command.Parameters.AddWithValue("clipId", clipId);
+            command.Parameters.AddWithValue("tagId", tagId);
+            command.ExecuteNonQuery();
+        }
+
+        #endregion
+
         #region Metadata
 
         public void AddLinkMetadata(LinkMetadataModel linkMetadata, int dataId)
@@ -400,6 +519,26 @@ namespace Rememory.Services
                 hashParameter.Value = data.Hash;
 
                 data.Id = Convert.ToInt32(command.ExecuteScalar());
+            }
+        }
+
+        private IEnumerable<(int, int)> GetClipTags(SqliteConnection connection)
+        {
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+            SELECT
+              ClipId,
+              TagId
+            FROM
+              ClipTags;
+            ";
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                int clipId = reader.GetInt32(0);
+                int tagId = reader.GetInt32(1);
+                yield return (clipId, tagId);
             }
         }
 
