@@ -463,14 +463,14 @@ namespace Rememory.ViewModels
         #region Commands
 
         [RelayCommand]
-        public void ToggleClipFavorite(ClipModel? clip)
+        private void ToggleClipFavorite(ClipModel? clip)
         {
             if (clip is null) return;
             _clipboardService.ToggleClipFavorite(clip);
         }
 
         [RelayCommand(CanExecute = nameof(CanOpenInBrowser))]
-        public async Task OpenInBrowser(ClipModel? clip)
+        private async Task OpenInBrowser(ClipModel? clip)
         {
             if (clip is null || !clip.IsLink) return;
             
@@ -483,7 +483,7 @@ namespace Rememory.ViewModels
         private bool CanOpenInBrowser(ClipModel? clip) => clip is not null && clip.IsLink;
 
         [RelayCommand]
-        public void PasteClip(ClipModel? clip)
+        private void PasteClip(ClipModel? clip)
         {
             if (clip is null) return;
             SendDataToClipboard(clip, paste: true);
@@ -492,28 +492,28 @@ namespace Rememory.ViewModels
         private bool CanPasteClipAsPlainText(ClipModel? clip) => clip is not null && clip.Data.ContainsKey(ClipboardFormat.Text);
 
         [RelayCommand(CanExecute = nameof(CanPasteClipAsPlainText))]
-        public void PasteClipAsPlainText(ClipModel? clip)
+        private void PasteClipAsPlainText(ClipModel? clip)
         {
             if (clip is null) return;
             SendDataToClipboard(clip, ClipboardFormat.Text, paste: true);
         }
 
         [RelayCommand(CanExecute = nameof(CanPasteClipAsPlainText))]
-        public void PasteClipWithUpperCase(ClipModel? clip)
+        private void PasteClipWithUpperCase(ClipModel? clip)
         {
             if (clip is null) return;
             SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.UpperCase, true);
         }
 
         [RelayCommand(CanExecute = nameof(CanPasteClipAsPlainText))]
-        public void PasteClipWithLowerCase(ClipModel? clip)
+        private void PasteClipWithLowerCase(ClipModel? clip)
         {
             if (clip is null) return;
             SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.LowerCase, true);
         }
 
         [RelayCommand(CanExecute = nameof(CanPasteClipAsPlainText))]
-        public void PasteClipWithCapitalizeCase(ClipModel? clip)
+        private void PasteClipWithCapitalizeCase(ClipModel? clip)
         {
             if (clip is null) return;
             SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.CapitalizeCase, true);
@@ -527,14 +527,14 @@ namespace Rememory.ViewModels
         }
 
         [RelayCommand(CanExecute = nameof(CanPasteClipAsPlainText))]
-        public void PasteClipWithInvertCase(ClipModel? clip)
+        private void PasteClipWithInvertCase(ClipModel? clip)
         {
             if (clip is null) return;
             SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.InvertCase, true);
         }
 
         [RelayCommand(CanExecute = nameof(CanPasteClipAsPlainText))]
-        public void PasteClipWithTrimWhitespace(ClipModel? clip)
+        private void PasteClipWithTrimWhitespace(ClipModel? clip)
         {
             if (clip is null) return;
             SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.TrimWhitespace, true);
@@ -543,42 +543,42 @@ namespace Rememory.ViewModels
         private bool CanPasteClipWithDeveloperCase(ClipModel? clip) => SettingsContext.EnableDeveloperStringCaseConversions && CanPasteClipAsPlainText(clip);
 
         [RelayCommand(CanExecute = nameof(CanPasteClipWithDeveloperCase))]
-        public void PasteClipWithCamelCase(ClipModel? clip)
+        private void PasteClipWithCamelCase(ClipModel? clip)
         {
             if (clip is null) return;
             SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.CamelCase, true);
         }
 
         [RelayCommand(CanExecute = nameof(CanPasteClipWithDeveloperCase))]
-        public void PasteClipWithPascalCase(ClipModel? clip)
+        private void PasteClipWithPascalCase(ClipModel? clip)
         {
             if (clip is null) return;
             SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.PascalCase, true);
         }
 
         [RelayCommand(CanExecute = nameof(CanPasteClipWithDeveloperCase))]
-        public void PasteClipWithSnakeCase(ClipModel? clip)
+        private void PasteClipWithSnakeCase(ClipModel? clip)
         {
             if (clip is null) return;
             SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.SnakeCase, true);
         }
 
         [RelayCommand(CanExecute = nameof(CanPasteClipWithDeveloperCase))]
-        public void PasteClipWithKebabCase(ClipModel? clip)
+        private void PasteClipWithKebabCase(ClipModel? clip)
         {
             if (clip is null) return;
             SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.KebabCase, true);
         }
 
         [RelayCommand]
-        public void CopyClip(ClipModel? clip)
+        private void CopyClip(ClipModel? clip)
         {
             if (clip is null) return;
             SendDataToClipboard(clip);
         }
 
         [RelayCommand(CanExecute = nameof(CanEditClip))]
-        public void EditClip(ClipModel? clip)
+        private void EditClip(ClipModel? clip)
         {
             if (clip is null) return;
             EditorWindow.ShowEditorWindow(clip);
@@ -588,14 +588,18 @@ namespace Rememory.ViewModels
             && clip.Data.ContainsKey(ClipboardFormat.Text);
 
         [RelayCommand]
-        public void DeleteClip(ClipModel? clip)
+        private void DeleteClip(ClipModel? clip)
         {
             if (clip is null) return;
             _clipboardService.DeleteClip(clip);
         }
 
+        private bool CanAddOwnerToFilters(OwnerModel? owner) => owner is not null
+            && !string.IsNullOrEmpty(owner.Path)
+            && !owner.Path.EndsWith("svchost.exe");   // check svchost.exe for UWP app sources
+
         [RelayCommand(CanExecute = nameof(CanAddOwnerToFilters))]
-        public void AddOwnerToFilters(OwnerModel? owner)
+        private void AddOwnerToFilters(OwnerModel? owner)
         {
             if (owner is null || string.IsNullOrEmpty(owner.Path)) return;
 
@@ -611,12 +615,9 @@ namespace Rememory.ViewModels
                 SettingsContext.OwnerAppFiltersSave();
             }
         }
-        private bool CanAddOwnerToFilters(OwnerModel? owner) => owner is not null
-            && !string.IsNullOrEmpty(owner.Path)
-            && !owner.Path.EndsWith("svchost.exe");   // check svchost.exe for UWP app sources
 
         [RelayCommand]
-        public void ToggleClipTag(Tuple<ClipModel, TagModel>? clipTagData)
+        private void ToggleClipTag(Tuple<ClipModel, TagModel>? clipTagData)
         {
             if (clipTagData is null) return;
 

@@ -40,27 +40,6 @@ namespace Rememory.ViewModels
             Tags = [.. _tagService.Tags];
         }
 
-        [RelayCommand]
-        public void EraseClipboardData() => _clipboardService.DeleteAllClips();
-
-        [RelayCommand]
-        public void DeleteOwnerAppFilter(OwnerAppFilter? filter)
-        {
-            if (filter is null) return;
-
-            SettingsContext.OwnerAppFilters.Remove(filter);
-            SettingsContext.OwnerAppFiltersSave();
-        }
-
-        [RelayCommand]
-        public void DeleteTag(TagModel? tag)
-        {
-            if (tag is null) return;
-
-            _tagService.UnregisterTag(tag);
-            Tags.Remove(tag);
-        }
-
         public void AddOwnerAppFilter(string name, string pattern)
         {
             SettingsContext.OwnerAppFilters.Add(new(name.Trim(), pattern.Trim()));
@@ -92,5 +71,30 @@ namespace Rememory.ViewModels
             tag.Name = name.Trim();
             _tagService.UpdateTag(tag);
         }
+
+        #region Commands
+
+        [RelayCommand]
+        private void EraseClipboardData() => _clipboardService.DeleteAllClips();
+
+        [RelayCommand]
+        private void DeleteOwnerAppFilter(OwnerAppFilter? filter)
+        {
+            if (filter is null) return;
+
+            SettingsContext.OwnerAppFilters.Remove(filter);
+            SettingsContext.OwnerAppFiltersSave();
+        }
+
+        [RelayCommand]
+        private void DeleteTag(TagModel? tag)
+        {
+            if (tag is null) return;
+
+            _tagService.UnregisterTag(tag);
+            Tags.Remove(tag);
+        }
+
+        #endregion
     }
 }
