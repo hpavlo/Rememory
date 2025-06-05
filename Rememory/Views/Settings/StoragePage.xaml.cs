@@ -55,6 +55,7 @@ namespace Rememory.Views.Settings
         private async void AddOwnerAppFilterButton_Click(object sender, RoutedEventArgs e)
         {
             var dialogContent = new FilterEditorDialog();
+            _ownerFilterEditorDialog.RequestedTheme = App.Current.ThemeService.Theme;
             _ownerFilterEditorDialog.IsPrimaryButtonEnabled = false;
             _ownerFilterEditorDialog.Content = dialogContent;
             var dialogResult = await _ownerFilterEditorDialog.ShowAsync();
@@ -73,6 +74,7 @@ namespace Rememory.Views.Settings
                 FilterName = filter.Name,
                 FilterPattern = filter.Pattern
             };
+            _ownerFilterEditorDialog.RequestedTheme = App.Current.ThemeService.Theme;
             _ownerFilterEditorDialog.Content = dialogContent;
             var dialogResult = await _ownerFilterEditorDialog.ShowAsync();
 
@@ -85,6 +87,7 @@ namespace Rememory.Views.Settings
         private async void AddTagButton_Click(object sender, RoutedEventArgs e)
         {
             var dialogContent = new TagEditorDialog();
+            _tagEditorDialog.RequestedTheme = App.Current.ThemeService.Theme;
             _tagEditorDialog.IsPrimaryButtonEnabled = false;
             _tagEditorDialog.Content = dialogContent;
             var dialogResult = await _tagEditorDialog.ShowAsync();
@@ -102,6 +105,7 @@ namespace Rememory.Views.Settings
             {
                 TagName = tag.Name
             };
+            _tagEditorDialog.RequestedTheme = App.Current.ThemeService.Theme;
             _tagEditorDialog.Content = dialogContent;
             var dialogResult = await _tagEditorDialog.ShowAsync();
 

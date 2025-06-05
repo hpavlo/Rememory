@@ -13,10 +13,10 @@ namespace Rememory.Views.Settings.Controls
 {
     public sealed partial class ShortcutButton : UserControl
     {
-        private IKeyboardMonitor _keyboardMonitor = App.Current.Services.GetService<IKeyboardMonitor>();
-        private ContentDialog _dialogBox;
-        private ShortcutDialog _dialogContent;
-        private List<int> _currentPressedKeys = [];
+        private readonly IKeyboardMonitor _keyboardMonitor = App.Current.Services.GetService<IKeyboardMonitor>()!;
+        private readonly ContentDialog _dialogBox;
+        private readonly ShortcutDialog _dialogContent;
+        private readonly List<int> _currentPressedKeys = [];
 
         public string ButtonText
         {
@@ -50,7 +50,7 @@ namespace Rememory.Views.Settings.Controls
 
         public ShortcutButton()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             _dialogContent = new ShortcutDialog();
             _dialogBox = new()
@@ -67,18 +67,6 @@ namespace Rememory.Views.Settings.Controls
             _dialogBox.Closing += DialogBox_Closing;
         }
 
-        private void SettingsWindow_WindowActivated(object sender, WindowActivatedEventArgs e)
-        {
-            if (e.WindowActivationState != WindowActivationState.Deactivated)
-            {
-                _keyboardMonitor.KeyboardEvent += KeyboardMonitor_KeyboardEvent;
-            }
-            else
-            {
-                _keyboardMonitor.KeyboardEvent -= KeyboardMonitor_KeyboardEvent;
-            }
-        }
-
         private void DialogBox_Opened(ContentDialog sender, ContentDialogOpenedEventArgs args)
         {
             SettingsWindow.WindowActivated += SettingsWindow_WindowActivated;
@@ -91,6 +79,18 @@ namespace Rememory.Views.Settings.Controls
             _keyboardMonitor.KeyboardEvent -= KeyboardMonitor_KeyboardEvent;
         }
 
+        private void SettingsWindow_WindowActivated(object? sender, WindowActivatedEventArgs e)
+        {
+            if (e.WindowActivationState != WindowActivationState.Deactivated)
+            {
+                _keyboardMonitor.KeyboardEvent += KeyboardMonitor_KeyboardEvent;
+            }
+            else
+            {
+                _keyboardMonitor.KeyboardEvent -= KeyboardMonitor_KeyboardEvent;
+            }
+        }
+
         private async void ShortcutButton_Click(object sender, RoutedEventArgs e)
         {
             _dialogContent.IsError = false;
@@ -101,14 +101,15 @@ namespace Rememory.Views.Settings.Controls
                     return index == -1 ? KeyboardHelper.ModifierKeys.Count : index;
                 }).ToList();
 
-            _dialogBox.XamlRoot = this.XamlRoot;
+            _dialogBox.XamlRoot = XamlRoot;
+            _dialogBox.RequestedTheme = App.Current.ThemeService.Theme;
             _dialogBox.IsPrimaryButtonEnabled = true;
             var result = await _dialogBox.ShowAsync();
 
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                        ActivationShortcut = new List<int>(_dialogContent.ShortcutKeys.Order());
+                        ActivationShortcut = [.. _dialogContent.ShortcutKeys.Order()];
                         break;
                 case ContentDialogResult.Secondary:
                         ActivationShortcut = ActivationShortcutDefault;
@@ -116,13 +117,13 @@ namespace Rememory.Views.Settings.Controls
             }
         }
 
-        private void KeyboardMonitor_KeyboardEvent(object sender, GlobalKeyboardHookEventArgs e)
+        private void KeyboardMonitor_KeyboardEvent(object? sender, GlobalKeyboardHookEventArgs e)
         {
             var key = FilterModifierKeys(e.KeyboardData.VirtualCode);
 
             if (key == (int)VirtualKey.Tab ||
                 key == (int)VirtualKey.NumberKeyLock ||
-                FocusManager.GetFocusedElement(this.XamlRoot).GetType() == typeof(Button))
+                FocusManager.GetFocusedElement(XamlRoot).GetType() == typeof(Button))
                 return;
 
             if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyDown ||
