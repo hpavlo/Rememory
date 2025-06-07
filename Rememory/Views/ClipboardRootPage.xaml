@@ -14,7 +14,7 @@
       xmlns:behavior="using:Rememory.Views.Controls.Behavior"
       x:Name="RootPage"
       DataContext="{x:Bind ViewModel}"
-      Background="{x:Bind ViewModel.SettingsContext.CurrentWindowBackgroundBrush, Mode=OneWay}"
+      Background="{x:Bind ViewModel.ThemeBackgroundColor, Mode=OneWay}"
       SizeChanged="ClipboardRootPage_SizeChanged"
       KeyUp="Escape_KeyUp">
     <Page.Resources>
@@ -152,7 +152,8 @@
 
     <!-- Using BorderBrush to display border on Windows 10 (not visible on Win11) -->
     <Grid BorderThickness="1"
-          BorderBrush="{ThemeResource ButtonBorderBrush}">
+          BorderBrush="{ThemeResource ButtonBorderBrush}"
+          Background="{x:Bind ViewModel.SettingsContext.CurrentWindowBackgroundBrush, Mode=OneWay}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*"
@@ -529,7 +530,8 @@
                                             HorizontalContentAlignment="Stretch"
                                             Content="{x:Bind Data, Mode=OneWay, Converter={StaticResource ClipToControlConverter}}" />
 
-                            <ListView Grid.Column="0"
+                            <ListView x:Name="ClipTagsListView"
+                                      Grid.Column="0"
                                       Grid.Row="1"
                                       Grid.ColumnSpan="3"
                                       Margin="0 2 0 4"
@@ -562,12 +564,13 @@
 
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="models:TagModel">
-                                        <Border Background="#8CCC"
+                                        <Border Padding="6 0 6 2"
                                                 CornerRadius="8"
-                                                Padding="6 1 6 3">
-                                            <TextBlock Text="{x:Bind Name, Mode=OneWay}"
-                                                       FontSize="12"
+                                                Background="{x:Bind ColorBrush, Mode=OneWay}">
+                                            <TextBlock FontSize="12"
+                                                       Text="{x:Bind Name, Mode=OneWay}"
                                                        TextTrimming="CharacterEllipsis"
+                                                       FontWeight="SemiLight"
                                                        VerticalAlignment="Center"
                                                        HorizontalAlignment="Center" />
                                         </Border>

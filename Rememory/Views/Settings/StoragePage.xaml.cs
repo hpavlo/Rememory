@@ -29,7 +29,7 @@ namespace Rememory.Views.Settings
 
             _tagEditorDialog = new()
             {
-                Title = "Edit tag name",   // Update to localisation
+                Title = "Edit tag",   // Update to localisation
                 PrimaryButtonText = "Save".GetLocalizedResource(),
                 CloseButtonText = "Cancel".GetLocalizedResource(),
                 DefaultButton = ContentDialogButton.Primary
@@ -94,7 +94,7 @@ namespace Rememory.Views.Settings
 
             if (dialogResult == ContentDialogResult.Primary)
             {
-                ViewModel.AddTag(dialogContent.TagName);
+                ViewModel.AddTag(dialogContent.TagName, dialogContent.SelectedColor);
             }
         }
 
@@ -103,7 +103,8 @@ namespace Rememory.Views.Settings
             var tag = (TagModel)((Button)sender).DataContext;
             var dialogContent = new TagEditorDialog()
             {
-                TagName = tag.Name
+                TagName = tag.Name,
+                SelectedColor = tag.ColorBrush
             };
             _tagEditorDialog.RequestedTheme = App.Current.ThemeService.Theme;
             _tagEditorDialog.Content = dialogContent;
@@ -111,7 +112,7 @@ namespace Rememory.Views.Settings
 
             if (dialogResult == ContentDialogResult.Primary)
             {
-                ViewModel.EditTag(tag, dialogContent.TagName);
+                ViewModel.EditTag(tag, dialogContent.TagName, dialogContent.SelectedColor);
             }
         }
     }

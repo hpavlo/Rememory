@@ -51,6 +51,7 @@ namespace Rememory.Views.Settings.Controls
         public ShortcutButton()
         {
             InitializeComponent();
+            Unloaded += ShortcutButton_Unloaded;
 
             _dialogContent = new ShortcutDialog();
             _dialogBox = new()
@@ -65,6 +66,12 @@ namespace Rememory.Views.Settings.Controls
 
             _dialogBox.Opened += DialogBox_Opened;
             _dialogBox.Closing += DialogBox_Closing;
+        }
+
+        private void ShortcutButton_Unloaded(object sender, RoutedEventArgs e)
+        {
+            _dialogBox.Opened -= DialogBox_Opened;
+            _dialogBox.Closing -= DialogBox_Closing;
         }
 
         private void DialogBox_Opened(ContentDialog sender, ContentDialogOpenedEventArgs args)

@@ -23,25 +23,25 @@ namespace Rememory.Views
         public readonly ClipboardRootPageViewModel ViewModel = new();
 
         private readonly ClipboardWindow _window;
-        private IThemeService _themeService => App.Current.ThemeService;
-        private Flyout PreviewTextFlyout => (Flyout)this.Resources["PreviewTextFlyout"];
-        private Flyout PreviewRtfFlyout => (Flyout)this.Resources["PreviewRtfFlyout"];
-        private Flyout PreviewImageFlyout => (Flyout)this.Resources["PreviewImageFlyout"];
+        private IThemeService ThemeService => App.Current.ThemeService;
+        private Flyout PreviewTextFlyout => (Flyout)Resources["PreviewTextFlyout"];
+        private Flyout PreviewRtfFlyout => (Flyout)Resources["PreviewRtfFlyout"];
+        private Flyout PreviewImageFlyout => (Flyout)Resources["PreviewImageFlyout"];
 
         public ClipboardRootPage(ClipboardWindow window)
         {
-            this.InitializeComponent();
+            InitializeComponent();
             _window = window;
             _window.Showing += Window_Showing;
             _window.Hiding += Window_Hiding;
 
-            RequestedTheme = _themeService.Theme;
-            _themeService.ThemeChanged += ThemeChanged;
+            RequestedTheme = ThemeService.Theme;
+            ThemeService.ThemeChanged += ThemeChanged;
 
             ViewModel.SettingsContext.PropertyChanged += SettingsContext_PropertyChanged;
         }
 
-        private void Window_Showing(object sender, System.EventArgs e)
+        private void Window_Showing(object sender, EventArgs e)
         {
             if (ViewModel.SettingsContext.EnableSearchFocusOnStart)
             {
@@ -60,19 +60,19 @@ namespace Rememory.Views
             ViewModel.OnWindowShowing();
         }
 
-        private void Window_Hiding(object sender, System.EventArgs e)
+        private void Window_Hiding(object sender, EventArgs e)
         {
             ViewModel.OnWindowHiding();
         }
 
         private void ThemeChanged(object? sender, ElementTheme theme)
         {
-            this.RequestedTheme = theme;
+            RequestedTheme = theme;
         }
 
         private void ClipboardRootPage_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var oldStyle = (Style)this.Resources["DataPreviewFlyoutPresenterStyle"];
+            var oldStyle = (Style)Resources["DataPreviewFlyoutPresenterStyle"];
             Style UpdateFlyoutPresenterStyle(double maxWidth, double maxHeight)
             {
                 Style newStyle = new(typeof(FlyoutPresenter));
@@ -214,7 +214,8 @@ namespace Rememory.Views
                     Text = tag.Name,
                     IsChecked = clip.Tags.Contains(tag),
                     Command = ViewModel.ToggleClipTagCommand,
-                    CommandParameter = new Tuple<ClipModel, TagModel>(clip, tag)
+                    CommandParameter = new Tuple<ClipModel, TagModel>(clip, tag),
+                    Icon = new FontIcon() { Glyph = "\uEA3B", Foreground = tag.ColorBrush }
                 });
             }
         }

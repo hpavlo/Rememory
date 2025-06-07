@@ -15,21 +15,22 @@ namespace Rememory.Views.Settings
 {
     public sealed partial class SettingsRootPage : Page
     {
-        private IThemeService _themeService => App.Current.ThemeService;
+        private IThemeService ThemeService => App.Current.ThemeService;
         private readonly Window _window;
         private NavigationViewItemBase? _lastSelectedMenuItem;
         private readonly Dictionary<NavigationViewItemBase, (Type PageType, string Header)> _navigationMap;
 
         public SettingsRootPage(Window window)
         {
-            this.InitializeComponent();
+            InitializeComponent();
             _window = window;
 
             _window.SetTitleBar(WindowTitleBar);
             _window.Activated += SettingsWindow_Activated;
+            _window.Closed += SettingsWindow_Closed;
 
             ApplyTheme();
-            _themeService.ThemeChanged += (s, a) => ApplyTheme();
+            ThemeService.ThemeChanged += ThemeService_ThemeChanged;
 
             _navigationMap = new()
             {
@@ -42,16 +43,23 @@ namespace Rememory.Views.Settings
 
         private void ApplyTheme()
         {
-            RequestedTheme = _themeService.Theme;
+            RequestedTheme = ThemeService.Theme;
             // TitleBarTheme has first Legacy value, we use + 1 to ignore it
-            _window.AppWindow.TitleBar.PreferredTheme = (TitleBarTheme)(_themeService.Theme + 1);
+            _window.AppWindow.TitleBar.PreferredTheme = (TitleBarTheme)(ThemeService.Theme + 1);
         }
+
+        private void ThemeService_ThemeChanged(object? sender, ElementTheme e) => ApplyTheme();
 
         private void SettingsWindow_Activated(object sender, WindowActivatedEventArgs args)
         {
-            VisualStateManager.GoToState(this,
-                args.WindowActivationState == WindowActivationState.Deactivated ? "Deactivated" : "Activated",
-                true);
+            VisualStateManager.GoToState(this, args.WindowActivationState == WindowActivationState.Deactivated ? "Deactivated" : "Activated", true);
+        }
+
+        private void SettingsWindow_Closed(object sender, WindowEventArgs args)
+        {
+            _window.Activated -= SettingsWindow_Activated;
+            _window.Closed -= SettingsWindow_Closed;
+            ThemeService.ThemeChanged -= ThemeService_ThemeChanged;
         }
 
         private void NavigationViewPanel_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)

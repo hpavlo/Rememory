@@ -1,4 +1,5 @@
-﻿using Rememory.Contracts;
+﻿using Microsoft.UI.Xaml.Media;
+using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Models;
 using System;
@@ -19,9 +20,9 @@ namespace Rememory.Services
             Tags = ReadTagsFromStorage();
         }
 
-        public void RegisterTag(string name)
+        public void RegisterTag(string name, SolidColorBrush colorBrush)
         {
-            TagModel tag = new(name);
+            TagModel tag = new(name, colorBrush);
             Tags.Add(tag);
             _storageService.AddTag(tag);
         }
