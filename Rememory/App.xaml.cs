@@ -53,7 +53,7 @@ namespace Rememory
             ThemeService = Services.GetService<IThemeService>()!;
             _keyboardMonitor = Services.GetService<IKeyboardMonitor>()!;
 
-            this.InitializeComponent();
+            InitializeComponent();
             SetCulture(SettingsContext.CurrentLanguageCode.Equals(string.Empty) ?
                 CultureInfo.CurrentCulture.TwoLetterISOLanguageName : SettingsContext.CurrentLanguageCode);
         }
@@ -70,10 +70,7 @@ namespace Rememory
 
             var rootPage = new ClipboardRootPage(ClipboardWindow);
             // Return if we closed app during ClipboardRootPage initializing
-            if (_closeApp)
-            {
-                return;
-            }
+            if (_closeApp) return;
 
             ClipboardWindow.Content = rootPage;
             ClipboardWindow.InitSystemBackdrop();
@@ -98,6 +95,7 @@ namespace Rememory
         private void ClipboardWindow_Closed(object sender, WindowEventArgs args)
         {
             _closeApp = true;
+            ClipboardWindow.Closed -= ClipboardWindow_Closed;
             _keyboardMonitor.StopMonitor();
             Exit();
         }

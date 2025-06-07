@@ -63,7 +63,12 @@ namespace Rememory.Views.Editor
 
         private static void EditorWindow_Closed(object sender, WindowEventArgs args)
         {
-            _window = null;
+            if (_window is not null)
+            {
+                _window.Closed -= EditorWindow_Closed;
+                _window = null;
+            }
+
             if (_clipContext is not null)
             {
                 _clipContext.IsOpenInEditor = false;

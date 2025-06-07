@@ -14,7 +14,7 @@ namespace Rememory.Views.Editor
     {
         public readonly EditorRootPageViewModel ViewModel;
 
-        private IThemeService _themeService => App.Current.ThemeService;
+        private IThemeService ThemeService => App.Current.ThemeService;
         private readonly Window _window;
 
         // If youser press button to close window
@@ -24,19 +24,23 @@ namespace Rememory.Views.Editor
         {
             _window = window;
             ViewModel = new EditorRootPageViewModel(context);
-            this.InitializeComponent();
+            InitializeComponent();
 
             _window.SetTitleBar(WindowTitleBar);
             _window.AppWindow.Closing += EditorWindow_Closing;
+            _window.Closed += EditorWindow_Closed;
 
             ApplyTheme();
-            _themeService.ThemeChanged += (s, a) => ApplyTheme();
+            ThemeService.ThemeChanged += ThemeService_ThemeChanged;
         }
 
         private void ApplyTheme()
         {
-            RequestedTheme = _themeService.Theme;
+            RequestedTheme = ThemeService.Theme;
+            _window.AppWindow.TitleBar.PreferredTheme = (TitleBarTheme)(ThemeService.Theme + 1);
         }
+
+        private void ThemeService_ThemeChanged(object? sender, ElementTheme e) => ApplyTheme();
 
         private async void EditorWindow_Closing(AppWindow sender, AppWindowClosingEventArgs args)
         {
@@ -54,7 +58,8 @@ namespace Rememory.Views.Editor
                         SecondaryButtonText = "DoNotSave".GetLocalizedResource(),
                         CloseButtonText = "Cancel".GetLocalizedResource(),
                         DefaultButton = ContentDialogButton.Primary,
-                        XamlRoot = this.XamlRoot
+                        RequestedTheme = ThemeService.Theme,
+                        XamlRoot = XamlRoot
                     };
                     var result = await dialog.ShowAsync();
                     if (result == ContentDialogResult.Primary)
@@ -68,6 +73,13 @@ namespace Rememory.Views.Editor
                     _requestToClose = false;
                 }
             }
+        }
+
+        private void EditorWindow_Closed(object sender, WindowEventArgs args)
+        {
+            _window.AppWindow.Closing -= EditorWindow_Closing;
+            _window.Closed -= EditorWindow_Closed;
+            ThemeService.ThemeChanged -= ThemeService_ThemeChanged;
         }
 
         private void EditorTextBox_Loaded(object sender, RoutedEventArgs e)

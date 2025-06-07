@@ -1,8 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.UI;
+using Microsoft.UI.Xaml.Media;
 using Rememory.Contracts;
 using Rememory.Helper;
+using Rememory.Helper.WindowBackdrop;
 using Rememory.Hooks;
 using Rememory.Models;
 using Rememory.Views;
@@ -33,7 +36,8 @@ namespace Rememory.ViewModels
         private readonly ICleanupDataService _cleanupDataService = App.Current.Services.GetService<ICleanupDataService>()!;
         private readonly ISearchService _searchService = App.Current.Services.GetService<ISearchService>()!;
         private readonly IOwnerService _ownerService = App.Current.Services.GetService<IOwnerService>()!;
-        public readonly ITagService _tagService = App.Current.Services.GetService<ITagService>()!;
+        private readonly ITagService _tagService = App.Current.Services.GetService<ITagService>()!;
+        private IThemeService ThemeService => App.Current.ThemeService;
 
         // Using to get last active window if clipboard window is pinned
         private readonly ActiveWindowHook _activeWindowHook = new();
@@ -56,6 +60,11 @@ namespace Rememory.ViewModels
             get => _clipsCollection;
             set => SetProperty(ref _clipsCollection, value);
         }
+
+        /// <summary> 
+        /// Used to set themed background color if we have disabled backdrop.
+        /// </summary>
+        public SolidColorBrush ThemeBackgroundColor { get; private set; }
 
         // Backing field for SelectedMenuItem
         private NavigationMenuItem _selectedMenuItem;
@@ -203,6 +212,11 @@ namespace Rememory.ViewModels
         {
             App.Current.ClipboardWindow.Showing += ClipboardWindow_Showing;
 
+            ThemeBackgroundColor = new SolidColorBrush(Colors.Transparent);
+            ChangeThemeBackdropColor();
+            ThemeService.ThemeChanged += (s, a) => ChangeThemeBackdropColor();
+            ThemeService.WindowBackdropChanged += (s, a) => ChangeThemeBackdropColor();
+
             _clipboardService.NewClipAdded += ClipboardService_NewClipAdded;
             _clipboardService.FavoriteClipChanged += ClipboardService_FavoriteClipChanged;
             _clipboardService.ClipMovedToTop += ClipboardService_ClipMovedToTop;
@@ -261,6 +275,19 @@ namespace Rememory.ViewModels
         /// Check if the retention period of clips has expired
         /// </summary>
         private void CleanupOldData() => _cleanupDataService.CleanupByRetentionPeriod();
+
+        private void ChangeThemeBackdropColor()
+        {
+            if (ThemeService.WindowBackdrop == WindowBackdropType.None)
+            {
+                ThemeBackgroundColor.Color = ThemeService.Theme == Microsoft.UI.Xaml.ElementTheme.Dark ? Colors.Black : Colors.White;
+            }
+            else
+            {
+                ThemeBackgroundColor.Color = Colors.Transparent;
+            }
+            OnPropertyChanged(nameof(ThemeBackgroundColor));
+        }
 
         private void ClipboardWindow_Showing(ClipboardWindow sender, EventArgs args)
         {

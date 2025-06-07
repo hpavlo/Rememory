@@ -3,9 +3,87 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:Rememory.Views.Settings.Controls"
+             xmlns:triggers="using:CommunityToolkit.WinUI"
              Width="400"
              Loaded="Dialog_Loaded">
-    <TextBox PlaceholderText="Tag name"
-             Text="{x:Bind TagName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-             TextChanged="Name_TextChanged" />
+    <Grid ColumnSpacing="16">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="TagPreviewVisible">
+                    <VisualState.StateTriggers>
+                        <triggers:IsNullOrEmptyStateTrigger Value="{x:Bind NameTextBox.Text, Mode=OneWay}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="TagPreviewBorder.Visibility"
+                                Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <SplitButton Padding="0 2">
+            <Border x:Name="SelectedColorBorder"
+                    Width="32"
+                    Height="28"
+                    CornerRadius="3 0 0 3" />
+
+            <SplitButton.Flyout>
+                <Flyout x:Name="SelectColorFlyout"
+                        Placement="Bottom">
+                    <ItemsView x:Name="ColorsList"
+                               SelectionMode="None"
+                               ItemsSource="{x:Bind Colors, Mode=OneWay}"
+                               IsItemInvokedEnabled="True"
+                               ItemInvoked="ColorsList_ItemInvoked">
+                        <ItemsView.Layout>
+                            <UniformGridLayout MaximumRowsOrColumns="5"
+                                               MinColumnSpacing="4"
+                                               MinRowSpacing="4" />
+                        </ItemsView.Layout>
+
+                        <ItemsView.ItemTemplate>
+                            <DataTemplate x:DataType="SolidColorBrush">
+                                <ItemContainer Width="32"
+                                               Height="32"
+                                               Background="{x:Bind Mode=OneWay}" />
+                            </DataTemplate>
+                        </ItemsView.ItemTemplate>
+                    </ItemsView>
+                </Flyout>
+            </SplitButton.Flyout>
+        </SplitButton>
+
+        <TextBox x:Name="NameTextBox"
+                 Grid.Column="1"
+                 PlaceholderText="Name"
+                 Text="{x:Bind TagName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 TextChanged="Name_TextChanged" />
+
+        <Border x:Name="TagPreviewBorder"
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                MinWidth="30"
+                MaxWidth="150"
+                Margin="0 12 0 0"
+                Padding="6 0 6 2"
+                CornerRadius="8"
+                HorizontalAlignment="Center"
+                Background="{x:Bind SelectedColorBorder.Background, Mode=OneWay}">
+            <TextBlock FontSize="12"
+                       Text="{x:Bind NameTextBox.Text, Mode=OneWay}"
+                       TextTrimming="CharacterEllipsis"
+                       FontWeight="SemiLight"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center" />
+        </Border>
+    </Grid>
 </UserControl>

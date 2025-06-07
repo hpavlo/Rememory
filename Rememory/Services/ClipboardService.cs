@@ -212,6 +212,11 @@ namespace Rememory.Services
         public void DeleteClip(ClipModel clip, bool deleteFromDb = true)
         {
             Clips.Remove(clip);
+            foreach (var tag in clip.Tags)
+            {
+                tag.Clips.Remove(clip);
+            }
+            clip.Tags.Clear();
             clip.ClearExternalDataFiles();
             if (deleteFromDb)
             {
@@ -258,6 +263,14 @@ namespace Rememory.Services
         public void DeleteAllClips()
         {
             // Delete all clips with owners and related data
+            foreach (var clip in Clips)
+            {
+                clip.Tags.Clear();
+            }
+            foreach (var tag in _tagService.Tags)
+            {
+                tag.Clips.Clear();
+            }
             Clips.Clear();
             _storageService.DeleteAllClips();
             _ownerService.UnregisterAllOwners();

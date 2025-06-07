@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using CommunityToolkit.WinUI.Helpers;
+using Microsoft.Data.Sqlite;
 using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Models;
@@ -305,7 +306,8 @@ namespace Rememory.Services
             command.CommandText = @"
             SELECT
               Id,
-              Name
+              Name,
+              Color
             FROM
               Tags;
             ";
@@ -315,8 +317,9 @@ namespace Rememory.Services
             {
                 int id = reader.GetInt32(0);
                 string name = reader.GetString(1);
+                string color = reader.GetString(2);
 
-                yield return new TagModel(name) { Id = id };
+                yield return new TagModel(name, new Microsoft.UI.Xaml.Media.SolidColorBrush(color.ToColor())) { Id = id };
             }
         }
 
@@ -326,15 +329,16 @@ namespace Rememory.Services
             using var command = connection.CreateCommand();
             command.CommandText = @"
             INSERT INTO
-              Tags (Name)
+              Tags (Name, Color)
             VALUES
-              (@name);
+              (@name, @color);
 
             SELECT
               last_insert_rowid();
             ";
 
             command.Parameters.AddWithValue("name", tag.Name);
+            command.Parameters.AddWithValue("color", tag.ColorBrush.Color.ToHex());
             tag.Id = Convert.ToInt32(command.ExecuteScalar());
         }
 
@@ -345,13 +349,15 @@ namespace Rememory.Services
             command.CommandText = @"
             UPDATE Tags
             SET
-              Name = @name
+              Name = @name,
+              Color = @color
             WHERE
               Id = @id;
             ";
 
             command.Parameters.AddWithValue("id", tag.Id);
             command.Parameters.AddWithValue("name", tag.Name);
+            command.Parameters.AddWithValue("color", tag.ColorBrush.Color.ToHex());
             command.ExecuteNonQuery();
         }
 

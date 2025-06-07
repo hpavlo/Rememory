@@ -61,7 +61,11 @@ namespace Rememory.Views.Settings
 
         private static void SettingsWindow_Closed(object sender, WindowEventArgs args)
         {
-            _window = null;
+            if (_window is not null)
+            {
+                _window.Closed -= SettingsWindow_Closed;
+                _window = null;
+            }
         }
     }
 }

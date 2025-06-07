@@ -228,7 +228,8 @@
                                         <FontIcon Width="20"
                                                   Height="20"
                                                   Margin="3 0"
-                                                  Glyph="&#xE8EC;" />
+                                                  Glyph="&#xEA3B;"
+                                                  Foreground="{x:Bind ColorBrush, Mode=OneWay}"/>
 
                                         <TextBlock Grid.Column="1"
                                                    Text="{x:Bind Name, Mode=OneWay}"

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.UI.Xaml.Media;
 using Rememory.Contracts;
 using Rememory.Models;
 using Rememory.Services;
@@ -60,15 +61,16 @@ namespace Rememory.ViewModels
             SettingsContext.OwnerAppFiltersSave();
         }
 
-        public void AddTag(string name)
+        public void AddTag(string name, SolidColorBrush colorBrush)
         {
-            _tagService.RegisterTag(name.Trim());
+            _tagService.RegisterTag(name.Trim(), colorBrush);
             Tags.Add(_tagService.Tags.Where(t => t.Name.Equals(name.Trim())).First());
         }
 
-        public void EditTag(TagModel tag, string name)
+        public void EditTag(TagModel tag, string name, SolidColorBrush colorBrush)
         {
             tag.Name = name.Trim();
+            tag.ColorBrush = colorBrush;
             _tagService.UpdateTag(tag);
         }
 

@@ -46,21 +46,21 @@ namespace Rememory.Views
             _messageMonitor = new WindowMessageMonitor(this.GetWindowHandle());
             _messageMonitor.WindowMessageReceived += WindowMessageReceived;
 
-            this.Activated += Window_Activated;
-            this.AppWindow.Closing += Window_Closing;
-            this.Closed += Window_Closed;
+            Activated += Window_Activated;
+            AppWindow.Closing += Window_Closing;
+            Closed += Window_Closed;
         }
 
         public bool ShowWindow()
         {
-            if (this.Visible)
+            if (Visible)
             {
                 this.SetForegroundWindow();
                 return false;
             }
             MoveToStartPosition();
             Showing?.Invoke(this, EventArgs.Empty);
-            this.AppWindow.Show();
+            AppWindow.Show();
             KeyboardHelper.MultiKeyAction([(VirtualKey)0x0E], KeyboardHelper.KeyAction.DownUp);   // To fix problem with foreground window
             this.SetForegroundWindow();
             return true;
@@ -68,12 +68,12 @@ namespace Rememory.Views
 
         public bool HideWindow()
         {
-            if (!this.Visible)
+            if (!Visible)
             {
                 return false;
             }
             Hiding?.Invoke(this, EventArgs.Empty);
-            this.AppWindow.Hide();
+            AppWindow.Hide();
             return true;
         }
 
@@ -158,7 +158,9 @@ namespace Rememory.Views
         private void Window_Closed(object sender, WindowEventArgs args)
         {
             SettingsWindow.CloseSettingsWindow();
-            this.Activated -= Window_Activated;
+            Activated -= Window_Activated;
+            AppWindow.Closing -= Window_Closing;
+            Closed -= Window_Closed;
             _messageMonitor.WindowMessageReceived -= WindowMessageReceived;
         }
 
