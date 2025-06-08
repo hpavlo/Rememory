@@ -20,6 +20,7 @@
     <Page.Resources>
         <tkconverters:BoolNegationConverter x:Key="BoolNegationConverter" />
         <tkconverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <tkconverters:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible" />
         <converters:ClipToControlConverter x:Key="ClipToControlConverter"
                                            SearchString="{x:Bind ViewModel.SearchString, Mode=OneWay}" />
         <converters:DateTimeToHumanReadableConverter x:Key="DateTimeToHumanReadableConverter" />
@@ -130,22 +131,38 @@
         </Flyout>
 
         <MenuFlyout x:Key="ContextMenuFlyout">
-            <ToggleMenuFlyoutItem x:Uid="TitleMenuButton_PinWindow"
-                                  AccessKey="T"
-                                  IsChecked="{x:Bind ViewModel.IsWindowPinned, Mode=TwoWay}"
-                                  Icon="{tk:FontIcon FontSize=16, Glyph=&#xE718;}" />
-            <ToggleMenuFlyoutItem x:Uid="TitleMenuButton_PauseMonitoring"
-                                  AccessKey="P"
-                                  IsChecked="{x:Bind ViewModel.IsClipboardMonitoringPaused, Mode=TwoWay}"
-                                  Icon="{tk:FontIcon FontSize=16, Glyph=&#xF0E3;}" />
+            <MenuFlyoutItem x:Uid="TitleMenuButton_PinWindow"
+                            AccessKey="T"
+                            Command="{x:Bind ViewModel.ToggleWindowPinnedCommand}"
+                            IsEnabled="{x:Bind ViewModel.IsWindowPinned, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
+                            Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
+                            Icon="{tk:FontIcon FontSize=16, Glyph=&#xE718;}" />
+            <MenuFlyoutItem x:Uid="TitleMenuButton_UnpinWindow"
+                            AccessKey="U"
+                            Command="{x:Bind ViewModel.ToggleWindowPinnedCommand}"
+                            IsEnabled="{x:Bind ViewModel.IsWindowPinned, Mode=OneWay}"
+                            Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
+                            Icon="{tk:FontIcon FontSize=16, Glyph=&#xE77A;}" />
+            <MenuFlyoutItem x:Uid="TitleMenuButton_PauseMonitoring"
+                            AccessKey="P"
+                            Command="{x:Bind ViewModel.ToggleClipboardMonitoringEnabledCommand}"
+                            IsEnabled="{x:Bind ViewModel.IsClipboardMonitoringEnabled, Mode=OneWay}"
+                            Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
+                            Icon="{tk:FontIcon FontSize=16, Glyph=&#xF0E3;}" />
+            <MenuFlyoutItem x:Uid="TitleMenuButton_ResumeMonitoring"
+                            AccessKey="R"
+                            Command="{x:Bind ViewModel.ToggleClipboardMonitoringEnabledCommand}"
+                            IsEnabled="{x:Bind ViewModel.IsClipboardMonitoringEnabled, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
+                            Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
+                            Icon="{tk:FontIcon FontSize=16, Glyph=&#xF0E3;}" />
             <MenuFlyoutSeparator />
             <MenuFlyoutItem x:Uid="TitleMenuButton_Settings"
                             AccessKey="S"
-                            Click="SettingsButton_Click"
+                            Command="{x:Bind ViewModel.OpenSettingsWindowCommand}"
                             Icon="{tk:FontIcon FontSize=16, Glyph=&#xE713;}" />
             <MenuFlyoutItem x:Uid="TitleMenuButton_Quit"
                             AccessKey="Q"
-                            Click="QuitButton_Click"
+                            Command="{x:Bind ViewModel.QuitAppCommand}"
                             Icon="{tk:FontIcon FontSize=16, Glyph=&#xEA39;}" />
         </MenuFlyout>
     </Page.Resources>
@@ -233,7 +250,7 @@
                     AutomationProperties.AutomationId="TitleBarButtons"
                     AutomationProperties.Name="Close Window"
                     AccessKey="E"
-                    Click="CloseButton_Click"
+                    Command="{x:Bind ViewModel.CloseWindowCommand}"
                     Content="{tk:FontIcon FontSize=16, Glyph=&#xE711;}"
                     Style="{ThemeResource AlternateCloseButtonStyle}" />
         </StackPanel>
@@ -321,7 +338,7 @@
               BorderBrush="{ThemeResource InfoBarBorderBrush}"
               BorderThickness="{ThemeResource InfoBarBorderThickness}"
               Background="{ThemeResource InfoBarWarningSeverityBackgroundBrush}"
-              Visibility="{x:Bind ViewModel.IsClipboardMonitoringPaused, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+              Visibility="{x:Bind ViewModel.IsClipboardMonitoringEnabled, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />

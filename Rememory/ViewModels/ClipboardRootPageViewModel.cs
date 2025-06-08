@@ -10,6 +10,7 @@ using Rememory.Hooks;
 using Rememory.Models;
 using Rememory.Views;
 using Rememory.Views.Editor;
+using Rememory.Views.Settings;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -111,25 +112,25 @@ namespace Rememory.ViewModels
             }
         }
 
-        // Backing field for IsClipboardMonitoringPaused
-        private bool _isClipboardMonitoringPaused = false;
+        // Backing field for IsClipboardMonitoringEnabled
+        private bool _isClipboardMonitoringEnabled = true;
         /// <summary>
-        /// When it's true, clipboard manager doesn't save any data
+        /// When it's false, clipboard manager doesn't save any data
         /// </summary>
-        public bool IsClipboardMonitoringPaused
+        public bool IsClipboardMonitoringEnabled
         {
-            get => _isClipboardMonitoringPaused;
+            get => _isClipboardMonitoringEnabled;
             set
             {
-                if (SetProperty(ref _isClipboardMonitoringPaused, value))
+                if (SetProperty(ref _isClipboardMonitoringEnabled, value))
                 {
                     if (value)
                     {
-                        _clipboardService.StopClipboardMonitor(App.Current.ClipboardWindowHandle);
+                        _clipboardService.StartClipboardMonitor(App.Current.ClipboardWindowHandle);
                     }
                     else
                     {
-                        _clipboardService.StartClipboardMonitor(App.Current.ClipboardWindowHandle);
+                        _clipboardService.StopClipboardMonitor(App.Current.ClipboardWindowHandle);
                     }
                 }
             }
@@ -488,6 +489,21 @@ namespace Rememory.ViewModels
         #endregion
 
         #region Commands
+
+        [RelayCommand]
+        private void ToggleWindowPinned() => IsWindowPinned = !IsWindowPinned;
+
+        [RelayCommand]
+        private void ToggleClipboardMonitoringEnabled() => IsClipboardMonitoringEnabled = !IsClipboardMonitoringEnabled;
+
+        [RelayCommand]
+        private void OpenSettingsWindow() => SettingsWindow.ShowSettingsWindow();
+
+        [RelayCommand]
+        private void QuitApp() => App.Current.Exit();
+
+        [RelayCommand]
+        private void CloseWindow() => App.Current.ClipboardWindow.HideWindow();
 
         [RelayCommand]
         private void ToggleClipFavorite(ClipModel? clip)
