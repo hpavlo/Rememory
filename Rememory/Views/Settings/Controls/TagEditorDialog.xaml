@@ -62,9 +62,9 @@
             </SplitButton.Flyout>
         </SplitButton>
 
-        <TextBox x:Name="NameTextBox"
+        <TextBox x:Uid="TagDialogBox_Name"
+                 x:Name="NameTextBox"
                  Grid.Column="1"
-                 PlaceholderText="Name"
                  Text="{x:Bind TagName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  TextChanged="Name_TextChanged" />
 

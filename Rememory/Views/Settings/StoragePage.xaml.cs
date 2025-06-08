@@ -29,7 +29,7 @@ namespace Rememory.Views.Settings
 
             _tagEditorDialog = new()
             {
-                Title = "Edit tag",   // Update to localisation
+                Title = "TagDialogBox_Title".GetLocalizedResource(),
                 PrimaryButtonText = "Save".GetLocalizedResource(),
                 CloseButtonText = "Cancel".GetLocalizedResource(),
                 DefaultButton = ContentDialogButton.Primary

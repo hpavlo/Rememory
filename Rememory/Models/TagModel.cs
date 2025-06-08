@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Media;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Rememory.Models
 {
@@ -23,5 +24,12 @@ namespace Rememory.Models
         }
 
         public IList<ClipModel> Clips { get; set; } = [];
+
+        public int ClipsCount => Clips.Count;
+
+        public void UpdateProperty([CallerMemberName] string propertyName = "")
+        {
+            OnPropertyChanged(propertyName);
+        }
     }
 }

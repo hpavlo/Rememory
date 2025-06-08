@@ -215,6 +215,7 @@ namespace Rememory.Services
             foreach (var tag in clip.Tags)
             {
                 tag.Clips.Remove(clip);
+                tag.UpdateProperty(nameof(tag.ClipsCount));
             }
             clip.Tags.Clear();
             clip.ClearExternalDataFiles();
@@ -270,6 +271,7 @@ namespace Rememory.Services
             foreach (var tag in _tagService.Tags)
             {
                 tag.Clips.Clear();
+                tag.UpdateProperty(nameof(tag.ClipsCount));
             }
             Clips.Clear();
             _storageService.DeleteAllClips();

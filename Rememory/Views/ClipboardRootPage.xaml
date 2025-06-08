@@ -497,8 +497,9 @@
                                                 Command="{Binding DataContext.DeleteClipCommand, ElementName=ClipsListView}"
                                                 Icon="{tk:FontIcon Glyph=&#xE74D;}" />
                                 <MenuFlyoutSeparator />
-                                <MenuFlyoutSubItem Text="Tags"
+                                <MenuFlyoutSubItem x:Uid="ContextMenu_Tags"
                                                    Icon="{tk:FontIcon Glyph=&#xE8EC;}"
+                                                   Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
                                                    Loaded="MenuFlyoutTags_Loaded" />
                                 <MenuFlyoutSubItem x:Uid="ContextMenu_More"
                                                    Icon="{tk:FontIcon Glyph=&#xE712;}">

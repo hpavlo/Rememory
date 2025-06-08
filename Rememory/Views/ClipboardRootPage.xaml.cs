@@ -205,9 +205,12 @@ namespace Rememory.Views
         {
             var menuItem = (MenuFlyoutSubItem)sender;
             var clip = (ClipModel)menuItem.DataContext;
+            var tags = ViewModel.GetTags();
 
+            menuItem.IsEnabled = tags.Any();
             menuItem.Items.Clear();
-            foreach (var tag in ViewModel.GetTags())
+
+            foreach (var tag in tags)
             {
                 menuItem.Items.Add(new ToggleMenuFlyoutItem()
                 {
