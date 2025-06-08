@@ -572,8 +572,14 @@ and WebView2 applications</value>
   <data name="TitleMenuButton_PinWindow.Text" xml:space="preserve">
     <value>Pin window</value>
   </data>
+  <data name="TitleMenuButton_UnpinWindow.Text" xml:space="preserve">
+    <value>Unpin window</value>
+  </data>
   <data name="TitleMenuButton_PauseMonitoring.Text" xml:space="preserve">
     <value>Pause monitoring</value>
+  </data>
+  <data name="TitleMenuButton_ResumeMonitoring.Text" xml:space="preserve">
+    <value>Resume monitoring</value>
   </data>
   <data name="TitleMenuButton_Settings.Text" xml:space="preserve">
     <value>Settings</value>

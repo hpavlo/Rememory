@@ -385,21 +385,6 @@ namespace Rememory.Views
             }
         }
 
-        private void SettingsButton_Click(object sender, RoutedEventArgs e)
-        {
-            SettingsWindow.ShowSettingsWindow();
-        }
-
-        private void QuitButton_Click(object sender, RoutedEventArgs e)
-        {
-            App.Current.Exit();
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            App.Current.ClipboardWindow.HideWindow();
-        }
-
         private async void ClipsListView_DragItemsStarting(object sender, DragItemsStartingEventArgs e)
         {
             var clip = (ClipModel?)e.Items.FirstOrDefault();

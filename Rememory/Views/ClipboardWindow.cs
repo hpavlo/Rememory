@@ -18,7 +18,12 @@ namespace Rememory.Views
     public class ClipboardWindow : WindowEx
     {
         public SettingsContext SettingsContext => SettingsContext.Instance;
-        public bool IsPinned { get; set; } = false;
+
+        public bool IsPinned
+        {
+            get => IsAlwaysOnTop;
+            set => IsAlwaysOnTop = value;
+        }
 
         public event TypedEventHandler<ClipboardWindow, EventArgs>? Showing;
         public event TypedEventHandler<ClipboardWindow, EventArgs>? Hiding;
@@ -30,7 +35,6 @@ namespace Rememory.Views
         {
             Title = Package.Current.DisplayName;
             IsShownInSwitchers = false;
-            IsAlwaysOnTop = true;
             IsResizable = false;
             IsMaximizable = false;
             IsMinimizable = false;
