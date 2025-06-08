@@ -153,7 +153,6 @@
                                                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                                                        Text="{x:Bind Pattern, Mode=OneWay}" />
                                             <TextBlock FontSize="12"
-                                                       TextWrapping="Wrap"
                                                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                                                        Text="{x:Bind FilteredCount, Mode=OneWay, Converter={StaticResource StringFormatResourceConverter}, ConverterParameter=SettingsFilterList_FilteredCount}" />
                                         </StackPanel>
@@ -176,11 +175,10 @@
             </tkcontrols:SettingsExpander.Items>
         </tkcontrols:SettingsExpander>
 
-        <!--Localise this region-->
-        <tkcontrols:SettingsExpander HeaderIcon="{tk:FontIcon Glyph=&#xE8EC;}"
-                                     IsExpanded="True"
-                                     Header="Tags">
-            <Button Content="Add tag"
+        <tkcontrols:SettingsExpander x:Uid="SettingsExpander_Tags"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xE8EC;}"
+                                     IsExpanded="True">
+            <Button x:Uid="SettingsExpander_AddTagButton"
                     Style="{ThemeResource AccentButtonStyle}"
                     Click="AddTagButton_Click" />
             <tkcontrols:SettingsExpander.Items>
@@ -231,9 +229,13 @@
                                                   Glyph="&#xEA3B;"
                                                   Foreground="{x:Bind ColorBrush, Mode=OneWay}"/>
 
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{x:Bind Name, Mode=OneWay}"
-                                                   VerticalAlignment="Center" />
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock TextWrapping="Wrap"
+                                                       Text="{x:Bind Name, Mode=OneWay}" />
+                                            <TextBlock FontSize="12"
+                                                       Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                                       Text="{x:Bind ClipsCount, Mode=OneWay, Converter={StaticResource StringFormatResourceConverter}, ConverterParameter=SettingsTagsList_ClipsCount}" />
+                                        </StackPanel>
 
                                         <StackPanel Grid.Column="2"
                                                     Spacing="8"

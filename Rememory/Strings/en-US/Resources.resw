@@ -527,7 +527,7 @@
     <value>Yes, delete all data</value>
   </data>
   <data name="SettingsFilterList_FilteredCount" xml:space="preserve">
-    <value>Filtered items: {0}</value>
+    <value>Filtered clips: {0}</value>
   </data>
   <data name="SettingsExpander_OwnerFilters.Header" xml:space="preserve">
     <value>Owner app filters</value>
@@ -643,5 +643,26 @@ and WebView2 applications</value>
   </data>
   <data name="SettingsCard_DeveloperStringCaseConverions.Description" xml:space="preserve">
     <value>Enable advanced commands for converting text to Camel Case, Pascal Case, Snake Case and Kebab Case</value>
+  </data>
+  <data name="ContextMenu_Tags.Text" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="SettingsExpander_Tags.Header" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="SettingsExpander_Tags.Description" xml:space="preserve">
+    <value>Create custom tags and assign them to your clips</value>
+  </data>
+  <data name="SettingsExpander_AddTagButton.Content" xml:space="preserve">
+    <value>Add tag</value>
+  </data>
+  <data name="TagDialogBox_Title" xml:space="preserve">
+    <value>Edit tag</value>
+  </data>
+  <data name="SettingsTagsList_ClipsCount" xml:space="preserve">
+    <value>Clips count: {0}</value>
+  </data>
+  <data name="TagDialogBox_Name.PlaceholderText" xml:space="preserve">
+    <value>Name</value>
   </data>
 </root>
