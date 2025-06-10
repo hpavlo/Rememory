@@ -71,7 +71,7 @@
         </tkcontrols:SettingsCard>
 
         <tkcontrols:SettingsCard x:Uid="SettingsCard_ItemDragAndDrop"
-                                 HeaderIcon="{tk:FontIcon Glyph=&#xE7C2;}">
+                                 HeaderIcon="{tk:FontIcon Glyph=&#xE759;}">
             <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.EnableItemDragAndDrop, Mode=TwoWay}" />
         </tkcontrols:SettingsCard>
 
@@ -81,7 +81,7 @@
         </tkcontrols:SettingsCard>
 
         <tkcontrols:SettingsCard x:Uid="SettingsCard_RequireHexColorPrefix"
-                                 HeaderIcon="{tk:FontIcon Glyph=&#xE621;}">
+                                 HeaderIcon="{tk:FontIcon Glyph=&#xEF3C;}">
             <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.RequireHexColorPrefix, Mode=TwoWay}" />
         </tkcontrols:SettingsCard>
 

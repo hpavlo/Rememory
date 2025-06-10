@@ -12,11 +12,12 @@
       xmlns:converters="using:Rememory.Converters"
       xmlns:controls="using:Rememory.Views.Controls"
       xmlns:behavior="using:Rememory.Views.Controls.Behavior"
+      xmlns:triggers="using:CommunityToolkit.WinUI"
       x:Name="RootPage"
       DataContext="{x:Bind ViewModel}"
       Background="{x:Bind ViewModel.ThemeBackgroundColor, Mode=OneWay}"
       SizeChanged="ClipboardRootPage_SizeChanged"
-      KeyUp="Escape_KeyUp">
+      KeyDown="Escape_KeyDown">
     <Page.Resources>
         <tkconverters:BoolNegationConverter x:Key="BoolNegationConverter" />
         <tkconverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
@@ -168,8 +169,10 @@
     </Page.Resources>
 
     <!-- Using BorderBrush to display border on Windows 10 (not visible on Win11) -->
-    <Grid BorderThickness="1"
-          BorderBrush="{ThemeResource ButtonBorderBrush}"
+    <Grid x:Name="RootGrid"
+          CornerRadius="0"
+          BorderThickness="1"
+          BorderBrush="{ThemeResource AccentAAFillColorDisabled}"
           Background="{x:Bind ViewModel.SettingsContext.CurrentWindowBackgroundBrush, Mode=OneWay}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -183,6 +186,37 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="PinnedWindowState">
+                    <VisualState.StateTriggers>
+                        <triggers:IsEqualStateTrigger Value="{x:Bind ViewModel.IsWindowPinned, Mode=OneWay}"
+                                                      To="True" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="RootGrid.Padding"
+                                Value="-1" />
+                        <Setter Target="RootGrid.BorderThickness"
+                                Value="2" />
+                        <Setter Target="RootGrid.BorderBrush"
+                                Value="{ThemeResource SystemAccentColor}" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+            <VisualStateGroup>
+                <VisualState x:Name="RoundedCornerState">
+                    <VisualState.StateTriggers>
+                        <triggers:IsEqualStateTrigger Value="{x:Bind _window.IsRoundedCornerSupported, Mode=OneTime}"
+                                                      To="True" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="RootGrid.CornerRadius"
+                                Value="7" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
 
         <SelectorBar x:Name="NavigationSelectorBar"
                      AutomationProperties.AutomationId="NavigationSelectorBar"

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Drawing;
-using System.Runtime.InteropServices.Marshalling;
-using Microsoft.UI.Windowing;
+﻿using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Rememory.Helper;
 using Rememory.Helper.WindowBackdrop;
 using Rememory.Models;
 using Rememory.Views.Settings;
+using System;
+using System.Drawing;
+using System.Runtime.InteropServices.Marshalling;
 using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.System;
@@ -18,11 +18,14 @@ namespace Rememory.Views
     public class ClipboardWindow : WindowEx
     {
         public SettingsContext SettingsContext => SettingsContext.Instance;
-
+        public readonly bool IsRoundedCornerSupported;
         public bool IsPinned
         {
             get => IsAlwaysOnTop;
-            set => IsAlwaysOnTop = value;
+            set {
+                int borderColor = (IsAlwaysOnTop = value) ? NativeHelper.DWMWA_COLOR_NONE : NativeHelper.DWMWA_COLOR_DEFAULT;
+                NativeHelper.DwmSetWindowAttribute(this.GetWindowHandle(), NativeHelper.DWMWA_BORDER_COLOR, ref borderColor, sizeof(int));
+            }
         }
 
         public event TypedEventHandler<ClipboardWindow, EventArgs>? Showing;
@@ -42,7 +45,8 @@ namespace Rememory.Views
 
             this.SetWindowStyle(WindowStyle.Popup);
             int cornerPreference = (int)NativeHelper.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
-            NativeHelper.DwmSetWindowAttribute(this.GetWindowHandle(), NativeHelper.DWMWA_WINDOW_CORNER_PREFERENCE, ref cornerPreference, sizeof(int));
+            nint dwmResult = NativeHelper.DwmSetWindowAttribute(this.GetWindowHandle(), NativeHelper.DWMWA_WINDOW_CORNER_PREFERENCE, ref cornerPreference, sizeof(int));
+            IsRoundedCornerSupported = dwmResult == 0;
 
             RememoryCoreHelper.AddWindowProc(this.GetWindowHandle());
             AddTrayIcon();
@@ -92,6 +96,14 @@ namespace Rememory.Views
             return false;
         }
 
+        // Call it after set Content of window
+        public void InitSystemThemeTrigger()
+        {
+            ((FrameworkElement)Content).ActualThemeChanged += ClipboardWindow_ActualThemeChanged;
+        }
+
+        private void ClipboardWindow_ActualThemeChanged(FrameworkElement sender, object args) => App.Current.ThemeService.ApplyTheme();
+
         private void WindowMessageReceived(object? sender, WindowMessageEventArgs args)
         {
             switch (args.Message.MessageId)
@@ -102,6 +114,7 @@ namespace Rememory.Views
                         MoveToStartPosition();
                     }
                     break;
+
                 case NativeHelper.WM_QUERYENDSESSION:
                     if (args.Message.LParam == 1)   // ENDSESSION_CLOSEAPP
                     {
@@ -166,6 +179,7 @@ namespace Rememory.Views
             AppWindow.Closing -= Window_Closing;
             Closed -= Window_Closed;
             _messageMonitor.WindowMessageReceived -= WindowMessageReceived;
+            ((FrameworkElement)Content).ActualThemeChanged -= ClipboardWindow_ActualThemeChanged;
         }
 
         private unsafe void AddTrayIcon()
@@ -220,14 +234,14 @@ namespace Rememory.Views
                     break;
                 case ClipboardWindowPosition.LastPosition:
                     // Check if last position is out of work area
-                    if (this.AppWindow.Position.X >= workArea.Left
-                        && this.AppWindow.Position.X - independedWidth <= workArea.Right
-                        && this.AppWindow.Position.Y >= workArea.Top
-                        && this.AppWindow.Position.Y - independedHeight <= workArea.Bottom)
+                    if (AppWindow.Position.X >= workArea.Left
+                        && AppWindow.Position.X - independedWidth <= workArea.Right
+                        && AppWindow.Position.Y >= workArea.Top
+                        && AppWindow.Position.Y - independedHeight <= workArea.Bottom)
                     {
                         this.MoveAndResize(
-                            this.AppWindow.Position.X,
-                            this.AppWindow.Position.Y,
+                            AppWindow.Position.X,
+                            AppWindow.Position.Y,
                             scaledWidth,
                             scaledHeight);
                     }

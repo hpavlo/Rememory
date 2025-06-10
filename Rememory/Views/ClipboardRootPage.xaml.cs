@@ -1,4 +1,5 @@
 using Microsoft.UI.Text;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
@@ -10,7 +11,6 @@ using Rememory.Helper;
 using Rememory.Models;
 using Rememory.ViewModels;
 using Rememory.Views.Controls.Behavior;
-using Rememory.Views.Settings;
 using System;
 using System.IO;
 using System.Linq;
@@ -34,6 +34,7 @@ namespace Rememory.Views
             _window = window;
             _window.Showing += Window_Showing;
             _window.Hiding += Window_Hiding;
+            _window.AppWindow.Closing += Window_Closing;
 
             RequestedTheme = ThemeService.Theme;
             ThemeService.ThemeChanged += ThemeChanged;
@@ -63,6 +64,15 @@ namespace Rememory.Views
         private void Window_Hiding(object sender, EventArgs e)
         {
             ViewModel.OnWindowHiding();
+        }
+
+        private void Window_Closing(AppWindow sender, AppWindowClosingEventArgs args)
+        {
+            _window.Showing -= Window_Showing;
+            _window.Hiding -= Window_Hiding;
+            _window.AppWindow.Closing -= Window_Closing;
+            ThemeService.ThemeChanged -= ThemeChanged;
+            ViewModel.SettingsContext.PropertyChanged -= SettingsContext_PropertyChanged;
         }
 
         private void ThemeChanged(object? sender, ElementTheme theme)
@@ -377,11 +387,11 @@ namespace Rememory.Views
 
         #endregion
 
-        private void Escape_KeyUp(object sender, KeyRoutedEventArgs e)
+        private void Escape_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == VirtualKey.Escape)
             {
-                App.Current.ClipboardWindow.HideWindow();
+                _window.HideWindow();
             }
         }
 

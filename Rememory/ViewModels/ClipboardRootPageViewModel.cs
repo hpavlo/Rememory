@@ -281,7 +281,12 @@ namespace Rememory.ViewModels
         {
             if (ThemeService.WindowBackdrop == WindowBackdropType.None)
             {
-                ThemeBackgroundColor.Color = ThemeService.Theme == Microsoft.UI.Xaml.ElementTheme.Dark ? Colors.Black : Colors.White;
+                ThemeBackgroundColor.Color = ThemeService.Theme switch
+                {
+                    Microsoft.UI.Xaml.ElementTheme.Light => Colors.White,
+                    Microsoft.UI.Xaml.ElementTheme.Dark => Colors.Black,
+                    _ => NativeHelper.ShouldSystemUseDarkMode() ? Colors.Black : Colors.White,
+                };
             }
             else
             {
