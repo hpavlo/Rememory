@@ -74,6 +74,7 @@ namespace Rememory
 
             ClipboardWindow.Content = rootPage;
             ClipboardWindow.InitSystemBackdrop();
+            ClipboardWindow.InitSystemThemeTrigger();
 
             _keyboardMonitor.StartMonitor();
 

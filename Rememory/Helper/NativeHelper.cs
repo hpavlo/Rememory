@@ -183,6 +183,9 @@ namespace Rememory.Helper
 
 
         internal const int DWMWA_WINDOW_CORNER_PREFERENCE = 33;
+        internal const int DWMWA_BORDER_COLOR = 34;
+        internal const int DWMWA_COLOR_NONE = unchecked((int)0xFFFFFFFE);   // No border
+        internal const int DWMWA_COLOR_DEFAULT = unchecked((int)0xFFFFFFFF);   // Default border
 
         internal enum DWM_WINDOW_CORNER_PREFERENCE
         {
@@ -194,5 +197,8 @@ namespace Rememory.Helper
 
         [DllImport("Dwmapi.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         internal static extern IntPtr DwmSetWindowAttribute(IntPtr hwnd, int dwAttribute, ref int pvAttribute, int cbAttribute);
+
+        [DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#138")]
+        internal static extern bool ShouldSystemUseDarkMode();
     }
 }

@@ -16,8 +16,6 @@
 		<StartupObject>Rememory.Program</StartupObject>
 		<DefaultLanguage>en-US</DefaultLanguage>
 		<Nullable>Enable</Nullable>
-		<OutDir>bin\$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)\</OutDir>
-		<PublishDir>bin\$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)\publish\</PublishDir>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
