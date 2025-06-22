@@ -160,37 +160,8 @@ namespace Rememory.Views
         {
             ((UIElement)sender).ReleasePointerCaptures();
             isWindowMoving = false;
-
-            var workArea = NativeHelper.GetWorkAreaRectangle(out _, out _);
-            int deltaX = 0;
-            int deltaY = 0;
-
-            // Adjust horisontal position
-            if (_window.AppWindow.Position.X < workArea.Left)
-            {
-                deltaX = workArea.Left - _window.AppWindow.Position.X;
+            _window.AppWindow.Move(ClipboardWindow.AdjustWindowPositionToWorkArea(_window.AppWindow.Position, _window.AppWindow.Size));
             }
-            if (_window.AppWindow.Position.Y < workArea.Top)
-            {
-                deltaY = workArea.Top - _window.AppWindow.Position.Y;
-            }
-
-            // Adjust vertical position
-            if (_window.AppWindow.Position.X + _window.AppWindow.Size.Width > workArea.Right)
-            {
-                deltaX = workArea.Right - _window.AppWindow.Position.X - _window.AppWindow.Size.Width;
-            }
-            if (_window.AppWindow.Position.Y + _window.AppWindow.Size.Height > workArea.Bottom)
-            {
-                deltaY = workArea.Bottom - _window.AppWindow.Position.Y - _window.AppWindow.Size.Height;
-            }
-
-            // move window only if there is enough space
-            if (_window.AppWindow.Size.Width < workArea.Width && _window.AppWindow.Size.Height < workArea.Height)
-            {
-                _window.AppWindow.Move(new(_window.AppWindow.Position.X + deltaX, _window.AppWindow.Position.Y + deltaY));
-            }
-        }
 
         private void WindowDragArea_PointerMoved(object sender, PointerRoutedEventArgs e)
         {

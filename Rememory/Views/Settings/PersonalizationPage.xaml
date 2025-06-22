@@ -127,6 +127,7 @@
                                      HeaderIcon="{tk:FontIcon Glyph=&#xE90D;}">
             <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.ClipboardWindowPositionIndex, Mode=TwoWay}">
                 <ComboBoxItem x:Uid="SettingsComboBox_Position_Caret" />
+                <ComboBoxItem x:Uid="SettingsComboBox_Position_Cursor" />
                 <ComboBoxItem x:Uid="SettingsComboBox_Position_ScreenCenter" />
                 <ComboBoxItem x:Uid="SettingsComboBox_Position_LastPosition" />
                 <ComboBoxItem x:Uid="SettingsComboBox_Position_Right" />

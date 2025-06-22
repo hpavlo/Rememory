@@ -593,6 +593,9 @@ and WebView2 applications</value>
   <data name="SettingsComboBox_Position_Caret.Content" xml:space="preserve">
     <value>Caret</value>
   </data>
+  <data name="SettingsComboBox_Position_Cursor.Content" xml:space="preserve">
+    <value>Cursor</value>
+  </data>
   <data name="SettingsComboBox_Position_ScreenCenter.Content" xml:space="preserve">
     <value>Screen center</value>
   </data>

@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Runtime.InteropServices.Marshalling;
 using Windows.ApplicationModel;
 using Windows.Foundation;
+using Windows.Graphics;
 using Windows.System;
 using WinUIEx;
 using WinUIEx.Messaging;
@@ -100,6 +101,41 @@ namespace Rememory.Views
         public void InitSystemThemeTrigger()
         {
             ((FrameworkElement)Content).ActualThemeChanged += ClipboardWindow_ActualThemeChanged;
+        }
+
+        public static PointInt32 AdjustWindowPositionToWorkArea(PointInt32 position, SizeInt32 size)
+        {
+            var workArea = NativeHelper.GetWorkAreaRectangle(out _, out _);
+            int deltaX = 0;
+            int deltaY = 0;
+
+            // Adjust horisontal position
+            if (position.X < workArea.Left)
+            {
+                deltaX = workArea.Left - position.X;
+            }
+            if (position.Y < workArea.Top)
+            {
+                deltaY = workArea.Top - position.Y;
+            }
+
+            // Adjust vertical position
+            if (position.X + size.Width > workArea.Right)
+            {
+                deltaX = workArea.Right - position.X - size.Width;
+            }
+            if (position.Y + size.Height > workArea.Bottom)
+            {
+                deltaY = workArea.Bottom - position.Y - size.Height;
+            }
+
+            // return new position only if there is enough space
+            if (size.Width < workArea.Width && size.Height < workArea.Height)
+            {
+                return new(position.X + deltaX, position.Y + deltaY);
+            }
+
+            return position;
         }
 
         private void ClipboardWindow_ActualThemeChanged(FrameworkElement sender, object args) => App.Current.ThemeService.ApplyTheme();
@@ -225,6 +261,11 @@ namespace Rememory.Views
                         (int)(workArea.Right - independedWidth - independedMarginX),
                         (int)(workArea.Bottom - independedHeight - independedMarginY));
                     break;
+                case ClipboardWindowPosition.Cursor:
+                    NativeHelper.GetCursorPos(out var cursorPos);
+                    var newPos = AdjustWindowPositionToWorkArea(cursorPos, new((int)independedWidth, (int)independedHeight));
+                    this.MoveAndResize(newPos.X, newPos.Y, scaledWidth, scaledHeight);
+                    break;
                 case ClipboardWindowPosition.ScreenCenter:
                     this.MoveAndResize(
                         workArea.Left + (workArea.Width - independedWidth) / 2,
@@ -318,6 +359,7 @@ namespace Rememory.Views
     public enum ClipboardWindowPosition
     {
         Caret,
+        Cursor,
         ScreenCenter,
         LastPosition,
         Right,
