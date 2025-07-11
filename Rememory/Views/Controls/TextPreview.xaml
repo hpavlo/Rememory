@@ -4,10 +4,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:Rememory.Views.Controls">
     <TextBlock x:Name="PreviewTextBlock"
-               Padding="4 0"
-               MaxHeight="120"
-               FontSize="12"
                TextWrapping="Wrap"
                TextTrimming="CharacterEllipsis"
-               Text="{x:Bind TextData, Mode=OneWay}" />
+               Text="{x:Bind TextData, Mode=OneWay}"
+               Style="{ThemeResource BodyTextBlockStyle}" />
 </UserControl>

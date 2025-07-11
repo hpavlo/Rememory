@@ -414,14 +414,14 @@ namespace Rememory.Helper
         /// <summary>
         /// Generates a temporary Bitmap file from PNG data if available and required.
         /// </summary>
-        /// <param name="clip">The clip model.</param>
+        /// <param name="dataModel">The data model with a path to PNG file.</param>
         /// <param name="tempBitmapPath">Output parameter for the path of the generated bitmap file.</param>
         /// <returns>True if a bitmap was generated, false otherwise.</returns>
-        public static bool TryGenerateBitmapFromPng(ClipModel clip, out string tempBitmapPath)
+        public static bool TryGenerateBitmapFromPng(DataModel dataModel, out string tempBitmapPath)
         {
             tempBitmapPath = string.Empty;
 
-            if (!clip.Data.TryGetValue(ClipboardFormat.Png, out var pngClipData))
+            if (dataModel.Format != ClipboardFormat.Png)
             {
                 return false;
             }
@@ -432,7 +432,7 @@ namespace Rememory.Helper
                 tempBitmapPath = Path.Combine(ApplicationData.GetDefault().TemporaryPath, string.Format(FILE_NAME_FORMAT_BITMAP, DateTime.Now));
 
                 // Create a Bitmap from the PNG data and save it as a BMP file
-                using Bitmap bitmap = new(pngClipData.Data);
+                using Bitmap bitmap = new(dataModel.Data);
                 bitmap.Save(tempBitmapPath, ImageFormat.Bmp);
                 return true;
             }

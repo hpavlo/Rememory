@@ -3,8 +3,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:Rememory.Views.Controls">
-    <Border MaxHeight="120"
-            CornerRadius="4"
+    <Border CornerRadius="{ThemeResource ControlCornerRadius}"
             HorizontalAlignment="Center">
         <Image Source="{x:Bind ImageUrl}" />
     </Border>

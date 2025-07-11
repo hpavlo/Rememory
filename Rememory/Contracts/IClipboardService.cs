@@ -57,13 +57,12 @@ namespace Rememory.Contracts
         void StopClipboardMonitor(IntPtr windowHandle);
 
         /// <summary>
-        /// Sets the data from the specified clip model back onto the system clipboard.
+        /// Sets the data into the system clipboard.
         /// </summary>
-        /// <param name="clip">The clip model containing the data to set.</param>
-        /// <param name="format">Optional. If specified, only this data format from the clip will be set; otherwise, all available formats from the clip are attempted.</param>
+        /// <param name="data">The data models dictionary.</param>
         /// <param name="caseType">Optional. If specified, converts the text data to the specific test case.</param>
         /// <returns><c>true</c> if the clipboard was successfully updated; otherwise, <c>false</c>.</returns>
-        bool SetClipboardData(ClipModel clip, ClipboardFormat? format = null, TextCaseType? caseType = null);
+        bool SetClipboardData(Dictionary<ClipboardFormat, DataModel> data, TextCaseType? caseType = null);
 
         /// <summary>
         /// Adds a new clip model to the beginning of the collection and persists it to storage.

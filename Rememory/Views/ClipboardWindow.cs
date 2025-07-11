@@ -20,11 +20,13 @@ namespace Rememory.Views
     {
         public SettingsContext SettingsContext => SettingsContext.Instance;
         public readonly bool IsRoundedCornerSupported;
+
+        private bool _isPinned = false;
         public bool IsPinned
         {
-            get => IsAlwaysOnTop;
+            get => IsAlwaysOnTop && _isPinned;
             set {
-                int borderColor = (IsAlwaysOnTop = value) ? NativeHelper.DWMWA_COLOR_NONE : NativeHelper.DWMWA_COLOR_DEFAULT;
+                int borderColor = (_isPinned = value) ? NativeHelper.DWMWA_COLOR_NONE : NativeHelper.DWMWA_COLOR_DEFAULT;
                 NativeHelper.DwmSetWindowAttribute(this.GetWindowHandle(), NativeHelper.DWMWA_BORDER_COLOR, ref borderColor, sizeof(int));
             }
         }
@@ -64,12 +66,14 @@ namespace Rememory.Views
         {
             if (Visible)
             {
+                MoveToStartPosition();
                 this.SetForegroundWindow();
                 return false;
             }
             MoveToStartPosition();
             Showing?.Invoke(this, EventArgs.Empty);
             AppWindow.Show();
+            IsAlwaysOnTop = true;
             KeyboardHelper.MultiKeyAction([(VirtualKey)0x0E], KeyboardHelper.KeyAction.DownUp);   // To fix problem with foreground window
             this.SetForegroundWindow();
             return true;

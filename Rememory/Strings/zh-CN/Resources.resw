@@ -556,9 +556,6 @@
   <data name="FilterDialogBox_PatternTextBox.PlaceholderText" xml:space="preserve">
     <value>筛选项模式</value>
   </data>
-  <data name="ContextMenu_More.Text" xml:space="preserve">
-    <value>更多</value>
-  </data>
   <data name="ContextMenu_Filter.Text" xml:space="preserve">
     <value>过滤这个来源</value>
   </data>

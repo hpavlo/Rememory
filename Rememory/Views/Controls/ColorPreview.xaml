@@ -18,7 +18,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     
-    <Grid ColumnSpacing="8">
+    <Grid ColumnSpacing="12">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
@@ -58,23 +58,21 @@
         <TextBlock x:Name="ColorCodeTextBlock"
                    Grid.Column="1"
                    Grid.Row="0"
-                   Padding="4 0"
                    MaxLines="1"
-                   FontSize="12"
                    TextWrapping="Wrap"
                    TextTrimming="CharacterEllipsis"
-                   Text="{x:Bind ColorCode, Mode=OneWay}" />
+                   Text="{x:Bind ColorCode, Mode=OneWay}"
+                   Style="{ThemeResource BodyTextBlockStyle}" />
 
         <TextBlock x:Name="ColorNameTextBlock"
                    Grid.Column="1"
                    Grid.Row="1"
-                   Padding="4 0"
                    MaxLines="2"
                    VerticalAlignment="Top"
-                   FontSize="12"
                    TextWrapping="Wrap"
                    TextTrimming="CharacterEllipsis"
                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                   Text="{x:Bind ColorName, Mode=OneWay}" />
+                   Text="{x:Bind ColorName, Mode=OneWay}"
+                   Style="{ThemeResource CaptionTextBlockStyle}" />
     </Grid>
 </UserControl>

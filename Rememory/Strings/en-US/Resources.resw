@@ -168,16 +168,16 @@
   <data name="ContextMenu_PasteAsKebabCase.Text" xml:space="preserve">
     <value>kebab-case</value>
   </data>
-  <data name="NavigationMenu_Home.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="NavigationTabItem_Home" xml:space="preserve">
     <value>Home</value>
   </data>
-  <data name="NavigationMenu_Links.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="NavigationTabItem_Links" xml:space="preserve">
     <value>Links</value>
   </data>
-  <data name="NavigationMenu_Images.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="NavigationTabItem_Images" xml:space="preserve">
     <value>Images</value>
   </data>
-  <data name="NavigationMenu_Favorites.ToolTipService.ToolTip" xml:space="preserve">
+  <data name="NavigationTabItem_Favorites" xml:space="preserve">
     <value>Favorites</value>
   </data>
   <data name="DaysAgo" xml:space="preserve">
@@ -557,9 +557,6 @@ and WebView2 applications</value>
   <data name="FilterDialogBox_PatternTextBox.PlaceholderText" xml:space="preserve">
     <value>Filter pattern</value>
   </data>
-  <data name="ContextMenu_More.Text" xml:space="preserve">
-    <value>More</value>
-  </data>
   <data name="ContextMenu_Filter.Text" xml:space="preserve">
     <value>Filter this source</value>
   </data>
@@ -673,5 +670,14 @@ and WebView2 applications</value>
   </data>
   <data name="TagDialogBox_Name.PlaceholderText" xml:space="preserve">
     <value>Name</value>
+  </data>
+  <data name="SelectedClipsCount" xml:space="preserve">
+    <value>{0, plural, one {# clip selected} other {# clips selected}}</value>
+  </data>
+  <data name="SelectAllCheckBox.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Select all</value>
+  </data>
+  <data name="MultiSelectionToggleButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Selection mode</value>
   </data>
 </root>

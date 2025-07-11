@@ -9,6 +9,9 @@ namespace Rememory.Services
 {
     public class TagService : ITagService
     {
+        public event EventHandler<TagModel>? TagRegistered;
+        public event EventHandler<int>? TagUnregistered;
+
         public IList<TagModel> Tags { get; private set; }
 
         private readonly IStorageService _storageService;
@@ -25,6 +28,7 @@ namespace Rememory.Services
             TagModel tag = new(name, colorBrush);
             Tags.Add(tag);
             _storageService.AddTag(tag);
+            OnTagRegistered(tag);
         }
 
         public void UnregisterTag(TagModel tag)
@@ -37,6 +41,7 @@ namespace Rememory.Services
             tag.Clips.Clear();
             Tags.Remove(tag);
             _storageService.DeleteTag(tag.Id);
+            OnTagUnregistered(tag.Id);
         }
 
         public void UpdateTag(TagModel tag)
@@ -64,6 +69,16 @@ namespace Rememory.Services
                 tag.UpdateProperty(nameof(tag.ClipsCount));
                 _storageService.DeleteClipTag(clip.Id, tag.Id);
             }
+        }
+
+        protected virtual void OnTagRegistered(TagModel tag)
+        {
+            TagRegistered?.Invoke(this, tag);
+        }
+
+        protected virtual void OnTagUnregistered(int tagId)
+        {
+            TagUnregistered?.Invoke(this, tagId);
         }
 
         private IList<TagModel> ReadTagsFromStorage()

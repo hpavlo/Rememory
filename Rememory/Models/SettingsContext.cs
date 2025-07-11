@@ -87,6 +87,7 @@ namespace Rememory.Models
             get => _windowWidth;
             set
             {
+                // Check validation if we increase min width
                 if (value >= 320 && value <= 1200)
                 {
                     SetSettingsProperty(ref _windowWidth, value);

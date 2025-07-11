@@ -557,9 +557,6 @@
   <data name="FilterDialogBox_PatternTextBox.PlaceholderText" xml:space="preserve">
     <value>Патерн фільтру</value>
   </data>
-  <data name="ContextMenu_More.Text" xml:space="preserve">
-    <value>Більше</value>
-  </data>
   <data name="ContextMenu_Filter.Text" xml:space="preserve">
     <value>Фільтрувати це джерело</value>
   </data>

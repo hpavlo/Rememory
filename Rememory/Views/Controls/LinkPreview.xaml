@@ -8,21 +8,19 @@
         <tkconverters:StringVisibilityConverter x:Key="StringVisibilityConverter" />
     </UserControl.Resources>
     
-    <StackPanel Spacing="6">
+    <StackPanel Spacing="8">
         <TextBlock x:Name="PreviewUrl"
-                   Grid.ColumnSpan="2"
-                   Padding="4 0"
                    MaxLines="2"
-                   FontSize="12"
                    TextWrapping="Wrap"
                    TextTrimming="CharacterEllipsis"
-                   Text="{x:Bind LinkUrl, Mode=OneWay}" />
+                   Text="{x:Bind LinkUrl, Mode=OneWay}"
+                   Style="{ThemeResource BodyTextBlockStyle}" />
 
         <Grid x:Name="PreviewGrid"
-              MaxHeight="82"
-              CornerRadius="6"
-              BorderThickness="{ThemeResource ButtonBorderThemeThickness}"
-              BorderBrush="{ThemeResource AccentAAFillColorDisabled}">
+              MaxHeight="94"
+              BorderThickness="1"
+              BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
+              CornerRadius="{ThemeResource ControlCornerRadius}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -34,9 +32,9 @@
 
             <Border x:Name="PreviewImageBorder"
                     Grid.RowSpan="2"
-                    Width="82"
-                    Height="82"
-                    CornerRadius="6 0 0 6"
+                    Width="92"
+                    Height="92"
+                    CornerRadius="4 0 0 4"
                     Visibility="Collapsed">
                 <Image x:Name="PreviewImage"
                        Stretch="UniformToFill"
@@ -47,23 +45,21 @@
             </Border>
             <TextBlock x:Name="PreviewTitle"
                        Grid.Column="1"
-                       Margin="8 5 8 5"
+                       Margin="8 4"
                        MaxLines="2"
-                       FontWeight="SemiBold"
-                       FontSize="12"
                        TextWrapping="Wrap"
                        TextTrimming="CharacterEllipsis"
-                       Text="{x:Bind LinkMetadata.Title, Mode=OneWay}" />
+                       Text="{x:Bind LinkMetadata.Title, Mode=OneWay}"
+                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
             <TextBlock x:Name="PreviewDescription"
                        Grid.Column="1"
                        Grid.Row="1"
-                       Margin="8 0 8 5"
-                       FontWeight="Thin"
-                       FontSize="12"
+                       Margin="8 0 8 4"
                        TextWrapping="Wrap"
                        TextTrimming="CharacterEllipsis"
                        VerticalAlignment="Top"
                        Text="{x:Bind LinkMetadata.Description, Mode=OneWay}"
+                       Style="{ThemeResource BodyTextBlockStyle}"
                        Visibility="{x:Bind LinkMetadata.Description, Mode=OneWay, Converter={StaticResource StringVisibilityConverter}}"/>
         </Grid>
     </StackPanel>

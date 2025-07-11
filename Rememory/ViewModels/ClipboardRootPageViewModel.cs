@@ -1,11 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.UI;
-using Microsoft.UI.Xaml.Media;
 using Rememory.Contracts;
 using Rememory.Helper;
-using Rememory.Helper.WindowBackdrop;
 using Rememory.Hooks;
 using Rememory.Models;
 using Rememory.Views;
@@ -16,6 +13,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
@@ -38,7 +36,6 @@ namespace Rememory.ViewModels
         private readonly ISearchService _searchService = App.Current.Services.GetService<ISearchService>()!;
         private readonly IOwnerService _ownerService = App.Current.Services.GetService<IOwnerService>()!;
         private readonly ITagService _tagService = App.Current.Services.GetService<ITagService>()!;
-        private IThemeService ThemeService => App.Current.ThemeService;
 
         // Using to get last active window if clipboard window is pinned
         private readonly ActiveWindowHook _activeWindowHook = new();
@@ -62,29 +59,31 @@ namespace Rememory.ViewModels
             set => SetProperty(ref _clipsCollection, value);
         }
 
-        /// <summary> 
-        /// Used to set themed background color if we have disabled backdrop.
-        /// </summary>
-        public SolidColorBrush ThemeBackgroundColor { get; private set; }
-
-        // Backing field for SelectedMenuItem
-        private NavigationMenuItem _selectedMenuItem;
         /// <summary>
-        /// Gets or sets the currently selected navigation menu item, which determines the primary filter applied to the clips.
+        /// Contains all navigation tabs
         /// </summary>
-        public NavigationMenuItem SelectedMenuItem
+        public ObservableCollection<TabItemModel> NavigationTabItems { get; private set; } = [];
+
+        // Backing field for SelectedTab
+        private TabItemModel? _selectedTab;
+        /// <summary>
+        /// Gets or sets the currently selected tab item, which determinates the promafy filter applied to the clips
+        /// </summary>
+        public TabItemModel? SelectedTab
         {
-            get => _selectedMenuItem;
+            get => _selectedTab;
             set
             {
-                if (SetProperty(ref _selectedMenuItem, value))
+                if (SetProperty(ref _selectedTab, value))
                 {
                     SearchString = string.Empty;
                     OnPropertyChanged(nameof(IsSearchEnabled));
+                    OnPropertyChanged(nameof(SelectedTabHeader));
                     UpdateClipsList();
                 }
             }
         }
+        public string SelectedTabHeader => SelectedTab?.Title ?? string.Empty;
 
         /// <summary>
         /// Gets or sets a value indicating whether the main clipboard window is currently pinned (always on top).
@@ -140,11 +139,11 @@ namespace Rememory.ViewModels
         /// Gets a value indicating whether the search input should be enabled.
         /// Typically disabled for filter types where search is not applicable (e.g., Images).
         /// </summary>
-        public bool IsSearchEnabled => SelectedMenuItem != NavigationMenuItem.Images;
+        public bool IsSearchEnabled => SelectedTab?.Type != NavigationTabItemType.Images;
 
         private bool _searchMode = false;
         /// <summary>
-        /// Return true if <seealso cref="SearchString"/> contains search pattern
+        /// Return true if <see cref="SearchString"/> contains search pattern
         /// </summary>
         public bool SearchMode
         {
@@ -211,12 +210,12 @@ namespace Rememory.ViewModels
 
         public ClipboardRootPageViewModel()
         {
-            App.Current.ClipboardWindow.Showing += ClipboardWindow_Showing;
+            NavigationTabItemsInit();
 
-            ThemeBackgroundColor = new SolidColorBrush(Colors.Transparent);
-            ChangeThemeBackdropColor();
-            ThemeService.ThemeChanged += (s, a) => ChangeThemeBackdropColor();
-            ThemeService.WindowBackdropChanged += (s, a) => ChangeThemeBackdropColor();
+            _tagService.TagRegistered += TagService_TagRegistered;
+            _tagService.TagUnregistered += TagService_TagUnregistered;
+
+            App.Current.ClipboardWindow.Showing += ClipboardWindow_Showing;
 
             _clipboardService.NewClipAdded += ClipboardService_NewClipAdded;
             _clipboardService.FavoriteClipChanged += ClipboardService_FavoriteClipChanged;
@@ -238,6 +237,23 @@ namespace Rememory.ViewModels
 
         public IList<TagModel> GetTags() => _tagService.Tags;
 
+        private void NavigationTabItemsInit()
+        {
+            NavigationTabItems = [
+                new("NavigationTabItem_Home".GetLocalizedResource(), "\uE80F", NavigationTabItemType.Home),
+                new("NavigationTabItem_Favorites".GetLocalizedResource(), "\uE734", NavigationTabItemType.Fovorites),
+                new("NavigationTabItem_Images".GetLocalizedResource(), "\uE8B9", NavigationTabItemType.Images),
+                new("NavigationTabItem_Links".GetLocalizedResource(), "\uE71B", NavigationTabItemType.Links),
+            ];
+
+            _selectedTab = NavigationTabItems.First();
+
+            foreach (var tag in _tagService.Tags)
+            {
+                NavigationTabItems.Add(new(tag));
+            }
+        }
+
         private void UpdateClipsList()
         {
             ClipsCollection?.Clear();
@@ -254,21 +270,25 @@ namespace Rememory.ViewModels
         }
 
         /// <summary>
-        /// Filters a single <see cref="ClipModel"/> based on the currently selected navigation menu item.
+        /// Filters a single <see cref="ClipModel"/> based on the currently selected navigation tab.
         /// </summary>
         /// <param name="item">The clip to check.</param>
         /// <returns><c>true</c> if the clip matches the current filter; otherwise, <c>false</c>.</returns>
         private bool ClipFilterBySelectedMenu(ClipModel? item)
         {
-            if (item == null) return false;
-
-            return SelectedMenuItem switch
+            if (item is null)
             {
-                NavigationMenuItem.Home => true,   // Show all clips
-                NavigationMenuItem.Fovorites => item.IsFavorite,   // Show only favorites
-                NavigationMenuItem.Images => item.Data.ContainsKey(ClipboardFormat.Png) || item.Data.ContainsKey(ClipboardFormat.Bitmap),   // Show only clips containing image data
-                NavigationMenuItem.Links => item.IsLink,   // Show only links
-                _ => false   // Default case, should not happen if enum is handled completely
+                return false;
+            }
+
+            return SelectedTab?.Type switch
+            {
+                NavigationTabItemType.Home => true,
+                NavigationTabItemType.Fovorites => item.IsFavorite,
+                NavigationTabItemType.Images => item.Data.ContainsKey(ClipboardFormat.Png) || item.Data.ContainsKey(ClipboardFormat.Bitmap),
+                NavigationTabItemType.Links => item.IsLink,
+                NavigationTabItemType.Tag => SelectedTab.Tag is not null && item.Tags.Contains(SelectedTab.Tag),
+                _ => false
             };
         }
 
@@ -277,28 +297,28 @@ namespace Rememory.ViewModels
         /// </summary>
         private void CleanupOldData() => _cleanupDataService.CleanupByRetentionPeriod();
 
-        private void ChangeThemeBackdropColor()
-        {
-            if (ThemeService.WindowBackdrop == WindowBackdropType.None)
-            {
-                ThemeBackgroundColor.Color = ThemeService.Theme switch
-                {
-                    Microsoft.UI.Xaml.ElementTheme.Light => Colors.White,
-                    Microsoft.UI.Xaml.ElementTheme.Dark => Colors.Black,
-                    _ => NativeHelper.ShouldSystemUseDarkMode() ? Colors.Black : Colors.White,
-                };
-            }
-            else
-            {
-                ThemeBackgroundColor.Color = Colors.Transparent;
-            }
-            OnPropertyChanged(nameof(ThemeBackgroundColor));
-        }
-
         private void ClipboardWindow_Showing(ClipboardWindow sender, EventArgs args)
         {
             _lastActiveWindowHandleBeforeShowing = NativeHelper.GetForegroundWindow();
         }
+
+        #region TabService events
+
+        private void TagService_TagRegistered(object? sender, TagModel tagModel)
+        {
+            NavigationTabItems.Add(new(tagModel));
+        }
+
+        private void TagService_TagUnregistered(object? sender, int tagId)
+        {
+            TabItemModel? tabItemToRemove = NavigationTabItems.FirstOrDefault(tab => tab.IsTag && tab.Tag?.Id == tagId);
+            if (tabItemToRemove is not null)
+            {
+                NavigationTabItems.Remove(tabItemToRemove);
+            }
+        }
+
+        #endregion
 
         #region ClipboardService events
 
@@ -323,7 +343,7 @@ namespace Rememory.ViewModels
         private void ClipboardService_FavoriteClipChanged(object? sender, ClipboardEventArgs a)
         {
             // If the user is currently viewing the Favorites list and the item is no longer a favorite, remove it
-            if (SelectedMenuItem == NavigationMenuItem.Fovorites && !a.ChangedClip.IsFavorite)
+            if (SelectedTab?.Type == NavigationTabItemType.Fovorites && !a.ChangedClip.IsFavorite)
             {
                 ClipsCollection.Remove(a.ChangedClip);
             }
@@ -415,7 +435,7 @@ namespace Rememory.ViewModels
         /// <param name="dataPackage">The <see cref="DataPackage"/> to populate.</param>
         public async Task OnDragClipStartingAsync(ClipModel? clip, DataPackage dataPackage)
         {
-            if (clip?.Data is null) return;
+            if (clip is null) return;
 
             IStorageItem? storageItem = null;
 
@@ -465,6 +485,51 @@ namespace Rememory.ViewModels
             dataPackage.RequestedOperation = DataPackageOperation.Copy;
         }
 
+        /// <summary>
+        /// Prepares the <see cref="DataPackage"/> for a drag-and-drop operation starting from selected clips.
+        /// </summary>
+        /// <param name="clips">Collection of <see cref="ClipModel"/> being dragged.</param>
+        /// <param name="dataPackage">The <see cref="DataPackage"/> to populate.</param>
+        /// <returns></returns>
+        public async Task OnDragMultipleClipsStartingAsync(IEnumerable<ClipModel>? clips, DataPackage dataPackage)
+        {
+            if (clips is null) return;
+
+            bool areAllImages = clips.All(clip => clip.Data.ContainsKey(ClipboardFormat.Png) || clip.Data.ContainsKey(ClipboardFormat.Bitmap));
+            List<IStorageItem> storageItems = [];
+            StringBuilder textBuilder = new();
+
+            foreach (var clip in clips)
+            {
+                if (areAllImages)
+                {
+                    foreach (var dataItem in clip.Data.Where(pair => pair.Key == ClipboardFormat.Png || pair.Key == ClipboardFormat.Bitmap))
+                    {
+                        try
+                        {
+                            storageItems.Add(await StorageFile.GetFileFromPathAsync(dataItem.Value.Data));
+                        }
+                        catch { }
+                    }
+                }
+                else if (clip.Data.TryGetValue(ClipboardFormat.Text, out var textData))
+                {
+                    textBuilder.Append(textData.Data);
+                    textBuilder.Append(Environment.NewLine);
+                }
+            }
+
+            if (areAllImages)
+            {
+                dataPackage.SetStorageItems(storageItems);
+            }
+            else
+            {
+                dataPackage.SetText(textBuilder.ToString());
+            }
+            dataPackage.RequestedOperation = DataPackageOperation.Copy;
+        }
+
         // Call it from view when filter selection is changed
         public void OnFilterTreeViewSelectionChanged()
         {
@@ -510,12 +575,16 @@ namespace Rememory.ViewModels
         [RelayCommand]
         private void CloseWindow() => App.Current.ClipboardWindow.HideWindow();
 
+        #region Single Clip context menu commands
+
         [RelayCommand]
         private void ToggleClipFavorite(ClipModel? clip)
         {
             if (clip is null) return;
             _clipboardService.ToggleClipFavorite(clip);
         }
+
+        private bool CanOpenInBrowser(ClipModel? clip) => clip is not null && clip.IsLink;
 
         [RelayCommand(CanExecute = nameof(CanOpenInBrowser))]
         private async Task OpenInBrowser(ClipModel? clip)
@@ -528,13 +597,12 @@ namespace Rememory.ViewModels
                 await Launcher.LaunchUriAsync(uri);
             }
         }
-        private bool CanOpenInBrowser(ClipModel? clip) => clip is not null && clip.IsLink;
 
         [RelayCommand]
         private void PasteClip(ClipModel? clip)
         {
             if (clip is null) return;
-            SendDataToClipboard(clip, paste: true);
+            SendClipToClipboard(clip, paste: true);
         }
 
         private bool CanPasteClipAsPlainText(ClipModel? clip) => clip is not null && clip.Data.ContainsKey(ClipboardFormat.Text);
@@ -543,49 +611,49 @@ namespace Rememory.ViewModels
         private void PasteClipAsPlainText(ClipModel? clip)
         {
             if (clip is null) return;
-            SendDataToClipboard(clip, ClipboardFormat.Text, paste: true);
+            SendClipToClipboard(clip, ClipboardFormat.Text, paste: true);
         }
 
         [RelayCommand(CanExecute = nameof(CanPasteClipAsPlainText))]
         private void PasteClipWithUpperCase(ClipModel? clip)
         {
             if (clip is null) return;
-            SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.UpperCase, true);
+            SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.UpperCase, true);
         }
 
         [RelayCommand(CanExecute = nameof(CanPasteClipAsPlainText))]
         private void PasteClipWithLowerCase(ClipModel? clip)
         {
             if (clip is null) return;
-            SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.LowerCase, true);
+            SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.LowerCase, true);
         }
 
         [RelayCommand(CanExecute = nameof(CanPasteClipAsPlainText))]
         private void PasteClipWithCapitalizeCase(ClipModel? clip)
         {
             if (clip is null) return;
-            SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.CapitalizeCase, true);
+            SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.CapitalizeCase, true);
         }
 
         [RelayCommand(CanExecute = nameof(CanPasteClipAsPlainText))]
         public void PasteClipWithSentenceCase(ClipModel? clip)
         {
             if (clip is null) return;
-            SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.SentenceCase, true);
+            SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.SentenceCase, true);
         }
 
         [RelayCommand(CanExecute = nameof(CanPasteClipAsPlainText))]
         private void PasteClipWithInvertCase(ClipModel? clip)
         {
             if (clip is null) return;
-            SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.InvertCase, true);
+            SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.InvertCase, true);
         }
 
         [RelayCommand(CanExecute = nameof(CanPasteClipAsPlainText))]
         private void PasteClipWithTrimWhitespace(ClipModel? clip)
         {
             if (clip is null) return;
-            SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.TrimWhitespace, true);
+            SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.TrimWhitespace, true);
         }
 
         private bool CanPasteClipWithDeveloperCase(ClipModel? clip) => SettingsContext.EnableDeveloperStringCaseConversions && CanPasteClipAsPlainText(clip);
@@ -594,35 +662,35 @@ namespace Rememory.ViewModels
         private void PasteClipWithCamelCase(ClipModel? clip)
         {
             if (clip is null) return;
-            SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.CamelCase, true);
+            SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.CamelCase, true);
         }
 
         [RelayCommand(CanExecute = nameof(CanPasteClipWithDeveloperCase))]
         private void PasteClipWithPascalCase(ClipModel? clip)
         {
             if (clip is null) return;
-            SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.PascalCase, true);
+            SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.PascalCase, true);
         }
 
         [RelayCommand(CanExecute = nameof(CanPasteClipWithDeveloperCase))]
         private void PasteClipWithSnakeCase(ClipModel? clip)
         {
             if (clip is null) return;
-            SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.SnakeCase, true);
+            SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.SnakeCase, true);
         }
 
         [RelayCommand(CanExecute = nameof(CanPasteClipWithDeveloperCase))]
         private void PasteClipWithKebabCase(ClipModel? clip)
         {
             if (clip is null) return;
-            SendDataToClipboard(clip, ClipboardFormat.Text, TextCaseType.KebabCase, true);
+            SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.KebabCase, true);
         }
 
         [RelayCommand]
         private void CopyClip(ClipModel? clip)
         {
             if (clip is null) return;
-            SendDataToClipboard(clip);
+            SendClipToClipboard(clip);
         }
 
         [RelayCommand(CanExecute = nameof(CanEditClip))]
@@ -682,9 +750,158 @@ namespace Rememory.ViewModels
             }
         }
 
-        private void SendDataToClipboard(ClipModel clip, [Optional] ClipboardFormat? format, [Optional] TextCaseType? caseType, bool paste = false)
+        #endregion
+
+        #region Multiple Clips context menu commands
+
+        [RelayCommand]
+        private void AddClipsToFavorites(IEnumerable<ClipModel>? clips)
         {
-            if (_clipboardService.SetClipboardData(clip, format, caseType) && paste)
+            if (clips is null) return;
+            var filteredClips = clips.Where(clip => !clip.IsFavorite).ToArray();
+            foreach (var clip in filteredClips)
+            {
+                _clipboardService.ToggleClipFavorite(clip);
+            }
+        }
+
+        [RelayCommand]
+        private void RemoveClipsFromFavorites(IEnumerable<ClipModel>? clips)
+        {
+            if (clips is null) return;
+            var filteredClips = clips.Where(clip => clip.IsFavorite).ToArray();
+            foreach (var clip in filteredClips)
+            {
+                _clipboardService.ToggleClipFavorite(clip);
+            }
+        }
+
+        private bool CanPasteClipsAsPlainText(IEnumerable<ClipModel>? clips) => clips is not null && clips.Any(clip => clip.Data.ContainsKey(ClipboardFormat.Text));
+
+        [RelayCommand(CanExecute = nameof(CanPasteClipsAsPlainText))]
+        private void PasteClips(IEnumerable<ClipModel>? clips)
+        {
+            if (clips is null) return;
+            PasteClipsAsCombinedText(clips);
+        }
+
+        [RelayCommand(CanExecute = nameof(CanPasteClipsAsPlainText))]
+        private void PasteClipsWithUpperCase(IEnumerable<ClipModel>? clips)
+        {
+            if (clips is null) return;
+            PasteClipsAsCombinedText(clips, TextCaseType.UpperCase);
+        }
+
+        [RelayCommand(CanExecute = nameof(CanPasteClipsAsPlainText))]
+        private void PasteClipsWithLowerCase(IEnumerable<ClipModel>? clips)
+        {
+            if (clips is null) return;
+            PasteClipsAsCombinedText(clips, TextCaseType.LowerCase);
+        }
+
+        [RelayCommand(CanExecute = nameof(CanPasteClipsAsPlainText))]
+        private void PasteClipsWithCapitalizeCase(IEnumerable<ClipModel>? clips)
+        {
+            if (clips is null) return;
+            PasteClipsAsCombinedText(clips, TextCaseType.CapitalizeCase);
+        }
+
+        [RelayCommand(CanExecute = nameof(CanPasteClipsAsPlainText))]
+        public void PasteClipsWithSentenceCase(IEnumerable<ClipModel>? clips)
+        {
+            if (clips is null) return;
+            PasteClipsAsCombinedText(clips, TextCaseType.SentenceCase);
+        }
+
+        [RelayCommand(CanExecute = nameof(CanPasteClipsAsPlainText))]
+        private void PasteClipsWithInvertCase(IEnumerable<ClipModel>? clips)
+        {
+            if (clips is null) return;
+            PasteClipsAsCombinedText(clips, TextCaseType.InvertCase);
+        }
+
+        [RelayCommand(CanExecute = nameof(CanPasteClipsAsPlainText))]
+        private void PasteClipsWithTrimWhitespace(IEnumerable<ClipModel>? clips)
+        {
+            if (clips is null) return;
+            PasteClipsAsCombinedText(clips, TextCaseType.TrimWhitespace);
+        }
+
+        private bool CanCopyClips(IEnumerable<ClipModel>? clips) => clips is not null && clips.Any(clip => clip.Data.ContainsKey(ClipboardFormat.Text));
+
+        [RelayCommand(CanExecute = nameof(CanCopyClips))]
+        private void CopyClips(IEnumerable<ClipModel>? clips)
+        {
+            if (clips is null) return;
+            var filteredClips = clips.Where(clip => clip.Data.ContainsKey(ClipboardFormat.Text)).ToArray();
+            var dataModel = GenerateCombinedTextDataModel(filteredClips);
+            SendDataToClipboard(new Dictionary<ClipboardFormat, DataModel> { { ClipboardFormat.Text, dataModel } });
+        }
+
+        [RelayCommand]
+        private void DeleteClips(IEnumerable<ClipModel>? clips)
+        {
+            if (clips is null) return;
+            var clipsCopy = clips.ToArray();
+            foreach (var clip in clipsCopy)
+            {
+                _clipboardService.DeleteClip(clip);
+            }
+        }
+
+        private bool CanAddOwnersToFilters(IEnumerable<ClipModel>? clips) => clips is not null
+            && clips.Any(clip => !string.IsNullOrEmpty(clip.Owner?.Path) && !clip.Owner.Path.EndsWith("svchost.exe"));   // check svchost.exe for UWP app sources
+
+        [RelayCommand(CanExecute = nameof(CanAddOwnersToFilters))]
+        private void AddOwnersToFilters(IEnumerable<ClipModel>? clips)
+        {
+            if (clips is null) return;
+            var filteredClips = clips.Where(clip => CanAddOwnerToFilters(clip.Owner)).ToArray();
+            foreach (var clip in filteredClips)
+            {
+                AddOwnerToFilters(clip.Owner);
+            }
+        }
+
+        private void PasteClipsAsCombinedText(IEnumerable<ClipModel> clips, [Optional] TextCaseType? caseType)
+        {
+            var filteredClips = clips.Where(clip => clip.Data.ContainsKey(ClipboardFormat.Text)).ToArray();
+            var dataModel = GenerateCombinedTextDataModel(filteredClips);
+            SendDataToClipboard(new Dictionary<ClipboardFormat, DataModel> { { ClipboardFormat.Text, dataModel } }, caseType, true);
+        }
+
+        private DataModel GenerateCombinedTextDataModel(IEnumerable<ClipModel> clips)
+        {
+            StringBuilder textBuilder = new();
+            foreach (var clip in clips)
+            {
+                if (clip.Data.TryGetValue(ClipboardFormat.Text, out var textData))
+                {
+                    textBuilder.Append(textData.Data);
+                    textBuilder.Append(Environment.NewLine);
+                }
+            }
+            return new DataModel(ClipboardFormat.Text, textBuilder.ToString(), []);
+        }
+
+        #endregion
+
+        private void SendClipToClipboard(ClipModel clip, [Optional] ClipboardFormat? format, [Optional] TextCaseType? caseType, bool paste = false)
+        {
+            if (format.HasValue && clip.Data.TryGetValue(format.Value, out var formatData))
+            {
+                var dataDictionary = new Dictionary<ClipboardFormat, DataModel> { {format.Value, formatData} };
+                SendDataToClipboard(dataDictionary, caseType, paste);
+            }
+            else {
+                SendDataToClipboard(clip.Data, caseType, paste);
+            }
+            _clipboardService.MoveClipToTop(clip);
+        }
+
+        private void SendDataToClipboard(Dictionary<ClipboardFormat, DataModel> data, [Optional] TextCaseType? caseType, bool paste = false)
+        {
+            if (_clipboardService.SetClipboardData(data, caseType) && paste)
             {
                 var windowToActivate = IntPtr.Zero;
 
@@ -709,17 +926,8 @@ namespace Rememory.ViewModels
                 Thread.Sleep(10);
                 KeyboardHelper.MultiKeyAction([VirtualKey.Control, VirtualKey.V], KeyboardHelper.KeyAction.DownUp);
             }
-            _clipboardService.MoveClipToTop(clip);
         }
 
         #endregion
-
-        public enum NavigationMenuItem
-        {
-            Home,
-            Fovorites,
-            Images,
-            Links
-        }
     }
 }

@@ -72,16 +72,15 @@
                 Grid.Row="1"
                 Grid.ColumnSpan="2"
                 MinWidth="30"
-                MaxWidth="150"
+                MaxWidth="120"
                 Margin="0 12 0 0"
-                Padding="6 0 6 2"
-                CornerRadius="8"
+                Padding="8 2 8 4"
+                CornerRadius="10"
                 HorizontalAlignment="Center"
                 Background="{x:Bind SelectedColorBorder.Background, Mode=OneWay}">
-            <TextBlock FontSize="12"
-                       Text="{x:Bind NameTextBox.Text, Mode=OneWay}"
+            <TextBlock Text="{x:Bind NameTextBox.Text, Mode=OneWay}"
+                       FontSize="12"
                        TextTrimming="CharacterEllipsis"
-                       FontWeight="SemiLight"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
         </Border>

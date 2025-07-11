@@ -54,18 +54,18 @@ namespace Rememory.Services
             RememoryCoreHelper.StopClipboardMonitor(windowHandle);
         }
 
-        public bool SetClipboardData(ClipModel clip, ClipboardFormat? format = null, TextCaseType? caseType = null)
+        public bool SetClipboardData(Dictionary<ClipboardFormat, DataModel> data, TextCaseType? caseType = null)
         {
             // Determine the list of formats to process
-            List<ClipboardFormat> selectedFormats = format.HasValue ? [format.Value] : [.. clip.Data.Keys];
+            List<ClipboardFormat> selectedFormats = [.. data.Keys];
 
             string tempBitmapPath = string.Empty;
             bool generateBitmapFromPng = false;
 
             // Handle special case: if PNG is requested, also add Bitmap format and generate the bitmap file
-            if (selectedFormats.Contains(ClipboardFormat.Png))
+            if (data.TryGetValue(ClipboardFormat.Png, out var pngData))
             {
-                generateBitmapFromPng = ClipboardFormatHelper.TryGenerateBitmapFromPng(clip, out tempBitmapPath);
+                generateBitmapFromPng = ClipboardFormatHelper.TryGenerateBitmapFromPng(pngData, out tempBitmapPath);
                 if (generateBitmapFromPng && !selectedFormats.Contains(ClipboardFormat.Bitmap))
                 {
                     // Insert Bitmap before Png if Png is present but Bitmap isn't explicitly requested
@@ -99,7 +99,7 @@ namespace Rememory.Services
                     {
                         dataPtr = ClipboardFormatHelper.DataTypeToUnmanagedConverters[currentFormat](tempBitmapPath);
                     }
-                    else if (clip.Data.TryGetValue(currentFormat, out var dataModel))
+                    else if (data.TryGetValue(currentFormat, out var dataModel))
                     {
                         dataPtr = ClipboardFormatHelper.DataTypeToUnmanagedConverters[currentFormat](
                             currentFormat == ClipboardFormat.Text && caseType.HasValue

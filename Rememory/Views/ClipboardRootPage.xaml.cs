@@ -1,20 +1,26 @@
+using CommunityToolkit.WinUI;
+using Microsoft.UI;
+using Microsoft.UI.Input;
 using Microsoft.UI.Text;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Rememory.Contracts;
-using Rememory.Converters;
 using Rememory.Helper;
+using Rememory.Helper.WindowBackdrop;
 using Rememory.Models;
 using Rememory.ViewModels;
 using Rememory.Views.Controls.Behavior;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Windows.System;
+using Windows.UI.Core;
 
 namespace Rememory.Views
 {
@@ -22,11 +28,19 @@ namespace Rememory.Views
     {
         public readonly ClipboardRootPageViewModel ViewModel = new();
 
+        /// <summary>
+        /// Contains all selected clips ordered by selection time.
+        /// </summary>
+        public List<ClipModel> OrderedSelectedClips { get; private set; } = [];
+
         private readonly ClipboardWindow _window;
         private IThemeService ThemeService => App.Current.ThemeService;
         private Flyout PreviewTextFlyout => (Flyout)Resources["PreviewTextFlyout"];
         private Flyout PreviewRtfFlyout => (Flyout)Resources["PreviewRtfFlyout"];
         private Flyout PreviewImageFlyout => (Flyout)Resources["PreviewImageFlyout"];
+
+        private readonly MenuFlyout _noneSelectionClipsContextMenu;
+        private readonly MenuFlyout _multipleSelectionClipsContextMenu;
 
         public ClipboardRootPage(ClipboardWindow window)
         {
@@ -37,9 +51,16 @@ namespace Rememory.Views
             _window.AppWindow.Closing += Window_Closing;
 
             RequestedTheme = ThemeService.Theme;
-            ThemeService.ThemeChanged += ThemeChanged;
+            ChangeThemeBackgroundColor();
+            ThemeService.ThemeChanged += ThemeService_ThemeChanged;
+            ThemeService.WindowBackdropChanged += ThemeService_WindowBackdropChanged;
 
             ViewModel.SettingsContext.PropertyChanged += SettingsContext_PropertyChanged;
+
+            _noneSelectionClipsContextMenu = (MenuFlyout)Resources["NoneSelectionClipsContextMenu"];
+            _multipleSelectionClipsContextMenu = (MenuFlyout)Resources["MultipleSelectionClipsContextMenu"];
+
+            SelectedClipsCountTextBlock.Text = "SelectedClipsCount".GetLocalizedFormatResource(ClipsListView.SelectedItems.Count);
         }
 
         private void Window_Showing(object sender, EventArgs e)
@@ -71,13 +92,32 @@ namespace Rememory.Views
             _window.Showing -= Window_Showing;
             _window.Hiding -= Window_Hiding;
             _window.AppWindow.Closing -= Window_Closing;
-            ThemeService.ThemeChanged -= ThemeChanged;
+            ThemeService.ThemeChanged -= ThemeService_ThemeChanged;
+            ThemeService.WindowBackdropChanged -= ThemeService_WindowBackdropChanged;
             ViewModel.SettingsContext.PropertyChanged -= SettingsContext_PropertyChanged;
         }
 
-        private void ThemeChanged(object? sender, ElementTheme theme)
+        private void ThemeService_ThemeChanged(object? sender, ElementTheme theme)
         {
             RequestedTheme = theme;
+            ChangeThemeBackgroundColor();
+        }
+
+        private void ThemeService_WindowBackdropChanged(object? sender, WindowBackdropType e) => ChangeThemeBackgroundColor();
+
+        private void ChangeThemeBackgroundColor()
+        {
+            SolidColorBrush newBackgroundBrush = new();
+            if (ThemeService.WindowBackdrop == WindowBackdropType.None)
+            {
+                newBackgroundBrush.Color = ThemeService.Theme switch
+                {
+                    ElementTheme.Light => Colors.White,
+                    ElementTheme.Dark => Colors.Black,
+                    _ => NativeHelper.ShouldSystemUseDarkMode() ? Colors.Black : Colors.White,
+                };
+            }
+            Background = newBackgroundBrush;
         }
 
         private void ClipboardRootPage_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -114,19 +154,6 @@ namespace Rememory.Views
             ((Image)PreviewImageFlyout.Content).SetValue(ImageAutoResizeBehavior.MaxImageHeightProperty, ActualHeight - 34);
         }
 
-        private void NavigationSelectorBar_Loaded(object sender, RoutedEventArgs e)
-        {
-            var binding = new Binding()
-            {
-                Source = DataContext,
-                Path = new("SelectedMenuItem"),
-                Converter = new NavigationSelectedMenuItemConverter(),
-                ConverterParameter = sender,
-                Mode = BindingMode.TwoWay
-            };
-            ((FrameworkElement)sender).SetBinding(SelectorBar.SelectedItemProperty, binding);
-        }
-
         private void SettingsContext_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs a)
         {
             // Swap tab indexes between SearchBox and ListView
@@ -136,32 +163,47 @@ namespace Rememory.Views
             }
         }
 
+        private void RootPage_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Escape)
+            {
+                _window.HideWindow();
+            }
+        }
+
         #region Window moving
 
-        private int startPointerX = 0, startPointerY = 0, startWindowX = 0, startWindowY = 0;
-        private bool isWindowMoving = false;
+        private PointerUpdateKind _lastPointerClickKind;
+        private int _startPointerX = 0, _startPointerY = 0, _startWindowX = 0, _startWindowY = 0;
+        private bool _isWindowMoving = false;
 
         private void WindowDragArea_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
             var properties = e.GetCurrentPoint((UIElement)sender).Properties;
-            if (properties.IsLeftButtonPressed && ViewModel.SettingsContext.ClipboardWindowPositionIndex != (int)ClipboardWindowPosition.Right)
+
+            if ((_lastPointerClickKind = properties.PointerUpdateKind) != PointerUpdateKind.LeftButtonPressed)
+            {
+                return;
+            }
+            
+            if (ViewModel.SettingsContext.ClipboardWindowPositionIndex != (int)ClipboardWindowPosition.Right)
             {
                 ((UIElement)sender).CapturePointer(e.Pointer);
-                startWindowX = _window.AppWindow.Position.X;
-                startWindowY = _window.AppWindow.Position.Y;
+                _startWindowX = _window.AppWindow.Position.X;
+                _startWindowY = _window.AppWindow.Position.Y;
                 NativeHelper.GetCursorPos(out var pt);
-                startPointerX = pt.X;
-                startPointerY = pt.Y;
-                isWindowMoving = true;
+                _startPointerX = pt.X;
+                _startPointerY = pt.Y;
+                _isWindowMoving = true;
             }
         }
 
         private void WindowDragArea_PointerReleased(object sender, PointerRoutedEventArgs e)
         {
             ((UIElement)sender).ReleasePointerCaptures();
-            isWindowMoving = false;
+            _isWindowMoving = false;
             _window.AppWindow.Move(ClipboardWindow.AdjustWindowPositionToWorkArea(_window.AppWindow.Position, _window.AppWindow.Size));
-            }
+        }
 
         private void WindowDragArea_PointerMoved(object sender, PointerRoutedEventArgs e)
         {
@@ -170,11 +212,20 @@ namespace Rememory.Views
             {
                 NativeHelper.GetCursorPos(out var pt);
 
-                if (isWindowMoving)
+                if (_isWindowMoving && (Math.Abs(_startPointerX - pt.X) > 5 || Math.Abs(_startPointerY - pt.Y) > 5))
                 {
-                    _window.AppWindow.Move(new(startWindowX + (pt.X - startPointerX), startWindowY + (pt.Y - startPointerY)));
+                    _window.AppWindow.Move(new(_startWindowX + (pt.X - _startPointerX), _startWindowY + (pt.Y - _startPointerY)));
                 }
                 e.Handled = true;
+            }
+        }
+
+        private void WindowDragArea_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            if (_lastPointerClickKind == PointerUpdateKind.LeftButtonPressed
+                && ViewModel.ToggleWindowPinnedCommand.CanExecute(null))
+            {
+                ViewModel.ToggleWindowPinnedCommand.Execute(null);
             }
         }
 
@@ -272,61 +323,6 @@ namespace Rememory.Views
 
         #endregion
 
-        #region KeyboardAccelerators
-
-        // Open or close preview if user press 'space' button
-        private void OpenInFlyoutKeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
-        {
-            args.Handled = true;
-
-            if (PreviewTextFlyout.IsOpen)
-            {
-                PreviewTextFlyout.Hide();
-                return;
-            }
-            if (PreviewRtfFlyout.IsOpen)
-            {
-                PreviewRtfFlyout.Hide();
-                return;
-            }
-            if (PreviewImageFlyout.IsOpen)
-            {
-                PreviewImageFlyout.Hide();
-                return;
-            }
-
-            OpenPreviewFlyout((ClipModel)((FrameworkElement)args.Element).DataContext);
-        }
-        private void PastePlainTextKeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
-        {
-            var button = (Button)args.Element;
-            if (ViewModel.PasteClipAsPlainTextCommand.CanExecute(button.DataContext))
-            {
-                KeyboardHelper.MultiKeyAction([VirtualKey.Shift], KeyboardHelper.KeyAction.Up);
-                ViewModel.PasteClipAsPlainTextCommand.Execute(button.DataContext);
-            }
-            args.Handled = true;
-        }
-
-        private void CopyKeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
-        {
-            var button = (Button)args.Element;
-            ViewModel.CopyClipCommand.Execute(button.DataContext);
-            args.Handled = true;
-        }
-
-        private void EditKeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
-        {
-            var button = (Button)args.Element;
-            if (ViewModel.EditClipCommand.CanExecute(button.DataContext))
-            {
-                ViewModel.EditClipCommand.Execute(button.DataContext);
-            }
-            args.Handled = true;
-        }
-
-        #endregion
-
         #region Apps filter
 
         private void FilterTreeView_Loaded(object sender, RoutedEventArgs e)
@@ -358,30 +354,193 @@ namespace Rememory.Views
 
         #endregion
 
-        private void Escape_KeyDown(object sender, KeyRoutedEventArgs e)
+        #region Clips list
+
+        private void ClipsListView_PreviewKeyDown(object sender, KeyRoutedEventArgs e)
         {
-            if (e.Key == VirtualKey.Escape)
+            if (e.OriginalSource is not ListViewItem clipItem)
             {
-                _window.HideWindow();
+                return;
+            }
+
+            bool isCtrlPressed = InputKeyboardSource.GetKeyStateForCurrentThread(VirtualKey.Control).HasFlag(CoreVirtualKeyStates.Down);
+            bool isShiftPressed = InputKeyboardSource.GetKeyStateForCurrentThread(VirtualKey.Shift).HasFlag(CoreVirtualKeyStates.Down);
+
+            // Ctrl + C
+            if (e.Key == VirtualKey.C && isCtrlPressed)
+            {
+                if (ClipsListView.SelectionMode == ListViewSelectionMode.None)
+                {
+                    if (ViewModel.CopyClipCommand.CanExecute(clipItem.Content))
+                    {
+                        ViewModel.CopyClipCommand.Execute(clipItem.Content);
+                        e.Handled = true;
+                    }
+                }
+                else
+                {
+                    if (ViewModel.CopyClipsCommand.CanExecute(OrderedSelectedClips))
+                    {
+                        ViewModel.CopyClipsCommand.Execute(OrderedSelectedClips);
+                        e.Handled = true;
+                    }
+                }
+                return;
+            }
+
+            if (ClipsListView.SelectionMode != ListViewSelectionMode.None)
+            {
+                return;
+            }
+
+            switch (e.Key)
+            {
+                // Shift + Enter
+                case VirtualKey.Enter when isShiftPressed:
+                    if (ViewModel.PasteClipAsPlainTextCommand.CanExecute(clipItem.Content))
+                    {
+                        KeyboardHelper.MultiKeyAction([VirtualKey.Shift], KeyboardHelper.KeyAction.Up);
+                        ViewModel.PasteClipAsPlainTextCommand.Execute(clipItem.Content);
+                        e.Handled = true;
+                    }
+                    break;
+                // Enter
+                case VirtualKey.Enter:
+                    if (ViewModel.PasteClipCommand.CanExecute(clipItem.Content))
+                    {
+                        ViewModel.PasteClipCommand.Execute(clipItem.Content);
+                        e.Handled = true;
+                    }
+                    break;
+                // Ctrl + U
+                case VirtualKey.U when isCtrlPressed:
+                    if (ViewModel.EditClipCommand.CanExecute(clipItem.Content))
+                    {
+                        ViewModel.EditClipCommand.Execute(clipItem.Content);
+                        e.Handled = true;
+                    }
+                    break;
+                // Space
+                case VirtualKey.Space:
+                    e.Handled = true;
+                    if (PreviewTextFlyout.IsOpen)
+                    {
+                        PreviewTextFlyout.Hide();
+                        return;
+                    }
+                    if (PreviewRtfFlyout.IsOpen)
+                    {
+                        PreviewRtfFlyout.Hide();
+                        return;
+                    }
+                    if (PreviewImageFlyout.IsOpen)
+                    {
+                        PreviewImageFlyout.Hide();
+                        return;
+                    }
+                    OpenPreviewFlyout((ClipModel)clipItem.Content);
+                    break;
+            }
+        }
+
+        private void ClipsListView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            if (args.Item is not ClipModel clipModel)
+            {
+                return;
+            }
+
+            args.ItemContainer.SetBinding(IsEnabledProperty, new Binding()
+            {
+                Source = clipModel,
+                Mode = BindingMode.OneWay,
+                Path = new(nameof(clipModel.IsOpenInEditor)),
+                Converter = (IValueConverter)Resources["BoolNegationConverter"]
+            });
+        }
+
+        private void ClipsListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            if (ClipsListView.SelectionMode == ListViewSelectionMode.None
+                && ViewModel.PasteClipCommand.CanExecute(e.ClickedItem))
+            {
+                ViewModel.PasteClipCommand.Execute(e.ClickedItem);
+            }
+        }
+
+        private void ClipsListView_GettingFocus(UIElement sender, GettingFocusEventArgs args)
+        {
+            if (PreviewTextFlyout.IsOpen || PreviewRtfFlyout.IsOpen || PreviewImageFlyout.IsOpen)
+            {
+                OpenPreviewFlyout((ClipModel)((ListViewItem)args.NewFocusedElement).Content);
             }
         }
 
         private async void ClipsListView_DragItemsStarting(object sender, DragItemsStartingEventArgs e)
         {
-            var clip = (ClipModel?)e.Items.FirstOrDefault();
-            if (clip is not null) 
+            var draggedClip = (ClipModel?)e.Items.FirstOrDefault();
+            if (draggedClip is null)
             {
-                await ViewModel.OnDragClipStartingAsync(clip, e.Data);
+                return;
+            }
+
+            if (ClipsListView.SelectionMode == ListViewSelectionMode.None
+                || ClipsListView.SelectionMode == ListViewSelectionMode.Multiple && !OrderedSelectedClips.Contains(draggedClip))
+            {
+                await ViewModel.OnDragClipStartingAsync(draggedClip, e.Data);
+            }
+            else if (ClipsListView.SelectionMode == ListViewSelectionMode.Multiple)
+            {
+                await ViewModel.OnDragMultipleClipsStartingAsync(OrderedSelectedClips, e.Data);
             }
         }
 
-        // Change preview if user select another item
-        private void ClipButton_GotFocus(object sender, RoutedEventArgs e)
+        private void ClipsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (PreviewTextFlyout.IsOpen || PreviewRtfFlyout.IsOpen || PreviewImageFlyout.IsOpen)
+            foreach (ClipModel removedClip in e.RemovedItems.Cast<ClipModel>())
             {
-                OpenPreviewFlyout((ClipModel)((FrameworkElement)sender).DataContext);
+                OrderedSelectedClips.Remove(removedClip);
+            }
+            OrderedSelectedClips.AddRange(e.AddedItems.Cast<ClipModel>());
+
+            SelectAllCheckBox.IsChecked = ClipsListView.SelectedItems.Count switch
+            {
+                0 => false,
+                var count when count == ViewModel.ClipsCollection.Count => true,
+                _ => null
+            };
+
+            SelectedClipsCountTextBlock.Text = "SelectedClipsCount".GetLocalizedFormatResource(ClipsListView.SelectedItems.Count);
+        }
+
+        private void SelectAllCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectAllCheckBox.IsChecked ?? true)
+            {
+                ClipsListView.SelectAll();
+            }
+            else
+            {
+                ClipsListView.DeselectAll();
             }
         }
+
+        private void ClipRootGrid_ContextRequested(UIElement sender, ContextRequestedEventArgs args)
+        {
+            var clipModel = (ClipModel)((FrameworkElement)sender).DataContext;
+            bool useMultipleContextMenu = ClipsListView.SelectionMode == ListViewSelectionMode.Multiple && OrderedSelectedClips.Contains(clipModel);
+            var menuFlyout = useMultipleContextMenu ? _multipleSelectionClipsContextMenu : _noneSelectionClipsContextMenu;
+
+            if (args.TryGetPosition(sender, out var point))
+            {
+                menuFlyout.ShowAt(sender, point);
+            }
+            else
+            {
+                menuFlyout.ShowAt((FrameworkElement)sender);
+            }
+        }
+
+        #endregion
     }
 }

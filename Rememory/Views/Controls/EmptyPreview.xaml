@@ -10,7 +10,6 @@
         <FontIcon FontSize="16"
                   Glyph="&#xE9CE;" />
         <TextBlock x:Uid="ClipboardItem_NoPreview"
-                   Padding="0 0 0 2"
-                   FontSize="12" />
+                   Style="{ThemeResource BodyTextBlockStyle}" />
     </StackPanel>
 </UserControl>

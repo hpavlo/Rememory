@@ -1,5 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Media;
 using Rememory.Models;
+using System;
 using System.Collections.Generic;
 
 namespace Rememory.Contracts
@@ -10,6 +11,16 @@ namespace Rememory.Contracts
     /// </summary>
     public interface ITagService
     {
+        /// <summary>
+        /// Occurs when user creates a new tag.
+        /// </summary>
+        event EventHandler<TagModel> TagRegistered;
+
+        /// <summary>
+        /// Occurs when user removes a tag.
+        /// </summary>
+        event EventHandler<int> TagUnregistered;
+
         /// <summary>
         /// List of all tags currently stored in memory.
         /// </summary>
