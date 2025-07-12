@@ -15,7 +15,7 @@
 
         <StackPanel x:Name="WindowTitleBar"
                     Height="{x:Bind _window.AppWindow.TitleBar.Height, Mode=OneWay}"
-                    Margin="12 0"
+                    Margin="12,0,12,0"
                     Orientation="Horizontal"
                     Spacing="12">
             <Image x:Name="AppIcon"
@@ -47,48 +47,39 @@
                                 Spacing="8">
                         <FontIcon FontSize="16"
                                   Glyph="&#xE74E;" />
+                        
                         <TextBlock x:Uid="Editor_SaveButtonContent" />
                     </StackPanel>
                 </Button>
 
                 <Button x:Name="CanUndoButton"
                         x:Uid="Editor_UndoButton"
-                        Height="32"
-                        Padding="5 2"
+                        Padding="8,4,8,4"
                         IsEnabled="False"
                         Background="Transparent"
                         BorderBrush="Transparent"
+                        VerticalAlignment="Stretch"
                         Content="{tk:FontIcon FontSize=14, Glyph=&#xE7A7;}"
-                        Click="{x:Bind EditorTextBox.Undo}">
-                    <Button.Resources>
-                        <SolidColorBrush x:Key="ButtonBackgroundDisabled"
-                                         Color="Transparent" /> 
-                        <SolidColorBrush x:Key="ButtonBorderBrushDisabled"
-                                         Color="Transparent" />
-                    </Button.Resources>
-                </Button>
+                        Style="{ThemeResource AlternateButtonStyle}"
+                        Click="{x:Bind EditorTextBox.Undo}" />
+                
                 <Button x:Name="CanRedoButton"
                         x:Uid="Editor_RedoButton"
-                        Height="32"
-                        Padding="5 2"
+                        Padding="8,4,8,4"
                         IsEnabled="False"
                         Background="Transparent"
                         BorderBrush="Transparent"
+                        VerticalAlignment="Stretch"
                         Content="{tk:FontIcon FontSize=14, Glyph=&#xE7A6;}"
-                        Click="{x:Bind EditorTextBox.Redo}">
-                    <Button.Resources>
-                        <SolidColorBrush x:Key="ButtonBackgroundDisabled"
-                                         Color="Transparent" />
-                        <SolidColorBrush x:Key="ButtonBorderBrushDisabled"
-                                         Color="Transparent" />
-                    </Button.Resources>
-                </Button>
+                        Style="{ThemeResource AlternateButtonStyle}"
+                        Click="{x:Bind EditorTextBox.Redo}" />
             </StackPanel>
 
             <StackPanel Grid.Column="2"
                         Spacing="8"
                         Orientation="Horizontal">
                 <Button x:Uid="Editor_MoreButton"
+                        VerticalAlignment="Stretch"
                         Content="{tk:FontIcon FontSize=14, Glyph=&#xE712;}">
                     <Button.Flyout>
                         <MenuFlyout>
@@ -96,6 +87,7 @@
                                                   Icon="{tk:FontIcon Glyph=&#xE751;}"
                                                   IsChecked="True"
                                                   Click="EordWrapToggle_Click" />
+                            
                             <ToggleMenuFlyoutItem x:Uid="EditorMenuFlyout_More_SpellCheck"
                                                   Icon="{tk:FontIcon Glyph=&#xF87B;}"
                                                   IsChecked="{x:Bind EditorTextBox.IsSpellCheckEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -104,6 +96,7 @@
                 </Button>
 
                 <Button x:Uid="Editor_ExtendButton"
+                        VerticalAlignment="Stretch"
                         Content="{tk:FontIcon FontSize=14, Glyph=&#xE740;}"
                         Click="PresenterButton_Click" />
             </StackPanel>
@@ -126,7 +119,7 @@
                     <Setter Property="BorderBrush"
                             Value="{ThemeResource ButtonBorderBrushDisabled}" />
                     <Setter Property="BorderThickness"
-                            Value="0 1" />
+                            Value="0,1,0,1" />
                     <Setter Property="FontSize"
                             Value="14" />
                     <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
@@ -170,10 +163,9 @@
         </TextBox>
 
         <Grid Grid.Row="3"
-              Height="22"
-              Margin="8 2">
+              Height="32"
+              Padding="8,4,8,4">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -181,33 +173,37 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock x:Name="CharactersCountTextBlock"
+                       Grid.Column="0"
                        FontSize="12"
                        TextWrapping="Wrap"
                        VerticalAlignment="Center"
                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+
             <RepeatButton x:Name="ScaleDownButton"
                           x:Uid="Editor_ZoomOutButton"
-                          Grid.Column="2"
-                          Padding="5 2"
+                          Grid.Column="1"
+                          Padding="4,4,4,4"
                           BorderBrush="Transparent"
                           Background="Transparent"
                           VerticalContentAlignment="Center"
                           Click="{x:Bind DownFontSize}"
                           Content="{tk:FontIcon FontSize=14, Glyph=&#xE71F;}" />
+            
             <TextBlock x:Name="ScaleTextBlock"
-                       Grid.Column="3"
-                       Width="30"
-                       Margin="8 0"
+                       Grid.Column="2"
+                       Width="32"
+                       Margin="4,0,4,0"
                        FontSize="12"
                        TextWrapping="Wrap"
                        VerticalAlignment="Center"
                        HorizontalTextAlignment="Center"
                        Text="100%"
                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+            
             <RepeatButton x:Name="ScaleUpButton"
                           x:Uid="Editor_ZoomInButton"
-                          Grid.Column="4"
-                          Padding="5 2"
+                          Grid.Column="3"
+                          Padding="4,4,4,4"
                           BorderBrush="Transparent"
                           Background="Transparent"
                           VerticalContentAlignment="Center"

@@ -52,7 +52,6 @@ namespace Rememory.Models
         }
     }
 
-
     public enum NavigationTabItemType
     {
         Home,

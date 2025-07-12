@@ -3,6 +3,172 @@
                     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
                     xmlns:local="using:Rememory">
 
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Default">
+            <StaticResource x:Key="AlternateButtonBackground"
+                            ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="AlternateButtonBackgroundPointerOver"
+                            ResourceKey="SubtleFillColorSecondaryBrush" />
+            <StaticResource x:Key="AlternateButtonBackgroundPressed"
+                            ResourceKey="SubtleFillColorTertiaryBrush" />
+            <StaticResource x:Key="AlternateButtonBackgroundDisabled"
+                            ResourceKey="SubtleFillColorDisabledBrush" />
+            <StaticResource x:Key="AlternateButtonBorderBrush"
+                            ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="AlternateButtonBorderBrushPointerOver"
+                            ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="AlternateButtonBorderBrushPressed"
+                            ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="AlternateButtonBorderBrushDisabled"
+                            ResourceKey="ControlFillColorTransparentBrush" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Light">
+            <StaticResource x:Key="AlternateButtonBackground"
+                            ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="AlternateButtonBackgroundPointerOver"
+                            ResourceKey="SubtleFillColorSecondaryBrush" />
+            <StaticResource x:Key="AlternateButtonBackgroundPressed"
+                            ResourceKey="SubtleFillColorTertiaryBrush" />
+            <StaticResource x:Key="AlternateButtonBackgroundDisabled"
+                            ResourceKey="SubtleFillColorDisabledBrush" />
+            <StaticResource x:Key="AlternateButtonBorderBrush"
+                            ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="AlternateButtonBorderBrushPointerOver"
+                            ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="AlternateButtonBorderBrushPressed"
+                            ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="AlternateButtonBorderBrushDisabled"
+                            ResourceKey="ControlFillColorTransparentBrush" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="HighContrast">
+            <StaticResource x:Key="AlternateButtonBackground"
+                            ResourceKey="SystemControlTransparentBrush" />
+            <StaticResource x:Key="AlternateButtonBackgroundPointerOver"
+                            ResourceKey="SystemControlHighlightListLowBrush" />
+            <StaticResource x:Key="AlternateButtonBackgroundPressed"
+                            ResourceKey="SystemControlHighlightListMediumBrush" />
+            <StaticResource x:Key="AlternateButtonBackgroundDisabled"
+                            ResourceKey="SystemControlTransparentBrush" />
+            <StaticResource x:Key="AlternateButtonBorderBrush"
+                            ResourceKey="SystemControlForegroundTransparentBrush" />
+            <StaticResource x:Key="AlternateButtonBorderBrushPointerOver"
+                            ResourceKey="SystemControlHighlightTransparentBrush" />
+            <StaticResource x:Key="AlternateButtonBorderBrushPressed"
+                            ResourceKey="SystemControlHighlightTransparentBrush" />
+            <StaticResource x:Key="AlternateButtonBorderBrushDisabled"
+                            ResourceKey="SystemControlDisabledTransparentBrush" />
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+
+    <Style x:Key="AlternateButtonStyle"
+           TargetType="Button"
+           BasedOn="{StaticResource DefaultButtonStyle}">
+        <Setter Property="Background"
+                Value="{ThemeResource AlternateButtonBackground}" />
+        <Setter Property="BorderBrush"
+                Value="{ThemeResource AlternateButtonBorderBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <ContentPresenter x:Name="ContentPresenter"
+                                      Background="{TemplateBinding Background}"
+                                      Foreground="{TemplateBinding Foreground}"
+                                      BackgroundSizing="{TemplateBinding BackgroundSizing}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      ContentTransitions="{TemplateBinding ContentTransitions}"
+                                      CornerRadius="{TemplateBinding CornerRadius}"
+                                      Padding="{TemplateBinding Padding}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      AutomationProperties.AccessibilityView="Raw"
+                                      AnimatedIcon.State="Normal">
+                        <ContentPresenter.BackgroundTransition>
+                            <BrushTransition Duration="0:0:0.083" />
+                        </ContentPresenter.BackgroundTransition>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="PointerOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                                                                       Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{ThemeResource AlternateButtonBackgroundPointerOver}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                                                                       Storyboard.TargetProperty="BorderBrush">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{ThemeResource AlternateButtonBorderBrushPointerOver}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                                                                       Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{ThemeResource ButtonForegroundPointerOver}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                    <VisualState.Setters>
+                                        <Setter Target="ContentPresenter.(AnimatedIcon.State)"
+                                                Value="PointerOver" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                                                                       Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{ThemeResource AlternateButtonBackgroundPressed}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                                                                       Storyboard.TargetProperty="BorderBrush">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{ThemeResource AlternateButtonBorderBrushPressed}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                                                                       Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{ThemeResource ButtonForegroundPressed}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                    <VisualState.Setters>
+                                        <Setter Target="ContentPresenter.(AnimatedIcon.State)"
+                                                Value="Pressed" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                                                                       Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{ThemeResource AlternateButtonBackgroundDisabled}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                                                                       Storyboard.TargetProperty="BorderBrush">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{ThemeResource AlternateButtonBorderBrushDisabled}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                                                                       Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{ThemeResource ButtonForegroundDisabled}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                    <VisualState.Setters>
+                                        <!-- DisabledVisual Should be handled by the control, not the animated icon. -->
+                                        <Setter Target="ContentPresenter.(AnimatedIcon.State)"
+                                                Value="Normal" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </ContentPresenter>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <SolidColorBrush x:Key="ListViewItemBackgroundSelected"
                      Color="Transparent" />
 
