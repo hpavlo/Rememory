@@ -487,7 +487,7 @@
                     <VisualState.Setters>
                         <Setter Target="ClipsListView.SelectionMode"
                                 Value="None" />
-                        <Setter Target="ClipsSelectionBottomBar.Visibility"
+                        <Setter Target="MultipleSelectionFooter.Visibility"
                                 Value="Collapsed" />
                     </VisualState.Setters>
                 </VisualState>
@@ -499,7 +499,7 @@
                     <VisualState.Setters>
                         <Setter Target="ClipsListView.SelectionMode"
                                 Value="Multiple" />
-                        <Setter Target="ClipsSelectionBottomBar.Visibility"
+                        <Setter Target="MultipleSelectionFooter.Visibility"
                                 Value="Visible" />
                     </VisualState.Setters>
                 </VisualState>
@@ -542,13 +542,14 @@
         <StackPanel Grid.Column="3"
                     Grid.Row="0"
                     Margin="8,0,12,0"
-                    Spacing="8"
+                    Spacing="4"
                     Orientation="Horizontal"
                     VerticalAlignment="Center">
             <Button x:Uid="TitleButton_More"
                     AutomationProperties.AutomationId="TitleBarButtons"
                     AutomationProperties.Name="More"
                     AccessKey="M"
+                    Width="32"
                     Height="32"
                     Content="{tk:FontIcon FontSize=14, Glyph=&#xE712;}"
                     Style="{ThemeResource AlternateButtonStyle}"
@@ -558,6 +559,7 @@
                     AutomationProperties.AutomationId="TitleBarButtons"
                     AutomationProperties.Name="Close Window"
                     AccessKey="E"
+                    Width="32"
                     Height="32"
                     Command="{x:Bind ViewModel.CloseWindowCommand}"
                     Content="{tk:FontIcon FontSize=14, Glyph=&#xE711;}"
@@ -567,7 +569,7 @@
         <Grid Grid.Column="1"
               Grid.Row="1"
               Grid.ColumnSpan="2"
-              ColumnSpacing="8"
+              ColumnSpacing="4"
               Margin="4,0,12,8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -579,6 +581,7 @@
                             x:Uid="SearchBox"
                             AutomationProperties.AutomationId="SearchBox"
                             AutomationProperties.Name="Search Clips"
+                            Grid.Column="0"
                             TabIndex="2"
                             VerticalAlignment="Center"
                             IsEnabled="{x:Bind ViewModel.IsSearchEnabled, Mode=OneWay}"
@@ -588,16 +591,26 @@
                     x:Uid="FilterButton"
                     AutomationProperties.AutomationId="FilterButton"
                     AutomationProperties.Name="Filter Clips"
+                    AccessKey="F"
                     Grid.Column="1"
                     TabIndex="3"
+                    Width="32"
+                    Height="32"
+                    Padding="0"
                     VerticalAlignment="Stretch"
                     Content="{tk:FontIcon FontSize=14, Glyph=&#xE71C;}"
                     Flyout="{StaticResource FilterButtonFlyout}" />
 
             <ToggleButton x:Name="MultiSelectionToggleButton"
                           x:Uid="MultiSelectionToggleButton"
+                          AutomationProperties.AutomationId="MultiSelectionButton"
+                          AutomationProperties.Name="Enable Multiple Selection"
+                          AccessKey="S"
                           Grid.Column="2"
                           TabIndex="4"
+                          Width="32"
+                          Height="32"
+                          Padding="0"
                           VerticalAlignment="Stretch"
                           Content="{tk:FontIcon FontSize=14, Glyph=&#xE762;}" />
         </Grid>
@@ -782,10 +795,11 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <Grid x:Name="ClipsSelectionBottomBar"
+        <Grid x:Name="MultipleSelectionFooter"
               Grid.Column="1"
               Grid.Row="4"
-              Grid.ColumnSpan="2">
+              Grid.ColumnSpan="2"
+              Height="32">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -793,7 +807,7 @@
 
             <TextBlock x:Name="SelectedClipsCountTextBlock"
                        Grid.Column="0"
-                       Margin="8,4,4,4"
+                       Margin="8,0,4,0"
                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                        VerticalAlignment="Center"
                        Style="{ThemeResource BodyTextBlockStyle}" />
@@ -803,7 +817,7 @@
                       Grid.Column="1"
                       MinWidth="20"
                       MinHeight="20"
-                      Margin="4,4,16,4"
+                      Margin="4,0,16,0"
                       Padding="0"
                       VerticalAlignment="Center"
                       Click="SelectAllCheckBox_Click" />
