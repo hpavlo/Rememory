@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Windows.Foundation.Collections;
 using Windows.System;
 using Windows.UI.Core;
 
@@ -56,6 +57,7 @@ namespace Rememory.Views
             ThemeService.WindowBackdropChanged += ThemeService_WindowBackdropChanged;
 
             ViewModel.SettingsContext.PropertyChanged += SettingsContext_PropertyChanged;
+            ClipsListView.Items.VectorChanged += ClipsListView_Items_VectorChanged;
 
             _noneSelectionClipsContextMenu = (MenuFlyout)Resources["NoneSelectionClipsContextMenu"];
             _multipleSelectionClipsContextMenu = (MenuFlyout)Resources["MultipleSelectionClipsContextMenu"];
@@ -95,6 +97,7 @@ namespace Rememory.Views
             ThemeService.ThemeChanged -= ThemeService_ThemeChanged;
             ThemeService.WindowBackdropChanged -= ThemeService_WindowBackdropChanged;
             ViewModel.SettingsContext.PropertyChanged -= SettingsContext_PropertyChanged;
+            ClipsListView.Items.VectorChanged -= ClipsListView_Items_VectorChanged;
         }
 
         private void ThemeService_ThemeChanged(object? sender, ElementTheme theme)
@@ -157,7 +160,7 @@ namespace Rememory.Views
         private void SettingsContext_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs a)
         {
             // Swap tab indexes between SearchBox and ListView
-            if ( string.Equals(a.PropertyName, nameof(ViewModel.SettingsContext.EnableSearchFocusOnStart)))
+            if (string.Equals(a.PropertyName, nameof(ViewModel.SettingsContext.EnableSearchFocusOnStart)))
             {
                 (ClipsListView.TabIndex, SearchBox.TabIndex) = (SearchBox.TabIndex, ClipsListView.TabIndex);
             }
@@ -495,6 +498,15 @@ namespace Rememory.Views
             }
         }
 
+        private void ClipsListView_Items_VectorChanged(IObservableVector<object> sender, IVectorChangedEventArgs args)
+        {
+            // To check if new Clip was inserted to ClipsListView
+            if (args.CollectionChange == CollectionChange.ItemInserted)
+            {
+                TriggerMultipleSelectionFooterUpdate();
+            }
+        }
+
         private void ClipsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             foreach (ClipModel removedClip in e.RemovedItems.Cast<ClipModel>())
@@ -502,7 +514,11 @@ namespace Rememory.Views
                 OrderedSelectedClips.Remove(removedClip);
             }
             OrderedSelectedClips.AddRange(e.AddedItems.Cast<ClipModel>());
+            TriggerMultipleSelectionFooterUpdate();
+        }
 
+        private void TriggerMultipleSelectionFooterUpdate()
+        {
             SelectAllCheckBox.IsChecked = ClipsListView.SelectedItems.Count switch
             {
                 0 => false,
