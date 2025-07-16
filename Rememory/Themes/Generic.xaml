@@ -59,14 +59,20 @@
                             ResourceKey="SystemControlDisabledTransparentBrush" />
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
+    <Thickness x:Key="AlternateButtonBorderThickness">0</Thickness>
+    <Thickness x:Key="AlternateButtonPadding">0</Thickness>
 
     <Style x:Key="AlternateButtonStyle"
            TargetType="Button"
            BasedOn="{StaticResource DefaultButtonStyle}">
+        <Setter Property="Padding"
+                Value="{ThemeResource AlternateButtonPadding}" />
         <Setter Property="Background"
                 Value="{ThemeResource AlternateButtonBackground}" />
         <Setter Property="BorderBrush"
                 Value="{ThemeResource AlternateButtonBorderBrush}" />
+        <Setter Property="BorderThickness"
+                Value="{ThemeResource AlternateButtonBorderThickness}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">

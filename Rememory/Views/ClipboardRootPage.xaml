@@ -515,7 +515,8 @@
                                     ItemsSource="{x:Bind ViewModel.NavigationTabItems, Mode=OneWay}"
                                     SelectedItem="{x:Bind ViewModel.SelectedTab, Mode=TwoWay}"
                                     ItemContainerStyle="{ThemeResource NavigationTabItemStyle}"
-                                    ItemTemplateSelector="{StaticResource NavigationTabTemplateSelector}">
+                                    ItemTemplateSelector="{StaticResource NavigationTabTemplateSelector}"
+                                    KeyDown="NavigationTabList_KeyDown">
             <controls:NavigationTabList.Resources>
                 <Style TargetType="ScrollViewer"
                        BasedOn="{StaticResource NavigationTabListScrollViewerStyle}" />
@@ -585,7 +586,8 @@
                             TabIndex="2"
                             VerticalAlignment="Center"
                             IsEnabled="{x:Bind ViewModel.IsSearchEnabled, Mode=OneWay}"
-                            Text="{x:Bind ViewModel.SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{x:Bind ViewModel.SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            KeyDown="SearchBox_KeyDown"/>
 
             <Button x:Name="FilterButton"
                     x:Uid="FilterButton"

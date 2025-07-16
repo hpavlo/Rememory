@@ -369,26 +369,35 @@ namespace Rememory.Views
             bool isCtrlPressed = InputKeyboardSource.GetKeyStateForCurrentThread(VirtualKey.Control).HasFlag(CoreVirtualKeyStates.Down);
             bool isShiftPressed = InputKeyboardSource.GetKeyStateForCurrentThread(VirtualKey.Shift).HasFlag(CoreVirtualKeyStates.Down);
 
-            // Ctrl + C
-            if (e.Key == VirtualKey.C && isCtrlPressed)
+            switch (e.Key)
             {
-                if (ClipsListView.SelectionMode == ListViewSelectionMode.None)
-                {
-                    if (ViewModel.CopyClipCommand.CanExecute(clipItem.Content))
+                // Up
+                case VirtualKey.Up when clipItem.Content == ClipsListView.Items.First():
+                    SearchBox.Focus(FocusState.Programmatic);
+                    return;
+                // Left
+                case VirtualKey.Left:
+                    NavigationTabList.Focus(FocusState.Programmatic);
+                    return;
+                // Ctrl + C
+                case VirtualKey.C when isCtrlPressed:
+                    if (ClipsListView.SelectionMode == ListViewSelectionMode.None)
                     {
-                        ViewModel.CopyClipCommand.Execute(clipItem.Content);
-                        e.Handled = true;
+                        if (ViewModel.CopyClipCommand.CanExecute(clipItem.Content))
+                        {
+                            ViewModel.CopyClipCommand.Execute(clipItem.Content);
+                            e.Handled = true;
+                        }
                     }
-                }
-                else
-                {
-                    if (ViewModel.CopyClipsCommand.CanExecute(OrderedSelectedClips))
+                    else
                     {
-                        ViewModel.CopyClipsCommand.Execute(OrderedSelectedClips);
-                        e.Handled = true;
+                        if (ViewModel.CopyClipsCommand.CanExecute(OrderedSelectedClips))
+                        {
+                            ViewModel.CopyClipsCommand.Execute(OrderedSelectedClips);
+                            e.Handled = true;
+                        }
                     }
-                }
-                return;
+                    return;
             }
 
             if (ClipsListView.SelectionMode != ListViewSelectionMode.None)
@@ -558,5 +567,21 @@ namespace Rememory.Views
         }
 
         #endregion
+
+        private void SearchBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Down)
+            {
+                ((UIElement)FocusManager.FindFirstFocusableElement(ClipsListView))?.Focus(FocusState.Programmatic);
+            }
+        }
+
+        private void NavigationTabList_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Right)
+            {
+                ((UIElement)FocusManager.FindFirstFocusableElement(ClipsListView))?.Focus(FocusState.Programmatic);
+            }
+        }
     }
 }

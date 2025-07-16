@@ -22,12 +22,8 @@ namespace Rememory.Views.Editor
                 _clipContext = context;
                 _clipContext.IsOpenInEditor = true;
                 InitializeWindow();
-                _window!.Activate();
             }
-            else
-            {
-                _window.Activate();
-            }
+            _window?.Activate();
         }
 
         public static void CloseEditorWindow()
