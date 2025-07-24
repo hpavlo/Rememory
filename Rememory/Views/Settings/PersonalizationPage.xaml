@@ -5,12 +5,17 @@
       xmlns:local="using:Rememory.Views.Settings"
       xmlns:tk="using:CommunityToolkit.WinUI"
       xmlns:tkcontrols="using:CommunityToolkit.WinUI.Controls"
+      xmlns:converters="using:Rememory.Converters"
       DataContext="{x:Bind ViewModel}">
+    <Page.Resources>
+        <converters:EnumToIndexConverter x:Key="EnumToIndexConverter" />
+    </Page.Resources>
+    
     <StackPanel Margin="56 0"
                 Spacing="5">
         <tkcontrols:SettingsCard x:Uid="SettingsCard_AppTheme"
                                  HeaderIcon="{tk:FontIcon Glyph=&#xE790;}">
-            <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.CurrentThemeIndex, Mode=TwoWay}">
+            <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.Theme, Mode=TwoWay, Converter={StaticResource EnumToIndexConverter}}">
                 <ComboBoxItem x:Uid="SettingsComboBox_AppTheme_Default" />
                 <ComboBoxItem x:Uid="SettingsComboBox_AppTheme_Light" />
                 <ComboBoxItem x:Uid="SettingsComboBox_AppTheme_Dark" />
@@ -20,7 +25,7 @@
         <tkcontrols:SettingsCard x:Uid="SettingsCard_Backdrop"
                                  IsEnabled="{x:Bind ViewModel.IsBackgropSupported, Mode=OneWay}"
                                  HeaderIcon="{tk:FontIcon Glyph=&#xEF1F;}">
-            <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.CurrentWindowBackdropIndex, Mode=TwoWay}">
+            <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.WindowBackdrop, Mode=TwoWay, Converter={StaticResource EnumToIndexConverter}}">
                 <ComboBoxItem x:Uid="SettingsComboBox_Backdrop_None" />
                 <ComboBoxItem x:Uid="SettingsComboBox_Backdrop_Acrylic" />
                 <ComboBoxItem x:Uid="SettingsComboBox_Backdrop_ThinAcrylic" />
@@ -73,7 +78,7 @@
                     </Path>
 
                     <Border x:Name="BackgroundColorPreview"
-                            Background="{x:Bind ViewModel.SettingsContext.CurrentWindowBackgroundBrush, Mode=OneWay}" />
+                            Background="{x:Bind ViewModel.SettingsContext.WindowBackgroundBrush, Mode=OneWay}" />
                 </Grid>
 
                 <SplitButton.Flyout>
@@ -125,7 +130,7 @@
         <tkcontrols:SettingsExpander x:Uid="SettingsCard_WindowPosition"
                                      IsExpanded="True"
                                      HeaderIcon="{tk:FontIcon Glyph=&#xE90D;}">
-            <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.ClipboardWindowPositionIndex, Mode=TwoWay}">
+            <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.WindowPosition, Mode=TwoWay, Converter={StaticResource EnumToIndexConverter}}">
                 <ComboBoxItem x:Uid="SettingsComboBox_Position_Caret" />
                 <ComboBoxItem x:Uid="SettingsComboBox_Position_Cursor" />
                 <ComboBoxItem x:Uid="SettingsComboBox_Position_ScreenCenter" />

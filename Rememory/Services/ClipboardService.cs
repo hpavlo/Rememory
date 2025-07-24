@@ -22,6 +22,8 @@ namespace Rememory.Services
         public event EventHandler<ClipboardEventArgs>? ClipDeleted;
         public event EventHandler<ClipboardEventArgs>? AllClipsDeleted;
 
+        public SettingsContext SettingsContext => SettingsContext.Instance;
+
         public IList<ClipModel> Clips { get; private set; }
 
         private readonly IStorageService _storageService;
@@ -164,7 +166,7 @@ namespace Rememory.Services
 
             if (clip.Data.TryGetValue(ClipboardFormat.Text, out var textData))
             {
-                if ((SettingsContext.Instance.RequireHexColorPrefix ? _hexColorRegex : _hexColorRegexOptionalPrefix).IsMatch(textData.Data))
+                if ((SettingsContext.IsHexColorPrefixRequired ? _hexColorRegex : _hexColorRegexOptionalPrefix).IsMatch(textData.Data))
                 {
                     ColorMetadataModel colorMetadata = new();
                     textData.Metadata = colorMetadata;
@@ -182,9 +184,9 @@ namespace Rememory.Services
 
             OnNewClipAdded(Clips, clip);
 
-            if (SettingsContext.Instance.CleanupTypeIndex == (int)CleanupType.Quantity)
+            if (SettingsContext.CleanupType == CleanupType.Quantity)
             {
-                DeleteOldClipsByQuantity(SettingsContext.Instance.CleanupQuantity);
+                DeleteOldClipsByQuantity(SettingsContext.CleanupQuantity);
             }
         }
 
@@ -331,12 +333,12 @@ namespace Rememory.Services
                 var replacedOwnerPath = ownerPath.Replace('\\', '/');
                 try
                 {
-                    var ownerFilter = SettingsContext.Instance.OwnerAppFilters.FirstOrDefault(filter => ownerPath.Equals(filter.Pattern)
+                    var ownerFilter = SettingsContext.OwnerAppFilters.FirstOrDefault(filter => ownerPath.Equals(filter.Pattern)
                         || Regex.IsMatch(replacedOwnerPath, $"^{filter.Pattern.Replace('\\', '/').Replace("*", ".*")}$"));
                     if (ownerFilter is not null)
                     {
                         ownerFilter.FilteredCount++;
-                        SettingsContext.Instance.OwnerAppFiltersSave();
+                        SettingsContext.SaveOwnerAppFilters();
                         return false;
                     }
                 }

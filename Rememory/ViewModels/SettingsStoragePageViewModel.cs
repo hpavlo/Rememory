@@ -19,16 +19,16 @@ namespace Rememory.ViewModels
 
         public ObservableCollection<TagModel> Tags;
 
-        public bool IsRetentionPeriodParametersEnabled => SettingsContext.CleanupTypeIndex == (int)CleanupType.RetentionPeriod;
-        public bool IsQuantityParametersEnabled => SettingsContext.CleanupTypeIndex == (int)CleanupType.Quantity;
+        public bool IsRetentionPeriodParametersEnabled => SettingsContext.CleanupType == CleanupType.RetentionPeriod;
+        public bool IsQuantityParametersEnabled => SettingsContext.CleanupType == CleanupType.Quantity;
 
-        public int CleanupTypeIndex
+        public CleanupType CleanupType
         {
-            get => SettingsContext.CleanupTypeIndex;
+            get => SettingsContext.CleanupType;
             set
             {
-                if (SettingsContext.CleanupTypeIndex != value) {
-                    SettingsContext.CleanupTypeIndex = value;
+                if (SettingsContext.CleanupType != value) {
+                    SettingsContext.CleanupType = value;
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(IsRetentionPeriodParametersEnabled));
                     OnPropertyChanged(nameof(IsQuantityParametersEnabled));
@@ -44,7 +44,7 @@ namespace Rememory.ViewModels
         public void AddOwnerAppFilter(string name, string pattern)
         {
             SettingsContext.OwnerAppFilters.Add(new(name.Trim(), pattern.Trim()));
-            SettingsContext.OwnerAppFiltersSave();
+            SettingsContext.SaveOwnerAppFilters();
         }
 
         public void EditOwnerAppFilter(OwnerAppFilter filter, string newName, string newPattern)
@@ -58,7 +58,7 @@ namespace Rememory.ViewModels
                 filter.FilteredCount = 0;
             }
 
-            SettingsContext.OwnerAppFiltersSave();
+            SettingsContext.SaveOwnerAppFilters();
         }
 
         public void AddTag(string name, SolidColorBrush colorBrush)
@@ -85,7 +85,7 @@ namespace Rememory.ViewModels
             if (filter is null) return;
 
             SettingsContext.OwnerAppFilters.Remove(filter);
-            SettingsContext.OwnerAppFiltersSave();
+            SettingsContext.SaveOwnerAppFilters();
         }
 
         [RelayCommand]

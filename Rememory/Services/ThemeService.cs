@@ -36,12 +36,12 @@ namespace Rememory.Services
 
         private ElementTheme GetTheme()
         {
-            return (ElementTheme)_settingsContext.CurrentThemeIndex;
+            return _settingsContext.Theme;
         }
 
         private WindowBackdropType GetWindowBackdrop()
         {
-            return (WindowBackdropType)_settingsContext.CurrentWindowBackdropIndex;
+            return _settingsContext.WindowBackdrop;
         }
     }
 }

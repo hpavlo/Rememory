@@ -19,10 +19,11 @@ namespace Rememory
         static int Main(string[] args)
         {
             ComWrappersSupport.InitializeComWrappers();
+            AppActivationArguments activationArgs = AppInstance.GetCurrent().GetActivatedEventArgs();
             bool isRedirect;
             try
             {
-                isRedirect = DecideRedirection();
+                isRedirect = DecideRedirection(activationArgs);
             }
             catch (COMException)
             {
@@ -32,7 +33,7 @@ namespace Rememory
                     0);
                 return 0;
             }
-            
+
             if (!isRedirect)
             {
                 Application.Start((p) =>
@@ -42,7 +43,7 @@ namespace Rememory
                     _ = new App(args);
                 });
             }
-            else if (SettingsContext.Instance.ShowNotificationOnStart)
+            else if (SettingsContext.Instance.IsNotificationOnStartEnabled && activationArgs.Kind != ExtendedActivationKind.ToastNotification)
             {
                 AppNotificationManager.Default.Show(new AppNotificationBuilder()
                     .AddText("AppNotification_AppIsRunning".GetLocalizedResource())
@@ -54,10 +55,9 @@ namespace Rememory
             return 0;
         }
 
-        private static bool DecideRedirection()
+        private static bool DecideRedirection(AppActivationArguments args)
         {
             bool isRedirect = false;
-            AppActivationArguments args = AppInstance.GetCurrent().GetActivatedEventArgs();
             AppInstance keyInstance = AppInstance.FindOrRegisterForKey(Windows.ApplicationModel.Package.Current.DisplayName);
             if (!keyInstance.IsCurrent)
             {

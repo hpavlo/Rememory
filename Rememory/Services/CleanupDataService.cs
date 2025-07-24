@@ -2,6 +2,7 @@
 using Rememory.Helper;
 using Rememory.Models;
 using System;
+using System.ComponentModel;
 
 namespace Rememory.Services
 {
@@ -17,14 +18,14 @@ namespace Rememory.Services
 
         public void CleanupByRetentionPeriod()
         {
-            if (_settingsContext.CleanupTypeIndex == (int)CleanupType.RetentionPeriod
-                && _settingsContext.CleanupTimeSpanIndex != (int)CleanupTimeSpan.None
+            if (_settingsContext.CleanupType == CleanupType.RetentionPeriod
+                && _settingsContext.CleanupTimeSpan != CleanupTimeSpan.None
                 && DateTime.Now.Subtract(_lastCleanupTime).Days > 0)
             {
                 _lastCleanupTime = DateTime.Now;
                 try
                 {
-                    _clipboardService.DeleteOldClipsByTime(RoundToNearestDay(_lastCleanupTime).Subtract(GetTimeSpanFromSettings()), _settingsContext.CleanFavoriteItems);
+                    _clipboardService.DeleteOldClipsByTime(RoundToNearestDay(_lastCleanupTime).Subtract(GetTimeSpanFromSettings()), _settingsContext.IsCleanFavoriteClipsEnabled);
                 }
                 catch
                 {
@@ -40,7 +41,7 @@ namespace Rememory.Services
 
         private DateTime RoundToNearestDay(DateTime dateTime)
         {
-            if ((CleanupTimeSpan)_settingsContext.CleanupTimeSpanIndex != CleanupTimeSpan.Day)
+            if (_settingsContext.CleanupTimeSpan != CleanupTimeSpan.Day)
             {
                 const int roundIntervalDays = 1;
                 var halfIntervalTicks = TimeSpan.TicksPerDay * roundIntervalDays / 2;
@@ -51,7 +52,7 @@ namespace Rememory.Services
 
         private TimeSpan GetTimeSpanFromSettings()
         {
-            return (CleanupTimeSpan)_settingsContext.CleanupTimeSpanIndex switch
+            return _settingsContext.CleanupTimeSpan switch
             {
                 CleanupTimeSpan.Day => new TimeSpan(1, 0, 0, 0),
                 CleanupTimeSpan.Week => new TimeSpan(7, 0, 0, 0),
@@ -63,15 +64,15 @@ namespace Rememory.Services
 
     public enum CleanupTimeSpan
     {
-        Day = 0,
-        Week = 1,
-        Month = 2,
-        None = 3
+        Day,
+        Week,
+        Month,
+        None,
     }
 
     public enum CleanupType
     {
-        RetentionPeriod = 0,
-        Quantity = 1
+        RetentionPeriod,
+        Quantity
     }
 }

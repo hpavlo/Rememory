@@ -12,7 +12,7 @@
         <tkcontrols:SettingsCard x:Uid="SettingsCard_Language"
                                  HeaderIcon="{tk:FontIcon Glyph=&#xF2B7;}">
             <ComboBox x:Name="LanguageComboBox"
-                      SelectedIndex="{x:Bind ViewModel.SettingsContext.CurrentLanguageIndex, Mode=TwoWay}"
+                      SelectedIndex="{x:Bind ViewModel.SettingsContext.LanguageIndex, Mode=TwoWay}"
                       SelectionChanged="LanguageComboBox_SelectionChanged">
                 <ComboBox.Resources>
                     <TeachingTip x:Name="LanguageTeachingTip"
@@ -22,7 +22,7 @@
                         <Button x:Uid="SettingsTeachingTipButton_Restart"
                                 Margin="0 8 0 0"
                                 HorizontalAlignment="Center"
-                                Command="{x:Bind ViewModel.RestartCommand, Mode=OneWay}"/>
+                                Command="{x:Bind ViewModel.RestartCommand, Mode=OneWay}" />
                     </TeachingTip>
                 </ComboBox.Resources>
                 <ComboBoxItem x:Uid="SettingsComboBox_Language_Default" />
@@ -62,32 +62,32 @@
 
         <tkcontrols:SettingsCard x:Uid="SettingsCard_NotificationOnStartup"
                                  HeaderIcon="{tk:FontIcon Glyph=&#xE91C;}">
-            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.ShowNotificationOnStart, Mode=TwoWay}" />
+            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsNotificationOnStartEnabled, Mode=TwoWay}" />
         </tkcontrols:SettingsCard>
 
         <tkcontrols:SettingsCard x:Uid="SettingsCard_LinkPreview"
                                  HeaderIcon="{tk:FontIcon Glyph=&#xE8A1;}">
-            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.EnableLinkPreviewLoading, Mode=TwoWay}" />
+            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsLinkPreviewLoadingEnabled, Mode=TwoWay}" />
         </tkcontrols:SettingsCard>
 
         <tkcontrols:SettingsCard x:Uid="SettingsCard_ItemDragAndDrop"
                                  HeaderIcon="{tk:FontIcon Glyph=&#xE759;}">
-            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.EnableItemDragAndDrop, Mode=TwoWay}" />
+            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsClipsDragAndDropEnabled, Mode=TwoWay}" />
         </tkcontrols:SettingsCard>
 
         <tkcontrols:SettingsCard x:Uid="SettingsCard_SearchFocus"
                                  HeaderIcon="{tk:FontIcon Glyph=&#xE721;}">
-            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.EnableSearchFocusOnStart, Mode=TwoWay}" />
+            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsSearchFocusOnStartEnabled, Mode=TwoWay}" />
         </tkcontrols:SettingsCard>
 
         <tkcontrols:SettingsCard x:Uid="SettingsCard_RequireHexColorPrefix"
                                  HeaderIcon="{tk:FontIcon Glyph=&#xEF3C;}">
-            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.RequireHexColorPrefix, Mode=TwoWay}" />
+            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsHexColorPrefixRequired, Mode=TwoWay}" />
         </tkcontrols:SettingsCard>
 
         <tkcontrols:SettingsCard x:Uid="SettingsCard_DeveloperStringCaseConverions"
                                  HeaderIcon="{tk:FontIcon Glyph=&#xE943;}">
-            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.EnableDeveloperStringCaseConversions, Mode=TwoWay}" />
+            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsDeveloperStringCaseConversionsEnabled, Mode=TwoWay}" />
         </tkcontrols:SettingsCard>
     </StackPanel>
 </Page>

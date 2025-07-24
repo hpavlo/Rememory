@@ -656,7 +656,7 @@ namespace Rememory.ViewModels
             SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.TrimWhitespace, true);
         }
 
-        private bool CanPasteClipWithDeveloperCase(ClipModel? clip) => SettingsContext.EnableDeveloperStringCaseConversions && CanPasteClipAsPlainText(clip);
+        private bool CanPasteClipWithDeveloperCase(ClipModel? clip) => SettingsContext.IsDeveloperStringCaseConversionsEnabled && CanPasteClipAsPlainText(clip);
 
         [RelayCommand(CanExecute = nameof(CanPasteClipWithDeveloperCase))]
         private void PasteClipWithCamelCase(ClipModel? clip)
@@ -728,7 +728,7 @@ namespace Rememory.ViewModels
                 };
 
                 SettingsContext.OwnerAppFilters.Add(filter);
-                SettingsContext.OwnerAppFiltersSave();
+                SettingsContext.SaveOwnerAppFilters();
             }
         }
 

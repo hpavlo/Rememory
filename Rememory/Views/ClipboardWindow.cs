@@ -255,7 +255,7 @@ namespace Rememory.Views
             //this.AppWindow.MoveAndResize - requires restart after DPI update, width and height depends on DPI
             //this.MoveAndResize - don't require restart after DPI update
 
-            switch ((ClipboardWindowPosition)SettingsContext.ClipboardWindowPositionIndex)
+            switch (SettingsContext.WindowPosition)
             {
                 case ClipboardWindowPosition.Caret:
                     PositionWindowRelativeToCaret(

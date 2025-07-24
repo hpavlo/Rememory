@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml;
 using Rememory.Contracts;
 using Rememory.Views;
 using System;
+using System.ComponentModel;
 using WinRT;
 
 namespace Rememory.Helper.WindowBackdrop

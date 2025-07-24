@@ -54,8 +54,8 @@ namespace Rememory
             _keyboardMonitor = Services.GetService<IKeyboardMonitor>()!;
 
             InitializeComponent();
-            SetCulture(SettingsContext.CurrentLanguageCode.Equals(string.Empty) ?
-                CultureInfo.CurrentCulture.TwoLetterISOLanguageName : SettingsContext.CurrentLanguageCode);
+            SetCulture(SettingsContext.LanguageCode.Equals(string.Empty) ?
+                CultureInfo.CurrentCulture.TwoLetterISOLanguageName : SettingsContext.LanguageCode);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Rememory
                 SettingsWindow.ShowSettingsWindow();
             }
 
-            if (!_launchArguments.Contains("-silent") && SettingsContext.ShowNotificationOnStart)
+            if (!_launchArguments.Contains("-silent") && SettingsContext.IsNotificationOnStartEnabled)
             {
                 AppNotificationManager.Default.Show(new AppNotificationBuilder()
                     .AddText("AppNotification_AppIsRunning".GetLocalizedResource())

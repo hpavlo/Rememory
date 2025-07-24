@@ -25,7 +25,7 @@ namespace Rememory.Services
 
         public void TryAddLinkMetadata(ClipModel clip, DataModel dataModel)
         {
-            if (SettingsContext.Instance.EnableLinkPreviewLoading && clip.IsLink)
+            if (SettingsContext.Instance.IsLinkPreviewLoadingEnabled && clip.IsLink)
             {
                 LoadMetaInfo(clip, dataModel);
             }

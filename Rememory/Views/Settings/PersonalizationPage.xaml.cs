@@ -29,18 +29,18 @@ namespace Rememory.Views.Settings
 
         public PersonalizationPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void BackgroundColorItemsViewSelectionUpdate()
         {
-            var index = _suggestedBackgroundColors.FindIndex(item => item.Color == ViewModel.SettingsContext.CurrentWindowBackgroundBrush.Color);
+            var index = _suggestedBackgroundColors.FindIndex(item => item.Color == ViewModel.SettingsContext.WindowBackgroundBrush.Color);
             BackgroundColorItemsView.Select(index);
         }
 
         private void BackgroundColorFlyout_Closed(object sender, object e)
         {
-            ViewModel.SettingsContext.CurrentWindowBackgroundBrush = new SolidColorBrush(BackgroundColorPicker.Color);
+            ViewModel.SettingsContext.WindowBackgroundBrush = new SolidColorBrush(BackgroundColorPicker.Color);
             BackgroundColorItemsViewSelectionUpdate();
         }
 
@@ -51,14 +51,14 @@ namespace Rememory.Views.Settings
 
         private void BackgroundColorPicker_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
-            BackgroundColorPicker.Color = ViewModel.SettingsContext.CurrentWindowBackgroundBrush.Color;
+            BackgroundColorPicker.Color = ViewModel.SettingsContext.WindowBackgroundBrush.Color;
         }
 
         private void BackgroundColorItemsView_SelectionChanged(ItemsView sender, ItemsViewSelectionChangedEventArgs args)
         {
             if (sender.SelectedItem is not null)
             {
-                ViewModel.SettingsContext.CurrentWindowBackgroundBrush = (SolidColorBrush)sender.SelectedItem;
+                ViewModel.SettingsContext.WindowBackgroundBrush = (SolidColorBrush)sender.SelectedItem;
             }
         }
     }

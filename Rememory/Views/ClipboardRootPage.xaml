@@ -321,7 +321,7 @@
                 <MenuFlyoutItem x:Uid="ContextMenu_PasteAsTrimWhitespace"
                                 CommandParameter="{Binding}"
                                 Command="{x:Bind ViewModel.PasteClipWithTrimWhitespaceCommand}" />
-                <MenuFlyoutSeparator Visibility="{x:Bind ViewModel.SettingsContext.EnableDeveloperStringCaseConversions, Converter={StaticResource BoolToVisibilityConverter}}" />
+                <MenuFlyoutSeparator Visibility="{x:Bind ViewModel.SettingsContext.IsDeveloperStringCaseConversionsEnabled, Converter={StaticResource BoolToVisibilityConverter}}" />
                 <MenuFlyoutItem x:Uid="ContextMenu_PasteAsCamelCase"
                                 CommandParameter="{Binding}"
                                 Command="{x:Bind ViewModel.PasteClipWithCamelCaseCommand}"
@@ -434,7 +434,7 @@
           CornerRadius="0"
           BorderThickness="1"
           BorderBrush="{ThemeResource AccentAAFillColorDisabled}"
-          Background="{x:Bind ViewModel.SettingsContext.CurrentWindowBackgroundBrush, Mode=OneWay}">
+          Background="{x:Bind ViewModel.SettingsContext.WindowBackgroundBrush, Mode=OneWay}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*"
@@ -653,7 +653,7 @@
                   SelectionMode="None"
                   ShowsScrollingPlaceholders="False"
                   IsItemClickEnabled="True"
-                  CanDragItems="{x:Bind ViewModel.SettingsContext.EnableItemDragAndDrop, Mode=OneWay}"
+                  CanDragItems="{x:Bind ViewModel.SettingsContext.IsClipsDragAndDropEnabled, Mode=OneWay}"
                   ItemsSource="{x:Bind ViewModel.ClipsCollection, Mode=OneWay}"
                   ItemContainerStyle="{StaticResource ClipsListViewStyle}"
                   DragItemsStarting="ClipsListView_DragItemsStarting"

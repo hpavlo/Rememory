@@ -67,13 +67,13 @@ namespace Rememory.Views
 
         private void Window_Showing(object sender, EventArgs e)
         {
-            if (ViewModel.SettingsContext.EnableSearchFocusOnStart)
+            if (ViewModel.SettingsContext.IsSearchFocusOnStartEnabled)
             {
                 SearchBox.Focus(FocusState.Keyboard);
             }
             else
             {
-                ((UIElement)FocusManager.FindFirstFocusableElement(ClipsListView))?.Focus(FocusState.Programmatic);
+                SetFocusOnFirstClipInList();
             }
 
             if (ClipsListView.Items.Count != 0)
@@ -160,7 +160,7 @@ namespace Rememory.Views
         private void SettingsContext_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs a)
         {
             // Swap tab indexes between SearchBox and ListView
-            if (string.Equals(a.PropertyName, nameof(ViewModel.SettingsContext.EnableSearchFocusOnStart)))
+            if (string.Equals(a.PropertyName, nameof(ViewModel.SettingsContext.IsSearchFocusOnStartEnabled)))
             {
                 (ClipsListView.TabIndex, SearchBox.TabIndex) = (SearchBox.TabIndex, ClipsListView.TabIndex);
             }
@@ -173,6 +173,8 @@ namespace Rememory.Views
                 _window.HideWindow();
             }
         }
+
+        private void SetFocusOnFirstClipInList() => ((UIElement)FocusManager.FindFirstFocusableElement(ClipsListView))?.Focus(FocusState.Programmatic);
 
         #region Window moving
 
@@ -189,7 +191,7 @@ namespace Rememory.Views
                 return;
             }
             
-            if (ViewModel.SettingsContext.ClipboardWindowPositionIndex != (int)ClipboardWindowPosition.Right)
+            if (ViewModel.SettingsContext.WindowPosition != ClipboardWindowPosition.Right)
             {
                 ((UIElement)sender).CapturePointer(e.Pointer);
                 _startWindowX = _window.AppWindow.Position.X;
@@ -572,7 +574,7 @@ namespace Rememory.Views
         {
             if (e.Key == VirtualKey.Down)
             {
-                ((UIElement)FocusManager.FindFirstFocusableElement(ClipsListView))?.Focus(FocusState.Programmatic);
+                SetFocusOnFirstClipInList();
             }
         }
 
@@ -580,7 +582,7 @@ namespace Rememory.Views
         {
             if (e.Key == VirtualKey.Right)
             {
-                ((UIElement)FocusManager.FindFirstFocusableElement(ClipsListView))?.Focus(FocusState.Programmatic);
+                SetFocusOnFirstClipInList();
             }
         }
     }
