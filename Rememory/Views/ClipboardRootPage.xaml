@@ -13,7 +13,6 @@
       xmlns:controls="using:Rememory.Views.Controls"
       xmlns:behavior="using:Rememory.Views.Controls.Behavior"
       xmlns:selector="using:Rememory.Views.Controls.Selector"
-      xmlns:triggers="using:CommunityToolkit.WinUI"
       x:Name="RootPage"
       DataContext="{x:Bind ViewModel}"
       SizeChanged="ClipboardRootPage_SizeChanged"
@@ -53,11 +52,10 @@
                           Foreground="{x:Bind Tag.ColorBrush}"
                           ToolTipService.ToolTip="{x:Bind Tag.Name}" />
 
-                <InfoBadge HorizontalAlignment="Right"
+                <!--<InfoBadge HorizontalAlignment="Right"
                            VerticalAlignment="Top"
                            Value="{x:Bind Tag.ClipsCount}"
-                           Style="{StaticResource InformationalValueInfoBadgeStyle}"
-                           Visibility="Visible" />
+                           Style="{StaticResource InformationalValueInfoBadgeStyle}" />-->
             </Grid>
         </DataTemplate>
 
@@ -166,7 +164,7 @@
         </Flyout>
 
         <MenuFlyout x:Key="TitleBarContextMenuFlyout">
-            <MenuFlyoutItem x:Uid="TitleMenuButton_PinWindow"
+            <MenuFlyoutItem x:Uid="/Clipboard/TitleBarMenu_PinWindow"
                             AccessKey="T"
                             Command="{x:Bind ViewModel.ToggleWindowPinnedCommand}"
                             IsEnabled="{x:Bind ViewModel.IsWindowPinned, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
@@ -177,7 +175,7 @@
                                          Modifiers="Control"/>
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
-            <MenuFlyoutItem x:Uid="TitleMenuButton_UnpinWindow"
+            <MenuFlyoutItem x:Uid="/Clipboard/TitleBarMenu_UnpinWindow"
                             AccessKey="U"
                             Command="{x:Bind ViewModel.ToggleWindowPinnedCommand}"
                             IsEnabled="{x:Bind ViewModel.IsWindowPinned, Mode=OneWay}"
@@ -188,7 +186,7 @@
                                          Modifiers="Control" />
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
-            <MenuFlyoutItem x:Uid="TitleMenuButton_PauseMonitoring"
+            <MenuFlyoutItem x:Uid="/Clipboard/TitleBarMenu_PauseMonitoring"
                             AccessKey="P"
                             Command="{x:Bind ViewModel.ToggleClipboardMonitoringEnabledCommand}"
                             IsEnabled="{x:Bind ViewModel.IsClipboardMonitoringEnabled, Mode=OneWay}"
@@ -199,7 +197,7 @@
                                          Modifiers="Control" />
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
-            <MenuFlyoutItem x:Uid="TitleMenuButton_ResumeMonitoring"
+            <MenuFlyoutItem x:Uid="/Clipboard/TitleBarMenu_ResumeMonitoring"
                             AccessKey="R"
                             Command="{x:Bind ViewModel.ToggleClipboardMonitoringEnabledCommand}"
                             IsEnabled="{x:Bind ViewModel.IsClipboardMonitoringEnabled, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
@@ -211,11 +209,11 @@
                 </MenuFlyoutItem.KeyboardAccelerators>
             </MenuFlyoutItem>
             <MenuFlyoutSeparator />
-            <MenuFlyoutItem x:Uid="TitleMenuButton_Settings"
+            <MenuFlyoutItem x:Uid="/Clipboard/TitleBarMenu_Settings"
                             AccessKey="S"
                             Command="{x:Bind ViewModel.OpenSettingsWindowCommand}"
                             Icon="{tk:FontIcon FontSize=16, Glyph=&#xE713;}" />
-            <MenuFlyoutItem x:Uid="TitleMenuButton_Quit"
+            <MenuFlyoutItem x:Uid="/Clipboard/TitleBarMenu_Quit"
                             AccessKey="Q"
                             Command="{x:Bind ViewModel.QuitAppCommand}"
                             Icon="{tk:FontIcon FontSize=16, Glyph=&#xEA39;}" />
@@ -266,100 +264,100 @@
         </Flyout>
 
         <MenuFlyout x:Key="NoneSelectionClipsContextMenu">
-            <MenuFlyoutItem x:Uid="ContextMenu_AddToFavorite"
+            <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_AddToFavorites"
                             CommandParameter="{Binding}"
                             Command="{x:Bind ViewModel.ToggleClipFavoriteCommand}"
                             IsEnabled="{Binding IsFavorite, Converter={StaticResource BoolNegationConverter}}"
                             Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
                             Icon="{tk:FontIcon Glyph=&#xE734;}" />
-            <MenuFlyoutItem x:Uid="ContextMenu_RemoveFromFavorite"
+            <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_RemoveFromFavorites"
                             CommandParameter="{Binding}"
                             Command="{x:Bind ViewModel.ToggleClipFavoriteCommand}"
                             IsEnabled="{Binding IsFavorite}"
                             Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
                             Icon="{tk:FontIcon Glyph=&#xE8D9;}" />
-            <MenuFlyoutItem x:Uid="ContextMenu_OpenInBrowser"
+            <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_OpenInBrowser"
                             CommandParameter="{Binding}"
                             Command="{x:Bind ViewModel.OpenInBrowserCommand}"
                             Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
                             Icon="{tk:FontIcon Glyph=&#xF6FA;}" />
-            <MenuFlyoutItem x:Uid="ContextMenu_OpenInFlyout"
+            <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_OpenInFlyout"
                             KeyboardAcceleratorTextOverride="Space"
                             Click="OpenInFlyoutItem_Click"
                             Icon="{tk:FontIcon Glyph=&#xE8A7;}" />
             <MenuFlyoutSeparator />
-            <MenuFlyoutItem x:Uid="ContextMenu_Paste"
+            <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_Paste"
                             KeyboardAcceleratorTextOverride="Enter"
                             CommandParameter="{Binding}"
                             Command="{x:Bind ViewModel.PasteClipCommand}"
                             Icon="{tk:FontIcon Glyph=&#xE77F;}" />
-            <MenuFlyoutSubItem x:Uid="ContextMenu_PasteAs"
+            <MenuFlyoutSubItem x:Uid="/Clipboard/Clip_ContextMenu_PasteAs"
                                Icon="{tk:FontIcon Glyph=&#xE8D2;}"
                                IsEnabled="{Binding IsEnabled, ElementName=PasteAsPlainTextMenuFlyoutItem}"
                                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}">
                 <MenuFlyoutItem x:Name="PasteAsPlainTextMenuFlyoutItem"
-                                x:Uid="ContextMenu_PasteAsPlainText"
+                                x:Uid="/Clipboard/Clip_ContextMenu_PasteAs_PlainText"
                                 KeyboardAcceleratorTextOverride="Shift+Enter"
                                 CommandParameter="{Binding}"
                                 Command="{x:Bind ViewModel.PasteClipAsPlainTextCommand}" />
                 <MenuFlyoutSeparator />
-                <MenuFlyoutItem x:Uid="ContextMenu_PasteAsUpperCase"
+                <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_PasteAs_UpperCase"
                                 CommandParameter="{Binding}"
                                 Command="{x:Bind ViewModel.PasteClipWithUpperCaseCommand}" />
-                <MenuFlyoutItem x:Uid="ContextMenu_PasteAsLowerCase"
+                <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_PasteAs_LowerCase"
                                 CommandParameter="{Binding}"
                                 Command="{x:Bind ViewModel.PasteClipWithLowerCaseCommand}" />
-                <MenuFlyoutItem x:Uid="ContextMenu_PasteAsCapitalizeCase"
+                <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_PasteAs_CapitalizedCase"
                                 CommandParameter="{Binding}"
-                                Command="{x:Bind ViewModel.PasteClipWithCapitalizeCaseCommand}" />
-                <MenuFlyoutItem x:Uid="ContextMenu_PasteAsSentenceCase"
+                                Command="{x:Bind ViewModel.PasteClipWithCapitalizedCaseCommand}" />
+                <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_PasteAs_SentenceCase"
                                 CommandParameter="{Binding}"
                                 Command="{x:Bind ViewModel.PasteClipWithSentenceCaseCommand}" />
-                <MenuFlyoutItem x:Uid="ContextMenu_PasteAsInvertCase"
+                <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_PasteAs_InvertCase"
                                 CommandParameter="{Binding}"
                                 Command="{x:Bind ViewModel.PasteClipWithInvertCaseCommand}" />
-                <MenuFlyoutItem x:Uid="ContextMenu_PasteAsTrimWhitespace"
+                <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_PasteAs_TrimWhitespace"
                                 CommandParameter="{Binding}"
                                 Command="{x:Bind ViewModel.PasteClipWithTrimWhitespaceCommand}" />
                 <MenuFlyoutSeparator Visibility="{x:Bind ViewModel.SettingsContext.IsDeveloperStringCaseConversionsEnabled, Converter={StaticResource BoolToVisibilityConverter}}" />
-                <MenuFlyoutItem x:Uid="ContextMenu_PasteAsCamelCase"
+                <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_PasteAs_CamelCase"
                                 CommandParameter="{Binding}"
                                 Command="{x:Bind ViewModel.PasteClipWithCamelCaseCommand}"
                                 Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}" />
-                <MenuFlyoutItem x:Uid="ContextMenu_PasteAsPascalCase"
+                <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_PasteAs_PascalCase"
                                 CommandParameter="{Binding}"
                                 Command="{x:Bind ViewModel.PasteClipWithPascalCaseCommand}"
                                 Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}" />
-                <MenuFlyoutItem x:Uid="ContextMenu_PasteAsSnakeCase"
+                <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_PasteAs_SnakeCase"
                                 CommandParameter="{Binding}"
                                 Command="{x:Bind ViewModel.PasteClipWithSnakeCaseCommand}"
                                 Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}" />
-                <MenuFlyoutItem x:Uid="ContextMenu_PasteAsKebabCase"
+                <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_PasteAs_KebabCase"
                                 CommandParameter="{Binding}"
                                 Command="{x:Bind ViewModel.PasteClipWithKebabCaseCommand}"
                                 Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}" />
             </MenuFlyoutSubItem>
-            <MenuFlyoutItem x:Uid="ContextMenu_Copy"
+            <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_Copy"
                             KeyboardAcceleratorTextOverride="Ctrl+C"
                             CommandParameter="{Binding}"
                             Command="{x:Bind ViewModel.CopyClipCommand}"
                             Icon="{tk:FontIcon Glyph=&#xE8C8;}" />
-            <MenuFlyoutItem x:Uid="ContextMenu_Edit"
+            <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_Edit"
                             KeyboardAcceleratorTextOverride="Ctrl+U"
                             CommandParameter="{Binding}"
                             Command="{x:Bind ViewModel.EditClipCommand}"
                             Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
                             Icon="{tk:FontIcon Glyph=&#xE70F;}" />
-            <MenuFlyoutItem x:Uid="ContextMenu_Delete"
+            <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_Delete"
                             CommandParameter="{Binding}"
                             Command="{x:Bind ViewModel.DeleteClipCommand}"
                             Icon="{tk:FontIcon Glyph=&#xE74D;}" />
             <MenuFlyoutSeparator />
-            <MenuFlyoutSubItem x:Uid="ContextMenu_Tags"
+            <MenuFlyoutSubItem x:Uid="/Clipboard/Clip_ContextMenu_Tags"
                                Icon="{tk:FontIcon Glyph=&#xE8EC;}"
                                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
                                Loaded="MenuFlyoutTags_Loaded" />
-            <MenuFlyoutItem x:Uid="ContextMenu_Filter"
+            <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_FilterSource"
                             CommandParameter="{Binding Owner}"
                             Command="{x:Bind ViewModel.AddOwnerToFiltersCommand}"
                             Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
@@ -367,13 +365,13 @@
         </MenuFlyout>
 
         <MenuFlyout x:Key="MultipleSelectionClipsContextMenu">
-            <MenuFlyoutItem x:Uid="ContextMenu_AddToFavorite"
+            <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_AddToFavorites"
                             CommandParameter="{x:Bind OrderedSelectedClips, Mode=OneWay}"
                             Command="{x:Bind ViewModel.AddClipsToFavoritesCommand}"
                             IsEnabled="{Binding IsFavorite, Converter={StaticResource BoolNegationConverter}}"
                             Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
                             Icon="{tk:FontIcon Glyph=&#xE734;}" />
-            <MenuFlyoutItem x:Uid="ContextMenu_RemoveFromFavorite"
+            <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_RemoveFromFavorites"
                             CommandParameter="{x:Bind OrderedSelectedClips, Mode=OneWay}"
                             Command="{x:Bind ViewModel.RemoveClipsFromFavoritesCommand}"
                             IsEnabled="{Binding IsFavorite}"
@@ -381,47 +379,47 @@
                             Icon="{tk:FontIcon Glyph=&#xE8D9;}" />
             <MenuFlyoutSeparator />
             <MenuFlyoutItem x:Name="PasteClipsMenuFlyoutItem"
-                            x:Uid="ContextMenu_Paste"
+                            x:Uid="/Clipboard/Clip_ContextMenu_Paste"
                             CommandParameter="{x:Bind OrderedSelectedClips, Mode=OneWay}"
                             Command="{x:Bind ViewModel.PasteClipsCommand}"
                             Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
                             Icon="{tk:FontIcon Glyph=&#xE77F;}" />
-            <MenuFlyoutSubItem x:Uid="ContextMenu_PasteAs"
+            <MenuFlyoutSubItem x:Uid="/Clipboard/Clip_ContextMenu_PasteAs"
                                Icon="{tk:FontIcon Glyph=&#xE8D2;}"
                                IsEnabled="{Binding IsEnabled, ElementName=PasteClipsMenuFlyoutItem}"
                                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}">
-                <MenuFlyoutItem x:Uid="ContextMenu_PasteAsUpperCase"
+                <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_PasteAs_UpperCase"
                                 CommandParameter="{x:Bind OrderedSelectedClips, Mode=OneWay}"
                                 Command="{x:Bind ViewModel.PasteClipsWithUpperCaseCommand}" />
-                <MenuFlyoutItem x:Uid="ContextMenu_PasteAsLowerCase"
+                <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_PasteAs_LowerCase"
                                 CommandParameter="{x:Bind OrderedSelectedClips, Mode=OneWay}"
                                 Command="{x:Bind ViewModel.PasteClipsWithLowerCaseCommand}" />
-                <MenuFlyoutItem x:Uid="ContextMenu_PasteAsCapitalizeCase"
+                <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_PasteAs_CapitalizedCase"
                                 CommandParameter="{x:Bind OrderedSelectedClips, Mode=OneWay}"
-                                Command="{x:Bind ViewModel.PasteClipsWithCapitalizeCaseCommand}" />
-                <MenuFlyoutItem x:Uid="ContextMenu_PasteAsSentenceCase"
+                                Command="{x:Bind ViewModel.PasteClipsWithCapitalizedCaseCommand}" />
+                <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_PasteAs_SentenceCase"
                                 CommandParameter="{x:Bind OrderedSelectedClips, Mode=OneWay}"
                                 Command="{x:Bind ViewModel.PasteClipsWithSentenceCaseCommand}" />
-                <MenuFlyoutItem x:Uid="ContextMenu_PasteAsInvertCase"
+                <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_PasteAs_InvertCase"
                                 CommandParameter="{x:Bind OrderedSelectedClips, Mode=OneWay}"
                                 Command="{x:Bind ViewModel.PasteClipsWithInvertCaseCommand}" />
-                <MenuFlyoutItem x:Uid="ContextMenu_PasteAsTrimWhitespace"
+                <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_PasteAs_TrimWhitespace"
                                 CommandParameter="{x:Bind OrderedSelectedClips, Mode=OneWay}"
                                 Command="{x:Bind ViewModel.PasteClipsWithTrimWhitespaceCommand}" />
             </MenuFlyoutSubItem>
-            <MenuFlyoutItem x:Uid="ContextMenu_Copy"
+            <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_Copy"
                             KeyboardAcceleratorTextOverride="Ctrl+C"
                             CommandParameter="{x:Bind OrderedSelectedClips, Mode=OneWay}"
                             Command="{x:Bind ViewModel.CopyClipsCommand}"
                             Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
                             Icon="{tk:FontIcon Glyph=&#xE8C8;}" />
-            <MenuFlyoutItem x:Uid="ContextMenu_Delete"
+            <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_Delete"
                             CommandParameter="{x:Bind OrderedSelectedClips, Mode=OneWay}"
                             Command="{x:Bind ViewModel.DeleteClipsCommand}"
                             Icon="{tk:FontIcon Glyph=&#xE74D;}" />
             <MenuFlyoutSeparator Visibility="{Binding Visibility, ElementName=FilterClipsMenuFlyoutItem}" />
             <MenuFlyoutItem x:Name="FilterClipsMenuFlyoutItem"
-                            x:Uid="ContextMenu_Filter"
+                            x:Uid="/Clipboard/Clip_ContextMenu_FilterSource"
                             CommandParameter="{x:Bind OrderedSelectedClips, Mode=OneWay}"
                             Command="{x:Bind ViewModel.AddOwnersToFiltersCommand}"
                             Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
@@ -453,8 +451,8 @@
             <VisualStateGroup>
                 <VisualState x:Name="PinnedWindowState">
                     <VisualState.StateTriggers>
-                        <triggers:IsEqualStateTrigger Value="{x:Bind ViewModel.IsWindowPinned, Mode=OneWay}"
-                                                      To="True" />
+                        <tk:IsEqualStateTrigger Value="{x:Bind ViewModel.IsWindowPinned, Mode=OneWay}"
+                                                To="True" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="RootGrid.Padding"
@@ -469,8 +467,8 @@
             <VisualStateGroup>
                 <VisualState x:Name="RoundedCornerState">
                     <VisualState.StateTriggers>
-                        <triggers:IsEqualStateTrigger Value="{x:Bind _window.IsRoundedCornerSupported, Mode=OneTime}"
-                                                      To="True" />
+                        <tk:IsEqualStateTrigger Value="{x:Bind _window.IsRoundedCornerSupported, Mode=OneTime}"
+                                                To="True" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="RootGrid.CornerRadius"
@@ -481,8 +479,8 @@
             <VisualStateGroup>
                 <VisualState x:Name="NoneSelectionMode">
                     <VisualState.StateTriggers>
-                        <triggers:IsEqualStateTrigger Value="{x:Bind MultiSelectionToggleButton.IsChecked, Mode=OneWay}"
-                                                      To="False" />
+                        <tk:IsEqualStateTrigger Value="{x:Bind MultiSelectionToggleButton.IsChecked, Mode=OneWay}"
+                                                To="False" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="ClipsListView.SelectionMode"
@@ -493,8 +491,8 @@
                 </VisualState>
                 <VisualState x:Name="MultipleSelectionMode">
                     <VisualState.StateTriggers>
-                        <triggers:IsEqualStateTrigger Value="{x:Bind MultiSelectionToggleButton.IsChecked, Mode=OneWay}"
-                                                      To="True" />
+                        <tk:IsEqualStateTrigger Value="{x:Bind MultiSelectionToggleButton.IsChecked, Mode=OneWay}"
+                                                To="True" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="ClipsListView.SelectionMode"
@@ -546,7 +544,7 @@
                     Spacing="4"
                     Orientation="Horizontal"
                     VerticalAlignment="Center">
-            <Button x:Uid="TitleButton_More"
+            <Button x:Uid="/Clipboard/TitleBar_MoreButton"
                     AutomationProperties.AutomationId="TitleBarButtons"
                     AutomationProperties.Name="More"
                     AccessKey="M"
@@ -556,7 +554,7 @@
                     Style="{ThemeResource AlternateButtonStyle}"
                     Flyout="{StaticResource TitleBarContextMenuFlyout}" />
 
-            <Button x:Uid="TitleButton_Close"
+            <Button x:Uid="/Clipboard/TitleBar_CloseButton"
                     AutomationProperties.AutomationId="TitleBarButtons"
                     AutomationProperties.Name="Close Window"
                     AccessKey="E"
@@ -579,7 +577,7 @@
             </Grid.ColumnDefinitions>
 
             <AutoSuggestBox x:Name="SearchBox"
-                            x:Uid="SearchBox"
+                            x:Uid="/Clipboard/SearchBox"
                             AutomationProperties.AutomationId="SearchBox"
                             AutomationProperties.Name="Search Clips"
                             Grid.Column="0"
@@ -590,7 +588,7 @@
                             KeyDown="SearchBox_KeyDown"/>
 
             <Button x:Name="FilterButton"
-                    x:Uid="FilterButton"
+                    x:Uid="/Clipboard/FilterButton"
                     AutomationProperties.AutomationId="FilterButton"
                     AutomationProperties.Name="Filter Clips"
                     AccessKey="F"
@@ -604,7 +602,7 @@
                     Flyout="{StaticResource FilterButtonFlyout}" />
 
             <ToggleButton x:Name="MultiSelectionToggleButton"
-                          x:Uid="MultiSelectionToggleButton"
+                          x:Uid="/Clipboard/MultiSelectionButton"
                           AutomationProperties.AutomationId="MultiSelectionButton"
                           AutomationProperties.Name="Enable Multiple Selection"
                           AccessKey="S"
@@ -638,7 +636,7 @@
                       FontSize="16"
                       Glyph="&#xF167;"
                       Foreground="{ThemeResource InfoBarWarningSeverityIconBackground}" />
-            <TextBlock x:Uid="Banner_PausedMonitoring"
+            <TextBlock x:Uid="/Clipboard/PauseMonitoringBanner"
                        Grid.Column="1"
                        TextWrapping="Wrap" />
         </Grid>
@@ -815,7 +813,7 @@
                        Style="{ThemeResource BodyTextBlockStyle}" />
 
             <CheckBox x:Name="SelectAllCheckBox"
-                      x:Uid="SelectAllCheckBox"
+                      x:Uid="/Clipboard/SelectAllClips"
                       Grid.Column="1"
                       MinWidth="20"
                       MinHeight="20"

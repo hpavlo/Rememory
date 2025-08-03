@@ -5,22 +5,25 @@
       xmlns:local="using:Rememory.Views.Settings"
       xmlns:tk="using:CommunityToolkit.WinUI"
       xmlns:tkcontrols="using:CommunityToolkit.WinUI.Controls">
-    <StackPanel Margin="56 0"
-                Spacing="5">
-        <tkcontrols:SettingsCard Header="{x:Bind AppName}"
-                                 HeaderIcon="{tk:FontIcon Glyph=&#xE946;}">
-            <tkcontrols:SettingsCard.Description>
-                <TextBlock Text="{x:Bind AppVersion}"
-                           IsTextSelectionEnabled="True"
-                           HorizontalAlignment="Left" />
-            </tkcontrols:SettingsCard.Description>
-        </tkcontrols:SettingsCard>
+    <ScrollViewer Padding="56,20,56,5">
+        <StackPanel>
+            <tkcontrols:SettingsCard Margin="0,0,0,5"
+                                     Header="{x:Bind AppName}"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xE946;}">
+                <tkcontrols:SettingsCard.Description>
+                    <TextBlock Text="{x:Bind AppVersion}"
+                               IsTextSelectionEnabled="True"
+                               HorizontalAlignment="Left" />
+                </tkcontrols:SettingsCard.Description>
+            </tkcontrols:SettingsCard>
 
-        <tkcontrols:SettingsCard x:Uid="SettingsCard_GitHubLink"
-                                 HeaderIcon="{tk:FontIcon Glyph=&#xE774;}">
-            <HyperlinkButton NavigateUri="{x:Bind GithubLink}">
-                <FontIcon Glyph="&#xE8A7;" />
-            </HyperlinkButton>
-        </tkcontrols:SettingsCard>
-    </StackPanel>
+            <tkcontrols:SettingsCard x:Uid="/Settings/About_Repository"
+                                     Margin="0,0,0,5"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xE774;}">
+                <HyperlinkButton NavigateUri="{x:Bind GithubLink}">
+                    <FontIcon Glyph="&#xE8A7;" />
+                </HyperlinkButton>
+            </tkcontrols:SettingsCard>
+        </StackPanel>
+    </ScrollViewer>
 </Page>

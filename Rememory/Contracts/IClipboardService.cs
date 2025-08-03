@@ -103,7 +103,8 @@ namespace Rememory.Contracts
         /// Deletes old clips from the collection and persistent storage if there are more than <paramref name="quantity"/>.
         /// </summary>
         /// <param name="quantity">Number of clips to leave.</param>
-        void DeleteOldClipsByQuantity(int quantity);
+        /// <param name="deleteFavoriteClips">If <c>true</c>, old favorite clips will also be deleted; otherwise, they will be preserved.</param>
+        void DeleteOldClipsByQuantity(int quantity, bool deleteFavoriteClips);
 
         /// <summary>
         /// Deletes all clips from the collection and persistent storage.

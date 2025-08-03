@@ -62,7 +62,7 @@ namespace Rememory.Views
             _noneSelectionClipsContextMenu = (MenuFlyout)Resources["NoneSelectionClipsContextMenu"];
             _multipleSelectionClipsContextMenu = (MenuFlyout)Resources["MultipleSelectionClipsContextMenu"];
 
-            SelectedClipsCountTextBlock.Text = "SelectedClipsCount".GetLocalizedFormatResource(ClipsListView.SelectedItems.Count);
+            SelectedClipsCountTextBlock.Text = "/Clipboard/SelectedClipsCount/Text".GetLocalizedFormatResource(ClipsListView.SelectedItems.Count);
         }
 
         private void Window_Showing(object sender, EventArgs e)
@@ -537,7 +537,7 @@ namespace Rememory.Views
                 _ => null
             };
 
-            SelectedClipsCountTextBlock.Text = "SelectedClipsCount".GetLocalizedFormatResource(ClipsListView.SelectedItems.Count);
+            SelectedClipsCountTextBlock.Text = "/Clipboard/SelectedClipsCount/Text".GetLocalizedFormatResource(ClipsListView.SelectedItems.Count);
         }
 
         private void SelectAllCheckBox_Click(object sender, RoutedEventArgs e)

@@ -87,24 +87,34 @@
             </NavigationView.Resources>
             <NavigationView.MenuItems>
                 <NavigationViewItem x:Name="GeneralMenuItem"
-                                    x:Uid="SettingsPageTitle_General"
+                                    x:Uid="/Settings/PageTitle_General"
                                     Icon="{tk:FontIcon Glyph=&#xE713;}" />
                 <NavigationViewItem x:Name="PersonalizationMenuItem"
-                                    x:Uid="SettingsPageTitle_Personalization"
+                                    x:Uid="/Settings/PageTitle_Personalization"
                                     Icon="{tk:FontIcon Glyph=&#xE790;}" />
+                <NavigationViewItem x:Name="ClipboardMenuItem"
+                                    x:Uid="/Settings/PageTitle_Clipboard"
+                                    Icon="{tk:FontIcon Glyph=&#xF0E3;}" />
+                <NavigationViewItem x:Name="MetadataMenuItem"
+                                    x:Uid="/Settings/PageTitle_Metadata"
+                                    Icon="{tk:FontIcon Glyph=&#xE723;}" />
+                <NavigationViewItem x:Name="TagsMenuItem"
+                                    x:Uid="/Settings/PageTitle_Tags"
+                                    Icon="{tk:FontIcon Glyph=&#xE8EC;}" />
                 <NavigationViewItem x:Name="StorageMenuItem"
-                                    x:Uid="SettingsPageTitle_Storage"
+                                    x:Uid="/Settings/PageTitle_Storage"
                                     Icon="{tk:FontIcon Glyph=&#xE74E;}" />
+                <NavigationViewItem x:Name="FiltersMenuItem"
+                                    x:Uid="/Settings/PageTitle_Filters"
+                                    Icon="{tk:FontIcon Glyph=&#xE71C;}" />
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem x:Name="AboutMenuItem"
-                                    x:Uid="SettingsPageTitle_About"
+                                    x:Uid="/Settings/PageTitle_About"
                                     Icon="{tk:FontIcon Glyph=&#xE946;}" />
             </NavigationView.FooterMenuItems>
 
-            <ScrollViewer Margin="0 20 0 5">
-                <Frame x:Name="NavigationViewFrame" />
-            </ScrollViewer>
+            <Frame x:Name="NavigationViewFrame" />
         </NavigationView>
     </Grid>
 </Page>

@@ -26,7 +26,7 @@ namespace Rememory.Converters
             {
                 if (DataMap.TryGetValue(ClipboardFormat.Text, out var textData))
                 {
-                    return "CharactersCount".GetLocalizedFormatResource(textData.Data.Length);
+                    return "/Clipboard/ClipFooter_CharactersCount/Text".GetLocalizedFormatResource(textData.Data.Length);
                 }
                 if (DataMap.TryGetValue(ClipboardFormat.Png, out var imageFile) || DataMap.TryGetValue(ClipboardFormat.Bitmap, out imageFile))
                 {
@@ -34,7 +34,7 @@ namespace Rememory.Converters
                     {
                         var file = await StorageFile.GetFileFromPathAsync(imageFile.Data);
                         var imageProps = await file.Properties.GetImagePropertiesAsync();
-                        return "ImageSize".GetLocalizedFormatResource(imageProps.Width, imageProps.Height);
+                        return "/Clipboard/ClipFooter_ImageSize/Text".GetLocalizedFormatResource(imageProps.Width, imageProps.Height);
                     }
                     catch { }
                 }

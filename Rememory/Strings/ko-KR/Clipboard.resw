@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PauseMonitoringBanner.Text" xml:space="preserve">
+    <value>클립보드 데이터 저장이 일시 중지되었습니다</value>
+  </data>
+  <data name="ClipFooter_CharactersCount.Text" xml:space="preserve">
+    <value>{0,plural, other{#자}}</value>
+  </data>
+  <data name="ClipFooter_ImageSize.Text" xml:space="preserve">
+    <value>크기: {0} x {1}</value>
+  </data>
+  <data name="ClipFooter_Time_DaysAgo.Text" xml:space="preserve">
+    <value>{0, plural, other {#일 전}}</value>
+  </data>
+  <data name="ClipFooter_Time_HoursAgo.Text" xml:space="preserve">
+    <value>{0, plural, other {#시간 전}}</value>
+  </data>
+  <data name="ClipFooter_Time_MinutesAgo.Text" xml:space="preserve">
+    <value>{0, plural, other {#분 전}}</value>
+  </data>
+  <data name="ClipFooter_Time_SecondsAgo.Text" xml:space="preserve">
+    <value>{0, plural, other {#초 전}}</value>
+  </data>
+  <data name="ClipFooter_Time_Now.Text" xml:space="preserve">
+    <value>지금</value>
+  </data>
+  <data name="Clip_NoPreview.Text" xml:space="preserve">
+    <value>미리보기 없음</value>
+  </data>
+  <data name="Clip_ContextMenu_AddToFavorites.Text" xml:space="preserve">
+    <value>즐겨찾기에 추가</value>
+  </data>
+  <data name="Clip_ContextMenu_RemoveFromFavorites.Text" xml:space="preserve">
+    <value>즐겨찾기에서 제거</value>
+  </data>
+  <data name="Clip_ContextMenu_OpenInBrowser.Text" xml:space="preserve">
+    <value>브라우저에서 열기</value>
+  </data>
+  <data name="Clip_ContextMenu_OpenInFlyout.Text" xml:space="preserve">
+    <value>플라이아웃에서 열기</value>
+  </data>
+  <data name="Clip_ContextMenu_Paste.Text" xml:space="preserve">
+    <value>붙여넣기</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs.Text" xml:space="preserve">
+    <value>형식 지정 붙여넣기</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs_PlainText.Text" xml:space="preserve">
+    <value>일반 텍스트</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs_CamelCase.Text" xml:space="preserve">
+    <value>Camel case</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs_CapitalizedCase.Text" xml:space="preserve">
+    <value>각 단어 첫 글자 대문자</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs_InvertCase.Text" xml:space="preserve">
+    <value>대소문자 반전</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs_KebabCase.Text" xml:space="preserve">
+    <value>Kebab case</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs_LowerCase.Text" xml:space="preserve">
+    <value>소문자</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs_PascalCase.Text" xml:space="preserve">
+    <value>Pascal case</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs_SentenceCase.Text" xml:space="preserve">
+    <value>문장 형식</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs_SnakeCase.Text" xml:space="preserve">
+    <value>Snake case</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs_TrimWhitespace.Text" xml:space="preserve">
+    <value>공백 제거</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs_UpperCase.Text" xml:space="preserve">
+    <value>대문자</value>
+  </data>
+  <data name="Clip_ContextMenu_Copy.Text" xml:space="preserve">
+    <value>복사</value>
+  </data>
+  <data name="Clip_ContextMenu_Edit.Text" xml:space="preserve">
+    <value>편집</value>
+  </data>
+  <data name="Clip_ContextMenu_Delete.Text" xml:space="preserve">
+    <value>삭제</value>
+  </data>
+  <data name="Clip_ContextMenu_Tags.Text" xml:space="preserve">
+    <value>태그</value>
+  </data>
+  <data name="Clip_ContextMenu_FilterSource.Text" xml:space="preserve">
+    <value>이 소스 필터링</value>
+  </data>
+  <data name="NavigationTab_Home.Text" xml:space="preserve">
+    <value>홈</value>
+  </data>
+  <data name="NavigationTab_Favorites.Text" xml:space="preserve">
+    <value>즐겨찾기</value>
+  </data>
+  <data name="NavigationTab_Images.Text" xml:space="preserve">
+    <value>이미지</value>
+  </data>
+  <data name="NavigationTab_Links.Text" xml:space="preserve">
+    <value>링크</value>
+  </data>
+  <data name="SearchBox.PlaceholderText" xml:space="preserve">
+    <value>검색</value>
+  </data>
+  <data name="TitleBar_CloseButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>닫기</value>
+  </data>
+  <data name="TitleBar_MoreButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>더 보기</value>
+  </data>
+  <data name="TitleBarMenu_PauseMonitoring.Text" xml:space="preserve">
+    <value>모니터링 일시 중지</value>
+  </data>
+  <data name="TitleBarMenu_ResumeMonitoring.Text" xml:space="preserve">
+    <value>모니터링 재개</value>
+  </data>
+  <data name="TitleBarMenu_PinWindow.Text" xml:space="preserve">
+    <value>창 고정</value>
+  </data>
+  <data name="TitleBarMenu_UnpinWindow.Text" xml:space="preserve">
+    <value>창 고정 해제</value>
+  </data>
+  <data name="TitleBarMenu_Settings.Text" xml:space="preserve">
+    <value>설정</value>
+  </data>
+  <data name="TitleBarMenu_Quit.Text" xml:space="preserve">
+    <value>종료</value>
+  </data>
+  <data name="FilterButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>필터</value>
+  </data>
+  <data name="FilterTreeView_Apps.Text" xml:space="preserve">
+    <value>앱</value>
+  </data>
+  <data name="MultiSelectionButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>선택 모드</value>
+  </data>
+  <data name="SelectAllClips.ToolTipService.ToolTip" xml:space="preserve">
+    <value>전체 선택</value>
+  </data>
+  <data name="SelectedClipsCount.Text" xml:space="preserve">
+    <value>{0, plural, other {# 개의 클립이 선택됨}}</value>
+  </data>
+</root>

@@ -86,8 +86,8 @@ namespace Rememory
             if (!_launchArguments.Contains("-silent") && SettingsContext.IsNotificationOnStartEnabled)
             {
                 AppNotificationManager.Default.Show(new AppNotificationBuilder()
-                    .AddText("AppNotification_AppIsRunning".GetLocalizedResource())
-                    .AddText("AppNotification_UseShortcutToOpen".GetLocalizedFormatResource(
+                    .AddText("AppNotification_Title".GetLocalizedResource())
+                    .AddText("AppNotification_Text".GetLocalizedFormatResource(
                         KeyboardHelper.ShortcutToString(SettingsContext.ActivationShortcut, "+")))
                     .BuildNotification());
             }

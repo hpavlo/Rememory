@@ -2,25 +2,25 @@ using CommunityToolkit.WinUI.Controls;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Rememory.Helper;
-using Rememory.ViewModels;
+using Rememory.ViewModels.Settings;
 
 namespace Rememory.Views.Settings
 {
     public sealed partial class GeneralPage : Page
     {
-        public readonly SettingsGeneralPageViewModel ViewModel = new();
+        public readonly GeneralPageViewModel ViewModel = new();
 
         public GeneralPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void RestartAsAdministratorSettings_Loaded(object sender, RoutedEventArgs e)
         {
             var settingsExpander = (SettingsExpander)sender;
             settingsExpander.Header = (AdministratorHelper.IsAppRunningAsAdministrator() ?
-                "SettingsExpanderHeader_RunningAsAdministrator" :
-                "SettingsExpanderHeader_RestartAsAdministrator")
+                "/Settings/General_RunningAsAdmin/Header" :
+                "/Settings/General_RestartAsAdmin/Header")
                 .GetLocalizedResource();
         }
 

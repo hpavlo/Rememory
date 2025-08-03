@@ -8,21 +8,21 @@
     <StackPanel>
         <StackPanel.Resources>
             <TeachingTip x:Name="PatternTeachingTip"
-                         x:Uid="FilterDialogBox_TeachingTip"
+                         x:Uid="/Settings/FilterDialog_TeachingTip"
                          Subtitle="C:\Apps\AppName\app.exe&#x0a;C:\**\*.exe&#x0a;**\app.exe"
                          Target="{x:Bind PatternTextBox}" />
         </StackPanel.Resources>
         
         <TextBox x:Name="NameTextBox"
-                 x:Uid="FilterDialogBox_NameTextBox"
+                 x:Uid="/Settings/FilterDialog_Name"
                  Margin="0 0 0 16"
                  Text="{x:Bind FilterName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <TextBox x:Name="PatternTextBox"
-                 x:Uid="FilterDialogBox_PatternTextBox"
+                 x:Uid="/Settings/FilterDialog_Pattern"
                  Margin="0 0 0 8"
                  Text="{x:Bind FilterPattern, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  TextChanged="Pattern_TextChanged" />
-        <HyperlinkButton x:Uid="FilterDialogBox_ExampleButton"
+        <HyperlinkButton x:Uid="/Settings/FilterDialog_ExampleButton"
                          Padding="4"
                          Click="PatternExamplesButton_Click" />
     </StackPanel>

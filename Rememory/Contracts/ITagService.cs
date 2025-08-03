@@ -31,7 +31,8 @@ namespace Rememory.Contracts
         /// </summary>
         /// <param name="name">The name of the tag to register.</param>
         /// <param name="colorBrush">Tag color brush.</param>
-        void RegisterTag(string name, SolidColorBrush colorBrush);
+        /// <param name="isCleaningEnabled">If checked, old clips with this tag will be cleaned up.</param>
+        void RegisterTag(string name, SolidColorBrush colorBrush, bool isCleaningEnabled);
 
         /// <summary>
         /// Unregisters a tag by removing its association with clips and deleting it from storage.

@@ -41,7 +41,7 @@ namespace Rememory.Services
             _ownerService = ownerService;
             _tagService = tagService;
             _linkPreviewService = linkPreviewService;
-            _clipboardCallback = CallbackFunc;
+            _clipboardCallback = OnNewClipDetected;
 
             Clips = ReadClipsFromStorage();
         }
@@ -186,7 +186,7 @@ namespace Rememory.Services
 
             if (SettingsContext.CleanupType == CleanupType.Quantity)
             {
-                DeleteOldClipsByQuantity(SettingsContext.CleanupQuantity);
+                DeleteOldClipsByQuantity(SettingsContext.CleanupQuantity, SettingsContext.IsFavoriteClipsCleaningEnabled);
             }
         }
 
@@ -231,11 +231,11 @@ namespace Rememory.Services
 
         public void DeleteOldClipsByTime(DateTime cutoffTime, bool deleteFavoriteClips)
         {
-            _storageService.DeleteOldClipsByTime(cutoffTime, deleteFavoriteClips);
-
             var clipsToDelete = Clips
-                .Where(clip => clip.ClipTime < cutoffTime && (deleteFavoriteClips || !clip.IsFavorite))
+                .Where(clip => clip.ClipTime < cutoffTime && (deleteFavoriteClips || !clip.IsFavorite) && clip.Tags.All(tag => tag.IsCleaningEnabled))
                 .ToList();
+
+            _storageService.DeleteOldClipsByTime(cutoffTime, deleteFavoriteClips);
 
             foreach (var clip in clipsToDelete)
             {
@@ -243,21 +243,21 @@ namespace Rememory.Services
             }
         }
 
-        public void DeleteOldClipsByQuantity(int quantity)
+        public void DeleteOldClipsByQuantity(int quantity, bool deleteFavoriteClips)
         {
-            if (Clips.Count <= quantity)
+            var filteredClips = Clips
+                .Where(clip => (deleteFavoriteClips || !clip.IsFavorite) && clip.Tags.All(tag => tag.IsCleaningEnabled))
+                .OrderByDescending(clip => clip.ClipTime)
+                .ToArray();
+
+            if (filteredClips.Length <= quantity)
             {
                 return;
             }
 
-            _storageService.DeleteOldClipsByQuantity(quantity);
+            _storageService.DeleteOldClipsByQuantity(quantity, deleteFavoriteClips);
 
-            var clipsToDelete = Clips
-                .OrderByDescending(clip => clip.ClipTime)
-                .TakeLast(Clips.Count - quantity)
-                .ToList();
-
-            foreach (var clip in clipsToDelete)
+            foreach (var clip in filteredClips.TakeLast(filteredClips.Length - quantity))
             {
                 DeleteClip(clip, false);
             }
@@ -323,7 +323,7 @@ namespace Rememory.Services
             return [];
         }
 
-        private bool CallbackFunc(ref ClipboardDataInfo dataInfo)
+        private bool OnNewClipDetected(ref ClipboardDataInfo dataInfo)
         {
             string? ownerPath = Marshal.PtrToStringUni(dataInfo.OwnerPath);
             byte[]? iconPixels = null;
@@ -352,7 +352,6 @@ namespace Rememory.Services
             }
 
             ClipModel clip = new();
-            _ownerService.RegisterClipOwner(clip, ownerPath, iconPixels);
 
             for (uint i = 0; i < dataInfo.FormatCount; i++)
             {
@@ -367,7 +366,7 @@ namespace Rememory.Services
                 string convertedData = ClipboardFormatHelper.DataTypeToStringConverters[dataFormat.Value]((dataFormatInfo.Data, dataFormatInfo.Size));
                 if (string.IsNullOrEmpty(convertedData))
                 {
-                    return false;
+                    continue;
                 }
 
                 var hash = new byte[32];
@@ -376,6 +375,13 @@ namespace Rememory.Services
                 DataModel clipData = new(dataFormat.Value, convertedData, hash);
                 clip.Data.TryAdd(dataFormat.Value, clipData);
             }
+
+            if (clip.Data.Count == 0)
+            {
+                return false;
+            }
+
+            _ownerService.RegisterClipOwner(clip, ownerPath, iconPixels);
 
             if (!TryMoveDuplicateItem(clip))
             {

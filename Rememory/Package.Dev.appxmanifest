@@ -24,8 +24,11 @@
 	</Dependencies>
 
 	<Resources>
+		<Resource Language="ar-SA"/>
+		<Resource Language="de-DE"/>
 		<Resource Language="en-US"/>
 		<Resource Language="fr-FR"/>
+		<Resource Language="ko-KR"/>
 		<Resource Language="uk-UA"/>
 		<Resource Language="zh-CN"/>
 	</Resources>

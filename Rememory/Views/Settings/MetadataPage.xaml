@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page x:Class="Rememory.Views.Settings.MetadataPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:Rememory.Views.Settings"
+      xmlns:tk="using:CommunityToolkit.WinUI"
+      xmlns:tkcontrols="using:CommunityToolkit.WinUI.Controls"
+      DataContext="{x:Bind ViewModel}">
+    <ScrollViewer Padding="56,20,56,5">
+        <StackPanel>
+            <TextBlock x:Uid="/Settings/Metadata_LinkPreviewSection"
+                       Margin="0,8,0,8"
+                       Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
+
+            <tkcontrols:SettingsCard x:Uid="/Settings/Metadata_LinkPreview"
+                                     Margin="0,0,0,5"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xE8A1;}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsLinkPreviewLoadingEnabled, Mode=TwoWay}" />
+            </tkcontrols:SettingsCard>
+
+            <TextBlock x:Uid="/Settings/Metadata_ColorPreviewSection"
+                       Margin="0,28,0,8"
+                       Text="Color preview"
+                       Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
+
+            <tkcontrols:SettingsCard x:Uid="/Settings/Metadata_HexColorPrefix"
+                                     Margin="0,0,0,5"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xEF3C;}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsHexColorPrefixRequired, Mode=TwoWay}" />
+            </tkcontrols:SettingsCard>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

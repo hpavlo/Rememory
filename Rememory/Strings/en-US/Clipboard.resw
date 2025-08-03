@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PauseMonitoringBanner.Text" xml:space="preserve">
+    <value>Saving clipboard data is paused</value>
+  </data>
+  <data name="ClipFooter_CharactersCount.Text" xml:space="preserve">
+    <value>{0, plural, one {# character} other {# characters}}</value>
+  </data>
+  <data name="ClipFooter_ImageSize.Text" xml:space="preserve">
+    <value>Size: {0} x {1}</value>
+  </data>
+  <data name="ClipFooter_Time_DaysAgo.Text" xml:space="preserve">
+    <value>{0, plural, one {# day ago} other {# days ago}}</value>
+  </data>
+  <data name="ClipFooter_Time_HoursAgo.Text" xml:space="preserve">
+    <value>{0, plural, one {# hour ago} other {# hours ago}}</value>
+  </data>
+  <data name="ClipFooter_Time_MinutesAgo.Text" xml:space="preserve">
+    <value>{0, plural, one {# minute ago} other {# minutes ago}}</value>
+  </data>
+  <data name="ClipFooter_Time_SecondsAgo.Text" xml:space="preserve">
+    <value>{0, plural, one {# second ago} other {# seconds ago}}</value>
+  </data>
+  <data name="ClipFooter_Time_Now.Text" xml:space="preserve">
+    <value>Now</value>
+  </data>
+  <data name="Clip_NoPreview.Text" xml:space="preserve">
+    <value>No preview</value>
+  </data>
+  <data name="Clip_ContextMenu_AddToFavorites.Text" xml:space="preserve">
+    <value>Add to favorites</value>
+  </data>
+  <data name="Clip_ContextMenu_RemoveFromFavorites.Text" xml:space="preserve">
+    <value>Remove from favorites</value>
+  </data>
+  <data name="Clip_ContextMenu_OpenInBrowser.Text" xml:space="preserve">
+    <value>Open in browser</value>
+  </data>
+  <data name="Clip_ContextMenu_OpenInFlyout.Text" xml:space="preserve">
+    <value>Open in flyout</value>
+  </data>
+  <data name="Clip_ContextMenu_Paste.Text" xml:space="preserve">
+    <value>Paste</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs.Text" xml:space="preserve">
+    <value>Paste as</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs_PlainText.Text" xml:space="preserve">
+    <value>Plain text</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs_CamelCase.Text" xml:space="preserve">
+    <value>Camel case</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs_CapitalizedCase.Text" xml:space="preserve">
+    <value>Capitalized case</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs_InvertCase.Text" xml:space="preserve">
+    <value>Invert case</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs_KebabCase.Text" xml:space="preserve">
+    <value>Kebab case</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs_LowerCase.Text" xml:space="preserve">
+    <value>Lower case</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs_PascalCase.Text" xml:space="preserve">
+    <value>Pascal case</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs_SentenceCase.Text" xml:space="preserve">
+    <value>Sentence case</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs_SnakeCase.Text" xml:space="preserve">
+    <value>Snake case</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs_TrimWhitespace.Text" xml:space="preserve">
+    <value>Trim whitespace</value>
+  </data>
+  <data name="Clip_ContextMenu_PasteAs_UpperCase.Text" xml:space="preserve">
+    <value>Upper case</value>
+  </data>
+  <data name="Clip_ContextMenu_Copy.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="Clip_ContextMenu_Edit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Clip_ContextMenu_Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Clip_ContextMenu_Tags.Text" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="Clip_ContextMenu_FilterSource.Text" xml:space="preserve">
+    <value>Filter this source</value>
+  </data>
+  <data name="NavigationTab_Home.Text" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="NavigationTab_Favorites.Text" xml:space="preserve">
+    <value>Favorites</value>
+  </data>
+  <data name="NavigationTab_Images.Text" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="NavigationTab_Links.Text" xml:space="preserve">
+    <value>Links</value>
+  </data>
+  <data name="SearchBox.PlaceholderText" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="TitleBar_CloseButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="TitleBar_MoreButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>More</value>
+  </data>
+  <data name="TitleBarMenu_PauseMonitoring.Text" xml:space="preserve">
+    <value>Pause monitoring</value>
+  </data>
+  <data name="TitleBarMenu_ResumeMonitoring.Text" xml:space="preserve">
+    <value>Resume monitoring</value>
+  </data>
+  <data name="TitleBarMenu_PinWindow.Text" xml:space="preserve">
+    <value>Pin window</value>
+  </data>
+  <data name="TitleBarMenu_UnpinWindow.Text" xml:space="preserve">
+    <value>Unpin window</value>
+  </data>
+  <data name="TitleBarMenu_Settings.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="TitleBarMenu_Quit.Text" xml:space="preserve">
+    <value>Quit</value>
+  </data>
+  <data name="FilterButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="FilterTreeView_Apps.Text" xml:space="preserve">
+    <value>Apps</value>
+  </data>
+  <data name="MultiSelectionButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Selection mode</value>
+  </data>
+  <data name="SelectAllClips.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Select all</value>
+  </data>
+  <data name="SelectedClipsCount.Text" xml:space="preserve">
+    <value>{0, plural, one {# clip selected} other {# clips selected}}</value>
+  </data>
+</root>

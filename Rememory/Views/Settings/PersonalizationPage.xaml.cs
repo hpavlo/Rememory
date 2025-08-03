@@ -1,6 +1,6 @@
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
-using Rememory.ViewModels;
+using Rememory.ViewModels.Settings;
 using System.Collections.Generic;
 using Windows.UI;
 
@@ -8,7 +8,7 @@ namespace Rememory.Views.Settings
 {
     public sealed partial class PersonalizationPage : Page
     {
-        public readonly SettingsPersonalizationPageViewModel ViewModel = new();
+        public readonly PersonalizationPageViewModel ViewModel = new();
 
         private readonly List<SolidColorBrush> _suggestedBackgroundColors = [
             new(Color.FromArgb(0, 0, 0, 0)),

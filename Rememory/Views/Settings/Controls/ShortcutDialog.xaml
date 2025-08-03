@@ -37,7 +37,7 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <TextBlock x:Uid="ShortcutDialogBox_Subtitle"
+        <TextBlock x:Uid="/Settings/ShortcutDialog_Subtitle"
                    Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
 
         <ItemsControl x:Name="ShortcutItems"
@@ -69,7 +69,7 @@
         </ItemsControl>
 
         <InfoBar x:Name="ErrorInfoBar"
-                 x:Uid="ShortcutDialogBox_ErrorInfoBar"
+                 x:Uid="/Settings/ShortcutDialog_ErrorInfo"
                  Grid.Row="2"
                  Margin="5 0"
                  Severity="Error"

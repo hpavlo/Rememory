@@ -19,7 +19,8 @@ namespace Rememory.Services.Migrations
             CREATE TABLE IF NOT EXISTS Tags (
               Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
               Name TEXT NOT NULL,
-              Color TEXT NOT NULL
+              Color TEXT NOT NULL,
+              IsCleaningEnabled INTEGER NOT NULL
             );
 
             CREATE TABLE IF NOT EXISTS ClipTags (

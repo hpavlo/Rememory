@@ -23,9 +23,9 @@ namespace Rememory.Services
             Tags = ReadTagsFromStorage();
         }
 
-        public void RegisterTag(string name, SolidColorBrush colorBrush)
+        public void RegisterTag(string name, SolidColorBrush colorBrush, bool isCleaningEnabled)
         {
-            TagModel tag = new(name, colorBrush);
+            TagModel tag = new(name, colorBrush, isCleaningEnabled);
             Tags.Add(tag);
             _storageService.AddTag(tag);
             OnTagRegistered(tag);

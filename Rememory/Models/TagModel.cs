@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace Rememory.Models
 {
-    public partial class TagModel(string name, SolidColorBrush colorBrush) : ObservableObject
+    public partial class TagModel(string name, SolidColorBrush colorBrush, bool isCleaningEnabled) : ObservableObject
     {
         public int Id { get; set; }
 
@@ -21,6 +21,13 @@ namespace Rememory.Models
         {
             get => _colorBrush;
             set => SetProperty(ref _colorBrush, value);
+        }
+
+        private bool _isCleaningEnabled = isCleaningEnabled;
+        public bool IsCleaningEnabled
+        {
+            get => _isCleaningEnabled;
+            set => SetProperty(ref _isCleaningEnabled, value);
         }
 
         public IList<ClipModel> Clips { get; set; } = [];

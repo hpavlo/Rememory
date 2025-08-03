@@ -7,9 +7,9 @@ using Rememory.Models;
 using Rememory.Views.Settings;
 using System;
 
-namespace Rememory.ViewModels
+namespace Rememory.ViewModels.Settings
 {
-    public partial class SettingsGeneralPageViewModel : ObservableObject
+    public partial class GeneralPageViewModel : ObservableObject
     {
         public SettingsContext SettingsContext => SettingsContext.Instance;
 
@@ -61,7 +61,7 @@ namespace Rememory.ViewModels
             }
         }
 
-        public SettingsGeneralPageViewModel()
+        public GeneralPageViewModel()
         {
             _runAtStartupToggle = _startupService.IsStartupEnabled;
             _runAsAdministratorToggle = _startupService.IsStartupAsAdministratorEnabled;
@@ -82,8 +82,8 @@ namespace Rememory.ViewModels
         private void ShowAccessExceptionMessageBox()
         {
             var res = NativeHelper.MessageBox(SettingsWindow.WindowHandle,
-                            "MessageBox_AccessDenied/Text".GetLocalizedResource(),
-                            "MessageBox_AccessDenied/Caption".GetLocalizedResource(),
+                            "To do this action please restart this app as Administrator",
+                            "Access denied",
                             0x00000031);   // MB_OKCANCEL and MB_ICONWARNING
             if (res == 1 && RestartAsAdministratorCommand.CanExecute(null))
             {

@@ -30,7 +30,7 @@
         </StackPanel>
 
         <Grid Grid.Row="1"
-              Margin="8 4 8 8">
+              Margin="8,4,8,8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -39,7 +39,7 @@
 
             <StackPanel Spacing="8"
                         Orientation="Horizontal">
-                <Button x:Uid="Editor_SaveButton"
+                <Button x:Uid="/Editor/SaveButton"
                         Style="{ThemeResource AccentButtonStyle}"
                         Command="{Binding SaveTextCommand}"
                         IsEnabled="{x:Bind ViewModel.IsTextChanged, Mode=OneWay}">
@@ -48,12 +48,12 @@
                         <FontIcon FontSize="16"
                                   Glyph="&#xE74E;" />
                         
-                        <TextBlock x:Uid="Editor_SaveButtonContent" />
+                        <TextBlock x:Uid="/Editor/SaveButton_Content" />
                     </StackPanel>
                 </Button>
 
                 <Button x:Name="CanUndoButton"
-                        x:Uid="Editor_UndoButton"
+                        x:Uid="/Editor/UndoButton"
                         Padding="8,4,8,4"
                         IsEnabled="False"
                         Background="Transparent"
@@ -64,7 +64,7 @@
                         Click="{x:Bind EditorTextBox.Undo}" />
                 
                 <Button x:Name="CanRedoButton"
-                        x:Uid="Editor_RedoButton"
+                        x:Uid="/Editor/RedoButton"
                         Padding="8,4,8,4"
                         IsEnabled="False"
                         Background="Transparent"
@@ -78,24 +78,24 @@
             <StackPanel Grid.Column="2"
                         Spacing="8"
                         Orientation="Horizontal">
-                <Button x:Uid="Editor_MoreButton"
+                <Button x:Uid="/Editor/MoreButton"
                         VerticalAlignment="Stretch"
                         Content="{tk:FontIcon FontSize=14, Glyph=&#xE712;}">
                     <Button.Flyout>
                         <MenuFlyout>
-                            <ToggleMenuFlyoutItem x:Uid="EditorMenuFlyout_More_TextWrapping"
+                            <ToggleMenuFlyoutItem x:Uid="/Editor/MoreButtonMenu_TextWrapping"
                                                   Icon="{tk:FontIcon Glyph=&#xE751;}"
                                                   IsChecked="True"
                                                   Click="EordWrapToggle_Click" />
-                            
-                            <ToggleMenuFlyoutItem x:Uid="EditorMenuFlyout_More_SpellCheck"
+
+                            <ToggleMenuFlyoutItem x:Uid="/Editor/MoreButtonMenu_SpellCheck"
                                                   Icon="{tk:FontIcon Glyph=&#xF87B;}"
                                                   IsChecked="{x:Bind EditorTextBox.IsSpellCheckEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </MenuFlyout>
                     </Button.Flyout>
                 </Button>
 
-                <Button x:Uid="Editor_ExtendButton"
+                <Button x:Uid="/Editor/ExtendButton"
                         VerticalAlignment="Stretch"
                         Content="{tk:FontIcon FontSize=14, Glyph=&#xE740;}"
                         Click="PresenterButton_Click" />
@@ -180,7 +180,7 @@
                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
 
             <RepeatButton x:Name="ScaleDownButton"
-                          x:Uid="Editor_ZoomOutButton"
+                          x:Uid="/Editor/ZoomOutButton"
                           Grid.Column="1"
                           Padding="4,4,4,4"
                           BorderBrush="Transparent"
@@ -201,7 +201,7 @@
                        Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
             
             <RepeatButton x:Name="ScaleUpButton"
-                          x:Uid="Editor_ZoomInButton"
+                          x:Uid="/Editor/ZoomInButton"
                           Grid.Column="3"
                           Padding="4,4,4,4"
                           BorderBrush="Transparent"

@@ -249,6 +249,18 @@ namespace Rememory.Services
               AND (
                 @deleteFavoriteClips
                 OR NOT IsFavorite
+              )
+              AND Id NOT IN (
+                SELECT
+                  c.Id
+                FROM
+                  Clips c
+                  JOIN ClipTags ct ON ct.ClipId = c.Id
+                  JOIN Tags t ON t.Id = ct.TagId
+                GROUP BY
+                  c.Id
+                HAVING
+                  COUNT(*) != SUM(t.IsCleaningEnabled)
               );
 
             VACUUM;
@@ -259,14 +271,30 @@ namespace Rememory.Services
             command.ExecuteNonQuery();
         }
 
-        public void DeleteOldClipsByQuantity(int quantity)
+        public void DeleteOldClipsByQuantity(int quantity, bool deleteFavoriteClips)
         {
             using var connection = CreateAndOpenConnection();
             using var command = connection.CreateCommand();
             command.CommandText = @"
             DELETE FROM Clips
             WHERE
-              Id NOT IN (
+              (
+                @deleteFavoriteClips
+                OR NOT IsFavorite
+              )
+              AND Id NOT IN (
+                SELECT
+                  c.Id
+                FROM
+                  Clips c
+                  JOIN ClipTags ct ON ct.ClipId = c.Id
+                  JOIN Tags t ON t.Id = ct.TagId
+                GROUP BY
+                  c.Id
+                HAVING
+                  COUNT(*) != SUM(t.IsCleaningEnabled)
+              )
+              AND Id NOT IN (
                 SELECT
                   Id
                 FROM
@@ -276,8 +304,11 @@ namespace Rememory.Services
                 LIMIT
                   @quantity
               );
+
+            VACUUM;
             ";
 
+            command.Parameters.AddWithValue("deleteFavoriteClips", deleteFavoriteClips);
             command.Parameters.AddWithValue("quantity", quantity);
             command.ExecuteNonQuery();
         }
@@ -307,7 +338,8 @@ namespace Rememory.Services
             SELECT
               Id,
               Name,
-              Color
+              Color,
+              IsCleaningEnabled
             FROM
               Tags;
             ";
@@ -318,8 +350,9 @@ namespace Rememory.Services
                 int id = reader.GetInt32(0);
                 string name = reader.GetString(1);
                 string color = reader.GetString(2);
+                bool isCleaningEnabled = reader.GetBoolean(3);
 
-                yield return new TagModel(name, new Microsoft.UI.Xaml.Media.SolidColorBrush(color.ToColor())) { Id = id };
+                yield return new TagModel(name, new Microsoft.UI.Xaml.Media.SolidColorBrush(color.ToColor()), isCleaningEnabled) { Id = id };
             }
         }
 
@@ -329,9 +362,9 @@ namespace Rememory.Services
             using var command = connection.CreateCommand();
             command.CommandText = @"
             INSERT INTO
-              Tags (Name, Color)
+              Tags (Name, Color, IsCleaningEnabled)
             VALUES
-              (@name, @color);
+              (@name, @color, @isCleaningEnabled);
 
             SELECT
               last_insert_rowid();
@@ -339,6 +372,7 @@ namespace Rememory.Services
 
             command.Parameters.AddWithValue("name", tag.Name);
             command.Parameters.AddWithValue("color", tag.ColorBrush.Color.ToHex());
+            command.Parameters.AddWithValue("isCleaningEnabled", tag.IsCleaningEnabled);
             tag.Id = Convert.ToInt32(command.ExecuteScalar());
         }
 
@@ -350,7 +384,8 @@ namespace Rememory.Services
             UPDATE Tags
             SET
               Name = @name,
-              Color = @color
+              Color = @color,
+              IsCleaningEnabled = @isCleaningEnabled
             WHERE
               Id = @id;
             ";
@@ -358,6 +393,7 @@ namespace Rememory.Services
             command.Parameters.AddWithValue("id", tag.Id);
             command.Parameters.AddWithValue("name", tag.Name);
             command.Parameters.AddWithValue("color", tag.ColorBrush.Color.ToHex());
+            command.Parameters.AddWithValue("isCleaningEnabled", tag.IsCleaningEnabled);
             command.ExecuteNonQuery();
         }
 

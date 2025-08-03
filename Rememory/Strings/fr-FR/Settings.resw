@@ -1,0 +1,553 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="WindowTitle.Text" xml:space="preserve">
+    <value>{0} - Paramètres</value>
+  </data>
+  <data name="PageTitle_General.Content" xml:space="preserve">
+    <value>Général</value>
+  </data>
+  <data name="PageTitle_Personalization.Content" xml:space="preserve">
+    <value>Personnalisation</value>
+  </data>
+  <data name="PageTitle_Clipboard.Content" xml:space="preserve">
+    <value>Presse-papiers</value>
+  </data>
+  <data name="PageTitle_Metadata.Content" xml:space="preserve">
+    <value>Métadonnées</value>
+  </data>
+  <data name="PageTitle_Tags.Content" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="PageTitle_Storage.Content" xml:space="preserve">
+    <value>Stockage</value>
+  </data>
+  <data name="PageTitle_Filters.Content" xml:space="preserve">
+    <value>Filtres</value>
+  </data>
+  <data name="PageTitle_About.Content" xml:space="preserve">
+    <value>À propos</value>
+  </data>
+  <data name="General_AppLanguage.Header" xml:space="preserve">
+    <value>Langue de l'application</value>
+  </data>
+  <data name="General_AppLanguage.Description" xml:space="preserve">
+    <value>Sélectionnez la langue de l'application ou utilisez celle du système par défaut</value>
+  </data>
+  <data name="General_AppLanguage_Default.Content" xml:space="preserve">
+    <value>Par défaut</value>
+  </data>
+  <data name="General_AppLanguage_Arabic.Content" xml:space="preserve">
+    <value>Arabe</value>
+  </data>
+  <data name="General_AppLanguage_ChineseSimplified.Content" xml:space="preserve">
+    <value>Chinois (Simplifié)</value>
+  </data>
+  <data name="General_AppLanguage_English.Content" xml:space="preserve">
+    <value>Anglais</value>
+  </data>
+  <data name="General_AppLanguage_French.Content" xml:space="preserve">
+    <value>Français</value>
+  </data>
+  <data name="General_AppLanguage_German.Content" xml:space="preserve">
+    <value>Allemand</value>
+  </data>
+  <data name="General_AppLanguage_Greek.Content" xml:space="preserve">
+    <value>Grec</value>
+  </data>
+  <data name="General_AppLanguage_Italian.Content" xml:space="preserve">
+    <value>Italien</value>
+  </data>
+  <data name="General_AppLanguage_Japanese.Content" xml:space="preserve">
+    <value>Japonais</value>
+  </data>
+  <data name="General_AppLanguage_Korean.Content" xml:space="preserve">
+    <value>Coréen</value>
+  </data>
+  <data name="General_AppLanguage_Polish.Content" xml:space="preserve">
+    <value>Polonais</value>
+  </data>
+  <data name="General_AppLanguage_Portuguese.Content" xml:space="preserve">
+    <value>Portugais </value>
+  </data>
+  <data name="General_AppLanguage_Spanish.Content" xml:space="preserve">
+    <value>Espagnol</value>
+  </data>
+  <data name="General_AppLanguage_Turkish.Content" xml:space="preserve">
+    <value>Turc</value>
+  </data>
+  <data name="General_AppLanguage_Ukrainian.Content" xml:space="preserve">
+    <value>Ukrainien</value>
+  </data>
+  <data name="General_AppLanguageFlyout.Title" xml:space="preserve">
+    <value>Redémarrage requis</value>
+  </data>
+  <data name="General_AppLanguageFlyout.Subtitle" xml:space="preserve">
+    <value>Pour changer la langue de l'application, vous devez redémarrer le programme</value>
+  </data>
+  <data name="General_AppLanguageFlyoutButton.Content" xml:space="preserve">
+    <value>Redémarrer l'application</value>
+  </data>
+  <data name="General_ShortcutsSection.Text" xml:space="preserve">
+    <value>Raccourcis</value>
+  </data>
+  <data name="General_ActivationShortcut.Header" xml:space="preserve">
+    <value>Raccourci d'activation</value>
+  </data>
+  <data name="General_ActivationShortcut.Description" xml:space="preserve">
+    <value>Définir la combinaison de touches pour ouvrir le gestionnaire de presse-papiers</value>
+  </data>
+  <data name="General_ActivationShortcutButton.Text" xml:space="preserve">
+    <value>Changer le raccourci</value>
+  </data>
+  <data name="General_StartupSection.Text" xml:space="preserve">
+    <value>Démarrage</value>
+  </data>
+  <data name="General_RestartAsAdmin.Header" xml:space="preserve">
+    <value>Redémarrer en tant qu'administrateur</value>
+  </data>
+  <data name="General_RunningAsAdmin.Header" xml:space="preserve">
+    <value>Exécuté en tant qu’administrateur</value>
+  </data>
+  <data name="General_RestartAsAdminButton.Content" xml:space="preserve">
+    <value>Redémarrer en tant qu'administrateur</value>
+  </data>
+  <data name="General_RestartAsAdmin.Description" xml:space="preserve">
+    <value>Paramètres avancés nécessitant des privilèges administrateur</value>
+  </data>
+  <data name="General_AlwaysRunAsAdmin.Header" xml:space="preserve">
+    <value>Toujours exécuter en tant qu'administrateur</value>
+  </data>
+  <data name="General_AlwaysRunAsAdmin.Description" xml:space="preserve">
+    <value>Activer cette option pour toujours exécuter l'application avec des privilèges administrateur</value>
+  </data>
+  <data name="General_RunAtStartup.Header" xml:space="preserve">
+    <value>Démarrage automatique</value>
+  </data>
+  <data name="General_RunAtStartup.Description" xml:space="preserve">
+    <value>Activer cette option pour lancer automatiquement Rememory au démarrage de l'ordinateur</value>
+  </data>
+  <data name="General_NotificationOnStartup.Header" xml:space="preserve">
+    <value>Notification au démarrage</value>
+  </data>
+  <data name="General_NotificationOnStartup.Description" xml:space="preserve">
+    <value>Afficher une notification après l'ouverture de l'application</value>
+  </data>
+  <data name="Personalization_AppTheme.Header" xml:space="preserve">
+    <value>Thème de l'application</value>
+  </data>
+  <data name="Personalization_AppTheme.Description" xml:space="preserve">
+    <value>Sélectionnez votre thème préféré pour l'interface de l'application</value>
+  </data>
+  <data name="Personalization_AppTheme_Default.Content" xml:space="preserve">
+    <value>Par défaut</value>
+  </data>
+  <data name="Personalization_AppTheme_Light.Content" xml:space="preserve">
+    <value>Clair</value>
+  </data>
+  <data name="Personalization_AppTheme_Dark.Content" xml:space="preserve">
+    <value>Sombre</value>
+  </data>
+  <data name="Personalization_BackgroundSection.Text" xml:space="preserve">
+    <value>Arrière-plan</value>
+  </data>
+  <data name="Personalization_Backdrop.Header" xml:space="preserve">
+    <value>Arrière-plan</value>
+  </data>
+  <data name="Personalization_Backdrop.Description" xml:space="preserve">
+    <value>Changer l'arrière-plan de la fenêtre</value>
+  </data>
+  <data name="Personalization_Backdrop_None.Content" xml:space="preserve">
+    <value>Aucun</value>
+  </data>
+  <data name="Personalization_Backdrop_Acrylic.Content" xml:space="preserve">
+    <value>Acrylic</value>
+  </data>
+  <data name="Personalization_Backdrop_ThinAcrylic.Content" xml:space="preserve">
+    <value>Thin Acrylic</value>
+  </data>
+  <data name="Personalization_Backdrop_Mica.Content" xml:space="preserve">
+    <value>Mica</value>
+  </data>
+  <data name="Personalization_Backdrop_MicaAlt.Content" xml:space="preserve">
+    <value>Mica Alt</value>
+  </data>
+  <data name="Personalization_BackgroundColor.Header" xml:space="preserve">
+    <value>Couleur d'arrière-plan</value>
+  </data>
+  <data name="Personalization_BackgroundColor.Description" xml:space="preserve">
+    <value>Changer la couleur d'arrière-plan dans la fenêtre</value>
+  </data>
+  <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
+    <value>Fenêtre du presse-papier</value>
+  </data>
+  <data name="Personalization_WindowPosition.Header" xml:space="preserve">
+    <value>Position de la fenêtre du presse-papiers</value>
+  </data>
+  <data name="Personalization_WindowPosition.Description" xml:space="preserve">
+    <value>Personnaliser la position de la fenêtre sur votre écran</value>
+  </data>
+  <data name="Personalization_WindowPosition_Caret.Content" xml:space="preserve">
+    <value>Curseur de saisie</value>
+  </data>
+  <data name="Personalization_WindowPosition_Cursor.Content" xml:space="preserve">
+    <value>Curseur</value>
+  </data>
+  <data name="Personalization_WindowPosition_ScreenCenter.Content" xml:space="preserve">
+    <value>Centre de l'écran</value>
+  </data>
+  <data name="Personalization_WindowPosition_LastPosition.Content" xml:space="preserve">
+    <value>Dernière position</value>
+  </data>
+  <data name="Personalization_WindowPosition_Right.Content" xml:space="preserve">
+    <value>Droite</value>
+  </data>
+  <data name="Personalization_WindowPosition_RightCorner.Content" xml:space="preserve">
+    <value>Coin droit</value>
+  </data>
+  <data name="Personalization_WindowWidth.Header" xml:space="preserve">
+    <value>Largeur</value>
+  </data>
+  <data name="Personalization_WindowWidth.Description" xml:space="preserve">
+    <value>Définir la largeur de la fenêtre (en pixels)</value>
+  </data>
+  <data name="Personalization_WindowHeight.Header" xml:space="preserve">
+    <value>Hauteur</value>
+  </data>
+  <data name="Personalization_WindowHeight.Description" xml:space="preserve">
+    <value>Définir la hauteur de la fenêtre (en pixels)</value>
+  </data>
+  <data name="Personalization_WindowMargin.Header" xml:space="preserve">
+    <value>Marge</value>
+  </data>
+  <data name="Personalization_WindowMargin.Description" xml:space="preserve">
+    <value>Définir la marge autour de la fenêtre (en pixels)</value>
+  </data>
+  <data name="Clipboard_ClipsSection.Text" xml:space="preserve">
+    <value>Clips</value>
+  </data>
+  <data name="Clipboard_DragAndDrop.Header" xml:space="preserve">
+    <value>Glisser-déposer</value>
+  </data>
+  <data name="Clipboard_DragAndDrop.Description" xml:space="preserve">
+    <value>Activer le glisser-déposer pour les clips</value>
+  </data>
+  <data name="Clipboard_DeveloperStringCaseConversions.Header" xml:space="preserve">
+    <value>Conversion de casse pour les développeurs</value>
+  </data>
+  <data name="Clipboard_DeveloperStringCaseConversions.Description" xml:space="preserve">
+    <value>Activer les commandes avancées pour convertir du texte en Camel Case, Pascal Case, Snake Case et Kebab Case</value>
+  </data>
+  <data name="Clipboard_SearchBarSection.Text" xml:space="preserve">
+    <value>Barre de recherche</value>
+  </data>
+  <data name="Clipboard_SearchBoxFocus.Header" xml:space="preserve">
+    <value>Focus sur la zone de recherche</value>
+  </data>
+  <data name="Clipboard_SearchBoxFocus.Description" xml:space="preserve">
+    <value>Le champ de recherche sera automatiquement focalisé lorsque la fenêtre s'ouvrira</value>
+  </data>
+  <data name="Clipboard_ClearSearchOnOpen.Header" xml:space="preserve">
+    <value>Effacer la recherche à l'ouverture</value>
+  </data>
+  <data name="Clipboard_ClearSearchOnOpen.Description" xml:space="preserve">
+    <value>Effacer le texte de recherche lorsque la fenêtre s'ouvre</value>
+  </data>
+  <data name="Clipboard_TabsSection.Text" xml:space="preserve">
+    <value>Onglets</value>
+  </data>
+  <data name="Clipboard_SetInitialTabOnOpen.Header" xml:space="preserve">
+    <value>Définir l'onglet initial à l'ouverture</value>
+  </data>
+  <data name="Clipboard_SetInitialTabOnOpen.Description" xml:space="preserve">
+    <value>Démarrer avec l'onglet Accueil lorsque la fenêtre s'ouvre</value>
+  </data>
+  <data name="Clipboard_OtherSection.Text" xml:space="preserve">
+    <value>Autre</value>
+  </data>
+  <data name="Clipboard_RememberPinState.Header" xml:space="preserve">
+    <value>Se souvenir de l’état d’épinglage de la fenêtre</value>
+  </data>
+  <data name="Clipboard_RememberPinState.Description" xml:space="preserve">
+    <value>Mémorise l’état d’épinglage de la fenêtre pour qu’elle s’ouvre de la même manière</value>
+  </data>
+  <data name="Metadata_LinkPreviewSection.Text" xml:space="preserve">
+    <value>Aperçu du lien</value>
+  </data>
+  <data name="Metadata_LinkPreview.Header" xml:space="preserve">
+    <value>Aperçu du lien</value>
+  </data>
+  <data name="Metadata_LinkPreview.Description" xml:space="preserve">
+    <value>Charger les informations de prévisualisation du lien. Les données précédemment chargées resteront inchangées</value>
+  </data>
+  <data name="Metadata_ColorPreviewSection.Text" xml:space="preserve">
+    <value>Aperçu de la couleur</value>
+  </data>
+  <data name="Metadata_HexColorPrefix.Header" xml:space="preserve">
+    <value>Requiert un préfixe de couleur hexadécimal</value>
+  </data>
+  <data name="Metadata_HexColorPrefix.Description" xml:space="preserve">
+    <value>Si activé, seuls les codes de couleur hexadécimal commençant par '#' seront reconnus comme des couleurs valides</value>
+  </data>
+  <data name="Tags_Tags.Header" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="Tags_Tags.Description" xml:space="preserve">
+    <value>Créez des tags personnalisés et attribuez-les à vos clips</value>
+  </data>
+  <data name="Tags_TagsButton.Content" xml:space="preserve">
+    <value>Ajouter une étiquette</value>
+  </data>
+  <data name="Tags_Tag_ClipsCount.Text" xml:space="preserve">
+    <value>Nombre de clips : {0}</value>
+  </data>
+  <data name="Storage_EraseData.Header" xml:space="preserve">
+    <value>Effacer les données du presse-papiers</value>
+  </data>
+  <data name="Storage_EraseData.Description" xml:space="preserve">
+    <value>Supprimer toutes les données enregistrées du presse-papiers de votre ordinateur</value>
+  </data>
+  <data name="Storage_EraseDataButton.Content" xml:space="preserve">
+    <value>Supprimer toutes les données</value>
+  </data>
+  <data name="Storage_EraseDataFlyout.Text" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir supprimer toutes les données enregistrées?</value>
+  </data>
+  <data name="Storage_EraseDataFlyoutButton.Content" xml:space="preserve">
+    <value>Oui, supprimer toutes les données</value>
+  </data>
+  <data name="Storage_CleanupSection.Text" xml:space="preserve">
+    <value>Nettoyage</value>
+  </data>
+  <data name="Storage_CleanupType.Header" xml:space="preserve">
+    <value>Type de nettoyage</value>
+  </data>
+  <data name="Storage_CleanupType.Description" xml:space="preserve">
+    <value>Spécifier comment les vieux clips doivent être supprimés</value>
+  </data>
+  <data name="Storage_CleanupType_RetentionPeriod.Content" xml:space="preserve">
+    <value>Période de conservation</value>
+  </data>
+  <data name="Storage_CleanupType_Quantity.Content" xml:space="preserve">
+    <value>Quantité</value>
+  </data>
+  <data name="Storage_CleanupQuantity.Header" xml:space="preserve">
+    <value>Quantité maximale de clips</value>
+  </data>
+  <data name="Storage_CleanupQuantity.Description" xml:space="preserve">
+    <value>Détermine le nombre maximal de clips pouvant être stockés sur votre disque</value>
+  </data>
+  <data name="Storage_RetentionPeriod.Header" xml:space="preserve">
+    <value>Période de conservation des données</value>
+  </data>
+  <data name="Storage_RetentionPeriod.Description" xml:space="preserve">
+    <value>Spécifiez la durée de conservation des données du presse-papiers sur votre disque</value>
+  </data>
+  <data name="Storage_RetentionPeriod_Daily.Content" xml:space="preserve">
+    <value>Quotidien</value>
+  </data>
+  <data name="Storage_RetentionPeriod_Weekly.Content" xml:space="preserve">
+    <value>Hebdomadaire</value>
+  </data>
+  <data name="Storage_RetentionPeriod_Monthly.Content" xml:space="preserve">
+    <value>Mensuel</value>
+  </data>
+  <data name="Storage_RetentionPeriod_Always.Content" xml:space="preserve">
+    <value>Toujours</value>
+  </data>
+  <data name="Storage_FavoriteClipsCleaning.Header" xml:space="preserve">
+    <value>Nettoyage des clips favoris</value>
+  </data>
+  <data name="Storage_FavoriteClipsCleaning.Description" xml:space="preserve">
+    <value>Nettoyer les clips favoris en dehors de la période de rétention</value>
+  </data>
+  <data name="Storage_ClipLimitsSection.Text" xml:space="preserve">
+    <value>Limites des clips</value>
+  </data>
+  <data name="Storage_SizeLimit.Header" xml:space="preserve">
+    <value>Limite de taille du clip</value>
+  </data>
+  <data name="Storage_SizeLimit.Description" xml:space="preserve">
+    <value>Définir la taille maximale autorisée par clip. Les clips qui dépassent cette limite seront rejetés</value>
+  </data>
+  <data name="Storage_MaxClipSize.Header" xml:space="preserve">
+    <value>Taille maximale du clip</value>
+  </data>
+  <data name="Storage_MaxClipSize.Description" xml:space="preserve">
+    <value>Taille maximale autorisée par clip (en Mo)</value>
+  </data>
+  <data name="Storage_ClipSizeWarning.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Peut augmenter l'utilisation du disque</value>
+  </data>
+  <data name="Filters_OwnerFilters.Header" xml:space="preserve">
+    <value>Filtres par application propriétaire</value>
+  </data>
+  <data name="Filters_OwnerFilters.Description" xml:space="preserve">
+    <value>Le gestionnaire du presse-papiers n'enregistrera aucune donnée de ces programmes</value>
+  </data>
+  <data name="Filters_OwnerFiltersButton.Content" xml:space="preserve">
+    <value>Ajouter un filtre</value>
+  </data>
+  <data name="Filters_OwnerFiltersWarning.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Le filtrage ne fonctionne pas correctement avec les
+applications UWP et WebView2</value>
+  </data>
+  <data name="Filters_Filter_ClipsCount.Text" xml:space="preserve">
+    <value>Articles filtrés: {0}</value>
+  </data>
+  <data name="About_Repository.Header" xml:space="preserve">
+    <value>Répertoire GitHub</value>
+  </data>
+  <data name="ShortcutDialog_Title.Text" xml:space="preserve">
+    <value>Raccourci d'activation</value>
+  </data>
+  <data name="ShortcutDialog_Subtitle.Text" xml:space="preserve">
+    <value>Appuyez sur une combinaison de touches pour changer ce raccourci</value>
+  </data>
+  <data name="ShortcutDialog_ErrorInfo.Title" xml:space="preserve">
+    <value>Raccourci invalide</value>
+  </data>
+  <data name="ShortcutDialog_ErrorInfo.Message" xml:space="preserve">
+    <value>Le raccourci doit commencer par la touche Windows, Ctrl, Alt ou Shift</value>
+  </data>
+  <data name="TagDialog_Title.Text" xml:space="preserve">
+    <value>Modifier le tag</value>
+  </data>
+  <data name="TagDialog_Name.PlaceholderText" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="TagDialog_CleanupCheckBox.Content" xml:space="preserve">
+    <value>Autoriser le nettoyage des clips avec ce tag</value>
+  </data>
+  <data name="FilterDialog_Title.Text" xml:space="preserve">
+    <value>Modifier le filtre</value>
+  </data>
+  <data name="FilterDialog_Name.PlaceholderText" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="FilterDialog_Pattern.PlaceholderText" xml:space="preserve">
+    <value>Schéma</value>
+  </data>
+  <data name="FilterDialog_ExampleButton.Content" xml:space="preserve">
+    <value>Exemples de patterns</value>
+  </data>
+  <data name="FilterDialog_TeachingTip.Title" xml:space="preserve">
+    <value>Exemples de patterns</value>
+  </data>
+</root>

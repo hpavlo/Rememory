@@ -12,11 +12,11 @@ namespace Rememory.Converters
             var elapsed = DateTime.Now - ((DateTime)value);
             return elapsed switch
             {
-                { Days: > 0 } => "DaysAgo".GetLocalizedFormatResource(elapsed.Days),
-                { Hours: > 0 } => "HoursAgo".GetLocalizedFormatResource(elapsed.Hours),
-                { Minutes: > 0 } => "MinutesAgo".GetLocalizedFormatResource(elapsed.Minutes),
-                { Seconds: > 0 } => "SecondsAgo".GetLocalizedFormatResource(elapsed.Seconds),
-                _ => "Now".GetLocalizedResource()
+                { Days: > 0 } => "/Clipboard/ClipFooter_Time_DaysAgo/Text".GetLocalizedFormatResource(elapsed.Days),
+                { Hours: > 0 } => "/Clipboard/ClipFooter_Time_HoursAgo/Text".GetLocalizedFormatResource(elapsed.Hours),
+                { Minutes: > 0 } => "/Clipboard/ClipFooter_Time_MinutesAgo/Text".GetLocalizedFormatResource(elapsed.Minutes),
+                { Seconds: > 0 } => "/Clipboard/ClipFooter_Time_SecondsAgo/Text".GetLocalizedFormatResource(elapsed.Seconds),
+                _ => "/Clipboard/ClipFooter_Time_Now/Text".GetLocalizedResource()
             };
         }
 

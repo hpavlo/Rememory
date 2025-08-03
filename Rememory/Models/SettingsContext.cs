@@ -27,6 +27,8 @@ namespace Rememory.Models
 
         private static readonly ApplicationDataContainer _localSettings = ApplicationData.GetDefault().LocalSettings;
 
+        #region General
+
         private readonly List<string> _supportedLanguages;
         private string? _languageCode;
 
@@ -49,6 +51,40 @@ namespace Rememory.Models
         }
 
 
+        private List<int>? _activationShortcut;
+        public List<int> ActivationShortcutDefault { get; private set; } = [0x10, 0x56, 0x5B];   // Win + Shift + V
+
+        [Settings("ActivationShortcut")]
+        public List<int> ActivationShortcut
+        {
+            get => _activationShortcut ??= GetSettingValue<List<int>>(ActivationShortcutDefault);
+            set
+            {
+                if (SetSettingsProperty(ref _activationShortcut, value))
+                {
+                    unsafe
+                    {
+                        RememoryCoreHelper.UpdateTrayIconMenuItem(RememoryCoreHelper.TRAY_OPEN_COMMAND, new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged(
+                            $"{"TrayIconMenu_Open".GetLocalizedResource()}\t{KeyboardHelper.ShortcutToString(value, "+")}")));
+                    }
+                }
+            }
+        }
+
+
+        private bool? _isNotificationOnStartEnabled;
+
+        [Settings("IsNotificationOnStartEnabled", DefaultValue = true)]
+        public bool IsNotificationOnStartEnabled
+        {
+            get => _isNotificationOnStartEnabled ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _isNotificationOnStartEnabled, value);
+        }
+
+        #endregion
+
+        #region Personalisation
+
         private string? _theme;
 
         [Settings("Theme")]
@@ -63,7 +99,6 @@ namespace Rememory.Models
                 }
             }
         }
-
 
         private string? _windowBackdrop;
         private readonly WindowBackdropType _windowBackdropDefault = WindowBackdropHelper.IsSystemBackdropSupported ? WindowBackdropType.Acrylic : WindowBackdropType.None;
@@ -104,7 +139,10 @@ namespace Rememory.Models
 
 
         private int? _windowWidth;
-        private static bool WindowWidthValidate(int value) => value >= 320 && value <= 1200;
+        private static bool WindowWidthValidate(int value) => value >= WindowWidthLowerBound && value <= WindowWidthUpperBound;
+
+        public static readonly int WindowWidthLowerBound = 320;
+        public static readonly int WindowWidthUpperBound = 1200;
 
         [Settings("WindowWidth", DefaultValue = 380, Validator = nameof(WindowWidthValidate))]
         public int WindowWidth
@@ -115,7 +153,10 @@ namespace Rememory.Models
 
 
         private int? _windowHeight;
-        private static bool WindowHeightValidate(int value) => value >= 320 && value <= 1200;
+        private static bool WindowHeightValidate(int value) => value >= WindowHeightLowerBound && value <= WindowHeightUpperBound;
+
+        public static readonly int WindowHeightLowerBound = 320;
+        public static readonly int WindowHeightUpperBound = 1200;
 
         [Settings("WindowHeight", DefaultValue = 400, Validator = nameof(WindowHeightValidate))]
         public int WindowHeight
@@ -126,7 +167,10 @@ namespace Rememory.Models
 
 
         private int? _windowMargin;
-        private static bool WindowMarginValidate(int value) => value >= 0 && value <= 50;
+        private static bool WindowMarginValidate(int value) => value >= WindowMarginLowerBound && value <= WindowMarginUpperBound;
+
+        public static readonly int WindowMarginLowerBound = 0;
+        public static readonly int WindowMarginUpperBound = 50;
 
         [Settings("WindowMargin", DefaultValue = 10, Validator = nameof(WindowMarginValidate))]
         public int WindowMargin
@@ -135,77 +179,9 @@ namespace Rememory.Models
             set => SetSettingsProperty(ref _windowMargin, value);
         }
 
+        #endregion
 
-        private string? _cleanupType;
-
-        [Settings("CleanupType")]
-        public CleanupType CleanupType
-        {
-            get => EnumExtensions.FromDescription<CleanupType>(_cleanupType ??= GetSettingValue<string>(CleanupType.RetentionPeriod.GetDescription()));
-            set => SetSettingsProperty(ref _cleanupType, value.GetDescription());
-        }
-
-
-        private string? _cleanupTimeSpan;
-
-        [Settings("CleanupTimeSpan")]
-        public CleanupTimeSpan CleanupTimeSpan
-        {
-            get => EnumExtensions.FromDescription<CleanupTimeSpan>(_cleanupTimeSpan ??= GetSettingValue<string>(CleanupTimeSpan.Month.GetDescription()));
-            set => SetSettingsProperty(ref _cleanupTimeSpan, value.GetDescription());
-        }
-
-
-        private bool? _isCleanFavoriteClipsEnabled;
-
-        [Settings("IsCleanFavoriteClipsEnabled", DefaultValue = false)]
-        public bool IsCleanFavoriteClipsEnabled
-        {
-            get => _isCleanFavoriteClipsEnabled ??= GetSettingValue<bool>();
-            set => SetSettingsProperty(ref _isCleanFavoriteClipsEnabled, value);
-        }
-
-
-        private int? _cleanupQuantity;
-        private static bool CleanupQuantityValidate(int value) => value >= 10 && value <= 10_000;
-
-        [Settings("CleanupQuantity", DefaultValue = 50, Validator = nameof(CleanupQuantityValidate))]
-        public int CleanupQuantity
-        {
-            get => _cleanupQuantity ??= GetSettingValue<int>();
-            set => SetSettingsProperty(ref _cleanupQuantity, value);
-        }
-
-
-        private List<int>? _activationShortcut;
-        public List<int> ActivationShortcutDefault { get; private set; } = [0x10, 0x56, 0x5B];   // Win + Shift + V
-
-        [Settings("ActivationShortcut")]
-        public List<int> ActivationShortcut
-        {
-            get => _activationShortcut ??= GetSettingValue<List<int>>(ActivationShortcutDefault);
-            set
-            {
-                if (SetSettingsProperty(ref _activationShortcut, value))
-                {
-                    unsafe {
-                        RememoryCoreHelper.UpdateTrayIconMenuItem(RememoryCoreHelper.TRAY_OPEN_COMMAND, new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged(
-                            $"{"TrayIconMenu_Open".GetLocalizedResource()}\t{KeyboardHelper.ShortcutToString(value, "+")}")));
-                    }
-                }
-            }
-        }
-
-
-        private bool? _isLinkPreviewLoadingEnabled;
-
-        [Settings("IsLinkPreviewLoadingEnabled", DefaultValue = true)]
-        public bool IsLinkPreviewLoadingEnabled
-        {
-            get => _isLinkPreviewLoadingEnabled ??= GetSettingValue<bool>();
-            set => SetSettingsProperty(ref _isLinkPreviewLoadingEnabled, value);
-        }
-
+        #region Clipboard
 
         private bool? _isClipsDragAndDropEnabled;
 
@@ -230,13 +206,56 @@ namespace Rememory.Models
         }
 
 
-        private bool? _isNotificationOnStartEnabled;
+        private bool? _isDeveloperStringCaseConversionsEnabled;
 
-        [Settings("IsNotificationOnStartEnabled", DefaultValue = true)]
-        public bool IsNotificationOnStartEnabled
+        [Settings("IsDeveloperStringCaseConversionsEnabled", DefaultValue = false)]
+        public bool IsDeveloperStringCaseConversionsEnabled
         {
-            get => _isNotificationOnStartEnabled ??= GetSettingValue<bool>();
-            set => SetSettingsProperty(ref _isNotificationOnStartEnabled, value);
+            get => _isDeveloperStringCaseConversionsEnabled ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _isDeveloperStringCaseConversionsEnabled, value);
+        }
+
+
+        private bool? _isRememberWindowPinStateEnabled;
+
+        [Settings("IsRememberWindowPinStateEnabled", DefaultValue = false)]
+        public bool IsRememberWindowPinStateEnabled
+        {
+            get => _isRememberWindowPinStateEnabled ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _isRememberWindowPinStateEnabled, value);
+        }
+
+
+        private bool? _isClearSearchOnOpenEnabled;
+
+        [Settings("IsClearSearchOnOpenEnabled", DefaultValue = true)]
+        public bool IsClearSearchOnOpenEnabled
+        {
+            get => _isClearSearchOnOpenEnabled ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _isClearSearchOnOpenEnabled, value);
+        }
+
+
+        private bool? _isSetInitialTabOnOpenEnabled;
+
+        [Settings("IsSetInitialTabOnOpenEnabled", DefaultValue = true)]
+        public bool IsSetInitialTabOnOpenEnabled
+        {
+            get => _isSetInitialTabOnOpenEnabled ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _isSetInitialTabOnOpenEnabled, value);
+        }
+
+        #endregion
+
+        #region Metadata
+
+        private bool? _isLinkPreviewLoadingEnabled;
+
+        [Settings("IsLinkPreviewLoadingEnabled", DefaultValue = true)]
+        public bool IsLinkPreviewLoadingEnabled
+        {
+            get => _isLinkPreviewLoadingEnabled ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _isLinkPreviewLoadingEnabled, value);
         }
 
 
@@ -249,27 +268,122 @@ namespace Rememory.Models
             set => SetSettingsProperty(ref _isHexColorPrefixRequired, value);
         }
 
+        #endregion
 
-        private bool? _isDeveloperStringCaseConversionsEnabled;
+        #region Tags
 
-        [Settings("IsDeveloperStringCaseConversionsEnabled", DefaultValue = false)]
-        public bool IsDeveloperStringCaseConversionsEnabled
+        //private bool? _isTagCountVisible;
+
+        //[Settings("IsTagCountVisible", DefaultValue = false)]
+        //public bool IsTagCountVisible
+        //{
+        //    get => _isTagCountVisible ??= GetSettingValue<bool>();
+        //    set => SetSettingsProperty(ref _isTagCountVisible, value);
+        //}
+
+        #endregion
+
+        #region Storage
+
+        private string? _cleanupType;
+
+        [Settings("CleanupType")]
+        public CleanupType CleanupType
         {
-            get => _isDeveloperStringCaseConversionsEnabled ??= GetSettingValue<bool>();
-            set => SetSettingsProperty(ref _isDeveloperStringCaseConversionsEnabled, value);
+            get => EnumExtensions.FromDescription<CleanupType>(_cleanupType ??= GetSettingValue<string>(CleanupType.RetentionPeriod.GetDescription()));
+            set => SetSettingsProperty(ref _cleanupType, value.GetDescription());
         }
 
+
+        private string? _cleanupTimeSpan;
+
+        [Settings("CleanupTimeSpan")]
+        public CleanupTimeSpan CleanupTimeSpan
+        {
+            get => EnumExtensions.FromDescription<CleanupTimeSpan>(_cleanupTimeSpan ??= GetSettingValue<string>(CleanupTimeSpan.Month.GetDescription()));
+            set => SetSettingsProperty(ref _cleanupTimeSpan, value.GetDescription());
+        }
+
+
+        private int? _cleanupQuantity;
+        private static bool CleanupQuantityValidate(int value) => value >= CleanupQuantityLowerBound && value <= CleanupQuantityUpperBound;
+
+        public static readonly int CleanupQuantityLowerBound = 10;
+        public static readonly int CleanupQuantityUpperBound = 10_000;
+
+        [Settings("CleanupQuantity", DefaultValue = 50, Validator = nameof(CleanupQuantityValidate))]
+        public int CleanupQuantity
+        {
+            get => _cleanupQuantity ??= GetSettingValue<int>();
+            set => SetSettingsProperty(ref _cleanupQuantity, value);
+        }
+
+
+        private bool? _isFavoriteClipsCleaningEnabled;
+
+        [Settings("IsFavoriteClipsCleaningEnabled", DefaultValue = false)]
+        public bool IsFavoriteClipsCleaningEnabled
+        {
+            get => _isFavoriteClipsCleaningEnabled ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _isFavoriteClipsCleaningEnabled, value);
+        }
+
+
+        private bool? _isClipSizeValidationEnabled;
+
+        [Settings("IsClipSizeValidationEnabled", DefaultValue = true)]
+        public bool IsClipSizeValidationEnabled
+        {
+            get => _isClipSizeValidationEnabled ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _isClipSizeValidationEnabled, value);
+        }
+
+
+        private int? _maxClipSize;
+        private static bool MaxClipSizeValidate(int value) => value >= ClipSizeLowerBound && value <= ClipSizeUpperBound;
+
+        public static readonly int ClipSizeLowerBound = 1;
+        public static readonly int ClipSizeUpperBound = 64;
+
+        [Settings("MaxClipSize", DefaultValue = 8, Validator = nameof(MaxClipSizeValidate))]
+        public int MaxClipSize
+        {
+            get => _maxClipSize ??= GetSettingValue<int>();
+            set => SetSettingsProperty(ref _maxClipSize, value);
+        }
+
+        #endregion
+
+        #region Filters
 
         private ObservableCollection<OwnerAppFilter>? _ownerAppFilters;
         /// <summary>
         /// Use <see cref="SaveOwnerAppFilters"/> to save changes
         /// </summary>
         [Settings("OwnerAppFilters")]
-        public ObservableCollection<OwnerAppFilter> OwnerAppFilters
-        {
-            get => _ownerAppFilters ??= GetSettingValue<ObservableCollection<OwnerAppFilter>>(new ObservableCollection<OwnerAppFilter>());
-        }
+        public ObservableCollection<OwnerAppFilter> OwnerAppFilters => _ownerAppFilters ??= GetSettingValue<ObservableCollection<OwnerAppFilter>>(new ObservableCollection<OwnerAppFilter>());
         public void SaveOwnerAppFilters() => _localSettings.Values["OwnerAppFilters"] = JsonSerializer.Serialize(OwnerAppFilters);
+
+        #endregion
+
+        private bool? _isClipboardMonitoringEnabled;
+
+        [Settings("IsClipboardMonitoringEnabled", DefaultValue = true)]
+        public bool IsClipboardMonitoringEnabled
+        {
+            get => _isClipboardMonitoringEnabled ??= GetSettingValue<bool>();
+            set
+            {
+                if (SetSettingsProperty(ref _isClipboardMonitoringEnabled, value))
+                {
+                    unsafe
+                    {
+                        RememoryCoreHelper.UpdateTrayIconMenuItem(RememoryCoreHelper.TRAY_TOGGLE_MONITORING_COMMAND, new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged(
+                            value ? "Pause monitoring" : "Resume monitoring")));
+                    }
+                }
+            }
+        }
 
         private SettingsContext()
         {
@@ -286,7 +400,7 @@ namespace Rememory.Models
             }
 
             // Fetch PropertyInfo
-            var propInfo = GetType().GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            var propInfo = GetType().GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
                 ?? throw new InvalidOperationException($"Property '{propertyName}' not found on {GetType().Name}.");
 
             // Fetch SettingsAttribute
@@ -358,7 +472,7 @@ namespace Rememory.Models
             }
 
             // Fetch PropertyInfo
-            var propInfo = GetType().GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            var propInfo = GetType().GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
                 ?? throw new InvalidOperationException($"Property '{propertyName}' not found on {GetType().Name}.");
 
             // Fetch SettingsAttribute
@@ -373,7 +487,7 @@ namespace Rememory.Models
             // Validate incoming value
             if (!string.IsNullOrEmpty(attr.Validator))
             {
-                var method = GetType().GetMethod(attr.Validator, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                var method = GetType().GetMethod(attr.Validator, BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
                     ?? throw new InvalidOperationException($"Validator method '{attr.Validator}' not found on {GetType().Name}.");
 
                 var isValid = method.Invoke(this, [newValue]) as bool?;

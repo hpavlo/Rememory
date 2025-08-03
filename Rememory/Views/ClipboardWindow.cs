@@ -177,6 +177,12 @@ namespace Rememory.Views
                         case RememoryCoreHelper.TRAY_OPEN_COMMAND:
                             ShowWindow();
                             break;
+                        case RememoryCoreHelper.TRAY_TOGGLE_MONITORING_COMMAND:
+                            if (Content is ClipboardRootPage rootPage)
+                            {
+                                rootPage.ViewModel.IsClipboardMonitoringEnabled = !rootPage.ViewModel.IsClipboardMonitoringEnabled;
+                            }
+                            break;
                         case RememoryCoreHelper.TRAY_SETTINGS_COMMAND:
                             SettingsWindow.ShowSettingsWindow();
                             break;
@@ -227,6 +233,9 @@ namespace Rememory.Views
             RememoryCoreHelper.CreateTrayIcon(this.GetWindowHandle(),
                 new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged(
                     $"{"TrayIconMenu_Open".GetLocalizedResource()}\t{KeyboardHelper.ShortcutToString(SettingsContext.ActivationShortcut, "+")}")),
+                new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged(SettingsContext.IsClipboardMonitoringEnabled
+                    ? "TrayIconMenu_PauseMonitoring".GetLocalizedResource()
+                    : "TrayIconMenu_ResumeMonitoring".GetLocalizedResource())),
                 new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged("TrayIconMenu_Settings".GetLocalizedResource())),
                 new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged("TrayIconMenu_Exit".GetLocalizedResource())),
 #if DEBUG

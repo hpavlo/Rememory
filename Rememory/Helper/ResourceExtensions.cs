@@ -8,11 +8,22 @@ namespace Rememory.Helper
 {
     public static class ResourceExtensions
     {
-        private static readonly ResourceLoader _resourceLoader = new();
+        private static readonly ResourceManager _resourceManager = new();
         private static readonly CultureInfo _locale = CultureInfo.CurrentCulture;
         private static readonly MessageFormatter _formatter = new(useCache: false, locale: _locale.TwoLetterISOLanguageName);
 
-        public static string GetLocalizedResource(this string resourceKey) => _resourceLoader.GetString(resourceKey);
+        public static string GetLocalizedResource(this string resourceKey)
+        {
+            var resourceMap = _resourceManager.MainResourceMap;
+            var value = resourceMap.TryGetValue(resourceKey)?.ValueAsString;
+
+            if (string.IsNullOrEmpty(value))
+            {
+                value = resourceMap.TryGetSubtree("Resources")?.TryGetValue(resourceKey)?.ValueAsString;
+            }
+
+            return value ?? resourceKey;
+        }
 
         public static string GetLocalizedFormatResource(this string resourceKey, IReadOnlyDictionary<string, object?> pairs)
         {

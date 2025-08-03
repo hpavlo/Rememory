@@ -45,7 +45,7 @@ namespace Rememory.Views.Settings
             window.Content = new SettingsRootPage(window);
             window.Closed += SettingsWindow_Closed;
 
-            window.AppWindow.Title = "SettingsWindow_Title".GetLocalizedFormatResource(AppInfo.Current.DisplayInfo.DisplayName);
+            window.AppWindow.Title = "/Settings/WindowTitle/Text".GetLocalizedFormatResource(AppInfo.Current.DisplayInfo.DisplayName);
             window.AppWindow.SetIcon("Assets\\WindowIcon.ico");
             window.AppWindow.TitleBar.SetDragRectangles([new RectInt32(0, 0, window.AppWindow.ClientSize.Width, 48)]);
 

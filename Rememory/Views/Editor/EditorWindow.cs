@@ -51,7 +51,7 @@ namespace Rememory.Views.Editor
             _window.Content = new EditorRootPage(_window, _clipContext);
             _window.Closed += EditorWindow_Closed;
 
-            _window.AppWindow.Title = "EditorWindow_Title".GetLocalizedFormatResource(AppInfo.Current.DisplayInfo.DisplayName);
+            _window.AppWindow.Title = "/Editor/WindowTitle/Text".GetLocalizedFormatResource(AppInfo.Current.DisplayInfo.DisplayName);
             _window.AppWindow.SetIcon("Assets\\WindowIcon.ico");
             _window.AppWindow.SetPresenter(AppWindowPresenterKind.CompactOverlay);
             _window.CenterOnScreen();

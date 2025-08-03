@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page x:Class="Rememory.Views.Settings.TagsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:Rememory.Views.Settings"
+      xmlns:tk="using:CommunityToolkit.WinUI"
+      xmlns:tkcontrols="using:CommunityToolkit.WinUI.Controls"
+      xmlns:converters="using:Rememory.Converters"
+      xmlns:models="using:Rememory.Models"
+      DataContext="{x:Bind ViewModel}"
+      Loaded="Page_Loaded">
+    <Page.Resources>
+        <converters:StringFormatResourceConverter x:Key="StringFormatResourceConverter" />
+    </Page.Resources>
+    
+    <ScrollViewer Padding="56,20,56,5">
+        <StackPanel>
+            <tkcontrols:SettingsExpander x:Uid="/Settings/Tags_Tags"
+                                         Margin="0,0,0,5"
+                                         HeaderIcon="{tk:FontIcon Glyph=&#xE8EC;}"
+                                         IsExpanded="True">
+                <Button x:Uid="/Settings/Tags_TagsButton"
+                        Style="{ThemeResource AccentButtonStyle}"
+                        Click="AddTagButton_Click" />
+                <tkcontrols:SettingsExpander.Items>
+                    <tkcontrols:SettingsCard MinHeight="0">
+                        <tkcontrols:SettingsCard.Template>
+                            <ControlTemplate TargetType="tkcontrols:SettingsCard">
+                                <ContentPresenter Background="{TemplateBinding Background}" />
+                            </ControlTemplate>
+                        </tkcontrols:SettingsCard.Template>
+
+                        <ListView x:Name="TagsListView"
+                                  SelectionMode="None"
+                                  ItemsSource="{x:Bind ViewModel.Tags}">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <ContentPresenter />
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="models:TagModel"
+                                              x:DefaultBindMode="OneWay">
+                                    <tkcontrols:SettingsCard HorizontalAlignment="Stretch"
+                                                             MinHeight="16">
+                                        <tkcontrols:SettingsCard.Template>
+                                            <ControlTemplate TargetType="tkcontrols:SettingsCard">
+                                                <ContentPresenter Background="{TemplateBinding Background}"
+                                                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                                                  Padding="16,8,16,8"
+                                                                  BorderThickness="0,1,0,0" />
+                                            </ControlTemplate>
+                                        </tkcontrols:SettingsCard.Template>
+                                        <Grid ColumnSpacing="16">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <FontIcon Width="20"
+                                                      Height="20"
+                                                      Margin="3 0"
+                                                      Glyph="&#xEA3B;"
+                                                      Foreground="{x:Bind ColorBrush}" />
+
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock TextWrapping="Wrap"
+                                                           Text="{x:Bind Name}" />
+                                                <TextBlock FontSize="{ThemeResource CaptionTextBlockFontSize}"
+                                                           Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                                           Text="{x:Bind ClipsCount, Converter={StaticResource StringFormatResourceConverter}, ConverterParameter=Settings/Tags_Tag_ClipsCount/Text}" />
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="2"
+                                                        Spacing="8"
+                                                        Orientation="Horizontal">
+                                                <FontIcon x:Name="TagCleaningIcon"
+                                                          x:Load="{x:Bind IsCleaningEnabled}"
+                                                          Margin="8,0,8,0"
+                                                          Glyph="&#xEA99;"
+                                                          FontSize="16"
+                                                          ToolTipService.ToolTip="Clips with this tag can be cleaned up" />
+                                                
+                                                <Button Content="{tk:FontIcon FontSize=14, Glyph=&#xE70F;}"
+                                                        Click="EditTagButton_Click" />
+                                                
+                                                <Button Content="{tk:FontIcon FontSize=14, Glyph=&#xE74D;}"
+                                                        CommandParameter="{x:Bind}"
+                                                        Command="{Binding DataContext.DeleteTagCommand, ElementName=TagsListView}" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </tkcontrols:SettingsCard>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </tkcontrols:SettingsCard>
+                </tkcontrols:SettingsExpander.Items>
+            </tkcontrols:SettingsExpander>
+
+            <!--<tkcontrols:SettingsCard x:Uid="SettingsCard_RunAtStartup"
+                                     Margin="0,0,0,5"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xE946;}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsTagCountVisible, Mode=TwoWay}" />
+            </tkcontrols:SettingsCard>-->
+        </StackPanel>
+    </ScrollViewer>
+</Page>

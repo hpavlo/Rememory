@@ -34,10 +34,14 @@ namespace Rememory.Views.Settings
 
             _navigationMap = new()
             {
-                { GeneralMenuItem, (typeof(GeneralPage), "SettingsPageTitle_General/Content".GetLocalizedResource()) },
-                { PersonalizationMenuItem, (typeof(PersonalizationPage), "SettingsPageTitle_Personalization/Content".GetLocalizedResource()) },
-                { StorageMenuItem, (typeof(StoragePage), "SettingsPageTitle_Storage/Content".GetLocalizedResource()) },
-                { AboutMenuItem, (typeof(AboutPage), "SettingsPageTitle_About/Content".GetLocalizedResource()) }
+                { GeneralMenuItem, (typeof(GeneralPage), "/Settings/PageTitle_General/Content".GetLocalizedResource()) },
+                { PersonalizationMenuItem, (typeof(PersonalizationPage), "/Settings/PageTitle_Personalization/Content".GetLocalizedResource()) },
+                { ClipboardMenuItem, (typeof(ClipboardPage), "/Settings/PageTitle_Clipboard/Content".GetLocalizedResource()) },
+                { MetadataMenuItem, (typeof(MetadataPage), "/Settings/PageTitle_Metadata/Content".GetLocalizedResource()) },
+                { TagsMenuItem, (typeof(TagsPage), "/Settings/PageTitle_Tags/Content".GetLocalizedResource()) },
+                { StorageMenuItem, (typeof(StoragePage), "/Settings/PageTitle_Storage/Content".GetLocalizedResource()) },
+                { FiltersMenuItem, (typeof(FiltersPage), "/Settings/PageTitle_Filters/Content".GetLocalizedResource()) },
+                { AboutMenuItem, (typeof(AboutPage), "/Settings/PageTitle_About/Content".GetLocalizedResource()) }
             };
         }
 

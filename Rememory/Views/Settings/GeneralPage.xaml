@@ -7,87 +7,81 @@
       xmlns:tkcontrols="using:CommunityToolkit.WinUI.Controls"
       xmlns:controls="using:Rememory.Views.Settings.Controls"
       DataContext="{x:Bind ViewModel}">
-    <StackPanel Margin="56 0"
-                Spacing="5">
-        <tkcontrols:SettingsCard x:Uid="SettingsCard_Language"
-                                 HeaderIcon="{tk:FontIcon Glyph=&#xF2B7;}">
-            <ComboBox x:Name="LanguageComboBox"
-                      SelectedIndex="{x:Bind ViewModel.SettingsContext.LanguageIndex, Mode=TwoWay}"
-                      SelectionChanged="LanguageComboBox_SelectionChanged">
-                <ComboBox.Resources>
-                    <TeachingTip x:Name="LanguageTeachingTip"
-                                 x:Uid="SettingsTeachingTip_Language"
-                                 Target="{x:Bind LanguageComboBox}"
-                                 IconSource="{tk:FontIconSource Glyph=&#xE777;}">
-                        <Button x:Uid="SettingsTeachingTipButton_Restart"
-                                Margin="0 8 0 0"
-                                HorizontalAlignment="Center"
-                                Command="{x:Bind ViewModel.RestartCommand, Mode=OneWay}" />
-                    </TeachingTip>
-                </ComboBox.Resources>
-                <ComboBoxItem x:Uid="SettingsComboBox_Language_Default" />
-                <ComboBoxItem x:Uid="SettingsComboBox_Language_English" />
-                <ComboBoxItem x:Uid="SettingsComboBox_Language_French" />
-                <ComboBoxItem x:Uid="SettingsComboBox_Language_Ukrainian" />
-                <ComboBoxItem x:Uid="SettingsComboBox_Language_ChineseSimplified" />
-            </ComboBox>
-        </tkcontrols:SettingsCard>
+    <ScrollViewer Padding="56,20,56,5">
+        <StackPanel>
+            <tkcontrols:SettingsCard x:Uid="/Settings/General_AppLanguage"
+                                     Margin="0,0,0,5"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xF2B7;}">
+                <ComboBox x:Name="LanguageComboBox"
+                          SelectedIndex="{x:Bind ViewModel.SettingsContext.LanguageIndex, Mode=TwoWay}"
+                          SelectionChanged="LanguageComboBox_SelectionChanged">
+                    <ComboBox.Resources>
+                        <TeachingTip x:Name="LanguageTeachingTip"
+                                     x:Uid="/Settings/General_AppLanguageFlyout"
+                                     Target="{x:Bind LanguageComboBox}"
+                                     IconSource="{tk:FontIconSource Glyph=&#xE777;}">
+                            <Button x:Uid="/Settings/General_AppLanguageFlyoutButton"
+                                    Margin="0,8,0,0"
+                                    HorizontalAlignment="Center"
+                                    Command="{x:Bind ViewModel.RestartCommand, Mode=OneWay}" />
+                        </TeachingTip>
+                    </ComboBox.Resources>
+                    <ComboBoxItem x:Uid="/Settings/General_AppLanguage_Default" />
+                    <ComboBoxItem x:Uid="/Settings/General_AppLanguage_Arabic" />
+                    <ComboBoxItem x:Uid="/Settings/General_AppLanguage_German" />
+                    <ComboBoxItem x:Uid="/Settings/General_AppLanguage_English" />
+                    <ComboBoxItem x:Uid="/Settings/General_AppLanguage_French" />
+                    <ComboBoxItem x:Uid="/Settings/General_AppLanguage_Korean" />
+                    <ComboBoxItem x:Uid="/Settings/General_AppLanguage_Ukrainian" />
+                    <ComboBoxItem x:Uid="/Settings/General_AppLanguage_ChineseSimplified" />
+                </ComboBox>
+            </tkcontrols:SettingsCard>
 
-        <tkcontrols:SettingsCard x:Uid="SettingsCard_ActivationShortcut"
-                                 HeaderIcon="{tk:FontIcon Glyph=&#xEDA7;}">
-            <controls:ShortcutButton x:Uid="SettingsShortcutCotrol_ActivationShortcut"
-                                      ActivationShortcut="{x:Bind ViewModel.SettingsContext.ActivationShortcut, Mode=TwoWay}"
-                                      ActivationShortcutDefault="{x:Bind ViewModel.SettingsContext.ActivationShortcutDefault, Mode=OneWay}" />
-        </tkcontrols:SettingsCard>
+            <TextBlock x:Uid="/Settings/General_ShortcutsSection"
+                       Margin="0,28,0,8"
+                       Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
 
-        <tkcontrols:SettingsExpander x:Uid="SettingsExpander_RestartAsAdmin"
-                                     IsExpanded="True"
-                                     Loaded="RestartAsAdministratorSettings_Loaded"
-                                     HeaderIcon="{tk:FontIcon Glyph=&#xE7EF;}">
-            <Button x:Uid="SettingsButton_RestartAsAdmin"
-                    Command="{x:Bind ViewModel.RestartAsAdministratorCommand, Mode=OneWay}" />
+            <tkcontrols:SettingsCard x:Uid="/Settings/General_ActivationShortcut"
+                                     Margin="0,0,0,5"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xEDA7;}">
+                <controls:ShortcutButton x:Uid="/Settings/General_ActivationShortcutButton"
+                                         ActivationShortcut="{x:Bind ViewModel.SettingsContext.ActivationShortcut, Mode=TwoWay}"
+                                         ActivationShortcutDefault="{x:Bind ViewModel.SettingsContext.ActivationShortcutDefault, Mode=OneWay}" />
+            </tkcontrols:SettingsCard>
 
-            <tkcontrols:SettingsExpander.Items>
-                <tkcontrols:SettingsCard x:Uid="SettingsCard_AlwaysRunAsAdmin"
-                                         IsEnabled="{x:Bind ViewModel.IsAdministratorSettingsEnabled, Mode=OneWay}">
-                    <ToggleSwitch IsOn="{x:Bind ViewModel.RunAsAdministratorToggle, Mode=TwoWay}" />
-                </tkcontrols:SettingsCard>
-            </tkcontrols:SettingsExpander.Items>
-        </tkcontrols:SettingsExpander>
+            <TextBlock x:Uid="/Settings/General_StartupSection"
+                       Margin="0,28,0,8"
+                       Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
 
-        <tkcontrols:SettingsCard x:Uid="SettingsCard_RunAtStartup"
-                                 HeaderIcon="{tk:FontIcon Glyph=&#xF103;}">
-            <ToggleSwitch IsOn="{x:Bind ViewModel.RunAtStartupToggle, Mode=TwoWay}" />
-        </tkcontrols:SettingsCard>
+            <tkcontrols:SettingsExpander x:Uid="/Settings/General_RestartAsAdmin"
+                                         Margin="0,0,0,5"
+                                         IsExpanded="True"
+                                         Loaded="RestartAsAdministratorSettings_Loaded"
+                                         HeaderIcon="{tk:FontIcon Glyph=&#xE7EF;}">
+                <Button x:Uid="/Settings/General_RestartAsAdminButton"
+                        Command="{x:Bind ViewModel.RestartAsAdministratorCommand, Mode=OneWay}" />
 
-        <tkcontrols:SettingsCard x:Uid="SettingsCard_NotificationOnStartup"
-                                 HeaderIcon="{tk:FontIcon Glyph=&#xE91C;}">
-            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsNotificationOnStartEnabled, Mode=TwoWay}" />
-        </tkcontrols:SettingsCard>
+                <tkcontrols:SettingsExpander.Items>
+                    <tkcontrols:SettingsCard x:Uid="/Settings/General_AlwaysRunAsAdmin"
+                                             IsEnabled="{x:Bind ViewModel.IsAdministratorSettingsEnabled, Mode=OneWay}">
+                        <ToggleSwitch IsOn="{x:Bind ViewModel.RunAsAdministratorToggle, Mode=TwoWay}" />
+                    </tkcontrols:SettingsCard>
+                </tkcontrols:SettingsExpander.Items>
+            </tkcontrols:SettingsExpander>
 
-        <tkcontrols:SettingsCard x:Uid="SettingsCard_LinkPreview"
-                                 HeaderIcon="{tk:FontIcon Glyph=&#xE8A1;}">
-            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsLinkPreviewLoadingEnabled, Mode=TwoWay}" />
-        </tkcontrols:SettingsCard>
+            <tkcontrols:SettingsCard x:Uid="/Settings/General_RunAtStartup"
+                                     Margin="0,0,0,5"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xF103;}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.RunAtStartupToggle, Mode=TwoWay}" />
+            </tkcontrols:SettingsCard>
 
-        <tkcontrols:SettingsCard x:Uid="SettingsCard_ItemDragAndDrop"
-                                 HeaderIcon="{tk:FontIcon Glyph=&#xE759;}">
-            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsClipsDragAndDropEnabled, Mode=TwoWay}" />
-        </tkcontrols:SettingsCard>
-
-        <tkcontrols:SettingsCard x:Uid="SettingsCard_SearchFocus"
-                                 HeaderIcon="{tk:FontIcon Glyph=&#xE721;}">
-            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsSearchFocusOnStartEnabled, Mode=TwoWay}" />
-        </tkcontrols:SettingsCard>
-
-        <tkcontrols:SettingsCard x:Uid="SettingsCard_RequireHexColorPrefix"
-                                 HeaderIcon="{tk:FontIcon Glyph=&#xEF3C;}">
-            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsHexColorPrefixRequired, Mode=TwoWay}" />
-        </tkcontrols:SettingsCard>
-
-        <tkcontrols:SettingsCard x:Uid="SettingsCard_DeveloperStringCaseConverions"
-                                 HeaderIcon="{tk:FontIcon Glyph=&#xE943;}">
-            <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsDeveloperStringCaseConversionsEnabled, Mode=TwoWay}" />
-        </tkcontrols:SettingsCard>
-    </StackPanel>
+            <tkcontrols:SettingsCard x:Uid="/Settings/General_NotificationOnStartup"
+                                     Margin="0,0,0,5"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xE91C;}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsNotificationOnStartEnabled, Mode=TwoWay}" />
+            </tkcontrols:SettingsCard>
+        </StackPanel>
+    </ScrollViewer>
 </Page>

@@ -9,7 +9,7 @@
                 Spacing="8">
         <FontIcon FontSize="16"
                   Glyph="&#xE9CE;" />
-        <TextBlock x:Uid="ClipboardItem_NoPreview"
+        <TextBlock x:Uid="/Clipboard/Clip_NoPreview"
                    Style="{ThemeResource BodyTextBlockStyle}" />
     </StackPanel>
 </UserControl>

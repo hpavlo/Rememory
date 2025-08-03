@@ -7,8 +7,9 @@ namespace Rememory.Helper
     {
         public const uint TRAY_NOTIFICATION = NativeHelper.WM_USER + 1;
         public const uint TRAY_OPEN_COMMAND = 10;
-        public const uint TRAY_SETTINGS_COMMAND = 11;
-        public const uint TRAY_EXIT_COMMAND = 12;
+        public const uint TRAY_TOGGLE_MONITORING_COMMAND = 11;
+        public const uint TRAY_SETTINGS_COMMAND = 12;
+        public const uint TRAY_EXIT_COMMAND = 13;
 
         [DllImport("Rememory.Core.dll")]
         public static extern bool StartClipboardMonitor(IntPtr hWnd, ClipboardMonitorCallback handler);
@@ -24,7 +25,7 @@ namespace Rememory.Helper
         public static extern bool AddWindowProc(IntPtr hWnd);
 
         [DllImport("Rememory.Core.dll")]
-        public static extern bool CreateTrayIcon(IntPtr hWnd, IntPtr openMenuName, IntPtr settingsMenuName, IntPtr exitMenuName, IntPtr description);
+        public static extern bool CreateTrayIcon(IntPtr hWnd, IntPtr openMenuName, IntPtr toggleMonitoringMenuName, IntPtr settingsMenuName, IntPtr exitMenuName, IntPtr description);
 
         [DllImport("Rememory.Core.dll")]
         public static extern void UpdateTrayIconMenuItem(uint commandId, IntPtr newName);

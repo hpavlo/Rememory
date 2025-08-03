@@ -4,9 +4,9 @@
 
 #pragma region External functions
 
-bool CreateTrayIcon(HWND hWnd, WCHAR* openMenuName, WCHAR* settingsMenuName, WCHAR* exitMenuName, WCHAR* description)
+bool CreateTrayIcon(HWND hWnd, WCHAR* openMenuName, WCHAR* toggleMonitoringMenuName, WCHAR* settingsMenuName, WCHAR* exitMenuName, WCHAR* description)
 {
-    return TrayIcon::GetInstance().TrayIconInit(hWnd, openMenuName, settingsMenuName, exitMenuName, description);
+    return TrayIcon::GetInstance().TrayIconInit(hWnd, openMenuName, toggleMonitoringMenuName, settingsMenuName, exitMenuName, description);
 }
 
 void UpdateTrayIconMenuItem(UINT commandId, WCHAR* newName)
@@ -24,7 +24,7 @@ TrayIcon& TrayIcon::GetInstance()
     return instance;
 }
 
-bool TrayIcon::TrayIconInit(HWND hWnd, WCHAR* openMenuName, WCHAR* settingsMenuName, WCHAR* exitMenuName, WCHAR* description)
+bool TrayIcon::TrayIconInit(HWND hWnd, WCHAR* openMenuName, WCHAR* toggleMonitoringMenuName, WCHAR* settingsMenuName, WCHAR* exitMenuName, WCHAR* description)
 {
     SetPreferredTheme(AllowDark);
 
@@ -36,9 +36,10 @@ bool TrayIcon::TrayIconInit(HWND hWnd, WCHAR* openMenuName, WCHAR* settingsMenuN
     mi.dwStyle = MNS_NOCHECK;
     SetMenuInfo(hMenu, &mi);
     
-    AppendMenu(hMenu, MF_STRING, TRAY_OPEN_COMMAND, openMenuName);   // L"Open\tWin+Shift+V"
-    AppendMenu(hMenu, MF_STRING, TRAY_SETTINGS_COMMAND, settingsMenuName);   // L"Settings"
-    AppendMenu(hMenu, MF_STRING, TRAY_EXIT_COMMAND, exitMenuName);   // L"Exit"
+    AppendMenu(hMenu, MF_STRING, TRAY_OPEN_COMMAND, openMenuName);   // Open\tWin+Shift+V
+    AppendMenu(hMenu, MF_STRING, TRAY_TOGGLE_MONITORING_COMMAND, toggleMonitoringMenuName);   // Pause/resume monitoring
+    AppendMenu(hMenu, MF_STRING, TRAY_SETTINGS_COMMAND, settingsMenuName);   // Settings
+    AppendMenu(hMenu, MF_STRING, TRAY_EXIT_COMMAND, exitMenuName);   // Exit
 
     NOTIFYICONDATA nid = {};
     nid.cbSize = sizeof(NOTIFYICONDATA);

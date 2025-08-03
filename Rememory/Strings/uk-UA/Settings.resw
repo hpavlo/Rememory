@@ -1,0 +1,553 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="WindowTitle.Text" xml:space="preserve">
+    <value>{0} - Налаштування</value>
+  </data>
+  <data name="PageTitle_General.Content" xml:space="preserve">
+    <value>Загальні</value>
+  </data>
+  <data name="PageTitle_Personalization.Content" xml:space="preserve">
+    <value>Персоналізація</value>
+  </data>
+  <data name="PageTitle_Clipboard.Content" xml:space="preserve">
+    <value>Буфер обміну</value>
+  </data>
+  <data name="PageTitle_Metadata.Content" xml:space="preserve">
+    <value>Метадані</value>
+  </data>
+  <data name="PageTitle_Tags.Content" xml:space="preserve">
+    <value>Теги</value>
+  </data>
+  <data name="PageTitle_Storage.Content" xml:space="preserve">
+    <value>Пам'ять</value>
+  </data>
+  <data name="PageTitle_Filters.Content" xml:space="preserve">
+    <value>Фільтри</value>
+  </data>
+  <data name="PageTitle_About.Content" xml:space="preserve">
+    <value>Про програму</value>
+  </data>
+  <data name="General_AppLanguage.Header" xml:space="preserve">
+    <value>Мова програми</value>
+  </data>
+  <data name="General_AppLanguage.Description" xml:space="preserve">
+    <value>Виберіть мову програми або використовуйте мову системи за замовчуванням</value>
+  </data>
+  <data name="General_AppLanguage_Default.Content" xml:space="preserve">
+    <value>За замовчуванням</value>
+  </data>
+  <data name="General_AppLanguage_Arabic.Content" xml:space="preserve">
+    <value>Арабська</value>
+  </data>
+  <data name="General_AppLanguage_ChineseSimplified.Content" xml:space="preserve">
+    <value>Китайська (спрощена)</value>
+  </data>
+  <data name="General_AppLanguage_English.Content" xml:space="preserve">
+    <value>Англійська</value>
+  </data>
+  <data name="General_AppLanguage_French.Content" xml:space="preserve">
+    <value>Французька</value>
+  </data>
+  <data name="General_AppLanguage_German.Content" xml:space="preserve">
+    <value>Німецька</value>
+  </data>
+  <data name="General_AppLanguage_Greek.Content" xml:space="preserve">
+    <value>Грецька</value>
+  </data>
+  <data name="General_AppLanguage_Italian.Content" xml:space="preserve">
+    <value>Італійська</value>
+  </data>
+  <data name="General_AppLanguage_Japanese.Content" xml:space="preserve">
+    <value>Японська</value>
+  </data>
+  <data name="General_AppLanguage_Korean.Content" xml:space="preserve">
+    <value>Корейська</value>
+  </data>
+  <data name="General_AppLanguage_Polish.Content" xml:space="preserve">
+    <value>Польська</value>
+  </data>
+  <data name="General_AppLanguage_Portuguese.Content" xml:space="preserve">
+    <value>Португальська</value>
+  </data>
+  <data name="General_AppLanguage_Spanish.Content" xml:space="preserve">
+    <value>Іспанська</value>
+  </data>
+  <data name="General_AppLanguage_Turkish.Content" xml:space="preserve">
+    <value>Турецька</value>
+  </data>
+  <data name="General_AppLanguage_Ukrainian.Content" xml:space="preserve">
+    <value>Українська</value>
+  </data>
+  <data name="General_AppLanguageFlyout.Title" xml:space="preserve">
+    <value>Потрібен перезапуск</value>
+  </data>
+  <data name="General_AppLanguageFlyout.Subtitle" xml:space="preserve">
+    <value>Щоб змінити мову програми, необхідно перезапустити програму</value>
+  </data>
+  <data name="General_AppLanguageFlyoutButton.Content" xml:space="preserve">
+    <value>Перезапустити програму</value>
+  </data>
+  <data name="General_ShortcutsSection.Text" xml:space="preserve">
+    <value>Гарячі клавіші</value>
+  </data>
+  <data name="General_ActivationShortcut.Header" xml:space="preserve">
+    <value>Комбінація клавіш для активації</value>
+  </data>
+  <data name="General_ActivationShortcut.Description" xml:space="preserve">
+    <value>Встановити комбінацію клавіш для відкриття менеджера буфера обміну</value>
+  </data>
+  <data name="General_ActivationShortcutButton.Text" xml:space="preserve">
+    <value>Змінити комбінацію клавіш</value>
+  </data>
+  <data name="General_StartupSection.Text" xml:space="preserve">
+    <value>Автозавантаження</value>
+  </data>
+  <data name="General_RestartAsAdmin.Header" xml:space="preserve">
+    <value>Перезапустити з правами адміністратора</value>
+  </data>
+  <data name="General_RunningAsAdmin.Header" xml:space="preserve">
+    <value>Запущено з правами адміністратора</value>
+  </data>
+  <data name="General_RestartAsAdminButton.Content" xml:space="preserve">
+    <value>Перезапустити з правами адміністратора</value>
+  </data>
+  <data name="General_RestartAsAdmin.Description" xml:space="preserve">
+    <value>Розширені налаштування, які потребують прав адміністратора</value>
+  </data>
+  <data name="General_AlwaysRunAsAdmin.Header" xml:space="preserve">
+    <value>Завжди запускати з правами адміністратора</value>
+  </data>
+  <data name="General_AlwaysRunAsAdmin.Description" xml:space="preserve">
+    <value>Увімкніть цю опцію, щоб завжди запускати додаток з правами адміністратора</value>
+  </data>
+  <data name="General_RunAtStartup.Header" xml:space="preserve">
+    <value>Автозапуск</value>
+  </data>
+  <data name="General_RunAtStartup.Description" xml:space="preserve">
+    <value>Увімкніть цю опцію, щоб Rememory запускався автоматично під час увімкнення комп'ютера</value>
+  </data>
+  <data name="General_NotificationOnStartup.Header" xml:space="preserve">
+    <value>Повідомлення про запуск</value>
+  </data>
+  <data name="General_NotificationOnStartup.Description" xml:space="preserve">
+    <value>Показувати сповіщення після відкриття програми</value>
+  </data>
+  <data name="Personalization_AppTheme.Header" xml:space="preserve">
+    <value>Тема інтерфейсу</value>
+  </data>
+  <data name="Personalization_AppTheme.Description" xml:space="preserve">
+    <value>Виберіть бажану тему для інтерфейсу додатку</value>
+  </data>
+  <data name="Personalization_AppTheme_Default.Content" xml:space="preserve">
+    <value>За замовчуванням</value>
+  </data>
+  <data name="Personalization_AppTheme_Light.Content" xml:space="preserve">
+    <value>Світла</value>
+  </data>
+  <data name="Personalization_AppTheme_Dark.Content" xml:space="preserve">
+    <value>Темна</value>
+  </data>
+  <data name="Personalization_BackgroundSection.Text" xml:space="preserve">
+    <value>Фон вікна</value>
+  </data>
+  <data name="Personalization_Backdrop.Header" xml:space="preserve">
+    <value>Фон</value>
+  </data>
+  <data name="Personalization_Backdrop.Description" xml:space="preserve">
+    <value>Змінити фон вікна</value>
+  </data>
+  <data name="Personalization_Backdrop_None.Content" xml:space="preserve">
+    <value>Немає</value>
+  </data>
+  <data name="Personalization_Backdrop_Acrylic.Content" xml:space="preserve">
+    <value>Acrylic</value>
+  </data>
+  <data name="Personalization_Backdrop_ThinAcrylic.Content" xml:space="preserve">
+    <value>Thin Acrylic</value>
+  </data>
+  <data name="Personalization_Backdrop_Mica.Content" xml:space="preserve">
+    <value>Mica</value>
+  </data>
+  <data name="Personalization_Backdrop_MicaAlt.Content" xml:space="preserve">
+    <value>Mica Alt</value>
+  </data>
+  <data name="Personalization_BackgroundColor.Header" xml:space="preserve">
+    <value>Колір фону</value>
+  </data>
+  <data name="Personalization_BackgroundColor.Description" xml:space="preserve">
+    <value>Змінити колір фону вікна</value>
+  </data>
+  <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
+    <value>Вікно буфера обміну</value>
+  </data>
+  <data name="Personalization_WindowPosition.Header" xml:space="preserve">
+    <value>Розташування вікна буфера обміну</value>
+  </data>
+  <data name="Personalization_WindowPosition.Description" xml:space="preserve">
+    <value>Налаштуйте позицію вікна на вашому екрані</value>
+  </data>
+  <data name="Personalization_WindowPosition_Caret.Content" xml:space="preserve">
+    <value>Каретка</value>
+  </data>
+  <data name="Personalization_WindowPosition_Cursor.Content" xml:space="preserve">
+    <value>Курсор</value>
+  </data>
+  <data name="Personalization_WindowPosition_ScreenCenter.Content" xml:space="preserve">
+    <value>Центр екрану</value>
+  </data>
+  <data name="Personalization_WindowPosition_LastPosition.Content" xml:space="preserve">
+    <value>Остання позиція</value>
+  </data>
+  <data name="Personalization_WindowPosition_Right.Content" xml:space="preserve">
+    <value>Праворуч</value>
+  </data>
+  <data name="Personalization_WindowPosition_RightCorner.Content" xml:space="preserve">
+    <value>Правий кут</value>
+  </data>
+  <data name="Personalization_WindowWidth.Header" xml:space="preserve">
+    <value>Ширина</value>
+  </data>
+  <data name="Personalization_WindowWidth.Description" xml:space="preserve">
+    <value>Встановити ширину вікна (у пікселях)</value>
+  </data>
+  <data name="Personalization_WindowHeight.Header" xml:space="preserve">
+    <value>Висота</value>
+  </data>
+  <data name="Personalization_WindowHeight.Description" xml:space="preserve">
+    <value>Встановити висоту вікна (у пікселях)</value>
+  </data>
+  <data name="Personalization_WindowMargin.Header" xml:space="preserve">
+    <value>Відступ</value>
+  </data>
+  <data name="Personalization_WindowMargin.Description" xml:space="preserve">
+    <value>Встановити відступ навколо вікна (у пікселях)</value>
+  </data>
+  <data name="Clipboard_ClipsSection.Text" xml:space="preserve">
+    <value>Кліпи</value>
+  </data>
+  <data name="Clipboard_DragAndDrop.Header" xml:space="preserve">
+    <value>Перетягування</value>
+  </data>
+  <data name="Clipboard_DragAndDrop.Description" xml:space="preserve">
+    <value>Увімкнути перетягування для кліпів</value>
+  </data>
+  <data name="Clipboard_DeveloperStringCaseConversions.Header" xml:space="preserve">
+    <value>Перетворення рядків для розробників</value>
+  </data>
+  <data name="Clipboard_DeveloperStringCaseConversions.Description" xml:space="preserve">
+    <value>Увімкнути розширені команди для перетворення тексту в Camel Case, Pascal Case, Snake Case і Kebab Case</value>
+  </data>
+  <data name="Clipboard_SearchBarSection.Text" xml:space="preserve">
+    <value>Рядок пошуку</value>
+  </data>
+  <data name="Clipboard_SearchBoxFocus.Header" xml:space="preserve">
+    <value>Фокус рядка пошуку</value>
+  </data>
+  <data name="Clipboard_SearchBoxFocus.Description" xml:space="preserve">
+    <value>Поле пошуку автоматично отримає фокус коли вікно відкриється</value>
+  </data>
+  <data name="Clipboard_ClearSearchOnOpen.Header" xml:space="preserve">
+    <value>Очистити поле пошуку при відкритті</value>
+  </data>
+  <data name="Clipboard_ClearSearchOnOpen.Description" xml:space="preserve">
+    <value>Очищати текст пошуку при відкритті вікна</value>
+  </data>
+  <data name="Clipboard_TabsSection.Text" xml:space="preserve">
+    <value>Вкладки</value>
+  </data>
+  <data name="Clipboard_SetInitialTabOnOpen.Header" xml:space="preserve">
+    <value>Встановити початкову вкладку при відкритті</value>
+  </data>
+  <data name="Clipboard_SetInitialTabOnOpen.Description" xml:space="preserve">
+    <value>Запускати з вкладки "Головна" при відкритті вікна</value>
+  </data>
+  <data name="Clipboard_OtherSection.Text" xml:space="preserve">
+    <value>Інше</value>
+  </data>
+  <data name="Clipboard_RememberPinState.Header" xml:space="preserve">
+    <value>Запам'ятати закріплене вікно</value>
+  </data>
+  <data name="Clipboard_RememberPinState.Description" xml:space="preserve">
+    <value>Слідкувати коли вікно закріплене та відновити його стан при наступному відкритті</value>
+  </data>
+  <data name="Metadata_LinkPreviewSection.Text" xml:space="preserve">
+    <value>Попередній перегляд посилань</value>
+  </data>
+  <data name="Metadata_LinkPreview.Header" xml:space="preserve">
+    <value>Попередній перегляд посилань</value>
+  </data>
+  <data name="Metadata_LinkPreview.Description" xml:space="preserve">
+    <value>Завантаження інформації попереднього перегляду посилань. Раніше завантажені дані залишатимуться без змін</value>
+  </data>
+  <data name="Metadata_ColorPreviewSection.Text" xml:space="preserve">
+    <value>Попередній перегляд кольору</value>
+  </data>
+  <data name="Metadata_HexColorPrefix.Header" xml:space="preserve">
+    <value>Вимагати префікс Hex-кольору</value>
+  </data>
+  <data name="Metadata_HexColorPrefix.Description" xml:space="preserve">
+    <value>Якщо увімкнено, лише шістнадцяткові коди кольорів, починаючи з «#» будуть розпізнані як дійсні кольори</value>
+  </data>
+  <data name="Tags_Tags.Header" xml:space="preserve">
+    <value>Теги</value>
+  </data>
+  <data name="Tags_Tags.Description" xml:space="preserve">
+    <value>Створення власних тегів для призначення їх до ваших кліпів</value>
+  </data>
+  <data name="Tags_TagsButton.Content" xml:space="preserve">
+    <value>Додати тег</value>
+  </data>
+  <data name="Tags_Tag_ClipsCount.Text" xml:space="preserve">
+    <value>Кількість кліпів: {0}</value>
+  </data>
+  <data name="Storage_EraseData.Header" xml:space="preserve">
+    <value>Очистити буфер обміну</value>
+  </data>
+  <data name="Storage_EraseData.Description" xml:space="preserve">
+    <value>Видалити всі збережені дані буфера обміну з вашого комп'ютера</value>
+  </data>
+  <data name="Storage_EraseDataButton.Content" xml:space="preserve">
+    <value>Видалити усі дані</value>
+  </data>
+  <data name="Storage_EraseDataFlyout.Text" xml:space="preserve">
+    <value>Ви впевнені, що хочете видалити всі збережені дані?</value>
+  </data>
+  <data name="Storage_EraseDataFlyoutButton.Content" xml:space="preserve">
+    <value>Так, видалити усі дані</value>
+  </data>
+  <data name="Storage_CleanupSection.Text" xml:space="preserve">
+    <value>Очищення</value>
+  </data>
+  <data name="Storage_CleanupType.Header" xml:space="preserve">
+    <value>Тип очищення</value>
+  </data>
+  <data name="Storage_CleanupType.Description" xml:space="preserve">
+    <value>Вкажіть, які старі кліпи повинні бути видалені</value>
+  </data>
+  <data name="Storage_CleanupType_RetentionPeriod.Content" xml:space="preserve">
+    <value>Термін зберігання</value>
+  </data>
+  <data name="Storage_CleanupType_Quantity.Content" xml:space="preserve">
+    <value>Кількість</value>
+  </data>
+  <data name="Storage_CleanupQuantity.Header" xml:space="preserve">
+    <value>Максимальна кількість кліпів</value>
+  </data>
+  <data name="Storage_CleanupQuantity.Description" xml:space="preserve">
+    <value>Визначає максимальну кількість кліпів, які можуть зберігатися на вашому диску</value>
+  </data>
+  <data name="Storage_RetentionPeriod.Header" xml:space="preserve">
+    <value>Період зберігання даних</value>
+  </data>
+  <data name="Storage_RetentionPeriod.Description" xml:space="preserve">
+    <value>Вкажіть, як довго слід зберігати дані з буфера обміну на вашому диску</value>
+  </data>
+  <data name="Storage_RetentionPeriod_Daily.Content" xml:space="preserve">
+    <value>День</value>
+  </data>
+  <data name="Storage_RetentionPeriod_Weekly.Content" xml:space="preserve">
+    <value>Тиждень</value>
+  </data>
+  <data name="Storage_RetentionPeriod_Monthly.Content" xml:space="preserve">
+    <value>Місяць</value>
+  </data>
+  <data name="Storage_RetentionPeriod_Always.Content" xml:space="preserve">
+    <value>Завжди</value>
+  </data>
+  <data name="Storage_FavoriteClipsCleaning.Header" xml:space="preserve">
+    <value>Очищення обраних кліпів</value>
+  </data>
+  <data name="Storage_FavoriteClipsCleaning.Description" xml:space="preserve">
+    <value>Очищати обрані кліпи, термін зберігання яких закінчився</value>
+  </data>
+  <data name="Storage_ClipLimitsSection.Text" xml:space="preserve">
+    <value>Обмеження кліпів</value>
+  </data>
+  <data name="Storage_SizeLimit.Header" xml:space="preserve">
+    <value>Обмеження розміру кліпу</value>
+  </data>
+  <data name="Storage_SizeLimit.Description" xml:space="preserve">
+    <value>Встановити максимальний дозволений розмір кожного кліпу. Кліпи, що перевищують цю межу, будуть відкинуті</value>
+  </data>
+  <data name="Storage_MaxClipSize.Header" xml:space="preserve">
+    <value>Максимальний розмір кліпу</value>
+  </data>
+  <data name="Storage_MaxClipSize.Description" xml:space="preserve">
+    <value>Максимальний розмір одного кліпу (в МБ)</value>
+  </data>
+  <data name="Storage_ClipSizeWarning.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Може збільшити використання диску</value>
+  </data>
+  <data name="Filters_OwnerFilters.Header" xml:space="preserve">
+    <value>Фільтри програм-власників</value>
+  </data>
+  <data name="Filters_OwnerFilters.Description" xml:space="preserve">
+    <value>Менеджер буфера обміну не зберігатиме дані з цих програм</value>
+  </data>
+  <data name="Filters_OwnerFiltersButton.Content" xml:space="preserve">
+    <value>Додати фільтр</value>
+  </data>
+  <data name="Filters_OwnerFiltersWarning.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Фільтрування не працює належним чином
+із програмами UWP і WebView2</value>
+  </data>
+  <data name="Filters_Filter_ClipsCount.Text" xml:space="preserve">
+    <value>Відфільтровані елементи: {0}</value>
+  </data>
+  <data name="About_Repository.Header" xml:space="preserve">
+    <value>GitHub репозиторій</value>
+  </data>
+  <data name="ShortcutDialog_Title.Text" xml:space="preserve">
+    <value>Комбінація клавіш для активації</value>
+  </data>
+  <data name="ShortcutDialog_Subtitle.Text" xml:space="preserve">
+    <value>Введіть комбінацію клавіш</value>
+  </data>
+  <data name="ShortcutDialog_ErrorInfo.Title" xml:space="preserve">
+    <value>Некоректна комбінація клавіш</value>
+  </data>
+  <data name="ShortcutDialog_ErrorInfo.Message" xml:space="preserve">
+    <value>Комбінація клавіш має починатися з клавіші Windows, Ctrl, Alt або Shift</value>
+  </data>
+  <data name="TagDialog_Title.Text" xml:space="preserve">
+    <value>Редагувати тег</value>
+  </data>
+  <data name="TagDialog_Name.PlaceholderText" xml:space="preserve">
+    <value>Назва</value>
+  </data>
+  <data name="TagDialog_CleanupCheckBox.Content" xml:space="preserve">
+    <value>Дозволити очищення кліпів із цим тегом</value>
+  </data>
+  <data name="FilterDialog_Title.Text" xml:space="preserve">
+    <value>Редагувати фільтр</value>
+  </data>
+  <data name="FilterDialog_Name.PlaceholderText" xml:space="preserve">
+    <value>Назва</value>
+  </data>
+  <data name="FilterDialog_Pattern.PlaceholderText" xml:space="preserve">
+    <value>Патерн</value>
+  </data>
+  <data name="FilterDialog_ExampleButton.Content" xml:space="preserve">
+    <value>Приклади патернів</value>
+  </data>
+  <data name="FilterDialog_TeachingTip.Title" xml:space="preserve">
+    <value>Приклади патернів</value>
+  </data>
+</root>

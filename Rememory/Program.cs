@@ -28,8 +28,8 @@ namespace Rememory
             catch (COMException)
             {
                 NativeHelper.MessageBox(IntPtr.Zero,
-                    "MessageBox_UnableToOpenApp/Text".GetLocalizedResource(),
-                    "MessageBox_UnableToOpenApp/Caption".GetLocalizedResource(),
+                    "Unable to open this app in current mode",
+                    "Unable to open this app",
                     0);
                 return 0;
             }
@@ -46,8 +46,8 @@ namespace Rememory
             else if (SettingsContext.Instance.IsNotificationOnStartEnabled && activationArgs.Kind != ExtendedActivationKind.ToastNotification)
             {
                 AppNotificationManager.Default.Show(new AppNotificationBuilder()
-                    .AddText("AppNotification_AppIsRunning".GetLocalizedResource())
-                    .AddText("AppNotification_UseShortcutToOpen".GetLocalizedFormatResource(
+                    .AddText("AppNotification_Title".GetLocalizedResource())
+                    .AddText("AppNotification_Text".GetLocalizedFormatResource(
                         KeyboardHelper.ShortcutToString(SettingsContext.Instance.ActivationShortcut, "+")))
                     .BuildNotification());
             }

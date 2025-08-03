@@ -8,9 +8,7 @@
       xmlns:tkconverters="using:CommunityToolkit.WinUI.Converters"
       xmlns:converters="using:Rememory.Converters"
       xmlns:models="using:Rememory.Models"
-      xmlns:helper="using:Rememory.Helper"
-      DataContext="{x:Bind ViewModel}"
-      Loaded="Page_Loaded">
+      DataContext="{x:Bind ViewModel}">
     <Page.Resources>
         <converters:OwnerPathToImageConverter x:Key="OwnerPathToImageConverter" />
         <converters:StringFormatResourceConverter x:Key="StringFormatResourceConverter" />
@@ -19,241 +17,125 @@
         <tkconverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </Page.Resources>
 
-    <StackPanel Margin="56 0"
-                Spacing="5">
-        <tkcontrols:SettingsCard x:Uid="SettingsCard_EraseData"
-                                 HeaderIcon="{tk:FontIcon Glyph=&#xE75C;}">
-            <StackPanel Orientation="Horizontal"
-                        Spacing="12">
-                <InfoBadge x:Name="EraseDataInfoBadge"
-                           VerticalAlignment="Center"
-                           Visibility="Collapsed"
-                           Style="{ThemeResource SuccessIconInfoBadgeStyle}" />
-                <Button x:Uid="SettingsButton_EraseData">
-                    <Button.Flyout>
-                        <Flyout x:Name="EraseDataFlyout"
-                                ShouldConstrainToRootBounds="False">
-                            <StackPanel Spacing="12">
-                                <TextBlock x:Uid="SettingsFlyoutText_EraseData"
-                                           Style="{ThemeResource BaseTextBlockStyle}" />
-                                <Button x:Uid="SettingsFlyoutButton_EraseData"
-                                        Click="EraseDataButton_Click" />
-                            </StackPanel>
-                        </Flyout>
-                    </Button.Flyout>
-                </Button>
-            </StackPanel>
-        </tkcontrols:SettingsCard>
+    <ScrollViewer Padding="56,20,56,5">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="MaxClipSizeWarningEnabledState">
+                    <VisualState.StateTriggers>
+                        <tk:CompareStateTrigger Value="{x:Bind ViewModel.SettingsContext.MaxClipSize, Mode=OneWay}"
+                                                Comparison="GreaterThan"
+                                                To="8" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="MaxClipSizeWarningIcon.Visibility"
+                                Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
 
-        <tkcontrols:SettingsExpander x:Uid="SettingsCard_CleanupType"
-                                     HeaderIcon="{tk:FontIcon Glyph=&#xE74E;}"
-                                     IsExpanded="True">
-            <ComboBox SelectedIndex="{x:Bind ViewModel.CleanupType, Mode=TwoWay, Converter={StaticResource EnumToIndexConverter}}">
-                <ComboBoxItem x:Uid="SettingsComboBox_CleanupType_RetentionPeriod" />
-                <ComboBoxItem x:Uid="SettingsComboBox_CleanupType_Quantity" />
-            </ComboBox>
+        <StackPanel>
+            <tkcontrols:SettingsCard x:Uid="/Settings/Storage_EraseData"
+                                     Margin="0,0,0,5"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xE75C;}">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="12">
+                    <InfoBadge x:Name="EraseDataInfoBadge"
+                               VerticalAlignment="Center"
+                               Visibility="Collapsed"
+                               Style="{ThemeResource SuccessIconInfoBadgeStyle}" />
+                    <Button x:Uid="/Settings/Storage_EraseDataButton">
+                        <Button.Flyout>
+                            <Flyout x:Name="EraseDataFlyout"
+                                    ShouldConstrainToRootBounds="False">
+                                <StackPanel Spacing="12">
+                                    <TextBlock x:Uid="/Settings/Storage_EraseDataFlyout"
+                                               Style="{ThemeResource BaseTextBlockStyle}" />
+                                    <Button x:Uid="/Settings/Storage_EraseDataFlyoutButton"
+                                            Click="EraseDataButton_Click" />
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                </StackPanel>
+            </tkcontrols:SettingsCard>
 
-            <tkcontrols:SettingsExpander.Items>
-                <tkcontrols:SettingsCard x:Uid="SettingsCard_RetentionPeriod"
-                                         IsEnabled="{x:Bind ViewModel.IsRetentionPeriodParametersEnabled, Mode=OneWay}"
-                                         Visibility="{x:Bind ViewModel.IsRetentionPeriodParametersEnabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.CleanupTimeSpan, Mode=TwoWay, Converter={StaticResource EnumToIndexConverter}}">
-                        <ComboBoxItem x:Uid="SettingsComboBox_RetentionPeriod_Daily" />
-                        <ComboBoxItem x:Uid="SettingsComboBox_RetentionPeriod_Weekly" />
-                        <ComboBoxItem x:Uid="SettingsComboBox_RetentionPeriod_Monthly" />
-                        <ComboBoxItem x:Uid="SettingsComboBox_RetentionPeriod_Always" />
-                    </ComboBox>
-                </tkcontrols:SettingsCard>
+            <TextBlock x:Uid="/Settings/Storage_CleanupSection"
+                       Margin="0,28,0,8"
+                       Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
 
-                <tkcontrols:SettingsCard x:Uid="SettingsCard_FavoriteCleaning"
-                                         IsEnabled="{x:Bind ViewModel.IsRetentionPeriodParametersEnabled, Mode=OneWay}"
-                                         Visibility="{x:Bind ViewModel.IsRetentionPeriodParametersEnabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsCleanFavoriteClipsEnabled, Mode=TwoWay}" />
-                </tkcontrols:SettingsCard>
+            <tkcontrols:SettingsExpander x:Uid="/Settings/Storage_CleanupType"
+                                         Margin="0,0,0,5"
+                                         HeaderIcon="{tk:FontIcon Glyph=&#xE74E;}"
+                                         IsExpanded="True">
+                <ComboBox SelectedIndex="{x:Bind ViewModel.CleanupType, Mode=TwoWay, Converter={StaticResource EnumToIndexConverter}}">
+                    <ComboBoxItem x:Uid="/Settings/Storage_CleanupType_RetentionPeriod" />
+                    <ComboBoxItem x:Uid="/Settings/Storage_CleanupType_Quantity" />
+                </ComboBox>
 
-                <tkcontrols:SettingsCard x:Uid="SettingsCard_CleanupQuantity"
-                                         IsEnabled="{x:Bind ViewModel.IsQuantityParametersEnabled, Mode=OneWay}"
-                                         Visibility="{x:Bind ViewModel.IsQuantityParametersEnabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <NumberBox SpinButtonPlacementMode="Inline"
-                               SmallChange="10"
-                               LargeChange="100"
-                               Minimum="10"
-                               Maximum="10000"
-                               Value="{x:Bind ViewModel.SettingsContext.CleanupQuantity, Mode=TwoWay}" />
-                </tkcontrols:SettingsCard>
-            </tkcontrols:SettingsExpander.Items>
-        </tkcontrols:SettingsExpander>
+                <tkcontrols:SettingsExpander.Items>
+                    <tkcontrols:SettingsCard x:Uid="/Settings/Storage_RetentionPeriod"
+                                             IsEnabled="{x:Bind ViewModel.IsRetentionPeriodParametersEnabled, Mode=OneWay}"
+                                             Visibility="{x:Bind ViewModel.IsRetentionPeriodParametersEnabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.CleanupTimeSpan, Mode=TwoWay, Converter={StaticResource EnumToIndexConverter}}">
+                            <ComboBoxItem x:Uid="/Settings/Storage_RetentionPeriod_Daily" />
+                            <ComboBoxItem x:Uid="/Settings/Storage_RetentionPeriod_Weekly" />
+                            <ComboBoxItem x:Uid="/Settings/Storage_RetentionPeriod_Monthly" />
+                            <ComboBoxItem x:Uid="/Settings/Storage_RetentionPeriod_Always" />
+                        </ComboBox>
+                    </tkcontrols:SettingsCard>
 
-        <tkcontrols:SettingsExpander x:Uid="SettingsExpander_OwnerFilters"
-                                     HeaderIcon="{tk:FontIcon Glyph=&#xE71C;}"
-                                     IsExpanded="True">
-            <StackPanel Orientation="Horizontal"
-                        Spacing="12">
-                <FontIcon x:Uid="SettingsExpander_OwnerFiltersWarning"
-                          Glyph="&#xE946;"
-                          VerticalAlignment="Center"
-                          Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
-                <Button x:Uid="SettingsExpander_OwnerFiltersAddButton"
-                        Style="{ThemeResource AccentButtonStyle}"
-                        Click="AddOwnerAppFilterButton_Click" />
-            </StackPanel>
+                    <tkcontrols:SettingsCard x:Uid="/Settings/Storage_CleanupQuantity"
+                                             IsEnabled="{x:Bind ViewModel.IsQuantityParametersEnabled, Mode=OneWay}"
+                                             Visibility="{x:Bind ViewModel.IsQuantityParametersEnabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <NumberBox SpinButtonPlacementMode="Inline"
+                                   SmallChange="10"
+                                   LargeChange="100"
+                                   Minimum="{x:Bind models:SettingsContext.CleanupQuantityLowerBound}"
+                                   Maximum="{x:Bind models:SettingsContext.CleanupQuantityUpperBound}"
+                                   Value="{x:Bind ViewModel.SettingsContext.CleanupQuantity, Mode=TwoWay}" />
+                    </tkcontrols:SettingsCard>
 
-            <tkcontrols:SettingsExpander.Items>
-                <tkcontrols:SettingsCard MinHeight="0">
-                    <tkcontrols:SettingsCard.Template>
-                        <ControlTemplate TargetType="tkcontrols:SettingsCard">
-                            <ContentPresenter Background="{TemplateBinding Background}" />
-                        </ControlTemplate>
-                    </tkcontrols:SettingsCard.Template>
+                    <tkcontrols:SettingsCard x:Uid="/Settings/Storage_FavoriteClipsCleaning">
+                        <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsFavoriteClipsCleaningEnabled, Mode=TwoWay}" />
+                    </tkcontrols:SettingsCard>
+                </tkcontrols:SettingsExpander.Items>
+            </tkcontrols:SettingsExpander>
 
-                    <ListView x:Name="OwnerAppFiltersListView"
-                              SelectionMode="None"
-                              ItemsSource="{x:Bind ViewModel.SettingsContext.OwnerAppFilters}">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate>
-                                            <ContentPresenter />
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ListView.ItemContainerStyle>
+            <TextBlock x:Uid="/Settings/Storage_ClipLimitsSection"
+                       Margin="0,28,0,8"
+                       Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
 
-                        <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="models:OwnerAppFilter">
-                                <tkcontrols:SettingsCard HorizontalAlignment="Stretch"
-                                                         MinHeight="16">
-                                    <tkcontrols:SettingsCard.Template>
-                                        <ControlTemplate TargetType="tkcontrols:SettingsCard">
-                                            <ContentPresenter Background="{TemplateBinding Background}"
-                                                              BorderBrush="{TemplateBinding BorderBrush}"
-                                                              Padding="16 8"
-                                                              BorderThickness="0 1 0 0" />
-                                        </ControlTemplate>
-                                    </tkcontrols:SettingsCard.Template>
-                                    <Grid ColumnSpacing="16">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
+            <tkcontrols:SettingsExpander x:Uid="/Settings/Storage_SizeLimit"
+                                         HeaderIcon="{tk:FontIcon Glyph=&#xE898;}"
+                                         IsExpanded="{x:Bind ViewModel.SettingsContext.IsClipSizeValidationEnabled, Mode=OneTime}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsClipSizeValidationEnabled, Mode=TwoWay}" />
 
-                                        <Image Width="20"
-                                               Height="20"
-                                               Margin="3 0"
-                                               Source="{x:Bind Pattern, Mode=OneWay, Converter={StaticResource OwnerPathToImageConverter}}" />
+                <tkcontrols:SettingsExpander.Items>
+                    <tkcontrols:SettingsCard x:Uid="/Settings/Storage_MaxClipSize"
+                                             Description="Max clip size (Mb)"
+                                             IsEnabled="{x:Bind ViewModel.SettingsContext.IsClipSizeValidationEnabled, Mode=OneWay}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="12">
+                            <FontIcon x:Name="MaxClipSizeWarningIcon"
+                                      x:Uid="/Settings/Storage_ClipSizeWarning"
+                                      Glyph="&#xE946;"
+                                      VerticalAlignment="Center"
+                                      Foreground="{ThemeResource InfoBarWarningSeverityIconBackground}"
+                                      Visibility="Collapsed" />
 
-                                        <StackPanel Grid.Column="1">
-                                            <TextBlock TextWrapping="Wrap"
-                                                       Text="{x:Bind Name, Mode=OneWay}"
-                                                       Visibility="{Binding Text, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource StringVisibilityConverter}}" />
-                                            <TextBlock FontSize="12"
-                                                       TextWrapping="Wrap"
-                                                       Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                                       Text="{x:Bind Pattern, Mode=OneWay}" />
-                                            <TextBlock FontSize="12"
-                                                       Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                                       Text="{x:Bind FilteredCount, Mode=OneWay, Converter={StaticResource StringFormatResourceConverter}, ConverterParameter=SettingsFilterList_FilteredCount}" />
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="2"
-                                                    Spacing="8"
-                                                    Orientation="Horizontal">
-                                            <Button Content="{tk:FontIcon FontSize=14, Glyph=&#xE70F;}"
-                                                    Click="EditOwnerAppFilterButton_Click" />
-                                            <Button Content="{tk:FontIcon FontSize=14, Glyph=&#xE74D;}"
-                                                    CommandParameter="{x:Bind Mode=OneWay}"
-                                                    Command="{Binding DataContext.DeleteOwnerAppFilterCommand, ElementName=OwnerAppFiltersListView}" />
-                                        </StackPanel>
-                                    </Grid>
-                                </tkcontrols:SettingsCard>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </tkcontrols:SettingsCard>
-            </tkcontrols:SettingsExpander.Items>
-        </tkcontrols:SettingsExpander>
-
-        <tkcontrols:SettingsExpander x:Uid="SettingsExpander_Tags"
-                                     HeaderIcon="{tk:FontIcon Glyph=&#xE8EC;}"
-                                     IsExpanded="True">
-            <Button x:Uid="SettingsExpander_AddTagButton"
-                    Style="{ThemeResource AccentButtonStyle}"
-                    Click="AddTagButton_Click" />
-            <tkcontrols:SettingsExpander.Items>
-                <tkcontrols:SettingsCard MinHeight="0">
-                    <tkcontrols:SettingsCard.Template>
-                        <ControlTemplate TargetType="tkcontrols:SettingsCard">
-                            <ContentPresenter Background="{TemplateBinding Background}" />
-                        </ControlTemplate>
-                    </tkcontrols:SettingsCard.Template>
-
-                    <ListView x:Name="TagsListView"
-                              SelectionMode="None"
-                              ItemsSource="{x:Bind ViewModel.Tags}">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate>
-                                            <ContentPresenter />
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ListView.ItemContainerStyle>
-
-                        <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="models:TagModel">
-                                <tkcontrols:SettingsCard HorizontalAlignment="Stretch"
-                                                         MinHeight="16">
-                                    <tkcontrols:SettingsCard.Template>
-                                        <ControlTemplate TargetType="tkcontrols:SettingsCard">
-                                            <ContentPresenter Background="{TemplateBinding Background}"
-                                                              BorderBrush="{TemplateBinding BorderBrush}"
-                                                              Padding="16 8"
-                                                              BorderThickness="0 1 0 0" />
-                                        </ControlTemplate>
-                                    </tkcontrols:SettingsCard.Template>
-                                    <Grid ColumnSpacing="16">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-
-                                        <FontIcon Width="20"
-                                                  Height="20"
-                                                  Margin="3 0"
-                                                  Glyph="&#xEA3B;"
-                                                  Foreground="{x:Bind ColorBrush, Mode=OneWay}"/>
-
-                                        <StackPanel Grid.Column="1">
-                                            <TextBlock TextWrapping="Wrap"
-                                                       Text="{x:Bind Name, Mode=OneWay}" />
-                                            <TextBlock FontSize="12"
-                                                       Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                                       Text="{x:Bind ClipsCount, Mode=OneWay, Converter={StaticResource StringFormatResourceConverter}, ConverterParameter=SettingsTagsList_ClipsCount}" />
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="2"
-                                                    Spacing="8"
-                                                    Orientation="Horizontal">
-                                            <Button Content="{tk:FontIcon FontSize=14, Glyph=&#xE70F;}"
-                                                    Click="EditTagButton_Click" />
-                                            <Button Content="{tk:FontIcon FontSize=14, Glyph=&#xE74D;}"
-                                                    CommandParameter="{x:Bind Mode=OneWay}"
-                                                    Command="{Binding DataContext.DeleteTagCommand, ElementName=TagsListView}" />
-                                        </StackPanel>
-                                    </Grid>
-                                </tkcontrols:SettingsCard>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </tkcontrols:SettingsCard>
-            </tkcontrols:SettingsExpander.Items>
-        </tkcontrols:SettingsExpander>
-    </StackPanel>
+                            <NumberBox SpinButtonPlacementMode="Inline"
+                                       SmallChange="1"
+                                       LargeChange="4"
+                                       Minimum="{x:Bind models:SettingsContext.ClipSizeLowerBound}"
+                                       Maximum="{x:Bind models:SettingsContext.ClipSizeUpperBound}"
+                                       Value="{x:Bind ViewModel.SettingsContext.MaxClipSize, Mode=TwoWay}" />
+                        </StackPanel>
+                    </tkcontrols:SettingsCard>
+                </tkcontrols:SettingsExpander.Items>
+            </tkcontrols:SettingsExpander>
+        </StackPanel>
+    </ScrollViewer>
 </Page>

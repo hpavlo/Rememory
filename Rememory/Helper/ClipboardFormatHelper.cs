@@ -8,7 +8,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
 
@@ -104,13 +103,13 @@ namespace Rememory.Helper
         /// (represented by an unmanaged memory pointer and size) into a managed string representation.
         /// For non-text formats, this string is typically the path to a temporary file where the data was saved.
         /// </summary>
-        public static unsafe readonly Dictionary<ClipboardFormat, Func<(IntPtr, UIntPtr), string>> DataTypeToStringConverters = new()
+        public static unsafe readonly Dictionary<ClipboardFormat, Func<(IntPtr Pointer, UIntPtr Size), string>> DataTypeToStringConverters = new()
         {
-            { ClipboardFormat.Text, _ => Marshal.PtrToStringUni(_.Item1) ?? string.Empty },
-            { ClipboardFormat.Bitmap, _ => ConvertBitmapToFile(_.Item1) },
-            { ClipboardFormat.Rtf, _ => ConvertPointerToFile(_.Item1, _.Item2, ClipboardFormat.Rtf) },   // Marshal.PtrToStringUTF8 to directly convert the data
-            { ClipboardFormat.Html, _ => ConvertPointerToFile(_.Item1, _.Item2, ClipboardFormat.Html) },   // Marshal.PtrToStringUTF8
-            { ClipboardFormat.Png, _ => ConvertPointerToFile(_.Item1, _.Item2, ClipboardFormat.Png) }
+            { ClipboardFormat.Text, _ => ConvertPointerToString(_.Pointer, _.Size) },
+            { ClipboardFormat.Bitmap, _ => ConvertBitmapToFile(_.Pointer, _.Size) },
+            { ClipboardFormat.Rtf, _ => ConvertPointerToFile(_.Pointer, _.Size, ClipboardFormat.Rtf) },   // Marshal.PtrToStringUTF8 to directly convert the data
+            { ClipboardFormat.Html, _ => ConvertPointerToFile(_.Pointer, _.Size, ClipboardFormat.Html) },   // Marshal.PtrToStringUTF8
+            { ClipboardFormat.Png, _ => ConvertPointerToFile(_.Pointer, _.Size, ClipboardFormat.Png) }
         };
 
         /// <summary>
@@ -342,6 +341,22 @@ namespace Rememory.Helper
         }
 
         /// <summary>
+        /// Converts unmanaged memory pointer to string in unicode format.
+        /// </summary>
+        /// <param name="dataPointer">An <see cref="IntPtr"/> pointing to the unmanaged binary data.</param>
+        /// <param name="dataSize">The size (in bytes) of the data pointed to by <paramref name="dataPointer"/>.</param>
+        /// <returns>The data, converted to string in unicode.</returns>
+        private static string ConvertPointerToString(IntPtr dataPointer, UIntPtr dataSize)
+        {
+            if (!ClipSizeValidate(dataSize))
+            {
+                return string.Empty;
+            }
+
+            return Marshal.PtrToStringUni(dataPointer) ?? string.Empty;
+        }
+
+        /// <summary>
         /// Writes binary data from an unmanaged memory pointer to a new file.
         /// A unique filename is generated based on the current timestamp and format.
         /// </summary>
@@ -352,6 +367,11 @@ namespace Rememory.Helper
         private static unsafe string ConvertPointerToFile(IntPtr dataPointer, UIntPtr dataSize, ClipboardFormat format)
         {
             if (dataPointer == IntPtr.Zero || dataSize == UIntPtr.Zero)
+            {
+                return string.Empty;
+            }
+
+            if (!ClipSizeValidate(dataSize))
             {
                 return string.Empty;
             }
@@ -376,14 +396,20 @@ namespace Rememory.Helper
         /// A unique filename is generated based on the current timestamp and format.
         /// </summary>
         /// <param name="dataPointer"> pointing to the unmanaged BITMAP struct and the pixels.</param>
+        /// /// <param name="dataSize">The size (in bytes) of the data pointed to by <paramref name="dataPointer"/>.</param>
         /// <returns>The full path to the newly created file, or <see cref="string.Empty"/> if an error occurs.</returns>
-        private static unsafe string ConvertBitmapToFile(IntPtr dataPointer)
+        private static unsafe string ConvertBitmapToFile(IntPtr dataPointer, UIntPtr dataSize)
         {
+            if (!ClipSizeValidate(dataSize))
+            {
+                return string.Empty;
+            }
+
             try
             {
                 NativeHelper.BITMAP bitmapStruct = Marshal.PtrToStructure<NativeHelper.BITMAP>(dataPointer);
                 IntPtr pData = dataPointer + Marshal.SizeOf<NativeHelper.BITMAP>();
-                int stride = ((bitmapStruct.bmWidth * bitmapStruct.bmBitsPixel + 31) / 32) * 4;
+                int stride = (bitmapStruct.bmWidth * bitmapStruct.bmBitsPixel + 31) / 32 * 4;
 
                 using Bitmap bitmap = new(
                     bitmapStruct.bmWidth,
@@ -410,6 +436,13 @@ namespace Rememory.Helper
                 return string.Empty;
             }
         }
+
+        /// <summary>
+        /// Validates the size of clipboard data based on application settings.
+        /// </summary>
+        /// <param name="dataSize">Data size to validate.</param>
+        /// <returns>true if validation is disabled or the size does not exceed the maximum allowed size (in bytes).</returns>
+        private static bool ClipSizeValidate(UIntPtr dataSize) => !SettingsContext.Instance.IsClipSizeValidationEnabled || dataSize <= (nuint)(SettingsContext.Instance.MaxClipSize * 1024 * 1024);
 
         /// <summary>
         /// Generates a temporary Bitmap file from PNG data if available and required.

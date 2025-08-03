@@ -18,14 +18,14 @@ namespace Rememory.Views.Settings.Controls
         private readonly ShortcutDialog _dialogContent;
         private readonly List<int> _currentPressedKeys = [];
 
-        public string ButtonText
+        public string Text
         {
-            get => (string)GetValue(ButtonTextProperty);
-            set => SetValue(ButtonTextProperty, value);
+            get => (string)GetValue(TextProperty);
+            set => SetValue(TextProperty, value);
         }
 
-        public static readonly DependencyProperty ButtonTextProperty =
-            DependencyProperty.Register("ButtonText", typeof(string), typeof(ShortcutButton),
+        public static readonly DependencyProperty TextProperty =
+            DependencyProperty.Register("Text", typeof(string), typeof(ShortcutButton),
                 new PropertyMetadata(default(string)));
 
         public IList<int> ActivationShortcut
@@ -56,7 +56,7 @@ namespace Rememory.Views.Settings.Controls
             _dialogContent = new ShortcutDialog();
             _dialogBox = new()
             {
-                Title = "ShortcutDialogBox_Title".GetLocalizedResource(),
+                Title = "/Settings/ShortcutDialog_Title/Text".GetLocalizedResource(),
                 PrimaryButtonText = "Save".GetLocalizedResource(),
                 SecondaryButtonText = "Reset".GetLocalizedResource(),
                 CloseButtonText = "Cancel".GetLocalizedResource(),

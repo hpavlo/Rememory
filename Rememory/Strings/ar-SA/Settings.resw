@@ -1,0 +1,553 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="WindowTitle.Text" xml:space="preserve">
+    <value>{0} - الإعدادات</value>
+  </data>
+  <data name="PageTitle_General.Content" xml:space="preserve">
+    <value>عام</value>
+  </data>
+  <data name="PageTitle_Personalization.Content" xml:space="preserve">
+    <value>التخصيص</value>
+  </data>
+  <data name="PageTitle_Clipboard.Content" xml:space="preserve">
+    <value>الحافظة</value>
+  </data>
+  <data name="PageTitle_Metadata.Content" xml:space="preserve">
+    <value>البيانات الوصفية</value>
+  </data>
+  <data name="PageTitle_Tags.Content" xml:space="preserve">
+    <value>الوسوم</value>
+  </data>
+  <data name="PageTitle_Storage.Content" xml:space="preserve">
+    <value>التخزين</value>
+  </data>
+  <data name="PageTitle_Filters.Content" xml:space="preserve">
+    <value>عوامل التصفية</value>
+  </data>
+  <data name="PageTitle_About.Content" xml:space="preserve">
+    <value>حول</value>
+  </data>
+  <data name="General_AppLanguage.Header" xml:space="preserve">
+    <value>لغة التطبيق</value>
+  </data>
+  <data name="General_AppLanguage.Description" xml:space="preserve">
+    <value>اختر لغة التطبيق أو استخدم اللغة الافتراضية للنظام</value>
+  </data>
+  <data name="General_AppLanguage_Default.Content" xml:space="preserve">
+    <value>افتراضي</value>
+  </data>
+  <data name="General_AppLanguage_Arabic.Content" xml:space="preserve">
+    <value>العربية</value>
+  </data>
+  <data name="General_AppLanguage_ChineseSimplified.Content" xml:space="preserve">
+    <value>الصينية (المبسطة)</value>
+  </data>
+  <data name="General_AppLanguage_English.Content" xml:space="preserve">
+    <value>الإنجليزية</value>
+  </data>
+  <data name="General_AppLanguage_French.Content" xml:space="preserve">
+    <value>الفرنسية</value>
+  </data>
+  <data name="General_AppLanguage_German.Content" xml:space="preserve">
+    <value>الألمانية</value>
+  </data>
+  <data name="General_AppLanguage_Greek.Content" xml:space="preserve">
+    <value>اليونانية</value>
+  </data>
+  <data name="General_AppLanguage_Italian.Content" xml:space="preserve">
+    <value>الإيطالية</value>
+  </data>
+  <data name="General_AppLanguage_Japanese.Content" xml:space="preserve">
+    <value>اليابانية</value>
+  </data>
+  <data name="General_AppLanguage_Korean.Content" xml:space="preserve">
+    <value>الكورية</value>
+  </data>
+  <data name="General_AppLanguage_Polish.Content" xml:space="preserve">
+    <value>البولندية</value>
+  </data>
+  <data name="General_AppLanguage_Portuguese.Content" xml:space="preserve">
+    <value>البرتغالية</value>
+  </data>
+  <data name="General_AppLanguage_Spanish.Content" xml:space="preserve">
+    <value>الإسبانية</value>
+  </data>
+  <data name="General_AppLanguage_Turkish.Content" xml:space="preserve">
+    <value>التركية</value>
+  </data>
+  <data name="General_AppLanguage_Ukrainian.Content" xml:space="preserve">
+    <value>الأوكرانية</value>
+  </data>
+  <data name="General_AppLanguageFlyout.Title" xml:space="preserve">
+    <value>يتطلب إعادة التشغيل</value>
+  </data>
+  <data name="General_AppLanguageFlyout.Subtitle" xml:space="preserve">
+    <value>لتغيير لغة التطبيق، يجب إعادة تشغيل البرنامج</value>
+  </data>
+  <data name="General_AppLanguageFlyoutButton.Content" xml:space="preserve">
+    <value>إعادة تشغيل التطبيق</value>
+  </data>
+  <data name="General_ShortcutsSection.Text" xml:space="preserve">
+    <value>الاختصارات</value>
+  </data>
+  <data name="General_ActivationShortcut.Header" xml:space="preserve">
+    <value>اختصار التفعيل</value>
+  </data>
+  <data name="General_ActivationShortcut.Description" xml:space="preserve">
+    <value>عيّن تركيبة الاختصار لفتح مدير الحافظة</value>
+  </data>
+  <data name="General_ActivationShortcutButton.Text" xml:space="preserve">
+    <value>تغيير الاختصار</value>
+  </data>
+  <data name="General_StartupSection.Text" xml:space="preserve">
+    <value>بدء التشغيل</value>
+  </data>
+  <data name="General_RestartAsAdmin.Header" xml:space="preserve">
+    <value>إعادة التشغيل كمسؤول</value>
+  </data>
+  <data name="General_RunningAsAdmin.Header" xml:space="preserve">
+    <value>يعمل كمسؤول</value>
+  </data>
+  <data name="General_RestartAsAdminButton.Content" xml:space="preserve">
+    <value>إعادة التشغيل كمسؤول</value>
+  </data>
+  <data name="General_RestartAsAdmin.Description" xml:space="preserve">
+    <value>إعدادات متقدمة تتطلب صلاحيات المسؤول</value>
+  </data>
+  <data name="General_AlwaysRunAsAdmin.Header" xml:space="preserve">
+    <value>تشغيل دائمًا كمسؤول</value>
+  </data>
+  <data name="General_AlwaysRunAsAdmin.Description" xml:space="preserve">
+    <value>فعّل هذا الخيار لتشغيل التطبيق دائمًا بصلاحيات المسؤول</value>
+  </data>
+  <data name="General_RunAtStartup.Header" xml:space="preserve">
+    <value>تشغيل عند بدء التشغيل</value>
+  </data>
+  <data name="General_RunAtStartup.Description" xml:space="preserve">
+    <value>فعّل هذا الخيار لتشغيل Rememory تلقائيًا عند بدء تشغيل الكمبيوتر</value>
+  </data>
+  <data name="General_NotificationOnStartup.Header" xml:space="preserve">
+    <value>إشعار عند بدء التشغيل</value>
+  </data>
+  <data name="General_NotificationOnStartup.Description" xml:space="preserve">
+    <value>عرض إشعار بعد فتح التطبيق</value>
+  </data>
+  <data name="Personalization_AppTheme.Header" xml:space="preserve">
+    <value>سمة التطبيق</value>
+  </data>
+  <data name="Personalization_AppTheme.Description" xml:space="preserve">
+    <value>اختر السمة المفضلة لواجهة التطبيق</value>
+  </data>
+  <data name="Personalization_AppTheme_Default.Content" xml:space="preserve">
+    <value>افتراضي</value>
+  </data>
+  <data name="Personalization_AppTheme_Light.Content" xml:space="preserve">
+    <value>فاتح</value>
+  </data>
+  <data name="Personalization_AppTheme_Dark.Content" xml:space="preserve">
+    <value>داكن</value>
+  </data>
+  <data name="Personalization_BackgroundSection.Text" xml:space="preserve">
+    <value>الخلفية</value>
+  </data>
+  <data name="Personalization_Backdrop.Header" xml:space="preserve">
+    <value>الخلفية الزجاجية</value>
+  </data>
+  <data name="Personalization_Backdrop.Description" xml:space="preserve">
+    <value>تغيير الخلفية داخل النافذة</value>
+  </data>
+  <data name="Personalization_Backdrop_None.Content" xml:space="preserve">
+    <value>لا شيء</value>
+  </data>
+  <data name="Personalization_Backdrop_Acrylic.Content" xml:space="preserve">
+    <value>Acrylic</value>
+  </data>
+  <data name="Personalization_Backdrop_ThinAcrylic.Content" xml:space="preserve">
+    <value>Thin Acrylic</value>
+  </data>
+  <data name="Personalization_Backdrop_Mica.Content" xml:space="preserve">
+    <value>Mica</value>
+  </data>
+  <data name="Personalization_Backdrop_MicaAlt.Content" xml:space="preserve">
+    <value>Mica Alt</value>
+  </data>
+  <data name="Personalization_BackgroundColor.Header" xml:space="preserve">
+    <value>لون الخلفية</value>
+  </data>
+  <data name="Personalization_BackgroundColor.Description" xml:space="preserve">
+    <value>تغيير لون الخلفية داخل النافذة</value>
+  </data>
+  <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
+    <value>نافذة الحافظة</value>
+  </data>
+  <data name="Personalization_WindowPosition.Header" xml:space="preserve">
+    <value>موضع نافذة الحافظة</value>
+  </data>
+  <data name="Personalization_WindowPosition.Description" xml:space="preserve">
+    <value>تخصيص موضع النافذة على الشاشة</value>
+  </data>
+  <data name="Personalization_WindowPosition_Caret.Content" xml:space="preserve">
+    <value>المؤشر النصي</value>
+  </data>
+  <data name="Personalization_WindowPosition_Cursor.Content" xml:space="preserve">
+    <value>المؤشر</value>
+  </data>
+  <data name="Personalization_WindowPosition_ScreenCenter.Content" xml:space="preserve">
+    <value>منتصف الشاشة</value>
+  </data>
+  <data name="Personalization_WindowPosition_LastPosition.Content" xml:space="preserve">
+    <value>الموضع الأخير</value>
+  </data>
+  <data name="Personalization_WindowPosition_Right.Content" xml:space="preserve">
+    <value>اليمين</value>
+  </data>
+  <data name="Personalization_WindowPosition_RightCorner.Content" xml:space="preserve">
+    <value>الزاوية اليمنى</value>
+  </data>
+  <data name="Personalization_WindowWidth.Header" xml:space="preserve">
+    <value>العرض</value>
+  </data>
+  <data name="Personalization_WindowWidth.Description" xml:space="preserve">
+    <value>تحديد عرض النافذة (بالبكسل)</value>
+  </data>
+  <data name="Personalization_WindowHeight.Header" xml:space="preserve">
+    <value>الارتفاع</value>
+  </data>
+  <data name="Personalization_WindowHeight.Description" xml:space="preserve">
+    <value>تحديد ارتفاع النافذة (بالبكسل)</value>
+  </data>
+  <data name="Personalization_WindowMargin.Header" xml:space="preserve">
+    <value>الهامش</value>
+  </data>
+  <data name="Personalization_WindowMargin.Description" xml:space="preserve">
+    <value>تحديد الهامش حول النافذة (بالبكسل)</value>
+  </data>
+  <data name="Clipboard_ClipsSection.Text" xml:space="preserve">
+    <value>المقاطع</value>
+  </data>
+  <data name="Clipboard_DragAndDrop.Header" xml:space="preserve">
+    <value>السحب والإفلات</value>
+  </data>
+  <data name="Clipboard_DragAndDrop.Description" xml:space="preserve">
+    <value>تمكين السحب والإفلات للمقاطع</value>
+  </data>
+  <data name="Clipboard_DeveloperStringCaseConversions.Header" xml:space="preserve">
+    <value>تحويل حالة النص للمطورين</value>
+  </data>
+  <data name="Clipboard_DeveloperStringCaseConversions.Description" xml:space="preserve">
+    <value>تمكين الأوامر المتقدمة لتحويل النص إلى Camel Case وPascal Case وSnake Case وKebab Case</value>
+  </data>
+  <data name="Clipboard_SearchBarSection.Text" xml:space="preserve">
+    <value>شريط البحث</value>
+  </data>
+  <data name="Clipboard_SearchBoxFocus.Header" xml:space="preserve">
+    <value>تركيز مربع البحث</value>
+  </data>
+  <data name="Clipboard_SearchBoxFocus.Description" xml:space="preserve">
+    <value>سيتم التركيز تلقائيًا على حقل البحث عند فتح النافذة</value>
+  </data>
+  <data name="Clipboard_ClearSearchOnOpen.Header" xml:space="preserve">
+    <value>مسح البحث عند الفتح</value>
+  </data>
+  <data name="Clipboard_ClearSearchOnOpen.Description" xml:space="preserve">
+    <value>مسح نص البحث عند فتح النافذة</value>
+  </data>
+  <data name="Clipboard_TabsSection.Text" xml:space="preserve">
+    <value>علامات التبويب</value>
+  </data>
+  <data name="Clipboard_SetInitialTabOnOpen.Header" xml:space="preserve">
+    <value>تعيين علامة التبويب الأولية عند الفتح</value>
+  </data>
+  <data name="Clipboard_SetInitialTabOnOpen.Description" xml:space="preserve">
+    <value>ابدأ بعلامة التبويب "الرئيسية" عند فتح النافذة</value>
+  </data>
+  <data name="Clipboard_OtherSection.Text" xml:space="preserve">
+    <value>أخرى</value>
+  </data>
+  <data name="Clipboard_RememberPinState.Header" xml:space="preserve">
+    <value>تذكر حالة تثبيت النافذة</value>
+  </data>
+  <data name="Clipboard_RememberPinState.Description" xml:space="preserve">
+    <value>يتتبع ما إذا كنت قد ثبّت النافذة، بحيث تفتح بنفس الطريقة في المرة التالية</value>
+  </data>
+  <data name="Metadata_LinkPreviewSection.Text" xml:space="preserve">
+    <value>معاينة الرابط</value>
+  </data>
+  <data name="Metadata_LinkPreview.Header" xml:space="preserve">
+    <value>معاينة الرابط</value>
+  </data>
+  <data name="Metadata_LinkPreview.Description" xml:space="preserve">
+    <value>تحميل معلومات معاينة الرابط. ستظل البيانات المحملة مسبقًا دون تغيير</value>
+  </data>
+  <data name="Metadata_ColorPreviewSection.Text" xml:space="preserve">
+    <value>معاينة اللون</value>
+  </data>
+  <data name="Metadata_HexColorPrefix.Header" xml:space="preserve">
+    <value>يتطلب بادئة اللون السداسي</value>
+  </data>
+  <data name="Metadata_HexColorPrefix.Description" xml:space="preserve">
+    <value>إذا تم التمكين، سيتم التعرف فقط على رموز الألوان السداسية التي تبدأ بـ "#" كألوان صالحة</value>
+  </data>
+  <data name="Tags_Tags.Header" xml:space="preserve">
+    <value>الوسوم</value>
+  </data>
+  <data name="Tags_Tags.Description" xml:space="preserve">
+    <value>أنشئ وسومًا مخصصة وعيّنها إلى المقاطع الخاصة بك</value>
+  </data>
+  <data name="Tags_TagsButton.Content" xml:space="preserve">
+    <value>إضافة وسم</value>
+  </data>
+  <data name="Tags_Tag_ClipsCount.Text" xml:space="preserve">
+    <value>عدد المقاطع: {0}</value>
+  </data>
+  <data name="Storage_EraseData.Header" xml:space="preserve">
+    <value>مسح بيانات الحافظة</value>
+  </data>
+  <data name="Storage_EraseData.Description" xml:space="preserve">
+    <value>إزالة جميع بيانات الحافظة المحفوظة من جهازك</value>
+  </data>
+  <data name="Storage_EraseDataButton.Content" xml:space="preserve">
+    <value>حذف جميع البيانات</value>
+  </data>
+  <data name="Storage_EraseDataFlyout.Text" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد حذف جميع البيانات المحفوظة؟</value>
+  </data>
+  <data name="Storage_EraseDataFlyoutButton.Content" xml:space="preserve">
+    <value>نعم، احذف جميع البيانات</value>
+  </data>
+  <data name="Storage_CleanupSection.Text" xml:space="preserve">
+    <value>تنظيف</value>
+  </data>
+  <data name="Storage_CleanupType.Header" xml:space="preserve">
+    <value>نوع التنظيف</value>
+  </data>
+  <data name="Storage_CleanupType.Description" xml:space="preserve">
+    <value>حدد كيفية حذف المقاطع القديمة</value>
+  </data>
+  <data name="Storage_CleanupType_RetentionPeriod.Content" xml:space="preserve">
+    <value>فترة الاحتفاظ</value>
+  </data>
+  <data name="Storage_CleanupType_Quantity.Content" xml:space="preserve">
+    <value>الكمية</value>
+  </data>
+  <data name="Storage_CleanupQuantity.Header" xml:space="preserve">
+    <value>الحد الأقصى لعدد المقاطع</value>
+  </data>
+  <data name="Storage_CleanupQuantity.Description" xml:space="preserve">
+    <value>يحدد الحد الأقصى لعدد المقاطع التي يمكن تخزينها على القرص</value>
+  </data>
+  <data name="Storage_RetentionPeriod.Header" xml:space="preserve">
+    <value>فترة الاحتفاظ بالبيانات</value>
+  </data>
+  <data name="Storage_RetentionPeriod.Description" xml:space="preserve">
+    <value>حدد مدة الاحتفاظ ببيانات الحافظة على القرص</value>
+  </data>
+  <data name="Storage_RetentionPeriod_Daily.Content" xml:space="preserve">
+    <value>يوميًا</value>
+  </data>
+  <data name="Storage_RetentionPeriod_Weekly.Content" xml:space="preserve">
+    <value>أسبوعيًا</value>
+  </data>
+  <data name="Storage_RetentionPeriod_Monthly.Content" xml:space="preserve">
+    <value>شهريًا</value>
+  </data>
+  <data name="Storage_RetentionPeriod_Always.Content" xml:space="preserve">
+    <value>دائمًا</value>
+  </data>
+  <data name="Storage_FavoriteClipsCleaning.Header" xml:space="preserve">
+    <value>تنظيف المقاطع المفضلة</value>
+  </data>
+  <data name="Storage_FavoriteClipsCleaning.Description" xml:space="preserve">
+    <value>إزالة المقاطع المفضلة التي تتجاوز فترة الاحتفاظ</value>
+  </data>
+  <data name="Storage_ClipLimitsSection.Text" xml:space="preserve">
+    <value>حدود المقاطع</value>
+  </data>
+  <data name="Storage_SizeLimit.Header" xml:space="preserve">
+    <value>حد حجم المقطع</value>
+  </data>
+  <data name="Storage_SizeLimit.Description" xml:space="preserve">
+    <value>تحديد الحد الأقصى المسموح به لحجم كل مقطع. سيتم تجاهل المقاطع التي تتجاوز هذا الحد</value>
+  </data>
+  <data name="Storage_MaxClipSize.Header" xml:space="preserve">
+    <value>أقصى حجم للمقطع</value>
+  </data>
+  <data name="Storage_MaxClipSize.Description" xml:space="preserve">
+    <value>الحجم الأقصى المسموح به لكل مقطع (بالميغابايت)</value>
+  </data>
+  <data name="Storage_ClipSizeWarning.ToolTipService.ToolTip" xml:space="preserve">
+    <value>قد يؤدي إلى زيادة استخدام القرص</value>
+  </data>
+  <data name="Filters_OwnerFilters.Header" xml:space="preserve">
+    <value>عوامل تصفية التطبيقات المالكة</value>
+  </data>
+  <data name="Filters_OwnerFilters.Description" xml:space="preserve">
+    <value>لن يقوم مدير الحافظة بحفظ أي بيانات من هذه البرامج</value>
+  </data>
+  <data name="Filters_OwnerFiltersButton.Content" xml:space="preserve">
+    <value>إضافة عامل تصفية</value>
+  </data>
+  <data name="Filters_OwnerFiltersWarning.ToolTipService.ToolTip" xml:space="preserve">
+    <value>قد لا تعمل التصفية بشكل صحيح مع تطبيقات UWP وWebView2</value>
+  </data>
+  <data name="Filters_Filter_ClipsCount.Text" xml:space="preserve">
+    <value>{0 ,plural, zero {لا توجد مقاطع مفلترة} one {مقطع واحد مفلتر} two {مقطعان مفلتران} few {# مقاطع مفلترة} many {# مقطعًا مفلترًا} other {# مقطع مفلتر}}</value>
+  </data>
+  <data name="About_Repository.Header" xml:space="preserve">
+    <value>مستودع GitHub</value>
+  </data>
+  <data name="ShortcutDialog_Title.Text" xml:space="preserve">
+    <value>اختصار التفعيل</value>
+  </data>
+  <data name="ShortcutDialog_Subtitle.Text" xml:space="preserve">
+    <value>اضغط على مجموعة مفاتيح لتغيير هذا الاختصار</value>
+  </data>
+  <data name="ShortcutDialog_ErrorInfo.Title" xml:space="preserve">
+    <value>اختصار غير صالح</value>
+  </data>
+  <data name="ShortcutDialog_ErrorInfo.Message" xml:space="preserve">
+    <value>يجب أن يبدأ الاختصار بمفتاح Windows أو Ctrl أو Alt أو Shift</value>
+  </data>
+  <data name="TagDialog_Title.Text" xml:space="preserve">
+    <value>تحرير الوسم</value>
+  </data>
+  <data name="TagDialog_Name.PlaceholderText" xml:space="preserve">
+    <value>الاسم</value>
+  </data>
+  <data name="TagDialog_CleanupCheckBox.Content" xml:space="preserve">
+    <value>
+السماح بتنظيف المقاطع التي تحتوي على هذه العلامة</value>
+  </data>
+  <data name="FilterDialog_Title.Text" xml:space="preserve">
+    <value>تحرير عامل التصفية</value>
+  </data>
+  <data name="FilterDialog_Name.PlaceholderText" xml:space="preserve">
+    <value>الاسم</value>
+  </data>
+  <data name="FilterDialog_Pattern.PlaceholderText" xml:space="preserve">
+    <value>النمط</value>
+  </data>
+  <data name="FilterDialog_ExampleButton.Content" xml:space="preserve">
+    <value>أمثلة على الأنماط</value>
+  </data>
+  <data name="FilterDialog_TeachingTip.Title" xml:space="preserve">
+    <value>أمثلة على الأنماط</value>
+  </data>
+</root>

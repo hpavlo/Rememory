@@ -2,7 +2,6 @@
 using Rememory.Helper;
 using Rememory.Models;
 using System;
-using System.ComponentModel;
 
 namespace Rememory.Services
 {
@@ -25,7 +24,7 @@ namespace Rememory.Services
                 _lastCleanupTime = DateTime.Now;
                 try
                 {
-                    _clipboardService.DeleteOldClipsByTime(RoundToNearestDay(_lastCleanupTime).Subtract(GetTimeSpanFromSettings()), _settingsContext.IsCleanFavoriteClipsEnabled);
+                    _clipboardService.DeleteOldClipsByTime(RoundToNearestDay(_lastCleanupTime).Subtract(GetTimeSpanFromSettings()), _settingsContext.IsFavoriteClipsCleaningEnabled);
                 }
                 catch
                 {

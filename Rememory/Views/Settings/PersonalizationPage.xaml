@@ -6,163 +6,182 @@
       xmlns:tk="using:CommunityToolkit.WinUI"
       xmlns:tkcontrols="using:CommunityToolkit.WinUI.Controls"
       xmlns:converters="using:Rememory.Converters"
+      xmlns:models="using:Rememory.Models"
       DataContext="{x:Bind ViewModel}">
     <Page.Resources>
         <converters:EnumToIndexConverter x:Key="EnumToIndexConverter" />
     </Page.Resources>
-    
-    <StackPanel Margin="56 0"
-                Spacing="5">
-        <tkcontrols:SettingsCard x:Uid="SettingsCard_AppTheme"
-                                 HeaderIcon="{tk:FontIcon Glyph=&#xE790;}">
-            <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.Theme, Mode=TwoWay, Converter={StaticResource EnumToIndexConverter}}">
-                <ComboBoxItem x:Uid="SettingsComboBox_AppTheme_Default" />
-                <ComboBoxItem x:Uid="SettingsComboBox_AppTheme_Light" />
-                <ComboBoxItem x:Uid="SettingsComboBox_AppTheme_Dark" />
-            </ComboBox>
-        </tkcontrols:SettingsCard>
 
-        <tkcontrols:SettingsCard x:Uid="SettingsCard_Backdrop"
-                                 IsEnabled="{x:Bind ViewModel.IsBackgropSupported, Mode=OneWay}"
-                                 HeaderIcon="{tk:FontIcon Glyph=&#xEF1F;}">
-            <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.WindowBackdrop, Mode=TwoWay, Converter={StaticResource EnumToIndexConverter}}">
-                <ComboBoxItem x:Uid="SettingsComboBox_Backdrop_None" />
-                <ComboBoxItem x:Uid="SettingsComboBox_Backdrop_Acrylic" />
-                <ComboBoxItem x:Uid="SettingsComboBox_Backdrop_ThinAcrylic" />
-                <ComboBoxItem x:Uid="SettingsComboBox_Backdrop_Mica" />
-                <ComboBoxItem x:Uid="SettingsComboBox_Backdrop_MicaAlt" />
-            </ComboBox>
-        </tkcontrols:SettingsCard>
+    <ScrollViewer Padding="56,20,56,5">
+        <StackPanel>
+            <tkcontrols:SettingsCard x:Uid="/Settings/Personalization_AppTheme"
+                                     Margin="0,0,0,5"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xE790;}">
+                <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.Theme, Mode=TwoWay, Converter={StaticResource EnumToIndexConverter}}">
+                    <ComboBoxItem x:Uid="/Settings/Personalization_AppTheme_Default" />
+                    <ComboBoxItem x:Uid="/Settings/Personalization_AppTheme_Light" />
+                    <ComboBoxItem x:Uid="/Settings/Personalization_AppTheme_Dark" />
+                </ComboBox>
+            </tkcontrols:SettingsCard>
 
-        <tkcontrols:SettingsExpander x:Uid="SettingsCard_BackgroundColor"
-                                     IsExpanded="True"
-                                     HeaderIcon="{tk:FontIcon Glyph=&#xE771;}">
-            <SplitButton Padding="0"
-                         IsTapEnabled="False">
-                <SplitButton.Resources>
-                    <ResourceDictionary>
-                        <ResourceDictionary.ThemeDictionaries>
-                            <ResourceDictionary x:Key="Light">
-                                <SolidColorBrush x:Key="DefaultThemeBackgroundBrush"
-                                                 Color="White" />
-                            </ResourceDictionary>
-                            <ResourceDictionary x:Key="Dark">
-                                <SolidColorBrush x:Key="DefaultThemeBackgroundBrush"
-                                                 Color="Black" />
-                            </ResourceDictionary>
-                        </ResourceDictionary.ThemeDictionaries>
-                    </ResourceDictionary>
-                </SplitButton.Resources>
+            <TextBlock x:Uid="/Settings/Personalization_BackgroundSection"
+                       Margin="0,28,0,8"
+                       Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
 
-                <Grid Width="32"
-                      Height="32"
-                      Margin="0 2"
-                      CornerRadius="2"
-                      Background="{ThemeResource DefaultThemeBackgroundBrush}">
-                    <Path Width="32"
+            <tkcontrols:SettingsCard x:Uid="/Settings/Personalization_Backdrop"
+                                     Margin="0,0,0,5"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xEF1F;}"
+                                     IsEnabled="{x:Bind ViewModel.IsBackgropSupported, Mode=OneWay}">
+                <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.WindowBackdrop, Mode=TwoWay, Converter={StaticResource EnumToIndexConverter}}">
+                    <ComboBoxItem x:Uid="/Settings/Personalization_Backdrop_None" />
+                    <ComboBoxItem x:Uid="/Settings/Personalization_Backdrop_Acrylic" />
+                    <ComboBoxItem x:Uid="/Settings/Personalization_Backdrop_ThinAcrylic" />
+                    <ComboBoxItem x:Uid="/Settings/Personalization_Backdrop_Mica" />
+                    <ComboBoxItem x:Uid="/Settings/Personalization_Backdrop_MicaAlt" />
+                </ComboBox>
+            </tkcontrols:SettingsCard>
+
+            <tkcontrols:SettingsExpander x:Uid="/Settings/Personalization_BackgroundColor"
+                                         Margin="0,0,0,5"
+                                         HeaderIcon="{tk:FontIcon Glyph=&#xE771;}"
+                                         IsExpanded="True">
+                <SplitButton Padding="0"
+                             IsTapEnabled="False">
+                    <SplitButton.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.ThemeDictionaries>
+                                <ResourceDictionary x:Key="Light">
+                                    <SolidColorBrush x:Key="DefaultThemeBackgroundBrush"
+                                                     Color="White" />
+                                </ResourceDictionary>
+                                <ResourceDictionary x:Key="Dark">
+                                    <SolidColorBrush x:Key="DefaultThemeBackgroundBrush"
+                                                     Color="Black" />
+                                </ResourceDictionary>
+                            </ResourceDictionary.ThemeDictionaries>
+                        </ResourceDictionary>
+                    </SplitButton.Resources>
+
+                    <Grid Width="32"
                           Height="32"
-                          Stroke="Transparent"
-                          Fill="#60888888">
-                        <Path.Data>
-                            <GeometryGroup>
-                                <RectangleGeometry Rect="0 0 8 8" />
-                                <RectangleGeometry Rect="8 8 8 8" />
-                                <RectangleGeometry Rect="16 16 8 8" />
-                                <RectangleGeometry Rect="24 24 8 8" />
-                                <RectangleGeometry Rect="16 0 8 8" />
-                                <RectangleGeometry Rect="24 8 8 8" />
-                                <RectangleGeometry Rect="0 16 8 8" />
-                                <RectangleGeometry Rect="8 24 8 8" />
-                            </GeometryGroup>
-                        </Path.Data>
-                    </Path>
+                          Margin="0 2"
+                          CornerRadius="2"
+                          Background="{ThemeResource DefaultThemeBackgroundBrush}">
+                        <Path Width="32"
+                              Height="32"
+                              Stroke="Transparent"
+                              Fill="#60888888">
+                            <Path.Data>
+                                <GeometryGroup>
+                                    <RectangleGeometry Rect="0 0 8 8" />
+                                    <RectangleGeometry Rect="8 8 8 8" />
+                                    <RectangleGeometry Rect="16 16 8 8" />
+                                    <RectangleGeometry Rect="24 24 8 8" />
+                                    <RectangleGeometry Rect="16 0 8 8" />
+                                    <RectangleGeometry Rect="24 8 8 8" />
+                                    <RectangleGeometry Rect="0 16 8 8" />
+                                    <RectangleGeometry Rect="8 24 8 8" />
+                                </GeometryGroup>
+                            </Path.Data>
+                        </Path>
 
-                    <Border x:Name="BackgroundColorPreview"
-                            Background="{x:Bind ViewModel.SettingsContext.WindowBackgroundBrush, Mode=OneWay}" />
-                </Grid>
+                        <Border x:Name="BackgroundColorPreview"
+                                Background="{x:Bind ViewModel.SettingsContext.WindowBackgroundBrush, Mode=OneWay}" />
+                    </Grid>
 
-                <SplitButton.Flyout>
-                    <Flyout ShouldConstrainToRootBounds="False"
-                            Closed="BackgroundColorFlyout_Closed">
-                        <ColorPicker x:Name="BackgroundColorPicker"
-                                     IsAlphaEnabled="True"
-                                     IsMoreButtonVisible="True"
-                                     Loaded="BackgroundColorPicker_Loaded" />
-                    </Flyout>
-                </SplitButton.Flyout>
-            </SplitButton>
+                    <SplitButton.Flyout>
+                        <Flyout ShouldConstrainToRootBounds="False"
+                                Closed="BackgroundColorFlyout_Closed">
+                            <ColorPicker x:Name="BackgroundColorPicker"
+                                         IsAlphaEnabled="True"
+                                         IsMoreButtonVisible="True"
+                                         Loaded="BackgroundColorPicker_Loaded" />
+                        </Flyout>
+                    </SplitButton.Flyout>
+                </SplitButton>
 
-            <tkcontrols:SettingsExpander.Items>
-                <tkcontrols:SettingsCard>
-                    <tkcontrols:SettingsCard.Template>
-                        <ControlTemplate TargetType="tkcontrols:SettingsCard">
-                            <ContentPresenter Background="{TemplateBinding Background}"
-                                              Padding="{TemplateBinding Padding}" />
-                        </ControlTemplate>
-                    </tkcontrols:SettingsCard.Template>
+                <tkcontrols:SettingsExpander.Items>
+                    <tkcontrols:SettingsCard>
+                        <tkcontrols:SettingsCard.Template>
+                            <ControlTemplate TargetType="tkcontrols:SettingsCard">
+                                <ContentPresenter Background="{TemplateBinding Background}"
+                                                  Padding="{TemplateBinding Padding}" />
+                            </ControlTemplate>
+                        </tkcontrols:SettingsCard.Template>
 
-                    <ItemsView x:Name="BackgroundColorItemsView"
-                               SelectionMode="Single"
-                               SelectionChanged="BackgroundColorItemsView_SelectionChanged"
-                               Loaded="BackgroundColorItemsView_Loaded"
-                               ItemsSource="{x:Bind _suggestedBackgroundColors, Mode=OneWay}">
-                        <ItemsView.Layout>
-                            <UniformGridLayout MinColumnSpacing="6"
-                                               MinRowSpacing="6" />
-                        </ItemsView.Layout>
-                        <ItemsView.ItemTemplate>
-                            <DataTemplate x:DataType="SolidColorBrush">
-                                <ItemContainer>
-                                    <Border Background="{x:Bind Mode=OneWay}"
-                                            Width="40"
-                                            Height="40"
-                                            BorderThickness="1"
-                                            BorderBrush="{ThemeResource ButtonBorderBrush}"
-                                            CornerRadius="4" />
-                                </ItemContainer>
-                            </DataTemplate>
-                        </ItemsView.ItemTemplate>
-                    </ItemsView>
-                </tkcontrols:SettingsCard>
-            </tkcontrols:SettingsExpander.Items>
-        </tkcontrols:SettingsExpander>
+                        <ItemsView x:Name="BackgroundColorItemsView"
+                                   Margin="0,8,0,8"
+                                   SelectionMode="Single"
+                                   SelectionChanged="BackgroundColorItemsView_SelectionChanged"
+                                   Loaded="BackgroundColorItemsView_Loaded"
+                                   ItemsSource="{x:Bind _suggestedBackgroundColors, Mode=OneWay}">
+                            <ItemsView.Layout>
+                                <UniformGridLayout MinColumnSpacing="6"
+                                                   MinRowSpacing="6" />
+                            </ItemsView.Layout>
+                            <ItemsView.ItemTemplate>
+                                <DataTemplate x:DataType="SolidColorBrush">
+                                    <ItemContainer>
+                                        <Border Background="{x:Bind Mode=OneWay}"
+                                                Width="40"
+                                                Height="40"
+                                                BorderThickness="1"
+                                                BorderBrush="{ThemeResource ButtonBorderBrush}"
+                                                CornerRadius="4" />
+                                    </ItemContainer>
+                                </DataTemplate>
+                            </ItemsView.ItemTemplate>
+                        </ItemsView>
+                    </tkcontrols:SettingsCard>
+                </tkcontrols:SettingsExpander.Items>
+            </tkcontrols:SettingsExpander>
 
-        <tkcontrols:SettingsExpander x:Uid="SettingsCard_WindowPosition"
-                                     IsExpanded="True"
-                                     HeaderIcon="{tk:FontIcon Glyph=&#xE90D;}">
-            <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.WindowPosition, Mode=TwoWay, Converter={StaticResource EnumToIndexConverter}}">
-                <ComboBoxItem x:Uid="SettingsComboBox_Position_Caret" />
-                <ComboBoxItem x:Uid="SettingsComboBox_Position_Cursor" />
-                <ComboBoxItem x:Uid="SettingsComboBox_Position_ScreenCenter" />
-                <ComboBoxItem x:Uid="SettingsComboBox_Position_LastPosition" />
-                <ComboBoxItem x:Uid="SettingsComboBox_Position_Right" />
-                <ComboBoxItem x:Uid="SettingsComboBox_Position_RightCorner" />
-            </ComboBox>
+            <TextBlock x:Uid="/Settings/Personalization_ClipboardWindowSection"
+                       Margin="0,28,0,8"
+                       Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
 
-            <tkcontrols:SettingsExpander.Items>
-                <tkcontrols:SettingsCard x:Uid="SettingsCard_WindowWidth">
-                    <NumberBox SpinButtonPlacementMode="Inline"
-                               SmallChange="10"
-                               LargeChange="100"
-                               Minimum="320"
-                               Maximum="1200"
-                               Value="{x:Bind ViewModel.SettingsContext.WindowWidth, Mode=TwoWay}" />
-                </tkcontrols:SettingsCard>
-                <tkcontrols:SettingsCard x:Uid="SettingsCard_WindowHeight">
-                    <NumberBox SpinButtonPlacementMode="Inline"
-                               SmallChange="10"
-                               LargeChange="100"
-                               Minimum="320"
-                               Maximum="1200"
-                               Value="{x:Bind ViewModel.SettingsContext.WindowHeight, Mode=TwoWay}" />
-                </tkcontrols:SettingsCard>
-                <tkcontrols:SettingsCard x:Uid="SettingsCard_WindowMargin">
-                    <NumberBox SpinButtonPlacementMode="Inline"
-                               Minimum="0"
-                               Maximum="50"
-                               Value="{x:Bind ViewModel.SettingsContext.WindowMargin, Mode=TwoWay}" />
-                </tkcontrols:SettingsCard>
-            </tkcontrols:SettingsExpander.Items>
-        </tkcontrols:SettingsExpander>
-    </StackPanel>
+            <tkcontrols:SettingsExpander x:Uid="/Settings/Personalization_WindowPosition"
+                                         Margin="0,0,0,5"
+                                         HeaderIcon="{tk:FontIcon Glyph=&#xE90D;}"
+                                         IsExpanded="True">
+                <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.WindowPosition, Mode=TwoWay, Converter={StaticResource EnumToIndexConverter}}">
+                    <ComboBoxItem x:Uid="/Settings/Personalization_WindowPosition_Caret" />
+                    <ComboBoxItem x:Uid="/Settings/Personalization_WindowPosition_Cursor" />
+                    <ComboBoxItem x:Uid="/Settings/Personalization_WindowPosition_ScreenCenter" />
+                    <ComboBoxItem x:Uid="/Settings/Personalization_WindowPosition_LastPosition" />
+                    <ComboBoxItem x:Uid="/Settings/Personalization_WindowPosition_Right" />
+                    <ComboBoxItem x:Uid="/Settings/Personalization_WindowPosition_RightCorner" />
+                </ComboBox>
+
+                <tkcontrols:SettingsExpander.Items>
+                    <tkcontrols:SettingsCard x:Uid="/Settings/Personalization_WindowWidth">
+                        <NumberBox SpinButtonPlacementMode="Inline"
+                                   SmallChange="10"
+                                   LargeChange="100"
+                                   Minimum="{x:Bind models:SettingsContext.WindowWidthLowerBound}"
+                                   Maximum="{x:Bind models:SettingsContext.WindowWidthUpperBound}"
+                                   Value="{x:Bind ViewModel.SettingsContext.WindowWidth, Mode=TwoWay}" />
+                    </tkcontrols:SettingsCard>
+                    <tkcontrols:SettingsCard x:Uid="/Settings/Personalization_WindowHeight">
+                        <NumberBox SpinButtonPlacementMode="Inline"
+                                   SmallChange="10"
+                                   LargeChange="100"
+                                   Minimum="{x:Bind models:SettingsContext.WindowHeightLowerBound}"
+                                   Maximum="{x:Bind models:SettingsContext.WindowHeightUpperBound}"
+                                   Value="{x:Bind ViewModel.SettingsContext.WindowHeight, Mode=TwoWay}"
+                                   IsEnabled="{x:Bind ViewModel.IsWindowHeightEditorEnabled, Mode=OneWay}" />
+                    </tkcontrols:SettingsCard>
+                    <tkcontrols:SettingsCard x:Uid="/Settings/Personalization_WindowMargin">
+                        <NumberBox SpinButtonPlacementMode="Inline"
+                                   Minimum="{x:Bind models:SettingsContext.WindowMarginLowerBound}"
+                                   Maximum="{x:Bind models:SettingsContext.WindowMarginUpperBound}"
+                                   Value="{x:Bind ViewModel.SettingsContext.WindowMargin, Mode=TwoWay}"
+                                   IsEnabled="{x:Bind ViewModel.IsWindowMarginEditorEnabled, Mode=OneWay}" />
+                    </tkcontrols:SettingsCard>
+                </tkcontrols:SettingsExpander.Items>
+            </tkcontrols:SettingsExpander>
+        </StackPanel>
+    </ScrollViewer>
 </Page>

@@ -29,7 +29,7 @@ namespace Rememory.Helper
             {
                 TextCaseType.UpperCase => inputText.ToUpper(),
                 TextCaseType.LowerCase => inputText.ToLower(),
-                TextCaseType.CapitalizeCase => inputText.ToCapitalizeCase(),
+                TextCaseType.CapitalizedCase => inputText.ToCapitalizedCase(),
                 TextCaseType.SentenceCase => inputText.ToSentenceCase(),
                 TextCaseType.InvertCase => inputText.ToInvertCase(),
                 TextCaseType.TrimWhitespace => inputText.Trim(),
@@ -50,7 +50,7 @@ namespace Rememory.Helper
         [GeneratedRegex(@"[\p{L}\p{N}]+")]
         private static partial Regex SplitWordsRegex();
 
-        private static string ToCapitalizeCase(this string inputText)
+        private static string ToCapitalizedCase(this string inputText)
         {
             // Use TextInfo of the current culture for correct word capitalization
             // Important to convert to lower case first to correctly handle all-caps words
@@ -102,14 +102,14 @@ namespace Rememory.Helper
             // The first word remains lower-case.
             var firstWord = words[0].ToLower();
             // Capitalize the first letter of all subsequent words.
-            var restWords = words.Skip(1).Select(ToCapitalizeCase);
+            var restWords = words.Skip(1).Select(ToCapitalizedCase);
             return firstWord + string.Concat(restWords);
         }
 
         private static string ToPascalCase(this string inputText)
         {
             var words = SplitWords(inputText);
-            return string.Concat(words.Select(ToCapitalizeCase));
+            return string.Concat(words.Select(ToCapitalizedCase));
         }
 
         private static string ToSnakeCase(this string inputText)
@@ -157,7 +157,7 @@ namespace Rememory.Helper
         /// <summary>
         /// Capitalize Every Word (Title Case)
         /// </summary>
-        CapitalizeCase,
+        CapitalizedCase,
         /// <summary>
         /// Sentence case
         /// </summary>

@@ -53,7 +53,7 @@ namespace Rememory.Views.Editor
                     var dialog = new ContentDialog
                     {
                         Title = _window.AppWindow.Title,
-                        Content = new TextBlock() { Text = "EditorDialogBox_Content".GetLocalizedResource() },
+                        Content = "/Editor/SaveChangesDialog/Content".GetLocalizedResource(),
                         PrimaryButtonText = "Save".GetLocalizedResource(),
                         SecondaryButtonText = "DoNotSave".GetLocalizedResource(),
                         CloseButtonText = "Cancel".GetLocalizedResource(),
@@ -84,7 +84,7 @@ namespace Rememory.Views.Editor
 
         private void EditorTextBox_Loaded(object sender, RoutedEventArgs e)
         {
-            CharactersCountTextBlock.Text = "EditorWindowFooter_CharactersCount".GetLocalizedFormatResource(EditorTextBox.Text.Length);
+            CharactersCountTextBlock.Text = "/Editor/CharactersCount/Text".GetLocalizedFormatResource(EditorTextBox.Text.Length);
         }
 
         // CanUndo and CanRedo doesn't work with Binding
@@ -97,8 +97,8 @@ namespace Rememory.Views.Editor
         private void EditorTextBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
             CharactersCountTextBlock.Text = EditorTextBox.SelectionLength > 0
-                    ? "EditorWindowFooter_SelectedCharactersCount".GetLocalizedFormatResource(EditorTextBox.SelectionLength, EditorTextBox.Text.Length)
-                    : "EditorWindowFooter_CharactersCount".GetLocalizedFormatResource(EditorTextBox.Text.Length);
+                    ? "/Editor/SelectedCharactersCount/Text".GetLocalizedFormatResource(EditorTextBox.SelectionLength, EditorTextBox.Text.Length)
+                    : "/Editor/CharactersCount/Text".GetLocalizedFormatResource(EditorTextBox.Text.Length);
         }
 
         private unsafe void PresenterButton_Click(object sender, RoutedEventArgs e)
@@ -109,13 +109,13 @@ namespace Rememory.Views.Editor
             {
                 _window.AppWindow.SetPresenter(AppWindowPresenterKind.Default);
                 ((FontIcon)button.Content).Glyph = "\uE73F";
-                ToolTipService.SetToolTip(button, "Editor_CompactButton/ToolTipService/ToolTip".GetLocalizedResource());
+                ToolTipService.SetToolTip(button, "/Editor/CompactButton/ToolTipService/ToolTip".GetLocalizedResource());
             }
             else
             {
                 _window.AppWindow.SetPresenter(AppWindowPresenterKind.CompactOverlay);
                 ((FontIcon)button.Content).Glyph = "\uE740";
-                ToolTipService.SetToolTip(button, "Editor_ExtendButton/ToolTipService/ToolTip".GetLocalizedResource());
+                ToolTipService.SetToolTip(button, "/Editor/ExtendButton/ToolTipService/ToolTip".GetLocalizedResource());
             }
         }
 

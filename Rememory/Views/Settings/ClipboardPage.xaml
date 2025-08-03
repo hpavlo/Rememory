@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page x:Class="Rememory.Views.Settings.ClipboardPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:Rememory.Views.Settings"
+      xmlns:tk="using:CommunityToolkit.WinUI"
+      xmlns:tkcontrols="using:CommunityToolkit.WinUI.Controls"
+      DataContext="{x:Bind ViewModel}">
+    <ScrollViewer Padding="56,20,56,5">
+        <StackPanel>
+            <TextBlock x:Uid="/Settings/Clipboard_ClipsSection"
+                       Margin="0,8,0,8"
+                       Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
+
+            <tkcontrols:SettingsCard x:Uid="/Settings/Clipboard_DragAndDrop"
+                                     Margin="0,0,0,5"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xE759;}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsClipsDragAndDropEnabled, Mode=TwoWay}" />
+            </tkcontrols:SettingsCard>
+
+            <tkcontrols:SettingsCard x:Uid="/Settings/Clipboard_DeveloperStringCaseConversions"
+                                     Margin="0,0,0,5"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xE943;}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsDeveloperStringCaseConversionsEnabled, Mode=TwoWay}" />
+            </tkcontrols:SettingsCard>
+
+            <TextBlock x:Uid="/Settings/Clipboard_SearchBarSection"
+                       Margin="0,28,0,8"
+                       Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
+
+            <tkcontrols:SettingsCard x:Uid="/Settings/Clipboard_SearchBoxFocus"
+                                     Margin="0,0,0,5"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xE721;}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsSearchFocusOnStartEnabled, Mode=TwoWay}" />
+            </tkcontrols:SettingsCard>
+
+            <tkcontrols:SettingsCard x:Uid="/Settings/Clipboard_ClearSearchOnOpen"
+                                     Margin="0,0,0,5">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsClearSearchOnOpenEnabled, Mode=TwoWay}" />
+            </tkcontrols:SettingsCard>
+
+            <TextBlock x:Uid="/Settings/Clipboard_TabsSection"
+                       Margin="0,28,0,8"
+                       Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
+
+            <tkcontrols:SettingsCard x:Uid="/Settings/Clipboard_SetInitialTabOnOpen"
+                                     Margin="0,0,0,5">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsSetInitialTabOnOpenEnabled, Mode=TwoWay}" />
+            </tkcontrols:SettingsCard>
+
+            <TextBlock x:Uid="/Settings/Clipboard_OtherSection"
+                       Margin="0,28,0,8"
+                       Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
+
+            <tkcontrols:SettingsCard x:Uid="/Settings/Clipboard_RememberPinState"
+                                     Margin="0,0,0,5"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xE718;}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsRememberWindowPinStateEnabled, Mode=TwoWay}" />
+            </tkcontrols:SettingsCard>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

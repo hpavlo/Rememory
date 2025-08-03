@@ -111,18 +111,17 @@ namespace Rememory.ViewModels
             }
         }
 
-        // Backing field for IsClipboardMonitoringEnabled
-        private bool _isClipboardMonitoringEnabled = true;
         /// <summary>
         /// When it's false, clipboard manager doesn't save any data
         /// </summary>
         public bool IsClipboardMonitoringEnabled
         {
-            get => _isClipboardMonitoringEnabled;
+            get => SettingsContext.IsClipboardMonitoringEnabled;
             set
             {
-                if (SetProperty(ref _isClipboardMonitoringEnabled, value))
+                if (IsClipboardMonitoringEnabled != value)
                 {
+                    SettingsContext.IsClipboardMonitoringEnabled = value;
                     if (value)
                     {
                         _clipboardService.StartClipboardMonitor(App.Current.ClipboardWindowHandle);
@@ -131,6 +130,7 @@ namespace Rememory.ViewModels
                     {
                         _clipboardService.StopClipboardMonitor(App.Current.ClipboardWindowHandle);
                     }
+                    OnPropertyChanged();
                 }
             }
         }
@@ -222,9 +222,12 @@ namespace Rememory.ViewModels
             _clipboardService.ClipMovedToTop += ClipboardService_ClipMovedToTop;
             _clipboardService.ClipDeleted += ClipboardService_ClipDeleted;
             _clipboardService.AllClipsDeleted += ClipboardService_AllClipsDeleted;
-            _clipboardService.StartClipboardMonitor(App.Current.ClipboardWindowHandle);
+            if (IsClipboardMonitoringEnabled)
+            {
+                _clipboardService.StartClipboardMonitor(App.Current.ClipboardWindowHandle);
+            }
 
-            RootAppNode = new AppTreeViewNode { Title = "FilterTreeViewTitle_Apps".GetLocalizedResource(), IsExpanded = true };
+            RootAppNode = new AppTreeViewNode { Title = "/Clipboard/FilterTreeView_Apps/Text".GetLocalizedResource(), IsExpanded = true };
             AppTreeViewNodes.Add(RootAppNode);
 
             _ownerService.OwnerRegistered += OwnerService_OwnerRegistered;
@@ -240,10 +243,10 @@ namespace Rememory.ViewModels
         private void NavigationTabItemsInit()
         {
             NavigationTabItems = [
-                new("NavigationTabItem_Home".GetLocalizedResource(), "\uE80F", NavigationTabItemType.Home),
-                new("NavigationTabItem_Favorites".GetLocalizedResource(), "\uE734", NavigationTabItemType.Fovorites),
-                new("NavigationTabItem_Images".GetLocalizedResource(), "\uE8B9", NavigationTabItemType.Images),
-                new("NavigationTabItem_Links".GetLocalizedResource(), "\uE71B", NavigationTabItemType.Links),
+                new("/Clipboard/NavigationTab_Home/Text".GetLocalizedResource(), "\uE80F", NavigationTabItemType.Home),
+                new("/Clipboard/NavigationTab_Favorites/Text".GetLocalizedResource(), "\uE734", NavigationTabItemType.Fovorites),
+                new("/Clipboard/NavigationTab_Images/Text".GetLocalizedResource(), "\uE8B9", NavigationTabItemType.Images),
+                new("/Clipboard/NavigationTab_Links/Text".GetLocalizedResource(), "\uE71B", NavigationTabItemType.Links),
             ];
 
             _selectedTab = NavigationTabItems.First();
@@ -410,8 +413,6 @@ namespace Rememory.ViewModels
         /// </summary>
         public void OnWindowShowing()
         {
-            CleanupOldData();
-
             // Update relative timestamps displayed in the UI.
             foreach (var item in ClipsCollection)
             {
@@ -424,8 +425,22 @@ namespace Rememory.ViewModels
         /// </summary>
         public void OnWindowHiding()
         {
-            // Unpin the window automatically when it hides.
-            IsWindowPinned = false;
+            CleanupOldData();
+
+            if (!SettingsContext.IsRememberWindowPinStateEnabled)
+            {
+                IsWindowPinned = false;
+            }
+
+            if (SettingsContext.IsClearSearchOnOpenEnabled)
+            {
+                SearchString = string.Empty;
+            }
+
+            if (SettingsContext.IsSetInitialTabOnOpenEnabled)
+            {
+                SelectedTab = NavigationTabItems.First();
+            }
         }
 
         /// <summary>
@@ -629,10 +644,10 @@ namespace Rememory.ViewModels
         }
 
         [RelayCommand(CanExecute = nameof(CanPasteClipAsPlainText))]
-        private void PasteClipWithCapitalizeCase(ClipModel? clip)
+        private void PasteClipWithCapitalizedCase(ClipModel? clip)
         {
             if (clip is null) return;
-            SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.CapitalizeCase, true);
+            SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.CapitalizedCase, true);
         }
 
         [RelayCommand(CanExecute = nameof(CanPasteClipAsPlainText))]
@@ -800,10 +815,10 @@ namespace Rememory.ViewModels
         }
 
         [RelayCommand(CanExecute = nameof(CanPasteClipsAsPlainText))]
-        private void PasteClipsWithCapitalizeCase(IEnumerable<ClipModel>? clips)
+        private void PasteClipsWithCapitalizedCase(IEnumerable<ClipModel>? clips)
         {
             if (clips is null) return;
-            PasteClipsAsCombinedText(clips, TextCaseType.CapitalizeCase);
+            PasteClipsAsCombinedText(clips, TextCaseType.CapitalizedCase);
         }
 
         [RelayCommand(CanExecute = nameof(CanPasteClipsAsPlainText))]

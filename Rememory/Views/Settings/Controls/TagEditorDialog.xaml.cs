@@ -2,6 +2,7 @@ using CommunityToolkit.WinUI.Helpers;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using System;
 using System.Collections.Generic;
 
 namespace Rememory.Views.Settings.Controls
@@ -29,12 +30,17 @@ namespace Rememory.Views.Settings.Controls
 
         public string TagName { get; set; } = string.Empty;
 
+        public bool IsCleaningEnabled { get; set; } = false;
+
         private ContentDialog? _dialog;
 
         public TagEditorDialog()
         {
             InitializeComponent();
-            SelectedColor = Colors[0];
+
+            var random = new Random();
+            int index = random.Next(Colors.Count);
+            SelectedColor = Colors[index];
         }
 
         private void Dialog_Loaded(object sender, RoutedEventArgs e)
