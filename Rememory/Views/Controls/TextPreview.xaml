@@ -6,6 +6,6 @@
     <TextBlock x:Name="PreviewTextBlock"
                TextWrapping="Wrap"
                TextTrimming="CharacterEllipsis"
-               Text="{x:Bind TextData, Mode=OneWay}"
+               Text="{x:Bind ClipData.Data, Mode=OneWay}"
                Style="{ThemeResource BodyTextBlockStyle}" />
 </UserControl>

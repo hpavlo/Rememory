@@ -7,7 +7,6 @@ namespace Rememory.Views.Controls.Selector
     public partial class NavigationTabTemplateSelector : DataTemplateSelector
     {
         public DataTemplate? TabItemTemplate { get; set; }
-
         public DataTemplate? TagTabItemTemplate { get; set; }
 
         protected override DataTemplate SelectTemplateCore(object item)

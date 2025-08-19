@@ -416,7 +416,7 @@ namespace Rememory.ViewModels
             // Update relative timestamps displayed in the UI.
             foreach (var item in ClipsCollection)
             {
-                item.UpdateProperty(nameof(item.ClipTime));
+                item.TogglePropertyUpdate(nameof(item.ClipTime));
             }
         }
 

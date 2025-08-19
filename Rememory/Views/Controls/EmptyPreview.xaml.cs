@@ -6,7 +6,7 @@ namespace Rememory.Views.Controls
     {
         public EmptyPreview()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

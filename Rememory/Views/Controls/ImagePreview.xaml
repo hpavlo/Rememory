@@ -5,6 +5,7 @@
              xmlns:local="using:Rememory.Views.Controls">
     <Border CornerRadius="{ThemeResource ControlCornerRadius}"
             HorizontalAlignment="Center">
-        <Image Source="{x:Bind ImageUrl}" />
+        <Image MaxHeight="120"
+               Source="{x:Bind ClipData.Data, Mode=OneWay}" />
     </Border>
 </UserControl>

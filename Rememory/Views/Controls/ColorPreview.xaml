@@ -52,7 +52,7 @@
                 </Path.Data>
             </Path>
 
-            <Border Background="{x:Bind ColorBrush, Mode=OneWay}" />
+            <Border x:Name="ColorPreviewBorder" />
         </Grid>
 
         <TextBlock x:Name="ColorCodeTextBlock"
@@ -61,7 +61,7 @@
                    MaxLines="1"
                    TextWrapping="Wrap"
                    TextTrimming="CharacterEllipsis"
-                   Text="{x:Bind ColorCode, Mode=OneWay}"
+                   Text="{x:Bind ClipData.Data, Mode=OneWay}"
                    Style="{ThemeResource BodyTextBlockStyle}" />
 
         <TextBlock x:Name="ColorNameTextBlock"
@@ -72,7 +72,6 @@
                    TextWrapping="Wrap"
                    TextTrimming="CharacterEllipsis"
                    Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                   Text="{x:Bind ColorName, Mode=OneWay}"
                    Style="{ThemeResource CaptionTextBlockStyle}" />
     </Grid>
 </UserControl>

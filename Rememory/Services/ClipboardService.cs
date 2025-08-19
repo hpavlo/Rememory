@@ -178,7 +178,10 @@ namespace Rememory.Services
                     clip.IsLink = Uri.TryCreate(textData.Data, UriKind.Absolute, out var uri)
                         && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
 
-                    _linkPreviewService.TryAddLinkMetadata(clip, textData);
+                    if (SettingsContext.IsLinkPreviewLoadingEnabled && clip.IsLink)
+                    {
+                        _linkPreviewService.TryLoadLinkMetadata(textData);
+                    }
                 }
             }
 
@@ -217,7 +220,7 @@ namespace Rememory.Services
             foreach (var tag in clip.Tags)
             {
                 tag.Clips.Remove(clip);
-                tag.UpdateProperty(nameof(tag.ClipsCount));
+                tag.TogglePropertyUpdate(nameof(tag.ClipsCount));
             }
             clip.Tags.Clear();
             clip.ClearExternalDataFiles();
@@ -273,7 +276,7 @@ namespace Rememory.Services
             foreach (var tag in _tagService.Tags)
             {
                 tag.Clips.Clear();
-                tag.UpdateProperty(nameof(tag.ClipsCount));
+                tag.TogglePropertyUpdate(nameof(tag.ClipsCount));
             }
             Clips.Clear();
             _storageService.DeleteAllClips();

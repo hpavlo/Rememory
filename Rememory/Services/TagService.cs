@@ -36,7 +36,7 @@ namespace Rememory.Services
             foreach (var clip in tag.Clips)
             {
                 clip.Tags.Remove(tag);
-                clip.UpdateProperty(nameof(clip.HasTags));
+                clip.TogglePropertyUpdate(nameof(clip.HasTags));
             }
             tag.Clips.Clear();
             Tags.Remove(tag);
@@ -55,8 +55,8 @@ namespace Rememory.Services
             {
                 clip.Tags.Add(tag);
                 tag.Clips.Add(clip);
-                clip.UpdateProperty(nameof(clip.HasTags));
-                tag.UpdateProperty(nameof(tag.ClipsCount));
+                clip.TogglePropertyUpdate(nameof(clip.HasTags));
+                tag.TogglePropertyUpdate(nameof(tag.ClipsCount));
                 _storageService.AddClipTag(clip.Id, tag.Id);
             }
         }
@@ -65,8 +65,8 @@ namespace Rememory.Services
         {
             if (clip.Tags.Remove(tag) && tag.Clips.Remove(clip))
             {
-                clip.UpdateProperty(nameof(clip.HasTags));
-                tag.UpdateProperty(nameof(tag.ClipsCount));
+                clip.TogglePropertyUpdate(nameof(clip.HasTags));
+                tag.TogglePropertyUpdate(nameof(tag.ClipsCount));
                 _storageService.DeleteClipTag(clip.Id, tag.Id);
             }
         }

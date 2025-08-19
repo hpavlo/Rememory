@@ -1,5 +1,4 @@
 ﻿using HtmlAgilityPack;
-using Microsoft.UI.Dispatching;
 using Rememory.Contracts;
 using Rememory.Models;
 using Rememory.Models.Metadata;
@@ -23,18 +22,9 @@ namespace Rememory.Services
             _httpClient.DefaultRequestHeaders.Add("User-Agent", "Other");
         }
 
-        public void TryAddLinkMetadata(ClipModel clip, DataModel dataModel)
+        public void TryLoadLinkMetadata(DataModel dataModel)
         {
-            if (SettingsContext.Instance.IsLinkPreviewLoadingEnabled && clip.IsLink)
-            {
-                LoadMetaInfo(clip, dataModel);
-            }
-        }
-
-        private void LoadMetaInfo(ClipModel clip, DataModel dataModel)
-        {
-            var dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-            new Task(async () =>
+            Task.Run(async () =>
             {
                 HttpResponseMessage? response = null;
                 try
@@ -45,7 +35,7 @@ namespace Rememory.Services
                 catch (TaskCanceledException) { }
                 catch (UriFormatException) { }
 
-                if (response == null || !response.IsSuccessStatusCode)
+                if (response is null || !response.IsSuccessStatusCode)
                 {
                     return;
                 }
@@ -73,9 +63,9 @@ namespace Rememory.Services
 
                 var imageNode = html.DocumentNode.SelectSingleNode("//meta[@property='og:image']");
 
-                if (titleNode != null)
+                if (titleNode is not null)
                 {
-                    dispatcherQueue.TryEnqueue(() =>
+                    App.Current.DispatcherQueue.TryEnqueue(() =>
                     {
                         LinkMetadataModel linkMetadata = new()
                         {
@@ -86,13 +76,12 @@ namespace Rememory.Services
                         };
                         dataModel.Metadata = linkMetadata;
                         _storageService.AddLinkMetadata(linkMetadata, dataModel.Id);
-                        clip.UpdateProperty(nameof(clip.Data));
                     });
                 }
-            }).Start();
+            });
         }
 
-        private string? HtmlDecode(string? input)
+        private static string? HtmlDecode(string? input)
         {
             var temp = HttpUtility.HtmlDecode(input);
             while (!string.Equals(temp, input))

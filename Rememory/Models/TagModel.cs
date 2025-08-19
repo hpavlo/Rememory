@@ -34,7 +34,7 @@ namespace Rememory.Models
 
         public int ClipsCount => Clips.Count;
 
-        public void UpdateProperty([CallerMemberName] string propertyName = "")
+        public void TogglePropertyUpdate([CallerMemberName] string propertyName = "")
         {
             OnPropertyChanged(propertyName);
         }

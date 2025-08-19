@@ -56,7 +56,7 @@ namespace Rememory.Models
         /// </summary>
         public bool HasTags => Tags.Any();
 
-        public void UpdateProperty([CallerMemberName] string propertyName = "")
+        public void TogglePropertyUpdate([CallerMemberName] string propertyName = "")
         {
             OnPropertyChanged(propertyName);
         }

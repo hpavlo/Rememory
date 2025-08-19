@@ -1,9 +1,10 @@
-﻿using Rememory.Helper;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Rememory.Helper;
 using Rememory.Models.Metadata;
 
 namespace Rememory.Models
 {
-    public class DataModel(ClipboardFormat format, string data, byte[] hash)
+    public partial class DataModel(ClipboardFormat format, string data, byte[] hash) : ObservableObject
     {
         public int Id { get; set; }
 
@@ -13,6 +14,11 @@ namespace Rememory.Models
 
         public byte[] Hash { get; set; } = hash;
 
-        public IMetadata? Metadata { get; set; }
+        private IMetadata? _metadata;
+        public IMetadata? Metadata
+        {
+            get => _metadata;
+            set => SetProperty(ref _metadata, value);
+        }
     }
 }

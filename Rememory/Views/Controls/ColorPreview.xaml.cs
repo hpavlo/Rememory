@@ -1,37 +1,64 @@
 using CommunityToolkit.WinUI.Helpers;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Rememory.Models;
 using Rememory.Views.Controls.Behavior;
 using System;
-using System.Runtime.InteropServices;
 
 namespace Rememory.Views.Controls
 {
     public sealed partial class ColorPreview : UserControl
     {
-        // TODO Should we use ARGB or RGBA? Add a setting for that
-        public string ColorCode { get; private set; }
-        public Brush ColorBrush { get; private set; }
-        public string ColorName { get; private set; }
-
-        public ColorPreview(DataModel dataModel, [Optional] string? searchText)
+        public DataModel ClipData
         {
-            DataContext = dataModel;
-            ColorCode = dataModel.Data;
-            var color = ToArgb(ColorCode).ToColor();
-            ColorBrush = new SolidColorBrush(color);
-            ColorName = Microsoft.UI.ColorHelper.ToDisplayName(color);
+            get => (DataModel)GetValue(ClipDataProperty);
+            set => SetValue(ClipDataProperty, value);
+        }
 
-            this.InitializeComponent();
+        public string SearchText
+        {
+            get => (string)GetValue(SearchTextProperty);
+            set => SetValue(SearchTextProperty, value);
+        }
 
-            if (searchText is not null)
+        public static readonly DependencyProperty ClipDataProperty =
+            DependencyProperty.Register(nameof(ClipData), typeof(DataModel), typeof(ColorPreview), new PropertyMetadata(null, OnClipDataChanged));
+
+        public static readonly DependencyProperty SearchTextProperty =
+            DependencyProperty.Register(nameof(SearchText), typeof(string), typeof(ColorPreview), new PropertyMetadata(string.Empty, OnSearchTextChanged));
+
+        public ColorPreview()
+        {
+            InitializeComponent();
+        }
+
+        private static void OnClipDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ColorPreview control && e.NewValue is DataModel clipData)
             {
-                ColorCodeTextBlock.SearchHighlight(searchText, ColorCode);
+                var color = ToArgb(control.ClipData.Data).ToColor();
+                control.ColorPreviewBorder.Background = new SolidColorBrush(color);
+                control.ColorNameTextBlock.Text = Microsoft.UI.ColorHelper.ToDisplayName(color);
             }
         }
 
-        public string ToArgb(string colorString)
+        private static void OnSearchTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ColorPreview control && e.NewValue is string searchText)
+            {
+                if (string.IsNullOrEmpty(searchText))
+                {
+                    control.ColorCodeTextBlock.TextHighlighters.Clear();
+                }
+                else
+                {
+                    control.ColorCodeTextBlock.SearchHighlight(searchText);
+                }
+            }
+        }
+
+        public static string ToArgb(string colorString)
         {
             if (string.IsNullOrEmpty(colorString))
             {

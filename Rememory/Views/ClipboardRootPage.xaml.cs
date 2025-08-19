@@ -153,8 +153,8 @@ namespace Rememory.Views
             ((TextBlock)PreviewTextFlyout.Content).MaxWidth = ActualWidth - 36;
 
             PreviewImageFlyout.FlyoutPresenterStyle = UpdateFlyoutPresenterStyle(ActualWidth * 2, ActualHeight);
-            ((Image)PreviewImageFlyout.Content).SetValue(ImageAutoResizeBehavior.MaxImageWidthProperty, ActualWidth * 2 - 36);
-            ((Image)PreviewImageFlyout.Content).SetValue(ImageAutoResizeBehavior.MaxImageHeightProperty, ActualHeight - 34);
+            PreviewImageFlyout.Content.SetValue(ImageAutoResizeBehavior.MaxImageWidthProperty, ActualWidth * 2 - 36);
+            PreviewImageFlyout.Content.SetValue(ImageAutoResizeBehavior.MaxImageHeightProperty, ActualHeight - 34);
         }
 
         private void SettingsContext_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs a)

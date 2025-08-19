@@ -10,6 +10,7 @@
       xmlns:tkconverters="using:CommunityToolkit.WinUI.Converters"
       xmlns:tkcontrols="using:CommunityToolkit.WinUI.Controls"
       xmlns:converters="using:Rememory.Converters"
+      xmlns:helper="using:Rememory.Helper"
       xmlns:controls="using:Rememory.Views.Controls"
       xmlns:behavior="using:Rememory.Views.Controls.Behavior"
       xmlns:selector="using:Rememory.Views.Controls.Selector"
@@ -26,8 +27,7 @@
         <tkconverters:EmptyObjectToObjectConverter x:Key="EmptyObjectToBoolConverter"
                                                    NotEmptyValue="True"
                                                    EmptyValue="False" />
-        <converters:ClipToControlConverter x:Key="ClipToControlConverter"
-                                           SearchString="{x:Bind ViewModel.SearchString, Mode=OneWay}" />
+        <converters:ClipDataDictionaryToDataConverter x:Key="ClipDataDictionaryToDataConverter" />
         <converters:DateTimeToHumanReadableConverter x:Key="DateTimeToHumanReadableConverter" />
         <converters:DataFooterInfoConverter x:Key="DataFooterInfoConverter" />
 
@@ -56,6 +56,182 @@
                            VerticalAlignment="Top"
                            Value="{x:Bind Tag.ClipsCount}"
                            Style="{StaticResource InformationalValueInfoBadgeStyle}" />-->
+            </Grid>
+        </DataTemplate>
+
+        <selector:ClipPreviewTemplateSelector x:Key="ClipPreviewTemplateSelector">
+            <selector:ClipPreviewTemplateSelector.TextTemplate>
+                <DataTemplate x:DataType="models:ClipModel"
+                              x:DefaultBindMode="OneWay">
+                    <controls:TextPreview ClipData="{x:Bind Data, Converter={StaticResource ClipDataDictionaryToDataConverter}}"
+                                          SearchText="{Binding DataContext.SearchString, ElementName=ClipsListView}" />
+                </DataTemplate>
+            </selector:ClipPreviewTemplateSelector.TextTemplate>
+
+            <selector:ClipPreviewTemplateSelector.LinkTemplate>
+                <DataTemplate x:DataType="models:ClipModel"
+                              x:DefaultBindMode="OneWay">
+                    <controls:LinkPreview ClipData="{x:Bind Data, Converter={StaticResource ClipDataDictionaryToDataConverter}}"
+                                          SearchText="{Binding DataContext.SearchString, ElementName=ClipsListView}" />
+                </DataTemplate>
+            </selector:ClipPreviewTemplateSelector.LinkTemplate>
+
+            <selector:ClipPreviewTemplateSelector.ImageTemplate>
+                <DataTemplate x:DataType="models:ClipModel"
+                              x:DefaultBindMode="OneWay">
+                    <controls:ImagePreview ClipData="{x:Bind Data, Converter={StaticResource ClipDataDictionaryToDataConverter}}"
+                                           SearchText="{Binding DataContext.SearchString, ElementName=ClipsListView}" />
+                </DataTemplate>
+            </selector:ClipPreviewTemplateSelector.ImageTemplate>
+
+            <selector:ClipPreviewTemplateSelector.ColorTemplate>
+                <DataTemplate x:DataType="models:ClipModel"
+                              x:DefaultBindMode="OneWay">
+                    <controls:ColorPreview ClipData="{x:Bind Data, Converter={StaticResource ClipDataDictionaryToDataConverter}}"
+                                           SearchText="{Binding DataContext.SearchString, ElementName=ClipsListView}" />
+                </DataTemplate>
+            </selector:ClipPreviewTemplateSelector.ColorTemplate>
+
+            <selector:ClipPreviewTemplateSelector.EmptyTemplate>
+                <DataTemplate x:DataType="models:ClipModel"
+                              x:DefaultBindMode="OneWay">
+                    <controls:EmptyPreview />
+                </DataTemplate>
+            </selector:ClipPreviewTemplateSelector.EmptyTemplate>
+        </selector:ClipPreviewTemplateSelector>
+
+        <DataTemplate x:Key="ClipLayoutTemplate"
+                      x:DataType="models:ClipModel"
+                      x:DefaultBindMode="OneWay">
+            <Grid x:Name="ClipRootGrid"
+                  Padding="12"
+                  CornerRadius="{ThemeResource ListViewItemCornerRadius}"
+                  Background="{ThemeResource LayerFillColorDefaultBrush}"
+                  BorderThickness="{ThemeResource ButtonBorderThemeThickness}"
+                  BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
+                  ContextRequested="ClipRootGrid_ContextRequested">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <ContentControl x:Name="PreviewPresenter"
+                                Grid.Column="0"
+                                Grid.Row="0"
+                                Grid.ColumnSpan="4"
+                                MaxHeight="180"
+                                Margin="0,0,0,8"
+                                IsTabStop="False"
+                                HorizontalContentAlignment="Stretch"
+                                Content="{x:Bind}"
+                                ContentTemplateSelector="{StaticResource ClipPreviewTemplateSelector}" />
+
+                <ListView x:Name="ClipTagsListView"
+                          x:Load="{x:Bind HasTags}"
+                          Grid.Column="0"
+                          Grid.Row="1"
+                          Grid.ColumnSpan="3"
+                          Margin="0,0,0,8"
+                          SelectionMode="None"
+                          ItemsSource="{x:Bind Tags}"
+                          IsHitTestVisible="False">
+                    <ListView.Style>
+                        <Style TargetType="ListView">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListView">
+                                        <ItemsPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.Style>
+
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <tkcontrols:WrapPanel Orientation="Horizontal"
+                                                  HorizontalSpacing="4"
+                                                  VerticalSpacing="4" />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="IsTabStop"
+                                    Value="False" />
+                            <Setter Property="MinWidth"
+                                    Value="30" />
+                            <Setter Property="MinHeight"
+                                    Value="0" />
+                            <Setter Property="MaxWidth"
+                                    Value="120" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="models:TagModel">
+                            <Grid Padding="8,2,8,4"
+                                  CornerRadius="10"
+                                  Background="{x:Bind ColorBrush}">
+                                <TextBlock FontSize="12"
+                                           TextTrimming="CharacterEllipsis"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Text="{x:Bind Name}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <FontIcon x:Name="ClipFavoriteIcon"
+                          x:Load="{x:Bind IsFavorite}"
+                          Grid.Column="0"
+                          Grid.Row="2"
+                          Margin="0,0,8,0"
+                          Glyph="&#xE734;"
+                          FontSize="{StaticResource CaptionTextBlockFontSize}" />
+
+                <TextBlock Grid.Column="1"
+                           Grid.Row="2"
+                           TextWrapping="Wrap"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                           DataContext="{x:Bind Data, Converter={StaticResource DataFooterInfoConverter}}"
+                           Text="{Binding Result}"
+                           Style="{ThemeResource CaptionTextBlockStyle}" />
+
+                <TextBlock Grid.Column="2"
+                           Grid.Row="2"
+                           Margin="8,0,0,0"
+                           TextWrapping="Wrap"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                           Text="{x:Bind ClipTime, Converter={StaticResource DateTimeToHumanReadableConverter}}"
+                           Style="{ThemeResource CaptionTextBlockStyle}" />
+
+                <Image x:Name="ClipIconBitmap"
+                       x:Load="{x:Bind Owner.IconBitmap, Converter={StaticResource EmptyObjectToBoolConverter}}"
+                       Grid.Column="3"
+                       Grid.Row="2"
+                       Height="16"
+                       Margin="8,0,0,0"
+                       Source="{x:Bind Owner.IconBitmap}" />
             </Grid>
         </DataTemplate>
 
@@ -654,146 +830,13 @@
                   CanDragItems="{x:Bind ViewModel.SettingsContext.IsClipsDragAndDropEnabled, Mode=OneWay}"
                   ItemsSource="{x:Bind ViewModel.ClipsCollection, Mode=OneWay}"
                   ItemContainerStyle="{StaticResource ClipsListViewStyle}"
+                  ItemTemplate="{StaticResource ClipLayoutTemplate}"
                   DragItemsStarting="ClipsListView_DragItemsStarting"
                   ContainerContentChanging="ClipsListView_ContainerContentChanging"
                   PreviewKeyDown="ClipsListView_PreviewKeyDown"
                   GettingFocus="ClipsListView_GettingFocus"
                   ItemClick="ClipsListView_ItemClick"
-                  SelectionChanged="ClipsListView_SelectionChanged">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="models:ClipModel"
-                              x:DefaultBindMode="OneWay">
-                    <Grid x:Name="ClipRootGrid"
-                          Padding="12"
-                          CornerRadius="{ThemeResource ListViewItemCornerRadius}"
-                          Background="{ThemeResource LayerFillColorDefaultBrush}"
-                          BorderThickness="{ThemeResource ButtonBorderThemeThickness}"
-                          BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
-                          ContextRequested="ClipRootGrid_ContextRequested">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-
-                        <ContentControl Grid.Column="0"
-                                        Grid.Row="0"
-                                        Grid.ColumnSpan="4"
-                                        MaxHeight="180"
-                                        Margin="0,0,0,8"
-                                        IsTabStop="False"
-                                        HorizontalContentAlignment="Stretch"
-                                        Content="{x:Bind Data, Converter={StaticResource ClipToControlConverter}}" />
-
-                        <ListView x:Name="ClipTagsListView"
-                                  x:Load="{x:Bind HasTags}"
-                                  Grid.Column="0"
-                                  Grid.Row="1"
-                                  Grid.ColumnSpan="3"
-                                  Margin="0,0,0,8"
-                                  SelectionMode="None"
-                                  ItemsSource="{x:Bind Tags}"
-                                  IsHitTestVisible="False">
-                            <ListView.Style>
-                                <Style TargetType="ListView">
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="ListView">
-                                                <ItemsPresenter />
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </ListView.Style>
-
-                            <ListView.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <tkcontrols:WrapPanel Orientation="Horizontal"
-                                                          HorizontalSpacing="4"
-                                                          VerticalSpacing="4" />
-                                </ItemsPanelTemplate>
-                            </ListView.ItemsPanel>
-
-                            <ListView.ItemContainerStyle>
-                                <Style TargetType="ListViewItem">
-                                    <Setter Property="IsTabStop"
-                                            Value="False" />
-                                    <Setter Property="MinWidth"
-                                            Value="30" />
-                                    <Setter Property="MinHeight"
-                                            Value="0" />
-                                    <Setter Property="MaxWidth"
-                                            Value="120" />
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate>
-                                                <ContentPresenter />
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </ListView.ItemContainerStyle>
-
-                            <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="models:TagModel">
-                                    <Grid Padding="8,2,8,4"
-                                          CornerRadius="10"
-                                          Background="{x:Bind ColorBrush}">
-                                        <TextBlock FontSize="12"
-                                                   TextTrimming="CharacterEllipsis"
-                                                   VerticalAlignment="Center"
-                                                   HorizontalAlignment="Center"
-                                                   Text="{x:Bind Name}" />
-                                    </Grid>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-
-                        <FontIcon x:Name="ClipFavoriteIcon"
-                                  x:Load="{x:Bind IsFavorite}"
-                                  Grid.Column="0"
-                                  Grid.Row="2"
-                                  Margin="0,0,8,0"
-                                  Glyph="&#xE734;"
-                                  FontSize="{StaticResource CaptionTextBlockFontSize}" />
-
-                        <TextBlock Grid.Column="1"
-                                   Grid.Row="2"
-                                   TextWrapping="Wrap"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                   DataContext="{x:Bind Data, Converter={StaticResource DataFooterInfoConverter}}"
-                                   Text="{Binding Result}"
-                                   Style="{ThemeResource CaptionTextBlockStyle}" />
-                        
-                        <TextBlock Grid.Column="2"
-                                   Grid.Row="2"
-                                   Margin="8,0,0,0"
-                                   TextWrapping="Wrap"
-                                   HorizontalAlignment="Right"
-                                   VerticalAlignment="Center"
-                                   Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                                   Text="{x:Bind ClipTime, Converter={StaticResource DateTimeToHumanReadableConverter}}"
-                                   Style="{ThemeResource CaptionTextBlockStyle}" />
-                        
-                        <Image x:Name="ClipIconBitmap"
-                               x:Load="{x:Bind Owner.IconBitmap, Converter={StaticResource EmptyObjectToBoolConverter}}"
-                               Grid.Column="3"
-                               Grid.Row="2"
-                               Height="16"
-                               Margin="8,0,0,0"
-                               Source="{x:Bind Owner.IconBitmap}" />
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                  SelectionChanged="ClipsListView_SelectionChanged" />
 
         <Grid x:Name="MultipleSelectionFooter"
               Grid.Column="1"
