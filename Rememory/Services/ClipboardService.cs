@@ -1,5 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using Rememory.Contracts;
+﻿using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Models;
 using Rememory.Models.Metadata;

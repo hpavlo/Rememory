@@ -457,12 +457,14 @@
                             Command="{x:Bind ViewModel.OpenInBrowserCommand}"
                             Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
                             Icon="{tk:FontIcon Glyph=&#xF6FA;}" />
-            <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_OpenInFlyout"
+            <MenuFlyoutItem x:Name="OpenClipInFlyoutMenuFlyoutItem"
+                            x:Uid="/Clipboard/Clip_ContextMenu_OpenInFlyout"
                             KeyboardAcceleratorTextOverride="Space"
                             Click="OpenInFlyoutItem_Click"
                             Icon="{tk:FontIcon Glyph=&#xE8A7;}" />
             <MenuFlyoutSeparator />
-            <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_Paste"
+            <MenuFlyoutItem x:Name="PasteClipMenuFlyoutItem"
+                            x:Uid="/Clipboard/Clip_ContextMenu_Paste"
                             KeyboardAcceleratorTextOverride="Enter"
                             CommandParameter="{Binding}"
                             Command="{x:Bind ViewModel.PasteClipCommand}"
@@ -528,6 +530,7 @@
                             Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
                             Icon="{tk:FontIcon Glyph=&#xE70F;}" />
             <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_Delete"
+                            KeyboardAcceleratorTextOverride="Shift+Delete"
                             CommandParameter="{Binding}"
                             Command="{x:Bind ViewModel.DeleteClipCommand}"
                             Icon="{tk:FontIcon Glyph=&#xE74D;}" />
@@ -587,7 +590,6 @@
                                 Command="{x:Bind ViewModel.PasteClipsWithTrimWhitespaceCommand}" />
             </MenuFlyoutSubItem>
             <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_Copy"
-                            KeyboardAcceleratorTextOverride="Ctrl+C"
                             CommandParameter="{x:Bind OrderedSelectedClips, Mode=OneWay}"
                             Command="{x:Bind ViewModel.CopyClipsCommand}"
                             Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
@@ -678,6 +680,10 @@
                                 Value="Multiple" />
                         <Setter Target="MultipleSelectionFooter.Visibility"
                                 Value="Visible" />
+                        <Setter Target="OpenClipInFlyoutMenuFlyoutItem.KeyboardAcceleratorTextOverride"
+                                Value="" />
+                        <Setter Target="PasteClipMenuFlyoutItem.KeyboardAcceleratorTextOverride"
+                                Value="" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -837,6 +843,7 @@
                   DragItemsStarting="ClipsListView_DragItemsStarting"
                   ContainerContentChanging="ClipsListView_ContainerContentChanging"
                   PreviewKeyDown="ClipsListView_PreviewKeyDown"
+                  PreviewKeyUp="ClipsListView_PreviewKeyUp"
                   GettingFocus="ClipsListView_GettingFocus"
                   ItemClick="ClipsListView_ItemClick"
                   SelectionChanged="ClipsListView_SelectionChanged" />

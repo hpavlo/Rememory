@@ -43,6 +43,9 @@ namespace Rememory.Views
         private readonly MenuFlyout _singleClipContextMenu;
         private readonly MenuFlyout _multipleClipsContextMenu;
 
+        // Prevents repeated clip deletions when holding Shift+Delete
+        private bool _deleteShortcutHandled = false;
+
         private readonly Dictionary<ClipboardFormat, string> _saveClipMenuItems = new()
         {
             { ClipboardFormat.Text, "Text" },
@@ -411,23 +414,38 @@ namespace Rememory.Views
                 case VirtualKey.Left:
                     NavigationTabList.Focus(FocusState.Programmatic);
                     return;
+            }
+
+            if (OrderedSelectedClips.Count > 0)
+            {
+                return;
+            }
+
+            switch (e.Key)
+            {
                 // Ctrl + C
                 case VirtualKey.C when isCtrlPressed:
-                    if (ClipsListView.SelectionMode == ListViewSelectionMode.None)
+                    if (ViewModel.CopyClipCommand.CanExecute(clipItem.Content))
                     {
-                        if (ViewModel.CopyClipCommand.CanExecute(clipItem.Content))
-                        {
-                            ViewModel.CopyClipCommand.Execute(clipItem.Content);
-                            e.Handled = true;
-                        }
+                        ViewModel.CopyClipCommand.Execute(clipItem.Content);
+                        e.Handled = true;
                     }
-                    else
+                    return;
+                // Ctrl + U
+                case VirtualKey.U when isCtrlPressed:
+                    if (ViewModel.EditClipCommand.CanExecute(clipItem.Content))
                     {
-                        if (ViewModel.CopyClipsCommand.CanExecute(OrderedSelectedClips))
-                        {
-                            ViewModel.CopyClipsCommand.Execute(OrderedSelectedClips);
-                            e.Handled = true;
-                        }
+                        ViewModel.EditClipCommand.Execute(clipItem.Content);
+                        e.Handled = true;
+                    }
+                    break;
+                // Shift + Delete
+                case VirtualKey.Delete when isShiftPressed:
+                    if (!_deleteShortcutHandled && ViewModel.DeleteClipCommand.CanExecute(clipItem.Content))
+                    {
+                        ViewModel.DeleteClipCommand.Execute(clipItem.Content);
+                        e.Handled = true;
+                        _deleteShortcutHandled = true;
                     }
                     return;
             }
@@ -456,14 +474,6 @@ namespace Rememory.Views
                         e.Handled = true;
                     }
                     break;
-                // Ctrl + U
-                case VirtualKey.U when isCtrlPressed:
-                    if (ViewModel.EditClipCommand.CanExecute(clipItem.Content))
-                    {
-                        ViewModel.EditClipCommand.Execute(clipItem.Content);
-                        e.Handled = true;
-                    }
-                    break;
                 // Space
                 case VirtualKey.Space:
                     e.Handled = true;
@@ -484,6 +494,14 @@ namespace Rememory.Views
                     }
                     OpenPreviewFlyout((ClipModel)clipItem.Content);
                     break;
+            }
+        }
+
+        private void ClipsListView_PreviewKeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Delete)
+            {
+                _deleteShortcutHandled = false;
             }
         }
 
