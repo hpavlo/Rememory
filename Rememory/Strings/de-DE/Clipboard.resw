@@ -198,6 +198,9 @@
   <data name="Clip_ContextMenu_Copy.Text" xml:space="preserve">
     <value>Kopieren</value>
   </data>
+  <data name="Clip_ContextMenu_SaveAs.Text" xml:space="preserve">
+    <value>Speichern als</value>
+  </data>
   <data name="Clip_ContextMenu_Edit.Text" xml:space="preserve">
     <value>Bearbeiten</value>
   </data>

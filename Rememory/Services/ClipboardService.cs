@@ -1,4 +1,5 @@
-﻿using Rememory.Contracts;
+﻿using Microsoft.UI.Xaml.Controls;
+using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Models;
 using Rememory.Models.Metadata;
@@ -11,6 +12,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace Rememory.Services
 {
@@ -212,6 +214,27 @@ namespace Rememory.Services
             clip.IsFavorite = !clip.IsFavorite;
             _storageService.UpdateClip(clip);
             OnFavoriteClipChanged(Clips, clip);
+        }
+
+        public async Task SaveClipToFileAsync(StorageFolder destination, ClipModel clip, ClipboardFormat formatToSave)
+        {
+            if (clip.Data.TryGetValue(formatToSave, out var dataModel))
+            {
+                try
+                {
+                    if (dataModel.IsFile() && File.Exists(dataModel.Data))
+                    {
+                        var file = await StorageFile.GetFileFromPathAsync(dataModel.Data);
+                        await file.CopyAsync(destination);
+                    }
+                    else if (dataModel.Format == ClipboardFormat.Text)
+                    {
+                        var textFile = await destination.CreateFileAsync(string.Format($"{ClipboardFormatHelper.FILE_NAME_FORMAT}.txt", clip.ClipTime));
+                        await FileIO.WriteTextAsync(textFile, dataModel.Data);
+                    }
+                }
+                catch { }
+            }
         }
 
         public void DeleteClip(ClipModel clip, bool deleteFromDb = true)

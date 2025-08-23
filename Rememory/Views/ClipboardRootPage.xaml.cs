@@ -40,8 +40,17 @@ namespace Rememory.Views
         private Flyout PreviewRtfFlyout => (Flyout)Resources["PreviewRtfFlyout"];
         private Flyout PreviewImageFlyout => (Flyout)Resources["PreviewImageFlyout"];
 
-        private readonly MenuFlyout _noneSelectionClipsContextMenu;
-        private readonly MenuFlyout _multipleSelectionClipsContextMenu;
+        private readonly MenuFlyout _singleClipContextMenu;
+        private readonly MenuFlyout _multipleClipsContextMenu;
+
+        private readonly Dictionary<ClipboardFormat, string> _saveClipMenuItems = new()
+        {
+            { ClipboardFormat.Text, "Text" },
+            { ClipboardFormat.Rtf, "RTF" },
+            { ClipboardFormat.Html, "HTML" },
+            { ClipboardFormat.Png, "PNG" },
+            { ClipboardFormat.Bitmap, "Bitmap" }
+        };
 
         public ClipboardRootPage(ClipboardWindow window)
         {
@@ -59,8 +68,8 @@ namespace Rememory.Views
             ViewModel.SettingsContext.PropertyChanged += SettingsContext_PropertyChanged;
             ClipsListView.Items.VectorChanged += ClipsListView_Items_VectorChanged;
 
-            _noneSelectionClipsContextMenu = (MenuFlyout)Resources["NoneSelectionClipsContextMenu"];
-            _multipleSelectionClipsContextMenu = (MenuFlyout)Resources["MultipleSelectionClipsContextMenu"];
+            _singleClipContextMenu = (MenuFlyout)Resources["SingleClipContextMenu"];
+            _multipleClipsContextMenu = (MenuFlyout)Resources["MultipleClipsContextMenu"];
 
             SelectedClipsCountTextBlock.Text = "/Clipboard/SelectedClipsCount/Text".GetLocalizedFormatResource(ClipsListView.SelectedItems.Count);
         }
@@ -190,7 +199,7 @@ namespace Rememory.Views
             {
                 return;
             }
-            
+
             if (ViewModel.SettingsContext.WindowPosition != ClipboardWindowPosition.Right)
             {
                 ((UIElement)sender).CapturePointer(e.Pointer);
@@ -237,6 +246,27 @@ namespace Rememory.Views
         #endregion
 
         #region Context menu items
+
+        private void MenuFlyoutSaveClip_Loaded(object sender, RoutedEventArgs e)
+        {
+            var menuItem = (MenuFlyoutSubItem)sender;
+            var clip = (ClipModel)menuItem.DataContext;
+
+            menuItem.Items.Clear();
+
+            foreach (var menuItemPair in _saveClipMenuItems)
+            {
+                if (clip.Data.ContainsKey(menuItemPair.Key))
+                {
+                    menuItem.Items.Add(new MenuFlyoutItem()
+                    {
+                        Text = menuItemPair.Value,
+                        Command = ViewModel.SaveClipDataCommand,
+                        CommandParameter = new Tuple<ClipModel, ClipboardFormat>(clip, menuItemPair.Key)
+                    });
+                }
+            }
+        }
 
         private void MenuFlyoutTags_Loaded(object sender, RoutedEventArgs e)
         {
@@ -556,7 +586,7 @@ namespace Rememory.Views
         {
             var clipModel = (ClipModel)((FrameworkElement)sender).DataContext;
             bool useMultipleContextMenu = ClipsListView.SelectionMode == ListViewSelectionMode.Multiple && OrderedSelectedClips.Contains(clipModel);
-            var menuFlyout = useMultipleContextMenu ? _multipleSelectionClipsContextMenu : _noneSelectionClipsContextMenu;
+            var menuFlyout = useMultipleContextMenu ? _multipleClipsContextMenu : _singleClipContextMenu;
 
             if (args.TryGetPosition(sender, out var point))
             {

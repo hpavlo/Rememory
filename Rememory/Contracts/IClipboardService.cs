@@ -2,6 +2,8 @@
 using Rememory.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace Rememory.Contracts
 {
@@ -83,6 +85,16 @@ namespace Rememory.Contracts
         /// </summary>
         /// <param name="clip">The clip model whose favorite status should be changed.</param>
         void ToggleClipFavorite(ClipModel clip);
+
+        /// <summary>
+        /// Saves the specified clipboard clip to the given destination folder as a file.
+        /// If the clip contains file data, it copies the file directly to the destination.
+        /// If the clip contains text data, it creates a new text file in the destination folder and writes the content.
+        /// </summary>
+        /// <param name="destination">The folder where the clip data should be saved.</param>
+        /// <param name="clip">The clipboard clip model containing the data to save.</param>
+        /// <param name="formatToSave">The clipboard format indicating how the data should be saved.</param>
+        Task SaveClipToFileAsync(StorageFolder destination, ClipModel clip, ClipboardFormat formatToSave);
 
         /// <summary>
         /// Deletes the specified clip from the in-memory collection and optionally from persistent storage.

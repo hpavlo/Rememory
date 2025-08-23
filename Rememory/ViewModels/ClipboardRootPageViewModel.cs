@@ -11,6 +11,7 @@ using Rememory.Views.Settings;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -18,8 +19,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.System;
+using WinRT.Interop;
 
 namespace Rememory.ViewModels
 {
@@ -706,6 +709,24 @@ namespace Rememory.ViewModels
         {
             if (clip is null) return;
             SendClipToClipboard(clip);
+        }
+
+        [RelayCommand]
+        private async Task SaveClipData(Tuple<ClipModel, ClipboardFormat>? clipDataFormat)
+        {
+            if (clipDataFormat is null || !clipDataFormat.Item1.Data.ContainsKey(clipDataFormat.Item2))
+            {
+                return;
+            }
+
+            var folderPicker = new FolderPicker();
+            InitializeWithWindow.Initialize(folderPicker, App.Current.ClipboardWindowHandle);
+            var folder = await folderPicker.PickSingleFolderAsync();
+
+            if (folder is not null)
+            {
+                await _clipboardService.SaveClipToFileAsync(folder, clipDataFormat.Item1, clipDataFormat.Item2);
+            }
         }
 
         [RelayCommand(CanExecute = nameof(CanEditClip))]

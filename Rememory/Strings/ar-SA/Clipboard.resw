@@ -198,6 +198,9 @@
   <data name="Clip_ContextMenu_Copy.Text" xml:space="preserve">
     <value>نسخ</value>
   </data>
+  <data name="Clip_ContextMenu_SaveAs.Text" xml:space="preserve">
+    <value>حفظ كـ</value>
+  </data>
   <data name="Clip_ContextMenu_Edit.Text" xml:space="preserve">
     <value>تحرير</value>
   </data>

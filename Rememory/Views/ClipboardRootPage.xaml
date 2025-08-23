@@ -439,7 +439,7 @@
             </TreeView>
         </Flyout>
 
-        <MenuFlyout x:Key="NoneSelectionClipsContextMenu">
+        <MenuFlyout x:Key="SingleClipContextMenu">
             <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_AddToFavorites"
                             CommandParameter="{Binding}"
                             Command="{x:Bind ViewModel.ToggleClipFavoriteCommand}"
@@ -518,6 +518,9 @@
                             CommandParameter="{Binding}"
                             Command="{x:Bind ViewModel.CopyClipCommand}"
                             Icon="{tk:FontIcon Glyph=&#xE8C8;}" />
+            <MenuFlyoutSubItem x:Uid="/Clipboard/Clip_ContextMenu_SaveAs"
+                               Icon="{tk:FontIcon Glyph=&#xE74E;}"
+                               Loaded="MenuFlyoutSaveClip_Loaded" />
             <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_Edit"
                             KeyboardAcceleratorTextOverride="Ctrl+U"
                             CommandParameter="{Binding}"
@@ -540,7 +543,7 @@
                             Icon="{tk:FontIcon Glyph=&#xE71C;}" />
         </MenuFlyout>
 
-        <MenuFlyout x:Key="MultipleSelectionClipsContextMenu">
+        <MenuFlyout x:Key="MultipleClipsContextMenu">
             <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_AddToFavorites"
                             CommandParameter="{x:Bind OrderedSelectedClips, Mode=OneWay}"
                             Command="{x:Bind ViewModel.AddClipsToFavoritesCommand}"
