@@ -439,7 +439,8 @@
             </TreeView>
         </Flyout>
 
-        <MenuFlyout x:Key="SingleClipContextMenu">
+        <MenuFlyout x:Key="SingleClipContextMenu"
+                    x:DefaultBindMode="OneWay">
             <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_AddToFavorites"
                             CommandParameter="{Binding}"
                             Command="{x:Bind ViewModel.ToggleClipFavoriteCommand}"
@@ -471,7 +472,7 @@
                             Icon="{tk:FontIcon Glyph=&#xE77F;}" />
             <MenuFlyoutSubItem x:Uid="/Clipboard/Clip_ContextMenu_PasteAs"
                                Icon="{tk:FontIcon Glyph=&#xE8D2;}"
-                               IsEnabled="{Binding IsEnabled, ElementName=PasteAsPlainTextMenuFlyoutItem}"
+                               behavior:MenuFlyoutBehavior.AutoDisable="True"
                                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}">
                 <MenuFlyoutItem x:Name="PasteAsPlainTextMenuFlyoutItem"
                                 x:Uid="/Clipboard/Clip_ContextMenu_PasteAs_PlainText"
@@ -546,7 +547,8 @@
                             Icon="{tk:FontIcon Glyph=&#xE71C;}" />
         </MenuFlyout>
 
-        <MenuFlyout x:Key="MultipleClipsContextMenu">
+        <MenuFlyout x:Key="MultipleClipsContextMenu"
+                    x:DefaultBindMode="OneWay">
             <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_AddToFavorites"
                             CommandParameter="{x:Bind OrderedSelectedClips, Mode=OneWay}"
                             Command="{x:Bind ViewModel.AddClipsToFavoritesCommand}"
