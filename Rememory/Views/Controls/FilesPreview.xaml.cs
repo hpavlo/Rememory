@@ -16,6 +16,8 @@ namespace Rememory.Views.Controls
     {
         public ObservableCollection<FilePreviewModel> Files { get; private set; }
 
+        public int FilesPreviewLimit { get; set; } = 5;
+
         public DataModel ClipData
         {
             get => (DataModel)GetValue(ClipDataProperty);
@@ -54,14 +56,16 @@ namespace Rememory.Views.Controls
 
                 if (e.NewValue is DataModel clipData && clipData.Metadata is FilesMetadataModel filesMetadata)
                 {
-                    foreach (var path in filesMetadata.Paths.Take(5))
+                    var filesLimit = control.FilesPreviewLimit;
+
+                    foreach (var path in filesMetadata.Paths.Take(filesLimit))
                     {
                         control.Files.Add(new(path));
                     }
 
-                    if (filesMetadata.Paths.Length > 5)
+                    if (filesMetadata.Paths.Length > filesLimit)
                     {
-                        control.Files.Add(new($"+ {filesMetadata.Paths.Length - 5} more"));
+                        control.Files.Add(new("/Clipboard/Clip_FilesPreview_MoreFilesCount/Text".GetLocalizedFormatResource(filesMetadata.Paths.Length - filesLimit)));
                     }
 
                     _ = control.LoadIconsAsync(token);

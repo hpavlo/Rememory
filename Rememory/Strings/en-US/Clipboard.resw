@@ -123,6 +123,15 @@
   <data name="ClipFooter_CharactersCount.Text" xml:space="preserve">
     <value>{0, plural, one {# character} other {# characters}}</value>
   </data>
+  <data name="ClipFooter_FilesCount.Text" xml:space="preserve">
+    <value>{0, plural, one {# file} other {# files}}</value>
+  </data>
+  <data name="ClipFooter_FoldersCount.Text" xml:space="preserve">
+    <value>{0, plural, one {# folder} other {# folders}}</value>
+  </data>
+  <data name="ClipFooter_FilesAndFoldersCountDivider.Text" xml:space="preserve">
+    <value>, </value>
+  </data>
   <data name="ClipFooter_ImageSize.Text" xml:space="preserve">
     <value>Size: {0} x {1}</value>
   </data>
@@ -143,6 +152,9 @@
   </data>
   <data name="Clip_NoPreview.Text" xml:space="preserve">
     <value>No preview</value>
+  </data>
+  <data name="Clip_FilesPreview_MoreFilesCount.Text" xml:space="preserve">
+    <value>{0} more</value>
   </data>
   <data name="Clip_ContextMenu_AddToFavorites.Text" xml:space="preserve">
     <value>Add to favorites</value>
@@ -221,6 +233,9 @@
   </data>
   <data name="NavigationTab_Images.Text" xml:space="preserve">
     <value>Images</value>
+  </data>
+  <data name="NavigationTab_Files.Text" xml:space="preserve">
+    <value>Files</value>
   </data>
   <data name="NavigationTab_Links.Text" xml:space="preserve">
     <value>Links</value>

@@ -123,6 +123,15 @@
   <data name="ClipFooter_CharactersCount.Text" xml:space="preserve">
     <value>{0, plural, other {# 个字符}}</value>
   </data>
+  <data name="ClipFooter_FilesCount.Text" xml:space="preserve">
+    <value>{0, plural, other {# 个文件}}</value>
+  </data>
+  <data name="ClipFooter_FoldersCount.Text" xml:space="preserve">
+    <value>{0, plural, other {# 个文件夹}}</value>
+  </data>
+  <data name="ClipFooter_FilesAndFoldersCountDivider.Text" xml:space="preserve">
+    <value>，</value>
+  </data>
   <data name="ClipFooter_ImageSize.Text" xml:space="preserve">
     <value>图片大小：{0}×{1}</value>
   </data>
@@ -143,6 +152,9 @@
   </data>
   <data name="Clip_NoPreview.Text" xml:space="preserve">
     <value>无预览</value>
+  </data>
+  <data name="Clip_FilesPreview_MoreFilesCount.Text" xml:space="preserve">
+    <value>还有 {0} 个</value>
   </data>
   <data name="Clip_ContextMenu_AddToFavorites.Text" xml:space="preserve">
     <value>添加到收藏</value>
@@ -221,6 +233,9 @@
   </data>
   <data name="NavigationTab_Images.Text" xml:space="preserve">
     <value>图片</value>
+  </data>
+  <data name="NavigationTab_Files.Text" xml:space="preserve">
+    <value>文件</value>
   </data>
   <data name="NavigationTab_Links.Text" xml:space="preserve">
     <value>链接</value>

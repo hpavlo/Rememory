@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Rememory.Helper;
+using System.IO;
 
 namespace Rememory.Models.Metadata
 {
@@ -33,7 +34,7 @@ namespace Rememory.Models.Metadata
 
         public void SetPaths(string filesPaths)
         {
-            Paths = filesPaths.Split('|');
+            Paths = filesPaths.Split(RememoryCoreHelper.FILES_PATHS_DIVIDER);
         }
     }
 }

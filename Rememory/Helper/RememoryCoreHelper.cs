@@ -10,6 +10,7 @@ namespace Rememory.Helper
         public const uint TRAY_TOGGLE_MONITORING_COMMAND = 11;
         public const uint TRAY_SETTINGS_COMMAND = 12;
         public const uint TRAY_EXIT_COMMAND = 13;
+        public const string FILES_PATHS_DIVIDER = "|";
 
         [DllImport("Rememory.Core.dll")]
         public static extern bool StartClipboardMonitor(IntPtr hWnd, ClipboardMonitorCallback handler);
