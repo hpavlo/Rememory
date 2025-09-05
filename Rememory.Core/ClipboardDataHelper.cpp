@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "ClipboardDataHelper.h"
 #include "HashHelper.h"
+#include "shellapi.h"
+#include <string>
 
 std::vector<UINT> ClipboardDataHelper::SupportedClipboardFormats;
 std::vector<UINT> ClipboardDataHelper::RequiredClipboardFormats;   // Not used
@@ -11,6 +13,7 @@ void ClipboardDataHelper::InitializeClipboardFormats()
     SupportedClipboardFormats = {
         CF_UNICODETEXT,
         CF_BITMAP,
+        CF_HDROP,
         RegisterClipboardFormat(L"Rich Text Format"),
         RegisterClipboardFormat(L"HTML Format"),
         RegisterClipboardFormat(L"PNG"),
@@ -31,7 +34,8 @@ void ClipboardDataHelper::MakeDataCopy(DataItemsRef destination, DataItemsRef cl
         FormatDataItem newItem = {};
         newItem.format = item.format;
 
-        if (item.format == CF_BITMAP) {
+        if (item.format == CF_BITMAP)
+        {
             HBITMAP hBitmap = (HBITMAP)item.data;
             BITMAP bitmapInfo = {};
             std::vector<BYTE> pixelData;
@@ -46,7 +50,38 @@ void ClipboardDataHelper::MakeDataCopy(DataItemsRef destination, DataItemsRef cl
                 newItem.hash = HashHelper::ComputeSHA256(newItem.data, totalSize);
             }
         }
-        else {
+        else if (item.format == CF_HDROP)
+        {
+            HDROP hDropHandle = (HDROP)item.data;
+            UINT fileCount = DragQueryFile(hDropHandle, 0xFFFFFFFF, nullptr, 0);
+            std::vector<std::wstring> paths;
+
+            for (UINT i = 0; i < fileCount; ++i)
+            {
+                wchar_t filePath[MAX_PATH];
+                DragQueryFile(hDropHandle, i, filePath, MAX_PATH);
+                paths.push_back(filePath);
+            }
+
+            std::wstring joined;
+            for (size_t i = 0; i < paths.size(); ++i)
+            {
+                joined += paths[i];
+                if (i < paths.size() - 1)
+                {
+                    joined += L"|";
+                }
+            }
+            joined += L'\0';
+
+            size_t totalSize = joined.size() * sizeof(wchar_t);
+            newItem.data = malloc(totalSize);
+            memcpy(newItem.data, joined.c_str(), totalSize);
+            newItem.size = totalSize;
+            newItem.hash = HashHelper::ComputeSHA256(newItem.data, totalSize);
+        }
+        else
+        {
             newItem.data = malloc(item.size);
             memcpy(newItem.data, item.data, item.size);
             newItem.size = item.size;

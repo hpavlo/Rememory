@@ -19,6 +19,7 @@ namespace Rememory.Helper
 
         internal static uint CF_UNICODETEXT = 0x000D;
         internal static uint CF_BITMAP = 0x0002;
+        internal static uint CF_HDROP = 0x000F;
 
         [StructLayout(LayoutKind.Sequential)]
         internal struct BITMAP

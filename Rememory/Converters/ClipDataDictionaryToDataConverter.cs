@@ -14,7 +14,10 @@ namespace Rememory.Converters
 
             foreach (var dataItem in data)
             {
-                if (dataItem.Key == ClipboardFormat.Text || dataItem.Key == ClipboardFormat.Png || dataItem.Key == ClipboardFormat.Bitmap)
+                if (dataItem.Key == ClipboardFormat.Text
+                    || dataItem.Key == ClipboardFormat.Png
+                    || dataItem.Key == ClipboardFormat.Bitmap
+                    || dataItem.Key == ClipboardFormat.Files)
                 {
                     return dataItem.Value;
                 }

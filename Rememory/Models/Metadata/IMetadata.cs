@@ -13,6 +13,9 @@ namespace Rememory.Models.Metadata
         Link,
 
         [Description("Color")]
-        Color
+        Color,
+
+        [Description("Files")]
+        Files
     }
 }

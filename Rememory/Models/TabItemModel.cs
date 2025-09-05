@@ -57,6 +57,7 @@ namespace Rememory.Models
         Home,
         Fovorites,
         Images,
+        Files,
         Links,
         Tag
     }

@@ -5,12 +5,14 @@ using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Hooks;
 using Rememory.Models;
+using Rememory.Models.Metadata;
 using Rememory.Views;
 using Rememory.Views.Editor;
 using Rememory.Views.Settings;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -248,6 +250,7 @@ namespace Rememory.ViewModels
                 new("/Clipboard/NavigationTab_Home/Text".GetLocalizedResource(), "\uE80F", NavigationTabItemType.Home),
                 new("/Clipboard/NavigationTab_Favorites/Text".GetLocalizedResource(), "\uE734", NavigationTabItemType.Fovorites),
                 new("/Clipboard/NavigationTab_Images/Text".GetLocalizedResource(), "\uE8B9", NavigationTabItemType.Images),
+                new("Files", "\uE8B7", NavigationTabItemType.Files),
                 new("/Clipboard/NavigationTab_Links/Text".GetLocalizedResource(), "\uE71B", NavigationTabItemType.Links),
             ];
 
@@ -291,6 +294,7 @@ namespace Rememory.ViewModels
                 NavigationTabItemType.Home => true,
                 NavigationTabItemType.Fovorites => item.IsFavorite,
                 NavigationTabItemType.Images => item.Data.ContainsKey(ClipboardFormat.Png) || item.Data.ContainsKey(ClipboardFormat.Bitmap),
+                NavigationTabItemType.Files => item.Data.ContainsKey(ClipboardFormat.Files),
                 NavigationTabItemType.Links => item.IsLink,
                 NavigationTabItemType.Tag => SelectedTab.Tag is not null && item.Tags.Contains(SelectedTab.Tag),
                 _ => false
@@ -450,11 +454,10 @@ namespace Rememory.ViewModels
         /// </summary>
         /// <param name="clip">The <see cref="ClipModel"/> being dragged.</param>
         /// <param name="dataPackage">The <see cref="DataPackage"/> to populate.</param>
-        public async Task OnDragClipStartingAsync(ClipModel? clip, DataPackage dataPackage)
+        public async Task OnDragClipStartingAsync(ClipModel clip, DataPackage dataPackage)
         {
-            if (clip is null) return;
-
-            IStorageItem? storageItem = null;
+            List<IStorageItem> storageItems = [];
+            bool hasDraggableData = false;
 
             foreach (var dataItem in clip.Data)
             {
@@ -462,45 +465,61 @@ namespace Rememory.ViewModels
                 {
                     if (dataItem.Value.IsFile() && !clip.IsLink)
                     {
-                        var storageFile = await StorageFile.GetFileFromPathAsync(dataItem.Value.Data);
-                        // Set only one storage file with the most priority format
-                        storageItem ??= storageFile;
-                        using var storageStream = await storageFile.OpenReadAsync();
+                        var storageFile = await StorageFile.GetFileFromPathAsync(dataItem.Value.Data)
+                            .AsTask().ConfigureAwait(false);
+                        using var storageStream = await storageFile.OpenReadAsync()
+                            .AsTask().ConfigureAwait(false);
 
                         switch (dataItem.Key)
                         {
-                            case ClipboardFormat.Rtf:
-                                dataPackage.SetData("Rich Text Format", storageStream);
-                                break;
                             case ClipboardFormat.Html:
-                                dataPackage.SetData("HTML Format", storageStream);
+                                dataPackage.SetData(ClipboardFormat.Html.GetDescription(), storageStream);
+                                break;
+                            case ClipboardFormat.Rtf:
+                                dataPackage.SetData(ClipboardFormat.Rtf.GetDescription(), storageStream);
                                 break;
                             case ClipboardFormat.Png:
-                                dataPackage.SetData("PNG", storageStream);
+                                dataPackage.SetData(ClipboardFormat.Png.GetDescription(), storageStream);
                                 break;
                             case ClipboardFormat.Bitmap:
                                 dataPackage.SetBitmap(RandomAccessStreamReference.CreateFromStream(storageStream));
                                 break;
                         }
+
+                        hasDraggableData = true;
                     }
-                    else if (dataItem.Key == ClipboardFormat.Text)
+                    else
                     {
-                        dataPackage.SetText(dataItem.Value.Data);
-                        if (clip.IsLink)
+                        switch (dataItem.Key)
                         {
-                            dataPackage.SetWebLink(new Uri(dataItem.Value.Data));
+                            case ClipboardFormat.Text:
+                                dataPackage.SetText(dataItem.Value.Data);
+                                if (clip.IsLink)
+                                {
+                                    dataPackage.SetWebLink(new Uri(dataItem.Value.Data));
+                                }
+                                hasDraggableData = true;
+                                break;
+                            case ClipboardFormat.Files when dataItem.Value.Metadata is FilesMetadataModel filesMetadata:
+                                storageItems.AddRange(GetStorageItemsFromPaths(filesMetadata.Paths)
+                                    .ToBlockingEnumerable());
+                                break;
                         }
                     }
                 }
                 catch { }
             }
 
-            if (storageItem is not null)
+            if (storageItems.Count > 0)
             {
-                dataPackage.SetStorageItems([storageItem]);
+                dataPackage.SetStorageItems(storageItems);
+                hasDraggableData = true;
             }
-            dataPackage.RequestedOperation = DataPackageOperation.Copy;
+
+            dataPackage.RequestedOperation = hasDraggableData ? DataPackageOperation.Copy : DataPackageOperation.None;
         }
+
+        private readonly HashSet<ClipboardFormat> _draggableStorageItemFormats = [ClipboardFormat.Png, ClipboardFormat.Bitmap, ClipboardFormat.Files];
 
         /// <summary>
         /// Prepares the <see cref="DataPackage"/> for a drag-and-drop operation starting from selected clips.
@@ -508,23 +527,30 @@ namespace Rememory.ViewModels
         /// <param name="clips">Collection of <see cref="ClipModel"/> being dragged.</param>
         /// <param name="dataPackage">The <see cref="DataPackage"/> to populate.</param>
         /// <returns></returns>
-        public async Task OnDragMultipleClipsStartingAsync(IEnumerable<ClipModel>? clips, DataPackage dataPackage)
+        public async Task OnDragMultipleClipsStartingAsync(IEnumerable<ClipModel> clips, DataPackage dataPackage)
         {
-            if (clips is null) return;
-
-            bool areAllImages = clips.All(clip => clip.Data.ContainsKey(ClipboardFormat.Png) || clip.Data.ContainsKey(ClipboardFormat.Bitmap));
             List<IStorageItem> storageItems = [];
             StringBuilder textBuilder = new();
+            bool allClipsAreStorageItems = clips.All(clip => _draggableStorageItemFormats.Any(storageFormat => clip.Data.ContainsKey(storageFormat)));
 
             foreach (var clip in clips)
             {
-                if (areAllImages)
+                if (allClipsAreStorageItems)
                 {
-                    foreach (var dataItem in clip.Data.Where(pair => pair.Key == ClipboardFormat.Png || pair.Key == ClipboardFormat.Bitmap))
+                    foreach (var dataItem in clip.Data.Where(item => _draggableStorageItemFormats.Contains(item.Key)))
                     {
                         try
                         {
-                            storageItems.Add(await StorageFile.GetFileFromPathAsync(dataItem.Value.Data));
+                            if (dataItem.Key == ClipboardFormat.Files && dataItem.Value.Metadata is FilesMetadataModel filesMetadata)
+                            {
+                                storageItems.AddRange(GetStorageItemsFromPaths(filesMetadata.Paths)
+                                    .ToBlockingEnumerable());
+                            }
+                            else
+                            {
+                                storageItems.Add(await StorageFile.GetFileFromPathAsync(dataItem.Value.Data)
+                                    .AsTask().ConfigureAwait(false));
+                            }
                         }
                         catch { }
                     }
@@ -536,15 +562,46 @@ namespace Rememory.ViewModels
                 }
             }
 
-            if (areAllImages)
+            if (storageItems.Count > 0)
             {
                 dataPackage.SetStorageItems(storageItems);
             }
-            else
+            else if (textBuilder.Length > 0)
             {
                 dataPackage.SetText(textBuilder.ToString());
             }
-            dataPackage.RequestedOperation = DataPackageOperation.Copy;
+
+            dataPackage.RequestedOperation = storageItems.Count > 0 || textBuilder.Length > 0
+                ? DataPackageOperation.Copy
+                : DataPackageOperation.None;
+        }
+
+        private async IAsyncEnumerable<IStorageItem> GetStorageItemsFromPaths(IEnumerable<string> paths)
+        {
+            foreach (var path in paths)
+            {
+                IStorageItem? file = null;
+
+                try
+                {
+                    if (File.Exists(path))
+                    {
+                        file = await StorageFile.GetFileFromPathAsync(path)
+                            .AsTask().ConfigureAwait(false);
+                    }
+                    else if (Directory.Exists(path))
+                    {
+                        file = await StorageFolder.GetFolderFromPathAsync(path)
+                            .AsTask().ConfigureAwait(false);
+                    }
+                }
+                catch (UnauthorizedAccessException) { }
+
+                if (file is not null)
+                {
+                    yield return file;
+                }
+            }
         }
 
         // Call it from view when filter selection is changed

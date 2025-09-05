@@ -42,7 +42,7 @@ namespace Rememory.Services
                     break;
                 }
 
-                if (item.Data.TryGetValue(Helper.ClipboardFormat.Text, out DataModel? dataModel) &&
+                if ((item.Data.TryGetValue(Helper.ClipboardFormat.Text, out DataModel? dataModel) || item.Data.TryGetValue(Helper.ClipboardFormat.Files, out dataModel)) &&
                     dataModel.Data.Contains(searchString, StringComparison.OrdinalIgnoreCase))
                 {
                     App.Current.DispatcherQueue.TryEnqueue(() => foundItems.Add(item));

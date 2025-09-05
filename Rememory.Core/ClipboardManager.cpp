@@ -2,6 +2,8 @@
 #include "ClipboardManager.h"
 #include "OwnerHelper.h"
 #include "HashHelper.h"
+#include <ShlObj.h>
+#include <string>
 
 const UINT TIMER_DELAY = 100;
 const UINT OPEN_CLIPBOARD_ATTEMPTS = 3;
@@ -83,6 +85,72 @@ bool ClipboardManager::SetDataToClipboard(ClipboardDataInfo& dataInfo)
                 SetClipboardData(formatDataItem->format, hBitmap);
             }
         }
+        else if (formatDataItem->format == CF_HDROP) {
+            WCHAR* value = static_cast<WCHAR*>(formatDataItem->data);
+
+            std::vector<std::wstring> paths;
+            const WCHAR* start = value;
+            const WCHAR* p = value;
+
+            while (*p)
+            {
+                if (*p == L'|')
+                {
+                    paths.emplace_back(start, p - start);
+                    start = p + 1;
+                }
+                ++p;
+            }
+
+            if (p != start)   // last one
+            {
+                paths.emplace_back(start, p - start);
+            }
+
+            // Calculate total size for DROPFILES + all paths + double null
+            size_t totalChars = 0;
+            for (auto& path : paths)
+            {
+                totalChars += path.size() + 1; // +1 for null terminator
+            }
+            totalChars += 1; // final double null
+
+            SIZE_T totalBytes = sizeof(DROPFILES) + totalChars * sizeof(WCHAR);
+
+            // Allocate global memory for CF_HDROP
+            HGLOBAL hMem = GlobalAlloc(GHND | GMEM_SHARE, totalBytes);
+            if (!hMem)
+            {
+                continue;
+            }
+
+            DROPFILES* df = (DROPFILES*)GlobalLock(hMem);
+            df->pFiles = sizeof(DROPFILES);
+            df->fWide = TRUE;
+
+            WCHAR* buf = (WCHAR*)((BYTE*)df + sizeof(DROPFILES));
+            for (auto& path : paths)
+            {
+                wcscpy_s(buf, path.size() + 1, path.c_str());
+                buf += path.size() + 1;
+            }
+            *buf = L'\0'; // double null terminator
+
+            GlobalUnlock(hMem);
+
+            SetClipboardData(formatDataItem->format, hMem);
+
+            // Now set CFSTR_PREFERREDDROPEFFECT to DROPEFFECT_COPY
+            UINT fmtDropEffect = RegisterClipboardFormat(CFSTR_PREFERREDDROPEFFECT);
+            HGLOBAL hEffect = GlobalAlloc(GHND | GMEM_SHARE, sizeof(DWORD));
+            if (hEffect)
+            {
+                DWORD* pEffect = (DWORD*)GlobalLock(hEffect);
+                *pEffect = DROPEFFECT_COPY;
+                GlobalUnlock(hEffect);
+                SetClipboardData(fmtDropEffect, hEffect);
+            }
+        }
         else SetClipboardData(formatDataItem->format, formatDataItem->data);
     }
 
@@ -152,6 +220,31 @@ void ClipboardManager::HandleClipboardData()
         HANDLE hData = GetClipboardData(format);
         if (!hData)
         {
+            continue;
+        }
+
+        if (format == CF_HDROP)
+        {
+            HANDLE hDropEffect = GetClipboardData(RegisterClipboardFormat(CFSTR_PREFERREDDROPEFFECT));
+            if (!hDropEffect)
+            {
+                continue;
+            }
+            DWORD* dropEffect = (DWORD*)GlobalLock(hDropEffect);
+            if (dropEffect)
+            {
+                if ((*dropEffect & DROPEFFECT_COPY) != DROPEFFECT_COPY) {
+                    continue;
+                }
+                GlobalUnlock(hDropEffect);
+            }
+
+            // Create FormatDataItem manually to avoid GlobalSize calculating
+            FormatDataItem fdi = {};
+            fdi.format = format;
+            fdi.data = hData;
+
+            ClipboardData.push_back(fdi);
             continue;
         }
 

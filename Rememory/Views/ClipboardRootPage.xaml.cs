@@ -269,6 +269,8 @@ namespace Rememory.Views
                     });
                 }
             }
+
+            menuItem.IsEnabled = menuItem.Items.Count > 0;
         }
 
         private void MenuFlyoutTags_Loaded(object sender, RoutedEventArgs e)
@@ -350,8 +352,9 @@ namespace Rememory.Views
                         catch { }
                         break;
                     case ClipboardFormat.Text:
+                    case ClipboardFormat.Files:
                         var textBlock = (TextBlock)PreviewTextFlyout.Content;
-                        textBlock.Text = dataItem.Value.Data;
+                        textBlock.Text = dataItem.Key == ClipboardFormat.Text ? dataItem.Value.Data : dataItem.Value.Data.Replace("|", Environment.NewLine + Environment.NewLine);
                         textBlock.SearchHighlight(ViewModel.SearchString);
                         PreviewTextFlyout.ShowAt(this);
                         return;
