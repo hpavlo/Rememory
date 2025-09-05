@@ -131,5 +131,12 @@ namespace Rememory.Contracts
         /// <param name="colorMetadataModel">The <see cref="ColorMetadataModel"/> containing the metadata to add.</param>
         /// <param name="dataId">The unique identifier of the <see cref="DataModel"/> item to which this metadata belongs.</param>
         void AddColorMetadata(ColorMetadataModel colorMetadataModel, int dataId);
+
+        /// <summary>
+        /// Adds files-specific metadata (FilesCount, FoldersCount) associated with a specific data item within a clip.
+        /// </summary>
+        /// <param name="filesMetadata">The <see cref="FilesMetadataModel"/> containing the metadata to add.</param>
+        /// <param name="dataId">The unique identifier of the <see cref="DataModel"/> item to which this metadata belongs.</param>
+        void AddFilesMetadata(FilesMetadataModel filesMetadata, int dataId);
     }
 }

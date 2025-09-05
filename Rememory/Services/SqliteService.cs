@@ -469,11 +469,11 @@ namespace Rememory.Services
             command.Parameters.AddWithValue("title", linkMetadata.Title ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("description", linkMetadata.Description ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("image", linkMetadata.Image ?? (object)DBNull.Value);
-            command.Parameters.AddWithValue("metadataFormat", MetadataFormat.Link.GetDescription());
+            command.Parameters.AddWithValue("metadataFormat", linkMetadata.Format.GetDescription());
             command.ExecuteNonQuery();
         }
 
-        public void AddColorMetadata(ColorMetadataModel colorMetadataModel, int dataId)
+        public void AddColorMetadata(ColorMetadataModel colorMetadata, int dataId)
         {
             using var connection = CreateAndOpenConnection();
             using var command = connection.CreateCommand();
@@ -486,7 +486,31 @@ namespace Rememory.Services
             ";
 
             command.Parameters.AddWithValue("id", dataId);
-            command.Parameters.AddWithValue("metadataFormat", MetadataFormat.Color.GetDescription());
+            command.Parameters.AddWithValue("metadataFormat", colorMetadata.Format.GetDescription());
+            command.ExecuteNonQuery();
+        }
+
+        public void AddFilesMetadata(FilesMetadataModel filesMetadata, int dataId)
+        {
+            using var connection = CreateAndOpenConnection();
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+            INSERT INTO
+              FilesMetadata (Id, FilesCount, FoldersCount)
+            VALUES
+              (@id, @filesCount, @foldersCout);
+
+            UPDATE Data
+            SET
+              MetadataFormat = @metadataFormat
+            WHERE
+              Id = @id;
+            ";
+
+            command.Parameters.AddWithValue("id", dataId);
+            command.Parameters.AddWithValue("filesCount", filesMetadata.FilesCount);
+            command.Parameters.AddWithValue("foldersCout", filesMetadata.FoldersCount);
+            command.Parameters.AddWithValue("metadataFormat", filesMetadata.Format.GetDescription());
             command.ExecuteNonQuery();
         }
 
@@ -522,6 +546,7 @@ namespace Rememory.Services
                 {
                     MetadataFormat.Link => GetLinkMetadataById(id, connection),
                     MetadataFormat.Color => new ColorMetadataModel(),
+                    MetadataFormat.Files => GetFilesMetadataById(id, data, connection),
                     _ => null
                 };
 
@@ -615,6 +640,37 @@ namespace Rememory.Services
                     Description = description,
                     Image = image
                 };
+            }
+            return null;
+        }
+
+        private FilesMetadataModel? GetFilesMetadataById(int id, string paths, SqliteConnection connection)
+        {
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+            SELECT
+              FilesCount,
+              FoldersCount
+            FROM
+              FilesMetadata
+            WHERE
+              Id = @id;
+            ";
+
+            command.Parameters.AddWithValue("id", id);
+            using var reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                int filesCount = reader.GetInt32(0);
+                int foldersCount = reader.GetInt32(1);
+
+                var metadata = new FilesMetadataModel()
+                {
+                    FilesCount = filesCount,
+                    FoldersCount = foldersCount
+                };
+                metadata.SetPaths(paths);
+                return metadata;
             }
             return null;
         }

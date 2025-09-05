@@ -87,8 +87,12 @@ namespace Rememory.Services
                 FirstItem = Marshal.AllocHGlobal(selectedFormats.Count * Marshal.SizeOf(typeof(FormatDataItem)))
             };
 
-            IntPtr bitmapUnmanagedPathPointer = IntPtr.Zero;
+            IntPtr unmanagedValuePointer = IntPtr.Zero;
             nint currentPtr = dataInfo.FirstItem;
+
+
+            // TODO specify order for each clip by their priority
+
 
             // Process each selected format, convert data, and populate the unmanaged structure
             foreach (var currentFormat in selectedFormats)
@@ -110,10 +114,10 @@ namespace Rememory.Services
                             : dataModel.Data);
                     }
 
-                    // Keep track of the unmanaged path for the bitmap
-                    if (currentFormat == ClipboardFormat.Bitmap)
+                    // Keep track of the unmanaged valur for the bitmap or files formats
+                    if (currentFormat == ClipboardFormat.Bitmap || currentFormat == ClipboardFormat.Files)
                     {
-                        bitmapUnmanagedPathPointer = dataPtr;
+                        unmanagedValuePointer = dataPtr;
                     }
 
                     Marshal.StructureToPtr(new FormatDataItem
@@ -134,11 +138,11 @@ namespace Rememory.Services
             {
                 Marshal.FreeHGlobal(dataInfo.FirstItem);
             }
-            if (bitmapUnmanagedPathPointer != IntPtr.Zero)
+            if (unmanagedValuePointer != IntPtr.Zero)
             {
                 unsafe
                 {
-                    Utf16StringMarshaller.Free((ushort*)bitmapUnmanagedPathPointer);
+                    Utf16StringMarshaller.Free((ushort*)unmanagedValuePointer);
                 }                
             }
 
@@ -184,6 +188,13 @@ namespace Rememory.Services
                         _linkPreviewService.TryLoadLinkMetadata(textData);
                     }
                 }
+            }
+
+            if (clip.Data.TryGetValue(ClipboardFormat.Files, out var filesData))
+            {
+                FilesMetadataModel filesMetadata = new(filesData.Data);
+                filesData.Metadata = filesMetadata;
+                _storageService.AddFilesMetadata(filesMetadata, filesData.Id);
             }
 
             OnNewClipAdded(Clips, clip);
@@ -420,10 +431,14 @@ namespace Rememory.Services
         {
             if (Clips.FirstOrDefault(clip => clip.EqualDataTo(newClip)) is ClipModel toMove)
             {
-                Clips.Remove(toMove);
-                Clips.Insert(0, toMove);
-
-                toMove.ClipTime = newClip.ClipTime;
+                bool isMovedToTop = false;
+                if (!toMove.Equals(Clips.FirstOrDefault()))
+                {
+                    Clips.Remove(toMove);
+                    Clips.Insert(0, toMove);
+                    isMovedToTop = true;
+                    toMove.ClipTime = newClip.ClipTime;
+                }
 
                 if (toMove.Owner != newClip.Owner)
                 {
@@ -434,7 +449,12 @@ namespace Rememory.Services
                 _storageService.UpdateClip(toMove);
                 newClip.Owner = null;
                 newClip.ClearExternalDataFiles();
-                OnClipMovedToTop(Clips, toMove);
+
+                if (isMovedToTop)
+                {
+                    OnClipMovedToTop(Clips, toMove);
+                }
+
                 return true;
             }
 

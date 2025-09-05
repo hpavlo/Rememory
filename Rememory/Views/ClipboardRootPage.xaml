@@ -84,6 +84,14 @@
                 </DataTemplate>
             </selector:ClipPreviewTemplateSelector.ImageTemplate>
 
+            <selector:ClipPreviewTemplateSelector.FilesTemplate>
+                <DataTemplate x:DataType="models:ClipModel"
+                              x:DefaultBindMode="OneWay">
+                    <controls:FilesPreview ClipData="{x:Bind Data, Converter={StaticResource ClipDataDictionaryToDataConverter}}"
+                                           SearchText="{Binding DataContext.SearchString, ElementName=ClipsListView}" />
+                </DataTemplate>
+            </selector:ClipPreviewTemplateSelector.FilesTemplate>
+
             <selector:ClipPreviewTemplateSelector.ColorTemplate>
                 <DataTemplate x:DataType="models:ClipModel"
                               x:DefaultBindMode="OneWay">
@@ -207,13 +215,13 @@
 
                 <TextBlock Grid.Column="1"
                            Grid.Row="2"
-                           TextWrapping="Wrap"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center"
+                           FontSize="{ThemeResource CaptionTextBlockFontSize}"
                            Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                            DataContext="{x:Bind Data, Converter={StaticResource DataFooterInfoConverter}}"
                            Text="{Binding Result}"
-                           Style="{ThemeResource CaptionTextBlockStyle}" />
+                           TextTrimming="CharacterEllipsis" />
 
                 <TextBlock Grid.Column="2"
                            Grid.Row="2"
@@ -523,6 +531,7 @@
                             Icon="{tk:FontIcon Glyph=&#xE8C8;}" />
             <MenuFlyoutSubItem x:Uid="/Clipboard/Clip_ContextMenu_SaveAs"
                                Icon="{tk:FontIcon Glyph=&#xE74E;}"
+                               Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
                                Loaded="MenuFlyoutSaveClip_Loaded" />
             <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_Edit"
                             KeyboardAcceleratorTextOverride="Ctrl+U"

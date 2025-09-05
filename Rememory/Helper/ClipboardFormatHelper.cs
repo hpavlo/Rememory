@@ -93,6 +93,7 @@ namespace Rememory.Helper
         {
             { ClipboardFormat.Text, NativeHelper.CF_UNICODETEXT },
             { ClipboardFormat.Bitmap, NativeHelper.CF_BITMAP },
+            { ClipboardFormat.Files, NativeHelper.CF_HDROP },
             { ClipboardFormat.Rtf, NativeHelper.RegisterClipboardFormat("Rich Text Format") },
             { ClipboardFormat.Html, NativeHelper.RegisterClipboardFormat("HTML Format") },
             { ClipboardFormat.Png, NativeHelper.RegisterClipboardFormat("PNG") }
@@ -107,6 +108,7 @@ namespace Rememory.Helper
         {
             { ClipboardFormat.Text, _ => ConvertPointerToString(_.Pointer, _.Size) },
             { ClipboardFormat.Bitmap, _ => ConvertBitmapToFile(_.Pointer, _.Size) },
+            { ClipboardFormat.Files, _ => ConvertPointerToString(_.Pointer, _.Size) },
             { ClipboardFormat.Rtf, _ => ConvertPointerToFile(_.Pointer, _.Size, ClipboardFormat.Rtf) },   // Marshal.PtrToStringUTF8 to directly convert the data
             { ClipboardFormat.Html, _ => ConvertPointerToFile(_.Pointer, _.Size, ClipboardFormat.Html) },   // Marshal.PtrToStringUTF8
             { ClipboardFormat.Png, _ => ConvertPointerToFile(_.Pointer, _.Size, ClipboardFormat.Png) }
@@ -121,6 +123,7 @@ namespace Rememory.Helper
         {
             { ClipboardFormat.Text, _ => (IntPtr)Utf16StringMarshaller.ConvertToUnmanaged(_) },
             { ClipboardFormat.Bitmap, _ => (IntPtr)Utf16StringMarshaller.ConvertToUnmanaged(_) },
+            { ClipboardFormat.Files, _ => (IntPtr)Utf16StringMarshaller.ConvertToUnmanaged(_) },
             { ClipboardFormat.Rtf, ConvertFileToPointer },   // Utf8StringMarshaller
             { ClipboardFormat.Html, ConvertFileToPointer },   // Utf8StringMarshaller
             { ClipboardFormat.Png, ConvertFileToPointer }
@@ -174,8 +177,16 @@ namespace Rememory.Helper
                          && secondModel.Data.TryGetValue(ClipboardFormat.Png, out var secondPngData)
                          && StructuralComparisons.StructuralEqualityComparer.Equals(firstPngData?.Hash, secondPngData?.Hash);
 
-            // Return true if PNG matches (since text didn't match)
-            return pngMatch;
+            // Return true if PNG matches
+            if (pngMatch) return true;
+
+            // Check if both have Files data and their hashes match
+            bool filesMatch = firstModel.Data.TryGetValue(ClipboardFormat.Files, out var firstFilesData)
+                         && secondModel.Data.TryGetValue(ClipboardFormat.Files, out var secondFilesData)
+                         && StructuralComparisons.StructuralEqualityComparer.Equals(firstFilesData?.Hash, secondFilesData?.Hash);
+
+            // Return true if Files matches
+            return filesMatch;
         }
 
         /// <summary>
@@ -244,7 +255,7 @@ namespace Rememory.Helper
         /// <returns><c>True</c> if data can be saved as an external file, otherwise <c>False</c>.</returns>
         public static bool CanFormatBeFile(ClipboardFormat format)
         {
-            return format != ClipboardFormat.Text;
+            return format != ClipboardFormat.Text && format != ClipboardFormat.Files;
         }
 
         /// <summary>
@@ -527,6 +538,9 @@ namespace Rememory.Helper
 
         [Description("CF_BITMAP")]
         Bitmap,
+
+        [Description("CF_HDROP")]
+        Files,
 
         [Description("Rich Text Format")]
         Rtf,

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl x:Class="Rememory.Views.Controls.FilesPreview"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:Rememory.Views.Controls"
+             xmlns:tk="using:CommunityToolkit.WinUI">
+    <ListView x:Name="FilesListView"
+              ItemsSource="{x:Bind Files, Mode=OneWay}"
+              IsHitTestVisible="False">
+        <ListView.ItemContainerTransitions>
+            <TransitionCollection />
+        </ListView.ItemContainerTransitions>
+        <ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem"
+                   BasedOn="{StaticResource DefaultListViewItemStyle}">
+                <Setter Property="MinHeight"
+                        Value="20" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListViewItem">
+                            <ContentPresenter x:Name="FilePresenter">
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup>
+                                        <VisualState x:Name="InvalidFilePath">
+                                            <VisualState.StateTriggers>
+                                                <tk:IsEqualStateTrigger Value="{Binding IsPathCorrect}"
+                                                                        To="False" />
+                                            </VisualState.StateTriggers>
+                                            <VisualState.Setters>
+                                                <Setter Target="FilePresenter.Opacity"
+                                                        Value="0.5" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </ContentPresenter>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ListView.ItemContainerStyle>
+
+        <ListView.ItemTemplate>
+            <DataTemplate x:DataType="local:FilePreviewModel">
+                <Grid x:Name="RootGrid"
+                      ColumnSpacing="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="16" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Image Grid.Column="0"
+                           Source="{x:Bind ImageSource, Mode=OneWay}" />
+
+                    <TextBlock x:Name="FileName"
+                               Grid.Column="1"
+                               Text="{x:Bind Name}"
+                               TextTrimming="CharacterEllipsis" />
+                </Grid>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</UserControl>

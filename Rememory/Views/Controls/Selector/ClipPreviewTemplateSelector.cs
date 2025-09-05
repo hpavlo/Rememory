@@ -11,6 +11,7 @@ namespace Rememory.Views.Controls.Selector
         public DataTemplate? TextTemplate { get; set; }
         public DataTemplate? LinkTemplate { get; set; }
         public DataTemplate? ImageTemplate { get; set; }
+        public DataTemplate? FilesTemplate { get; set; }
         public DataTemplate? ColorTemplate { get; set; }
         public DataTemplate? EmptyTemplate { get; set; }
 
@@ -32,6 +33,8 @@ namespace Rememory.Views.Controls.Selector
                         case ClipboardFormat.Bitmap:
                         case ClipboardFormat.Png:
                             return ImageTemplate;
+                        case ClipboardFormat.Files:
+                            return FilesTemplate;
                     }
                 }
 

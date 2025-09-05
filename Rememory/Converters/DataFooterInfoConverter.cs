@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml.Data;
 using Rememory.Helper;
 using Rememory.Models;
+using Rememory.Models.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -28,15 +29,31 @@ namespace Rememory.Converters
                 {
                     return "/Clipboard/ClipFooter_CharactersCount/Text".GetLocalizedFormatResource(textData.Data.Length);
                 }
-                if (DataMap.TryGetValue(ClipboardFormat.Png, out var imageFile) || DataMap.TryGetValue(ClipboardFormat.Bitmap, out imageFile))
+                if (DataMap.TryGetValue(ClipboardFormat.Png, out var imageData) || DataMap.TryGetValue(ClipboardFormat.Bitmap, out imageData))
                 {
                     try
                     {
-                        var file = await StorageFile.GetFileFromPathAsync(imageFile.Data);
+                        var file = await StorageFile.GetFileFromPathAsync(imageData.Data);
                         var imageProps = await file.Properties.GetImagePropertiesAsync();
                         return "/Clipboard/ClipFooter_ImageSize/Text".GetLocalizedFormatResource(imageProps.Width, imageProps.Height);
                     }
                     catch { }
+                }
+                if (DataMap.TryGetValue(ClipboardFormat.Files, out var filesData) && filesData.Metadata is FilesMetadataModel filesMetadata)
+                {
+                    var footerParts = new List<string>();
+
+                    if (filesMetadata.FilesCount > 0)
+                    {
+                        footerParts.Add($"{filesMetadata.FilesCount} files");
+                    }
+
+                    if (filesMetadata.FoldersCount > 0)
+                    {
+                        footerParts.Add($"{filesMetadata.FoldersCount} folders");
+                    }
+
+                    return string.Join(", ", footerParts);
                 }
             }
             return string.Empty;
