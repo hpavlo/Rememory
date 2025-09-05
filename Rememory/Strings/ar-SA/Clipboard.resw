@@ -123,6 +123,15 @@
   <data name="ClipFooter_CharactersCount.Text" xml:space="preserve">
     <value>{0, plural, zero {لا توجد أحرف} one {حرف واحد} two {حرفان} few {# أحرف} many {# حرفًا} other {# حرف}}</value>
   </data>
+  <data name="ClipFooter_FilesCount.Text" xml:space="preserve">
+    <value>{0, plural, zero {لا ملفات} one {# ملف} two {# ملفان} few {# ملفات} many {# ملف} other {# ملف}}</value>
+  </data>
+  <data name="ClipFooter_FoldersCount.Text" xml:space="preserve">
+    <value>{0, plural, zero {لا مجلدات} one {# مجلد} two {# مجلدان} few {# مجلدات} many {# مجلد} other {# مجلد}}</value>
+  </data>
+  <data name="ClipFooter_FilesAndFoldersCountDivider.Text" xml:space="preserve">
+    <value>، </value>
+  </data>
   <data name="ClipFooter_ImageSize.Text" xml:space="preserve">
     <value>الحجم: {0} × {1}</value>
   </data>
@@ -143,6 +152,9 @@
   </data>
   <data name="Clip_NoPreview.Text" xml:space="preserve">
     <value>لا يوجد معاينة</value>
+  </data>
+  <data name="Clip_FilesPreview_MoreFilesCount.Text" xml:space="preserve">
+    <value>{0} أخرى</value>
   </data>
   <data name="Clip_ContextMenu_AddToFavorites.Text" xml:space="preserve">
     <value>إضافة إلى المفضلة</value>
@@ -221,6 +233,9 @@
   </data>
   <data name="NavigationTab_Images.Text" xml:space="preserve">
     <value>الصور</value>
+  </data>
+  <data name="NavigationTab_Files.Text" xml:space="preserve">
+    <value>الملفات</value>
   </data>
   <data name="NavigationTab_Links.Text" xml:space="preserve">
     <value>الروابط</value>

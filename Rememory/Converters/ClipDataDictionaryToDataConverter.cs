@@ -8,16 +8,21 @@ namespace Rememory.Converters
 {
     public partial class ClipDataDictionaryToDataConverter : IValueConverter
     {
+        private readonly HashSet<ClipboardFormat> _formatsForDataPreview =
+            [
+                ClipboardFormat.Text,
+                ClipboardFormat.Png,
+                ClipboardFormat.Bitmap,
+                ClipboardFormat.Files
+            ];
+
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             var data = (Dictionary<ClipboardFormat, DataModel>)value;
 
             foreach (var dataItem in data)
             {
-                if (dataItem.Key == ClipboardFormat.Text
-                    || dataItem.Key == ClipboardFormat.Png
-                    || dataItem.Key == ClipboardFormat.Bitmap
-                    || dataItem.Key == ClipboardFormat.Files)
+                if (_formatsForDataPreview.Contains(dataItem.Key))
                 {
                     return dataItem.Value;
                 }

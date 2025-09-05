@@ -123,6 +123,15 @@
   <data name="ClipFooter_CharactersCount.Text" xml:space="preserve">
     <value>{0,plural, other{#자}}</value>
   </data>
+  <data name="ClipFooter_FilesCount.Text" xml:space="preserve">
+    <value>{0, plural, other {파일 #개}}</value>
+  </data>
+  <data name="ClipFooter_FoldersCount.Text" xml:space="preserve">
+    <value>{0, plural, other {폴더 #개}}</value>
+  </data>
+  <data name="ClipFooter_FilesAndFoldersCountDivider.Text" xml:space="preserve">
+    <value>, </value>
+  </data>
   <data name="ClipFooter_ImageSize.Text" xml:space="preserve">
     <value>크기: {0} x {1}</value>
   </data>
@@ -143,6 +152,9 @@
   </data>
   <data name="Clip_NoPreview.Text" xml:space="preserve">
     <value>미리보기 없음</value>
+  </data>
+  <data name="Clip_FilesPreview_MoreFilesCount.Text" xml:space="preserve">
+    <value>{0}개 더</value>
   </data>
   <data name="Clip_ContextMenu_AddToFavorites.Text" xml:space="preserve">
     <value>즐겨찾기에 추가</value>
@@ -221,6 +233,9 @@
   </data>
   <data name="NavigationTab_Images.Text" xml:space="preserve">
     <value>이미지</value>
+  </data>
+  <data name="NavigationTab_Files.Text" xml:space="preserve">
+    <value>파일</value>
   </data>
   <data name="NavigationTab_Links.Text" xml:space="preserve">
     <value>링크</value>

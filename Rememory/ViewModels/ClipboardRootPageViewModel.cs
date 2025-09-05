@@ -250,7 +250,7 @@ namespace Rememory.ViewModels
                 new("/Clipboard/NavigationTab_Home/Text".GetLocalizedResource(), "\uE80F", NavigationTabItemType.Home),
                 new("/Clipboard/NavigationTab_Favorites/Text".GetLocalizedResource(), "\uE734", NavigationTabItemType.Fovorites),
                 new("/Clipboard/NavigationTab_Images/Text".GetLocalizedResource(), "\uE8B9", NavigationTabItemType.Images),
-                new("Files", "\uE8B7", NavigationTabItemType.Files),
+                new("/Clipboard/NavigationTab_Files/Text".GetLocalizedResource(), "\uE8B7", NavigationTabItemType.Files),
                 new("/Clipboard/NavigationTab_Links/Text".GetLocalizedResource(), "\uE71B", NavigationTabItemType.Links),
             ];
 

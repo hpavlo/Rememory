@@ -11,6 +11,8 @@ namespace Rememory.Converters
 {
     public partial class DataFooterInfoConverter : IValueConverter
     {
+        private readonly string _filesAndFoldersCountDivider = "/Clipboard/ClipFooter_FilesAndFoldersCountDivider/Text".GetLocalizedResource();
+
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             return new TaskCompletionNotifier<string>(Task.Run(() => GetFooterInfo((Dictionary<ClipboardFormat, DataModel>)value)));
@@ -45,15 +47,15 @@ namespace Rememory.Converters
 
                     if (filesMetadata.FilesCount > 0)
                     {
-                        footerParts.Add($"{filesMetadata.FilesCount} files");
+                        footerParts.Add("/Clipboard/ClipFooter_FilesCount/Text".GetLocalizedFormatResource(filesMetadata.FilesCount));
                     }
 
                     if (filesMetadata.FoldersCount > 0)
                     {
-                        footerParts.Add($"{filesMetadata.FoldersCount} folders");
+                        footerParts.Add("/Clipboard/ClipFooter_FoldersCount/Text".GetLocalizedFormatResource(filesMetadata.FoldersCount));
                     }
 
-                    return string.Join(", ", footerParts);
+                    return string.Join(_filesAndFoldersCountDivider, footerParts);
                 }
             }
             return string.Empty;
