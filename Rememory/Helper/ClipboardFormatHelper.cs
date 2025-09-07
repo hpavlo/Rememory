@@ -100,6 +100,19 @@ namespace Rememory.Helper
         };
 
         /// <summary>
+        /// Provides a mapping between <see cref="ClipboardFormat"/> values and their
+        /// corresponding file type filter <see cref="FileDialog.COMDLG_FILTERSPEC"/> for use in Save As dialogs.
+        /// </summary>
+        public static readonly Dictionary<ClipboardFormat, FileDialog.COMDLG_FILTERSPEC> SaveAsFormatFilters = new()
+        {
+            { ClipboardFormat.Text, new() { pszName = "Text file (*.txt)", pszSpec = "*.txt" } },
+            { ClipboardFormat.Bitmap, new() { pszName = "Bitmap image (*.bmp)", pszSpec = "*.bmp" } },
+            { ClipboardFormat.Rtf, new() { pszName = "Rich Text Format (*.rtf)", pszSpec = "*.rtf" } },
+            { ClipboardFormat.Html, new() { pszName = "HTML file (*.htm;*.html)", pszSpec = "*.htm;*.html" } },
+            { ClipboardFormat.Png, new() { pszName = "PNG image (*.png)", pszSpec = "*.png" } }
+        };
+
+        /// <summary>
         /// Dictionary mapping <see cref="ClipboardFormat"/> to functions that convert raw clipboard data
         /// (represented by an unmanaged memory pointer and size) into a managed string representation.
         /// For non-text formats, this string is typically the path to a temporary file where the data was saved.
