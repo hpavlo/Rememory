@@ -12,7 +12,7 @@ Get Rememory today and never lose track of copied information again!
 ## Features
 
 - Unlimited clipboard history storage
-- Save various data types: formatted text, images, HTML
+- Save various data types: formatted text (RTF), images (Bitmap, PNG), HTML, files
 - Quick search with filtering
 - Organized data grouping
 - Drag and Drop (doesn't work if run as administrator, see [issue](https://github.com/hpavlo/Rememory/issues/2))
