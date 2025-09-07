@@ -87,14 +87,13 @@ namespace Rememory.Contracts
         void ToggleClipFavorite(ClipModel clip);
 
         /// <summary>
-        /// Saves the specified clipboard clip to the given destination folder as a file.
-        /// If the clip contains file data, it copies the file directly to the destination.
-        /// If the clip contains text data, it creates a new text file in the destination folder and writes the content.
+        /// Saves clipboard content from the specified <paramref name="dataModel"/> to the given file path.
+        /// If the clipboard contains a file, it is copied to the destination folder.
+        /// If it contains text, a new file is created and the text is written to it.
         /// </summary>
-        /// <param name="destination">The folder where the clip data should be saved.</param>
-        /// <param name="clip">The clipboard clip model containing the data to save.</param>
-        /// <param name="formatToSave">The clipboard format indicating how the data should be saved.</param>
-        Task SaveClipToFileAsync(StorageFolder destination, ClipModel clip, ClipboardFormat formatToSave);
+        /// <param name="dataModel">The clipboard data to save, including its format and content.</param>
+        /// <param name="newFilePath">The full destination file path, including the file name, where the clipboard content will be saved.</param>
+        Task SaveClipToFileAsync(DataModel dataModel, string newFilePath);
 
         /// <summary>
         /// Deletes the specified clip from the in-memory collection and optionally from persistent storage.

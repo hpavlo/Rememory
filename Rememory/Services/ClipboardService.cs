@@ -226,25 +226,24 @@ namespace Rememory.Services
             OnFavoriteClipChanged(Clips, clip);
         }
 
-        public async Task SaveClipToFileAsync(StorageFolder destination, ClipModel clip, ClipboardFormat formatToSave)
+        public async Task SaveClipToFileAsync(DataModel dataModel, string newFilePath)
         {
-            if (clip.Data.TryGetValue(formatToSave, out var dataModel))
+            try
             {
-                try
+                var folderDestination = await StorageFolder.GetFolderFromPathAsync(Path.GetDirectoryName(newFilePath));
+                var newFileName = Path.GetFileName(newFilePath);
+                if (dataModel.IsFile() && File.Exists(dataModel.Data))
                 {
-                    if (dataModel.IsFile() && File.Exists(dataModel.Data))
-                    {
-                        var file = await StorageFile.GetFileFromPathAsync(dataModel.Data);
-                        await file.CopyAsync(destination);
-                    }
-                    else if (dataModel.Format == ClipboardFormat.Text)
-                    {
-                        var textFile = await destination.CreateFileAsync(string.Format($"{ClipboardFormatHelper.FILE_NAME_FORMAT}.txt", clip.ClipTime));
-                        await FileIO.WriteTextAsync(textFile, dataModel.Data);
-                    }
+                    var file = await StorageFile.GetFileFromPathAsync(dataModel.Data);
+                    await file.CopyAsync(folderDestination, newFileName);
                 }
-                catch { }
+                else if (dataModel.Format == ClipboardFormat.Text)
+                {
+                    var textFile = await folderDestination.CreateFileAsync(newFileName);
+                    await FileIO.WriteTextAsync(textFile, dataModel.Data);
+                }
             }
+            catch { }
         }
 
         public void DeleteClip(ClipModel clip, bool deleteFromDb = true)
