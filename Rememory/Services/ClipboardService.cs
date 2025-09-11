@@ -231,15 +231,19 @@ namespace Rememory.Services
             try
             {
                 var folderDestination = await StorageFolder.GetFolderFromPathAsync(Path.GetDirectoryName(newFilePath));
-                var newFileName = Path.GetFileName(newFilePath);
+                var newFile = await StorageFile.GetFileFromPathAsync(newFilePath);
                 if (dataModel.IsFile() && File.Exists(dataModel.Data))
                 {
-                    var file = await StorageFile.GetFileFromPathAsync(dataModel.Data);
-                    await file.CopyAsync(folderDestination, newFileName);
+                    var originFile = await StorageFile.GetFileFromPathAsync(dataModel.Data);
+                    using var originStream = await originFile.OpenStreamForReadAsync();
+                    using var destinationStream = await newFile.OpenStreamForWriteAsync();
+
+                    await originStream.CopyToAsync(destinationStream);
+                    await destinationStream.FlushAsync();
                 }
                 else if (dataModel.Format == ClipboardFormat.Text)
                 {
-                    var textFile = await folderDestination.CreateFileAsync(newFileName);
+                    var textFile = await StorageFile.GetFileFromPathAsync(newFilePath);
                     await FileIO.WriteTextAsync(textFile, dataModel.Data);
                 }
             }

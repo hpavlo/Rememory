@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Windows.Storage.Pickers;
 using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Hooks;
@@ -14,7 +15,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -23,7 +23,6 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.System;
-using WinRT.Interop;
 
 namespace Rememory.ViewModels
 {
@@ -775,23 +774,25 @@ namespace Rememory.ViewModels
                 return;
             }
 
-            var fileName = string.Empty;
-            var fileFilter = ClipboardFormatHelper.SaveAsFormatFilters.GetValueOrDefault(dataModel.Format, new FileDialog.COMDLG_FILTERSPEC());
+            var picker = new FileSavePicker(App.Current.ClipboardWindow.AppWindow.OwnerWindowId);
 
             if (dataModel.IsFile())
             {
-                fileName = Path.GetFileName(dataModel.Data);
+                picker.SuggestedFileName = Path.GetFileName(dataModel.Data);
             }
             else if (dataModel.Format == ClipboardFormat.Text)
             {
-                fileName = string.Format($"{ClipboardFormatHelper.FILE_NAME_FORMAT}.txt", clipDataFormat.Item1.ClipTime);
+                picker.SuggestedFileName = string.Format($"{ClipboardFormatHelper.FILE_NAME_FORMAT}.txt", clipDataFormat.Item1.ClipTime);
             }
 
-            var filePath = FileDialog.ShowSaveFileDialog(fileName, [fileFilter]);
+            var fileFilter = ClipboardFormatHelper.SaveAsFormatFilters.GetValueOrDefault(dataModel.Format);
+            picker.FileTypeChoices.Add(fileFilter);
 
-            if (!string.IsNullOrEmpty(filePath))
+            var pickFileResult = await picker.PickSaveFileAsync();
+
+            if (!string.IsNullOrEmpty(pickFileResult.Path))
             {
-                await _clipboardService.SaveClipToFileAsync(dataModel, filePath);
+                await _clipboardService.SaveClipToFileAsync(dataModel, pickFileResult.Path);
             }
         }
 

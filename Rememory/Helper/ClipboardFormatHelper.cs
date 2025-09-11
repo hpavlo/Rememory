@@ -101,15 +101,15 @@ namespace Rememory.Helper
 
         /// <summary>
         /// Provides a mapping between <see cref="ClipboardFormat"/> values and their
-        /// corresponding file type filter <see cref="FileDialog.COMDLG_FILTERSPEC"/> for use in Save As dialogs.
+        /// corresponding file type filter for use in Save As dialogs.
         /// </summary>
-        public static readonly Dictionary<ClipboardFormat, FileDialog.COMDLG_FILTERSPEC> SaveAsFormatFilters = new()
+        public static readonly Dictionary<ClipboardFormat, KeyValuePair<string, IList<string>>> SaveAsFormatFilters = new()
         {
-            { ClipboardFormat.Text, new() { pszName = "Text file (*.txt)", pszSpec = "*.txt" } },
-            { ClipboardFormat.Bitmap, new() { pszName = "Bitmap image (*.bmp)", pszSpec = "*.bmp" } },
-            { ClipboardFormat.Rtf, new() { pszName = "Rich Text Format (*.rtf)", pszSpec = "*.rtf" } },
-            { ClipboardFormat.Html, new() { pszName = "HTML file (*.htm;*.html)", pszSpec = "*.htm;*.html" } },
-            { ClipboardFormat.Png, new() { pszName = "PNG image (*.png)", pszSpec = "*.png" } }
+            { ClipboardFormat.Text, new("Text file (*.txt)", [".txt"]) },
+            { ClipboardFormat.Bitmap, new("Bitmap image (*.bmp)", [".bmp"]) },
+            { ClipboardFormat.Rtf, new("Rich Text Format (*.rtf)", [".rtf"]) },
+            { ClipboardFormat.Html, new("HTML file (*.htm;*.html)", [".htm", ".html"]) },
+            { ClipboardFormat.Png, new("PNG image (*.png)", [".png"]) }
         };
 
         /// <summary>
