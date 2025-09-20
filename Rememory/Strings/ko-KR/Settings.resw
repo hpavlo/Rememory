@@ -387,6 +387,12 @@
   <data name="Clipboard_RememberPinState.Description" xml:space="preserve">
     <value>창 고정 상태를 기억하여 다음에 동일한 방식으로 창을 엽니다</value>
   </data>
+  <data name="Clipboard_ClipCopyMessage.Header" xml:space="preserve">
+    <value>복사 확인 메시지</value>
+  </data>
+  <data name="Clipboard_ClipCopyMessage.Description" xml:space="preserve">
+    <value>콘텐츠가 클립보드에 복사될 때 간단한 메시지 표시</value>
+  </data>
   <data name="Metadata_LinkPreviewSection.Text" xml:space="preserve">
     <value>링크 미리보기</value>
   </data>

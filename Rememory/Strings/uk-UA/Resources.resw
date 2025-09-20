@@ -147,6 +147,9 @@
   <data name="UnknownOwnerAppTitle" xml:space="preserve">
     <value>Невідомий</value>
   </data>
+  <data name="BriefMessage_ClipCopied.Text" xml:space="preserve">
+    <value>Скопійовано</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Скасувати</value>
   </data>

@@ -196,16 +196,6 @@ namespace Rememory.Models
         }
 
 
-        private bool? _isSearchFocusOnStartEnabled;
-
-        [Settings("IsSearchFocusOnStartEnabled", DefaultValue = false)]
-        public bool IsSearchFocusOnStartEnabled
-        {
-            get => _isSearchFocusOnStartEnabled ??= GetSettingValue<bool>();
-            set => SetSettingsProperty(ref _isSearchFocusOnStartEnabled, value);
-        }
-
-
         private bool? _isDeveloperStringCaseConversionsEnabled;
 
         [Settings("IsDeveloperStringCaseConversionsEnabled", DefaultValue = false)]
@@ -216,13 +206,13 @@ namespace Rememory.Models
         }
 
 
-        private bool? _isRememberWindowPinStateEnabled;
+        private bool? _isSearchFocusOnStartEnabled;
 
-        [Settings("IsRememberWindowPinStateEnabled", DefaultValue = false)]
-        public bool IsRememberWindowPinStateEnabled
+        [Settings("IsSearchFocusOnStartEnabled", DefaultValue = false)]
+        public bool IsSearchFocusOnStartEnabled
         {
-            get => _isRememberWindowPinStateEnabled ??= GetSettingValue<bool>();
-            set => SetSettingsProperty(ref _isRememberWindowPinStateEnabled, value);
+            get => _isSearchFocusOnStartEnabled ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _isSearchFocusOnStartEnabled, value);
         }
 
 
@@ -243,6 +233,26 @@ namespace Rememory.Models
         {
             get => _isSetInitialTabOnOpenEnabled ??= GetSettingValue<bool>();
             set => SetSettingsProperty(ref _isSetInitialTabOnOpenEnabled, value);
+        }
+
+
+        private bool? _isRememberWindowPinStateEnabled;
+
+        [Settings("IsRememberWindowPinStateEnabled", DefaultValue = false)]
+        public bool IsRememberWindowPinStateEnabled
+        {
+            get => _isRememberWindowPinStateEnabled ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _isRememberWindowPinStateEnabled, value);
+        }
+
+
+        private bool? _isClipCopyMessageEnabled;
+
+        [Settings("IsClipCopyMessageEnabled", DefaultValue = true)]
+        public bool IsClipCopyMessageEnabled
+        {
+            get => _isClipCopyMessageEnabled ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _isClipCopyMessageEnabled, value);
         }
 
         #endregion

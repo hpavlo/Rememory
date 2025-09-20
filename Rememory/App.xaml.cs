@@ -85,6 +85,7 @@ namespace Rememory
 
             if (!_launchArguments.Contains("-silent") && SettingsContext.IsNotificationOnStartEnabled)
             {
+                //AppNotificationManager.Default.Register();   // for unpackaged
                 AppNotificationManager.Default.Show(new AppNotificationBuilder()
                     .AddText("AppNotification_Title".GetLocalizedResource())
                     .AddText("AppNotification_Text".GetLocalizedFormatResource(

@@ -387,6 +387,12 @@
   <data name="Clipboard_RememberPinState.Description" xml:space="preserve">
     <value>Слідкувати коли вікно закріплене та відновити його стан при наступному відкритті</value>
   </data>
+  <data name="Clipboard_ClipCopyMessage.Header" xml:space="preserve">
+    <value>Повідомлення про підтвердження копіювання</value>
+  </data>
+  <data name="Clipboard_ClipCopyMessage.Description" xml:space="preserve">
+    <value>Показувати коротке повідомлення при копіюванні в буфер</value>
+  </data>
   <data name="Metadata_LinkPreviewSection.Text" xml:space="preserve">
     <value>Попередній перегляд посилань</value>
   </data>

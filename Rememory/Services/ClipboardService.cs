@@ -2,6 +2,7 @@
 using Rememory.Helper;
 using Rememory.Models;
 using Rememory.Models.Metadata;
+using Rememory.Views.BriefMessage;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -427,6 +428,11 @@ namespace Rememory.Services
                 AddClip(clip);
             }
 
+            if (SettingsContext.IsClipCopyMessageEnabled)
+            {
+                ShowToolTipMessage(clip);
+            }
+
             return true;
         }
 
@@ -462,6 +468,26 @@ namespace Rememory.Services
             }
 
             return false;
+        }
+
+        private void ShowToolTipMessage(ClipModel clip)
+        {
+            string iconGlyph = string.Empty;
+
+            if (clip.Data.ContainsKey(ClipboardFormat.Text))
+            {
+                iconGlyph = "\uE8E9";
+            }
+            else if (clip.Data.ContainsKey(ClipboardFormat.Png) || clip.Data.ContainsKey(ClipboardFormat.Bitmap))
+            {
+                iconGlyph = "\uE91B";
+            }
+            else if (clip.Data.ContainsKey(ClipboardFormat.Files))
+            {
+                iconGlyph = "\uE8B7";
+            }
+
+            BriefMessageWindow.ShowBriefMessage(iconGlyph);
         }
 
         [GeneratedRegex(@"^#([a-fA-F0-9]{8}|[a-fA-F0-9]{6}|[a-fA-F0-9]{4}|[a-fA-F0-9]{3})$")]

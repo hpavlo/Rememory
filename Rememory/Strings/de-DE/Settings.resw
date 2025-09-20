@@ -387,6 +387,12 @@
   <data name="Clipboard_RememberPinState.Description" xml:space="preserve">
     <value>Merkt sich, ob das Fenster angepinnt war, und öffnet es beim nächsten Mal entsprechend</value>
   </data>
+  <data name="Clipboard_ClipCopyMessage.Header" xml:space="preserve">
+    <value>Kopierbestätigung</value>
+  </data>
+  <data name="Clipboard_ClipCopyMessage.Description" xml:space="preserve">
+    <value>Kurze Nachricht anzeigen beim Kopieren in die Zwischenablage</value>
+  </data>
   <data name="Metadata_LinkPreviewSection.Text" xml:space="preserve">
     <value>Link-Vorschau</value>
   </data>

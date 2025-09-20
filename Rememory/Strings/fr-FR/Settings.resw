@@ -387,6 +387,12 @@
   <data name="Clipboard_RememberPinState.Description" xml:space="preserve">
     <value>Mémorise l’état d’épinglage de la fenêtre pour qu’elle s’ouvre de la même manière</value>
   </data>
+  <data name="Clipboard_ClipCopyMessage.Header" xml:space="preserve">
+    <value>Message de confirmation de copie</value>
+  </data>
+  <data name="Clipboard_ClipCopyMessage.Description" xml:space="preserve">
+    <value>Affiche un message court lors de la copie</value>
+  </data>
   <data name="Metadata_LinkPreviewSection.Text" xml:space="preserve">
     <value>Aperçu du lien</value>
   </data>

@@ -387,6 +387,12 @@
   <data name="Clipboard_RememberPinState.Description" xml:space="preserve">
     <value>记住窗口是否已固定，以便下次以相同方式打开</value>
   </data>
+  <data name="Clipboard_ClipCopyMessage.Header" xml:space="preserve">
+    <value>复制确认消息</value>
+  </data>
+  <data name="Clipboard_ClipCopyMessage.Description" xml:space="preserve">
+    <value>复制内容到剪贴板时显示简短消息</value>
+  </data>
   <data name="Metadata_LinkPreviewSection.Text" xml:space="preserve">
     <value>链接预览</value>
   </data>

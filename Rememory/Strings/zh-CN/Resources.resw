@@ -147,6 +147,9 @@
   <data name="UnknownOwnerAppTitle" xml:space="preserve">
     <value>未知</value>
   </data>
+  <data name="BriefMessage_ClipCopied.Text" xml:space="preserve">
+    <value>已复制</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>取消</value>
   </data>

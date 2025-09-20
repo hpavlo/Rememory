@@ -201,5 +201,63 @@ namespace Rememory.Helper
 
         [DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#138")]
         internal static extern bool ShouldSystemUseDarkMode();
+
+
+        internal const uint WS_POPUP = 0x80000000;
+        internal const uint WS_EX_TOPMOST = 0x00000008;
+        internal const uint WS_EX_TRANSPARENT = 0x00000020;
+        internal const uint WS_EX_NOACTIVATE = 0x08000000;
+        internal const uint WS_EX_LAYERED = 0x00080000;
+
+        internal const uint CS_VREDRAW = 1;
+        internal const uint CS_HREDRAW = 2;
+        internal const uint COLOR_BACKGROUND = 1;
+        internal const uint WM_DESTROY = 2;
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        internal struct WNDCLASSEX
+        {
+            [MarshalAs(UnmanagedType.U4)]
+            public int cbSize;
+            [MarshalAs(UnmanagedType.U4)]
+            public int style;
+            public IntPtr lpfnWndProc;
+            public int cbClsExtra;
+            public int cbWndExtra;
+            public IntPtr hInstance;
+            public IntPtr hIcon;
+            public IntPtr hCursor;
+            public IntPtr hbrBackground;
+            public string lpszMenuName;
+            public string lpszClassName;
+            public IntPtr hIconSm;
+        }
+
+        [DllImport("user32.dll", SetLastError = true)]
+        internal static extern bool DestroyWindow(IntPtr hWnd);
+
+
+        [DllImport("user32.dll", SetLastError = true, EntryPoint = "CreateWindowEx")]
+        internal static extern IntPtr CreateWindowEx(
+           uint dwExStyle,
+           ushort regResult,
+           string lpWindowName,
+           uint dwStyle,
+           int x,
+           int y,
+           int nWidth,
+           int nHeight,
+           IntPtr hWndParent,
+           IntPtr hMenu,
+           IntPtr hInstance,
+           IntPtr lpParam);
+
+        [DllImport("user32.dll", SetLastError = true, EntryPoint = "RegisterClassEx", CharSet = CharSet.Auto)]
+        internal static extern ushort RegisterClassEx([In] ref WNDCLASSEX lpWndClass);
+
+        internal delegate IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        internal static extern IntPtr DefWindowProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
     }
 }

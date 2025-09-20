@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page x:Class="Rememory.Views.BriefMessage.BriefMessageRootPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:Rememory.Views.BriefMessage">
+    <Grid>
+        <ToolTipService.ToolTip>
+            <ToolTip x:Name="ToolTipMessage"
+                     Height="48"
+                     MinWidth="130"
+                     MaxWidth="226"
+                     Padding="16,0,16,0"
+                     CornerRadius="8"
+                     Placement="Top">
+                <Grid HorizontalAlignment="Center"
+                      VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon x:Name="ToolTipIcon"
+                              Grid.Column="0"
+                              Margin="0,0,8,0"
+                              FontSize="{ThemeResource BodyTextBlockFontSize}" />
+
+                    <TextBlock x:Uid="/Resources/BriefMessage_ClipCopied"
+                               x:Name="ToolTipText"
+                               Grid.Column="1"
+                               FontSize="{ThemeResource BodyTextBlockFontSize}"
+                               TextTrimming="CharacterEllipsis" />
+                </Grid>
+            </ToolTip>
+        </ToolTipService.ToolTip>
+    </Grid>
+</Page>

@@ -61,6 +61,12 @@
                                      HeaderIcon="{tk:FontIcon Glyph=&#xE718;}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsRememberWindowPinStateEnabled, Mode=TwoWay}" />
             </tkcontrols:SettingsCard>
+            
+            <tkcontrols:SettingsCard x:Uid="/Settings/Clipboard_ClipCopyMessage"
+                                     Margin="0,0,0,5"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xE8BD;}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsClipCopyMessageEnabled, Mode=TwoWay}" />
+            </tkcontrols:SettingsCard>
         </StackPanel>
     </ScrollViewer>
 </Page>
