@@ -4,7 +4,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:Rememory.Views.Controls"
              xmlns:tk="using:CommunityToolkit.WinUI"
-             xmlns:tkconverters="using:CommunityToolkit.WinUI.Converters">
+             xmlns:tkconverters="using:CommunityToolkit.WinUI.Converters"
+             x:Name="ParentControl"
+             Loaded="ParentControl_Loaded"
+             Unloaded="ParentControl_Unloaded">
     <UserControl.Resources>
         <tkconverters:StringVisibilityConverter x:Key="StringVisibilityConverter" />
         <tkconverters:EmptyObjectToObjectConverter x:Key="EmptyObjectToBoolConverter"
@@ -12,19 +15,29 @@
                                                    NotEmptyValue="True" />
     </UserControl.Resources>
 
-    <StackPanel Spacing="8">
+    <StackPanel x:Name="LinkPreviewRootPanel"
+                Spacing="8">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
-                <VisualState x:Name="LinkMetadataAvailable">
-                    <VisualState.StateTriggers>
-                        <tk:IsEqualStateTrigger Value="{x:Bind LinkMetadata, Mode=OneWay, Converter={StaticResource EmptyObjectToBoolConverter}}"
-                                                To="True" />
-                    </VisualState.StateTriggers>
+                <VisualState x:Name="NormalView">
                     <VisualState.Setters>
                         <Setter Target="PreviewUrl.MaxLines"
                                 Value="2" />
+                        <Setter Target="PreviewUrl.FontSize"
+                                Value="{ThemeResource BodyTextBlockFontSize}" />
                     </VisualState.Setters>
                 </VisualState>
+
+                <VisualState x:Name="CompactView">
+                    <VisualState.Setters>
+                        <Setter Target="PreviewUrl.MaxLines"
+                                Value="1" />
+                        <Setter Target="PreviewUrl.FontSize"
+                                Value="{ThemeResource CaptionTextBlockFontSize}" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="LinkMetadataNotAvailable" />
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
@@ -32,7 +45,7 @@
                    TextWrapping="Wrap"
                    TextTrimming="CharacterEllipsis"
                    Text="{x:Bind ClipData.Data, Mode=OneWay}"
-                   Style="{ThemeResource BodyTextBlockStyle}" />
+                   FontSize="{ThemeResource BodyTextBlockFontSize}" />
 
         <Grid x:Name="PreviewGrid"
               x:Load="{x:Bind LinkMetadata, Mode=OneWay, Converter={StaticResource EmptyObjectToBoolConverter}}"

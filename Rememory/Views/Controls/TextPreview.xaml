@@ -2,10 +2,27 @@
 <UserControl x:Class="Rememory.Views.Controls.TextPreview"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="using:Rememory.Views.Controls">
-    <TextBlock x:Name="PreviewTextBlock"
-               TextWrapping="Wrap"
-               TextTrimming="CharacterEllipsis"
-               Text="{x:Bind ClipData.Data, Mode=OneWay}"
-               Style="{ThemeResource BodyTextBlockStyle}" />
+             xmlns:local="using:Rememory.Views.Controls"
+             x:Name="ParentControl"
+             Loaded="ParentControl_Loaded">
+    <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="NormalView" />
+
+                <VisualState x:Name="CompactView">
+                    <VisualState.Setters>
+                        <Setter Target="PreviewTextBlock.FontSize"
+                                Value="{ThemeResource CaptionTextBlockFontSize}" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <TextBlock x:Name="PreviewTextBlock"
+                   TextWrapping="Wrap"
+                   TextTrimming="CharacterEllipsis"
+                   Text="{x:Bind ClipData.Data.Trim(), Mode=OneWay}"
+                   FontSize="{StaticResource BodyTextBlockFontSize}" />
+    </Grid>
 </UserControl>

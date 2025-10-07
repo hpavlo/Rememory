@@ -142,6 +142,12 @@
                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                        Style="{ThemeResource BodyStrongTextBlockStyle}" />
 
+            <tkcontrols:SettingsCard x:Uid="/Settings/Personalization_CompactView"
+                                     Margin="0,0,0,5"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xF168;}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsCompactViewEnabled, Mode=TwoWay}" />
+            </tkcontrols:SettingsCard>
+
             <tkcontrols:SettingsExpander x:Uid="/Settings/Personalization_WindowPosition"
                                          Margin="0,0,0,5"
                                          HeaderIcon="{tk:FontIcon Glyph=&#xE90D;}"

@@ -297,6 +297,12 @@
   <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
     <value>剪贴板窗口</value>
   </data>
+  <data name="Personalization_CompactView.Header" xml:space="preserve">
+    <value>紧凑视图</value>
+  </data>
+  <data name="Personalization_CompactView.Description" xml:space="preserve">
+    <value>以紧凑的单行格式显示剪辑，以节省空间</value>
+  </data>
   <data name="Personalization_WindowPosition.Header" xml:space="preserve">
     <value>剪贴板窗口位置</value>
   </data>

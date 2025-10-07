@@ -297,6 +297,12 @@
   <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
     <value>Clipboard window</value>
   </data>
+  <data name="Personalization_CompactView.Header" xml:space="preserve">
+    <value>Compact view</value>
+  </data>
+  <data name="Personalization_CompactView.Description" xml:space="preserve">
+    <value>Displays clips in a compact, single-line format to save space</value>
+  </data>
   <data name="Personalization_WindowPosition.Header" xml:space="preserve">
     <value>Clipboard window position</value>
   </data>

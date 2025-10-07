@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using Rememory.Helper;
 using Rememory.Models;
 using Rememory.Models.Metadata;
+using Rememory.Views.Controls.Behavior;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
@@ -14,8 +15,7 @@ namespace Rememory.Views.Controls
 {
     public sealed partial class FilesPreview : UserControl
     {
-        public ObservableCollection<FilePreviewModel> Files { get; private set; }
-
+        public ObservableCollection<FilePreviewModel> Files { get; private set; } = [];
         public int FilesPreviewLimit { get; set; } = 5;
 
         public DataModel ClipData
@@ -40,57 +40,60 @@ namespace Rememory.Views.Controls
 
         public FilesPreview()
         {
-            Files = [];
             InitializeComponent();
         }
 
-        private static void OnClipDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is FilesPreview control)
-            {
-                control._iconLoadCts?.Cancel();
-                control._iconLoadCts = new CancellationTokenSource();
-                var token = control._iconLoadCts.Token;
-
-                control.Files.Clear();
-
-                if (e.NewValue is DataModel clipData && clipData.Metadata is FilesMetadataModel filesMetadata)
-                {
-                    var filesLimit = control.FilesPreviewLimit;
-
-                    foreach (var path in filesMetadata.Paths.Take(filesLimit))
-                    {
-                        control.Files.Add(new(path));
-                    }
-
-                    if (filesMetadata.Paths.Length > filesLimit)
-                    {
-                        control.Files.Add(new("/Clipboard/Clip_FilesPreview_MoreFilesCount/Text".GetLocalizedFormatResource(filesMetadata.Paths.Length - filesLimit)));
-                    }
-
-                    _ = control.LoadIconsAsync(token);
-                }
-            }
-        }
+        private static void OnClipDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) { }
 
         private static void OnSearchTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) { }
 
+        private void ParentControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            _iconLoadCts?.Cancel();
+            _iconLoadCts = new CancellationTokenSource();
+            var token = _iconLoadCts.Token;
+            var showInCompactMode = App.Current.SettingsContext.IsCompactViewEnabled && !PreviewControlsHelper.IsOpenInToolTip(this);
+
+            Files.Clear();
+
+            if (ClipData is DataModel clipData && clipData.Metadata is FilesMetadataModel filesMetadata)
+            {
+                var filesLimit = showInCompactMode ? 1 : FilesPreviewLimit;
+
+                foreach (var path in filesMetadata.Paths.Take(filesLimit))
+                {
+                    Files.Add(new(path) { ShowInCompactMode = showInCompactMode });
+                }
+
+                if (filesMetadata.Paths.Length > filesLimit)
+                {
+                    string moreFilesText = "/Clipboard/Clip_FilesPreview_MoreFilesCount/Text".GetLocalizedFormatResource(filesMetadata.Paths.Length - filesLimit);
+
+                    if (filesLimit == 1 && Files.FirstOrDefault() is FilePreviewModel fileModel)
+                    {
+                        fileModel.RightSideInfo = moreFilesText;
+                    }
+                    else
+                    {
+                        Files.Add(new(moreFilesText));
+                    }
+                }
+                _ = LoadIconsAsync(token);
+            }
+        }
+
         private async Task LoadIconsAsync(CancellationToken token)
         {
-            try
+            foreach (var fileItem in Files)
             {
-                foreach (var fileItem in Files)
+                if (!fileItem.IsPathCorrect)
                 {
-                    if (!fileItem.IsPathCorrect)
-                    {
-                        continue;
-                    }
-
-                    token.ThrowIfCancellationRequested();
-                    fileItem.ImageSource = await FileIconHelper.GetFileIconAsync(fileItem.Path);
+                    continue;
                 }
+
+                token.ThrowIfCancellationRequested();
+                fileItem.ImageSource = await FileIconHelper.GetFileIconAsync(fileItem.Path);
             }
-            catch { }
         }
     }
 
@@ -101,6 +104,20 @@ namespace Rememory.Views.Controls
         {
             get => _imageSource;
             set => SetProperty(ref _imageSource, value);
+        }
+
+        private bool _showInCompactMode = false;
+        public bool ShowInCompactMode
+        {
+            get => _showInCompactMode;
+            set => SetProperty(ref _showInCompactMode, value);
+        }
+
+        private string? _rightSideInfo;
+        public string? RightSideInfo
+        {
+            get => _rightSideInfo;
+            set => SetProperty(ref _rightSideInfo, value);
         }
 
         public string Name { get; private set; } = System.IO.Path.GetFileName(path);

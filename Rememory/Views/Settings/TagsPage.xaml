@@ -88,10 +88,10 @@
                                                           Glyph="&#xEA99;"
                                                           FontSize="16"
                                                           ToolTipService.ToolTip="Clips with this tag can be cleaned up" />
-                                                
+
                                                 <Button Content="{tk:FontIcon FontSize=14, Glyph=&#xE70F;}"
                                                         Click="EditTagButton_Click" />
-                                                
+
                                                 <Button Content="{tk:FontIcon FontSize=14, Glyph=&#xE74D;}"
                                                         CommandParameter="{x:Bind}"
                                                         Command="{Binding DataContext.DeleteTagCommand, ElementName=TagsListView}" />
@@ -104,12 +104,6 @@
                     </tkcontrols:SettingsCard>
                 </tkcontrols:SettingsExpander.Items>
             </tkcontrols:SettingsExpander>
-
-            <!--<tkcontrols:SettingsCard x:Uid="SettingsCard_RunAtStartup"
-                                     Margin="0,0,0,5"
-                                     HeaderIcon="{tk:FontIcon Glyph=&#xE946;}">
-                <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsTagCountVisible, Mode=TwoWay}" />
-            </tkcontrols:SettingsCard>-->
         </StackPanel>
     </ScrollViewer>
 </Page>

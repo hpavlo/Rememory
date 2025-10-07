@@ -128,6 +128,16 @@ namespace Rememory.Models
         }
 
 
+        private bool? _isCompactViewEnabled;
+
+        [Settings("IsCompactViewEnabled", DefaultValue = false)]
+        public bool IsCompactViewEnabled
+        {
+            get => _isCompactViewEnabled ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _isCompactViewEnabled, value);
+        }
+
+
         private string? _windowPosition;
 
         [Settings("WindowPosition")]

@@ -36,9 +36,13 @@ namespace Rememory.Views
 
         private readonly ClipboardWindow _window;
         private IThemeService ThemeService => App.Current.ThemeService;
-        private Flyout PreviewTextFlyout => (Flyout)Resources["PreviewTextFlyout"];
-        private Flyout PreviewRtfFlyout => (Flyout)Resources["PreviewRtfFlyout"];
-        private Flyout PreviewImageFlyout => (Flyout)Resources["PreviewImageFlyout"];
+
+        private readonly Flyout _previewTextFlyout;
+        private readonly Flyout _previewRtfFlyout;
+        private readonly Flyout _previewImageFlyout;
+
+        private readonly DataTemplate _clipLayoutTemplate;
+        private readonly DataTemplate _compactClipLayoutTemplate;
 
         private readonly MenuFlyout _singleClipContextMenu;
         private readonly MenuFlyout _multipleClipsContextMenu;
@@ -64,17 +68,25 @@ namespace Rememory.Views
             _window.AppWindow.Closing += Window_Closing;
 
             RequestedTheme = ThemeService.Theme;
-            ChangeThemeBackgroundColor();
+            TriggerThemeBackgroundColor();
             ThemeService.ThemeChanged += ThemeService_ThemeChanged;
             ThemeService.WindowBackdropChanged += ThemeService_WindowBackdropChanged;
 
             ViewModel.SettingsContext.PropertyChanged += SettingsContext_PropertyChanged;
             ClipsListView.Items.VectorChanged += ClipsListView_Items_VectorChanged;
 
+            _previewTextFlyout = (Flyout)Resources["PreviewTextFlyout"];
+            _previewRtfFlyout = (Flyout)Resources["PreviewRtfFlyout"];
+            _previewImageFlyout = (Flyout)Resources["PreviewImageFlyout"];
+
+            _clipLayoutTemplate = (DataTemplate)Resources["ClipLayoutTemplate"];
+            _compactClipLayoutTemplate = (DataTemplate)Resources["CompactClipLayoutTemplate"];
+
             _singleClipContextMenu = (MenuFlyout)Resources["SingleClipContextMenu"];
             _multipleClipsContextMenu = (MenuFlyout)Resources["MultipleClipsContextMenu"];
 
             SelectedClipsCountTextBlock.Text = "/Clipboard/SelectedClipsCount/Text".GetLocalizedFormatResource(ClipsListView.SelectedItems.Count);
+            TriggerClipLayoutTemplate();
         }
 
         private void Window_Showing(object sender, EventArgs e)
@@ -115,12 +127,12 @@ namespace Rememory.Views
         private void ThemeService_ThemeChanged(object? sender, ElementTheme theme)
         {
             RequestedTheme = theme;
-            ChangeThemeBackgroundColor();
+            TriggerThemeBackgroundColor();
         }
 
-        private void ThemeService_WindowBackdropChanged(object? sender, WindowBackdropType e) => ChangeThemeBackgroundColor();
+        private void ThemeService_WindowBackdropChanged(object? sender, WindowBackdropType e) => TriggerThemeBackgroundColor();
 
-        private void ChangeThemeBackgroundColor()
+        private void TriggerThemeBackgroundColor()
         {
             SolidColorBrush newBackgroundBrush = new();
             if (ThemeService.WindowBackdrop == WindowBackdropType.None)
@@ -158,24 +170,34 @@ namespace Rememory.Views
                 return newStyle;
             }
 
-            PreviewRtfFlyout.FlyoutPresenterStyle = UpdateFlyoutPresenterStyle(ActualWidth * 1.5, ActualHeight);
-            ((RichEditBox)PreviewRtfFlyout.Content).Width = ActualWidth * 1.5 - 36;
+            _previewRtfFlyout.FlyoutPresenterStyle = UpdateFlyoutPresenterStyle(ActualWidth * 1.5, ActualHeight);
+            ((RichEditBox)_previewRtfFlyout.Content).Width = ActualWidth * 1.5 - 36;
 
-            PreviewTextFlyout.FlyoutPresenterStyle = UpdateFlyoutPresenterStyle(ActualWidth, ActualHeight);
-            ((TextBlock)PreviewTextFlyout.Content).MaxWidth = ActualWidth - 36;
+            _previewTextFlyout.FlyoutPresenterStyle = UpdateFlyoutPresenterStyle(ActualWidth, ActualHeight);
+            ((TextBlock)_previewTextFlyout.Content).MaxWidth = ActualWidth - 36;
 
-            PreviewImageFlyout.FlyoutPresenterStyle = UpdateFlyoutPresenterStyle(ActualWidth * 2, ActualHeight);
-            PreviewImageFlyout.Content.SetValue(ImageAutoResizeBehavior.MaxImageWidthProperty, ActualWidth * 2 - 36);
-            PreviewImageFlyout.Content.SetValue(ImageAutoResizeBehavior.MaxImageHeightProperty, ActualHeight - 34);
+            _previewImageFlyout.FlyoutPresenterStyle = UpdateFlyoutPresenterStyle(ActualWidth * 2, ActualHeight);
+            _previewImageFlyout.Content.SetValue(ImageAutoResizeBehavior.MaxImageWidthProperty, ActualWidth * 2 - 36);
+            _previewImageFlyout.Content.SetValue(ImageAutoResizeBehavior.MaxImageHeightProperty, ActualHeight - 34);
         }
 
         private void SettingsContext_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs a)
         {
-            // Swap tab indexes between SearchBox and ListView
-            if (string.Equals(a.PropertyName, nameof(ViewModel.SettingsContext.IsSearchFocusOnStartEnabled)))
+            switch (a.PropertyName)
             {
-                (ClipsListView.TabIndex, SearchBox.TabIndex) = (SearchBox.TabIndex, ClipsListView.TabIndex);
+                case nameof(ViewModel.SettingsContext.IsSearchFocusOnStartEnabled):
+                    // Swap tab indexes between SearchBox and ListView
+                    (ClipsListView.TabIndex, SearchBox.TabIndex) = (SearchBox.TabIndex, ClipsListView.TabIndex);
+                    break;
+                case nameof(ViewModel.SettingsContext.IsCompactViewEnabled):
+                    TriggerClipLayoutTemplate();
+                    break;
             }
+        }
+
+        private void TriggerClipLayoutTemplate()
+        {
+            ClipsListView.ItemTemplate = ViewModel.SettingsContext.IsCompactViewEnabled ? _compactClipLayoutTemplate : _clipLayoutTemplate;
         }
 
         private void RootPage_KeyDown(object sender, KeyRoutedEventArgs e)
@@ -332,33 +354,33 @@ namespace Rememory.Views
                     case ClipboardFormat.Bitmap:
                         try
                         {
-                            ((Image)PreviewImageFlyout.Content).Source = new BitmapImage(new(dataItem.Value.Data));
-                            PreviewImageFlyout.ShowAt(this);
+                            ((Image)_previewImageFlyout.Content).Source = new BitmapImage(new(dataItem.Value.Data));
+                            _previewImageFlyout.ShowAt(this);
                             return;
                         }
                         catch { }
                         break;
                     case ClipboardFormat.Rtf:
-                        var richEditBox = (RichEditBox)PreviewRtfFlyout.Content;
+                        var richEditBox = (RichEditBox)_previewRtfFlyout.Content;
                         richEditBox.IsReadOnly = false;
                         try
                         {
                             richEditBox.Document.SetText(TextSetOptions.FormatRtf, File.ReadAllText(dataItem.Value.Data).Replace("{\\rtf", "{\\rtf1"));
                             richEditBox.SearchHighligh(ViewModel.SearchString);
                             richEditBox.IsReadOnly = true;
-                            PreviewRtfFlyout.ShowAt(this);
+                            _previewRtfFlyout.ShowAt(this);
                             return;
                         }
                         catch { }
                         break;
                     case ClipboardFormat.Text:
                     case ClipboardFormat.Files:
-                        var textBlock = (TextBlock)PreviewTextFlyout.Content;
+                        var textBlock = (TextBlock)_previewTextFlyout.Content;
                         textBlock.Text = dataItem.Key == ClipboardFormat.Text
                             ? dataItem.Value.Data
                             : dataItem.Value.Data.Replace(RememoryCoreHelper.FILES_PATHS_DIVIDER, Environment.NewLine + Environment.NewLine);
                         textBlock.SearchHighlight(ViewModel.SearchString);
-                        PreviewTextFlyout.ShowAt(this);
+                        _previewTextFlyout.ShowAt(this);
                         return;
                 }
             }
@@ -482,19 +504,19 @@ namespace Rememory.Views
                 // Space
                 case VirtualKey.Space:
                     e.Handled = true;
-                    if (PreviewTextFlyout.IsOpen)
+                    if (_previewTextFlyout.IsOpen)
                     {
-                        PreviewTextFlyout.Hide();
+                        _previewTextFlyout.Hide();
                         return;
                     }
-                    if (PreviewRtfFlyout.IsOpen)
+                    if (_previewRtfFlyout.IsOpen)
                     {
-                        PreviewRtfFlyout.Hide();
+                        _previewRtfFlyout.Hide();
                         return;
                     }
-                    if (PreviewImageFlyout.IsOpen)
+                    if (_previewImageFlyout.IsOpen)
                     {
-                        PreviewImageFlyout.Hide();
+                        _previewImageFlyout.Hide();
                         return;
                     }
                     OpenPreviewFlyout((ClipModel)clipItem.Content);
@@ -537,7 +559,7 @@ namespace Rememory.Views
 
         private void ClipsListView_GettingFocus(UIElement sender, GettingFocusEventArgs args)
         {
-            if (PreviewTextFlyout.IsOpen || PreviewRtfFlyout.IsOpen || PreviewImageFlyout.IsOpen)
+            if (_previewTextFlyout.IsOpen || _previewRtfFlyout.IsOpen || _previewImageFlyout.IsOpen)
             {
                 OpenPreviewFlyout((ClipModel)((ListViewItem)args.NewFocusedElement).Content);
             }

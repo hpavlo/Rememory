@@ -10,6 +10,8 @@ namespace Rememory.Views.Controls
 {
     public sealed partial class LinkPreview : UserControl
     {
+        private bool? _showInCompactMode;
+
         public DataModel ClipData
         {
             get => (DataModel)GetValue(ClipDataProperty);
@@ -42,13 +44,6 @@ namespace Rememory.Views.Controls
         public LinkPreview()
         {
             InitializeComponent();
-            Unloaded += (s, a) =>
-            {
-                if (ClipData != null)
-                {
-                    ClipData.PropertyChanged -= ClipData_PropertyChanged;
-                }
-            };
         }
 
         private static void OnClipDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -83,6 +78,39 @@ namespace Rememory.Views.Controls
             }
         }
 
+        private void ParentControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            _showInCompactMode = App.Current.SettingsContext.IsCompactViewEnabled && !PreviewControlsHelper.IsOpenInToolTip(this);
+
+            if (_showInCompactMode is true)
+            {
+                VisualStateManager.GoToState(this, "CompactView", true);
+                LinkMetadata = null;   // To hide metadata in compact view
+            }
+            else if (LinkMetadata is null)
+            {
+                UpdateMetadata(ClipData.Metadata);
+            }
+        }
+
+        private void ParentControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            _showInCompactMode = null;
+
+            if (ClipData != null)
+            {
+                ClipData.PropertyChanged -= ClipData_PropertyChanged;
+            }
+        }
+
+        private void PreviewImage_ImageOpened(object sender, RoutedEventArgs e)
+        {
+            if (PreviewImageBorder is not null)
+            {
+                PreviewImageBorder.Visibility = Visibility.Visible;
+            }
+        }
+
         private void ClipData_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(ClipData.Metadata))
@@ -95,19 +123,17 @@ namespace Rememory.Views.Controls
         {
             LinkMetadata = metadata as LinkMetadataModel;
 
-            if (IsValidUrl(LinkMetadata?.Image, out var uri))
-            {
-                ImageSource.UriSource = uri;
-            }
-            else
-            {
-                ImageSource.UriSource = null;
-            }
+            string visualState = _showInCompactMode is true
+                ? "CompactView"
+                : LinkMetadata is null
+                    ? "LinkMetadataNotAvailable"
+                    : "NormalView";
 
-            if (PreviewImageBorder is not null)
-            {
-                PreviewImageBorder.Visibility = Visibility.Collapsed;
-            }
+            VisualStateManager.GoToState(this, visualState, true);
+
+            ImageSource.UriSource = IsValidUrl(LinkMetadata?.Image, out var uri) ? uri : null;
+
+            PreviewImageBorder?.SetValue(VisibilityProperty, Visibility.Collapsed);
         }
 
         private static bool IsValidUrl(string? url, out Uri? uri)
@@ -120,14 +146,6 @@ namespace Rememory.Views.Controls
 
             return Uri.TryCreate(url, UriKind.Absolute, out uri)
                 && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
-        }
-
-        private void PreviewImage_ImageOpened(object sender, RoutedEventArgs e)
-        {
-            if (PreviewImageBorder is not null)
-            {
-                PreviewImageBorder.Visibility = Visibility.Visible;
-            }
         }
     }
 }
