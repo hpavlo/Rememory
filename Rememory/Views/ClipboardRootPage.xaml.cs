@@ -306,14 +306,37 @@ namespace Rememory.Views
 
             foreach (var tag in tags)
             {
-                menuItem.Items.Add(new ToggleMenuFlyoutItem()
+                var tagItem = new ToggleMenuFlyoutItem()
                 {
                     Text = tag.Name,
-                    IsChecked = clip.Tags.Contains(tag),
-                    Command = ViewModel.ToggleClipTagCommand,
-                    CommandParameter = new Tuple<ClipModel, TagModel>(clip, tag),
                     Icon = new FontIcon() { Glyph = "\uEA3B", Foreground = tag.ColorBrush }
-                });
+                };
+
+                if (ClipsListView.SelectionMode == ListViewSelectionMode.None
+                    || ClipsListView.SelectionMode == ListViewSelectionMode.Multiple && !OrderedSelectedClips.Contains(clip))
+                {
+                    tagItem.IsChecked = clip.Tags.Contains(tag);
+                    tagItem.Command = ViewModel.ToggleClipTagCommand;
+                    tagItem.CommandParameter = new Tuple<ClipModel, TagModel, bool>(clip, tag, tagItem.IsChecked);
+                }
+                else if (ClipsListView.SelectionMode == ListViewSelectionMode.Multiple)
+                {
+                    tagItem.IsChecked = OrderedSelectedClips.All(clip => clip.Tags.Contains(tag));
+                    tagItem.Command = ViewModel.ToggleClipsTagCommand;
+                    tagItem.CommandParameter = new Tuple<IEnumerable<ClipModel>, TagModel, bool>(OrderedSelectedClips, tag, tagItem.IsChecked);
+                }
+
+                menuItem.Items.Add(tagItem);
+            }
+
+            // Toggle bottom separator item visibility
+            if (ClipsListView.SelectionMode == ListViewSelectionMode.None)
+            {
+                ClipMenuFlyoutBottomSeparator.Visibility = menuItem.IsEnabled || FilterClipMenuFlyoutItem.IsEnabled ? Visibility.Visible : Visibility.Collapsed;
+            }
+            else
+            {
+                ClipsMenuFlyoutBottomSeparator.Visibility = menuItem.IsEnabled || FilterClipsMenuFlyoutItem.IsEnabled ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 

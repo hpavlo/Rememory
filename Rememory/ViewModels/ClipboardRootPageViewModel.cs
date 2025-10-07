@@ -836,14 +836,15 @@ namespace Rememory.ViewModels
         }
 
         [RelayCommand]
-        private void ToggleClipTag(Tuple<ClipModel, TagModel>? clipTagData)
+        private void ToggleClipTag(Tuple<ClipModel, TagModel, bool>? clipTagData)
         {
             if (clipTagData is null) return;
 
             var clip = clipTagData.Item1;
             var tag = clipTagData.Item2;
+            var isChecked = clipTagData.Item3;
 
-            if (clip.Tags.Contains(tag))
+            if (isChecked)
             {
                 _tagService.RemoveClipFromTag(tag, clip);
             }
@@ -953,7 +954,8 @@ namespace Rememory.ViewModels
         }
 
         private bool CanAddOwnersToFilters(IEnumerable<ClipModel>? clips) => clips is not null
-            && clips.Any(clip => !string.IsNullOrEmpty(clip.Owner?.Path) && !clip.Owner.Path.EndsWith("svchost.exe"));   // check svchost.exe for UWP app sources
+            && clips.Any(clip => !string.IsNullOrEmpty(clip.Owner?.Path)
+            && !clip.Owner.Path.EndsWith("svchost.exe"));   // check svchost.exe for UWP app sources
 
         [RelayCommand(CanExecute = nameof(CanAddOwnersToFilters))]
         private void AddOwnersToFilters(IEnumerable<ClipModel>? clips)
@@ -963,6 +965,28 @@ namespace Rememory.ViewModels
             foreach (var clip in filteredClips)
             {
                 AddOwnerToFilters(clip.Owner);
+            }
+        }
+
+        [RelayCommand]
+        private void ToggleClipsTag(Tuple<IEnumerable<ClipModel>, TagModel, bool>? clipsTagData)
+        {
+            if (clipsTagData is null) return;
+
+            var clips = clipsTagData.Item1;
+            var tag = clipsTagData.Item2;
+            var isChecked = clipsTagData.Item3;
+
+            foreach (var clip in clips)
+            {
+                if (isChecked)
+                {
+                    _tagService.RemoveClipFromTag(tag, clip);
+                }
+                else
+                {
+                    _tagService.AddClipToTag(tag, clip);
+                }
             }
         }
 

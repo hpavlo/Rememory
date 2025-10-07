@@ -672,12 +672,14 @@
                             CommandParameter="{Binding}"
                             Command="{x:Bind ViewModel.DeleteClipCommand}"
                             Icon="{tk:FontIcon Glyph=&#xE74D;}" />
-            <MenuFlyoutSeparator />
-            <MenuFlyoutSubItem x:Uid="/Clipboard/Clip_ContextMenu_Tags"
+            <MenuFlyoutSeparator x:Name="ClipMenuFlyoutBottomSeparator" />
+            <MenuFlyoutSubItem x:Name="TagsClipMenuFlyoutItem"
+                               x:Uid="/Clipboard/Clip_ContextMenu_Tags"
                                Icon="{tk:FontIcon Glyph=&#xE8EC;}"
                                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
                                Loaded="MenuFlyoutTags_Loaded" />
-            <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_FilterSource"
+            <MenuFlyoutItem x:Name="FilterClipMenuFlyoutItem"
+                            x:Uid="/Clipboard/Clip_ContextMenu_FilterSource"
                             CommandParameter="{Binding Owner}"
                             Command="{x:Bind ViewModel.AddOwnerToFiltersCommand}"
                             Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
@@ -737,7 +739,12 @@
                             CommandParameter="{x:Bind OrderedSelectedClips, Mode=OneWay}"
                             Command="{x:Bind ViewModel.DeleteClipsCommand}"
                             Icon="{tk:FontIcon Glyph=&#xE74D;}" />
-            <MenuFlyoutSeparator Visibility="{Binding Visibility, ElementName=FilterClipsMenuFlyoutItem}" />
+            <MenuFlyoutSeparator x:Name="ClipsMenuFlyoutBottomSeparator" />
+            <MenuFlyoutSubItem x:Name="TagsClipsMenuFlyoutItem"
+                               x:Uid="/Clipboard/Clip_ContextMenu_Tags"
+                               Icon="{tk:FontIcon Glyph=&#xE8EC;}"
+                               Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
+                               Loaded="MenuFlyoutTags_Loaded" />
             <MenuFlyoutItem x:Name="FilterClipsMenuFlyoutItem"
                             x:Uid="/Clipboard/Clip_ContextMenu_FilterSource"
                             CommandParameter="{x:Bind OrderedSelectedClips, Mode=OneWay}"
