@@ -49,6 +49,9 @@ void ClipboardDataHelper::MakeDataCopy(DataItemsRef destination, DataItemsRef cl
                 newItem.size = totalSize;
                 newItem.hash = HashHelper::ComputeSHA256(newItem.data, totalSize);
             }
+            else {
+                continue;
+            }
         }
         else if (item.format == CF_HDROP)
         {
@@ -185,7 +188,7 @@ bool ClipboardDataHelper::GetBitmapAndPixels(HBITMAP hBitmap, BITMAP& outBitmap,
         bmi.bmiHeader.biSizeImage = dwBytesPerRow * abs(bmi.bmiHeader.biHeight);
     }
 
-    if (bmi.bmiHeader.biSizeImage == 0) {
+    if (bmi.bmiHeader.biSizeImage == 0 || bmi.bmiHeader.biSizeImage > 64 * 1024 * 1024) {   // 64Mb limit
         DeleteDC(hdcMem);
         ReleaseDC(NULL, hdcScreen);
         return false;

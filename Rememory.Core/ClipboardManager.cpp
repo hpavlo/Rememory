@@ -8,6 +8,7 @@
 const UINT TIMER_DELAY = 100;
 const UINT OPEN_CLIPBOARD_ATTEMPTS = 3;
 const UINT OPEN_CLIPBOARD_DELAY = 50;
+const SIZE_T MAX_DATA_SIZE = 64 * 1024 * 1024;
 
 std::vector<FormatDataItem> ClipboardData;
 std::vector<FormatDataItem> CopiedClipboardData;
@@ -268,7 +269,11 @@ void ClipboardManager::HandleClipboardData()
             continue;
         }
 
-        ClipboardData.push_back(FormatDataItem(format, hData));
+        auto dataItem = FormatDataItem(format, hData);
+        if (dataItem.size < MAX_DATA_SIZE)
+        {
+            ClipboardData.push_back(dataItem);
+        }
     }
 
     bool hasNewData = !ClipboardData.empty() && !ClipboardDataHelper::CompareClipboardData(CopiedClipboardData, ClipboardData);
