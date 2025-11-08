@@ -12,30 +12,30 @@ namespace Rememory.Helper
         public const uint TRAY_EXIT_COMMAND = 13;
         public const string FILES_PATHS_DIVIDER = "|";
 
-        [DllImport("Rememory.Core.dll")]
+        [DllImport("Rememory.Core.Old.dll")]
         public static extern bool StartClipboardMonitor(IntPtr hWnd, ClipboardMonitorCallback handler);
 
-        [DllImport("Rememory.Core.dll")]
+        [DllImport("Rememory.Core.Old.dll")]
         public static extern bool StopClipboardMonitor(IntPtr hWnd);
 
-        [DllImport("Rememory.Core.dll")]
+        [DllImport("Rememory.Core.Old.dll")]
         public static extern bool SetDataToClipboard(ref ClipboardDataInfo dataInfo);
 
 
-        [DllImport("Rememory.Core.dll")]
+        [DllImport("Rememory.Core.Old.dll")]
         public static extern bool AddWindowProc(IntPtr hWnd);
 
-        [DllImport("Rememory.Core.dll")]
+        [DllImport("Rememory.Core.Old.dll")]
         public static extern bool CreateTrayIcon(IntPtr hWnd, IntPtr openMenuName, IntPtr toggleMonitoringMenuName, IntPtr settingsMenuName, IntPtr exitMenuName, IntPtr description);
 
-        [DllImport("Rememory.Core.dll")]
+        [DllImport("Rememory.Core.Old.dll")]
         public static extern void UpdateTrayIconMenuItem(uint commandId, IntPtr newName);
 
 
-        [DllImport("Rememory.Core.dll")]
+        [DllImport("Rememory.Core.Old.dll")]
         public static extern void GetOwnerIcon(IntPtr ownerPath, ref int iconLength, ref IntPtr iconPixels);
 
-        [DllImport("Rememory.Core.dll")]
+        [DllImport("Rememory.Core.Old.dll")]
         public static extern void FreeOwnerIcon(ref IntPtr iconPixels);
     }
 

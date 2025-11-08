@@ -8,7 +8,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rememory", "Rememory\Rememo
 		{986F1070-47C5-40CB-8161-F151A646E368} = {986F1070-47C5-40CB-8161-F151A646E368}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Rememory.Core", "Rememory.Core\Rememory.Core.vcxproj", "{986F1070-47C5-40CB-8161-F151A646E368}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Rememory.Core.Old", "Rememory.Core.Old\Rememory.Core.Old.vcxproj", "{986F1070-47C5-40CB-8161-F151A646E368}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

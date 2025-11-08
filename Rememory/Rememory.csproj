@@ -30,13 +30,13 @@
 
 	<ItemGroup>
 		<None Remove="Views\**\*.xaml" />
-		<None Remove="Assets\Rememory.Core" />
+		<None Remove="Assets\Rememory.Core.Old" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Content Remove="Assets\IconsDev\**\*" />
 		<Content Remove="Assets\IconsRelease\**\*" />
-		<Content Remove="Assets\Rememory.Core\**\*" />
+		<Content Remove="Assets\Rememory.Core.Old\**\*" />
 		<Content Condition="'$(Configuration)' == 'Debug'" Include="Assets\IconsDev\**\*">
 			<Link>Assets\%(RecursiveDir)%(Filename)%(Extension)</Link>
 		</Content>
@@ -46,9 +46,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ContentWithTargetPath Include="Assets\Rememory.Core\Rememory.Core.dll">
+		<ContentWithTargetPath Include="Assets\Rememory.Core.Old\Rememory.Core.Old.dll">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<TargetPath>Rememory.Core.dll</TargetPath>
+			<TargetPath>Rememory.Core.Old.dll</TargetPath>
 		</ContentWithTargetPath>
 	</ItemGroup>
 
@@ -83,7 +83,7 @@
 		<PackageReference Include="MessageFormat" Version="7.1.3" />
 		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.10" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.10" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.250907003" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.251003001" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.6901" />
 		<PackageReference Include="System.Drawing.Common" Version="9.0.10" />
 		<PackageReference Include="TaskScheduler" Version="2.12.2" />
