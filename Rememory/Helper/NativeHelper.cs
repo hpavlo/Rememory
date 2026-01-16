@@ -12,28 +12,6 @@ namespace Rememory.Helper
         public const uint WM_ENDSESSION = 0x16;
         public const uint WM_SETTINGCHANGE = 0x001A;
         public const uint SPI_SETLOGICALDPIOVERRIDE = 0x009F;
-        public const uint WM_COMMAND = 0x0111;
-        public const uint WM_LBUTTONUP = 0x0202;
-        public const uint WM_USER = 0x0400;
-
-        internal static uint CF_UNICODETEXT = 0x000D;
-        internal static uint CF_BITMAP = 0x0002;
-        internal static uint CF_HDROP = 0x000F;
-
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct BITMAP
-        {
-            public Int32 bmType;
-            public Int32 bmWidth;
-            public Int32 bmHeight;
-            public Int32 bmWidthBytes;
-            public UInt16 bmPlanes;
-            public UInt16 bmBitsPixel;
-            public IntPtr bmBits;
-        }
-
-        [DllImport("user32.dll")]
-        internal static extern uint RegisterClipboardFormat(string format);
 
         [DllImport("kernel32.dll")]
         internal static extern bool AllocConsole();
