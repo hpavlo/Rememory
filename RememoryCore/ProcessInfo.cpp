@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ProcessInfo.h"
 #include "ProcessInfo.g.cpp"
+#pragma comment(lib, "shell32.lib")
 
 namespace winrt::RememoryCore::implementation
 {

@@ -6,6 +6,7 @@
 #include "FormatManager.h"
 #include "FormatManager.g.cpp"
 #pragma comment(lib, "gdiplus.lib")
+#pragma comment(lib, "gdi32.lib")
 
 #define CF_PREFERREDDROPEFFECT RegisterClipboardFormat(CFSTR_PREFERREDDROPEFFECT)
 
