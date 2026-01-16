@@ -37,26 +37,17 @@
 
 	<ItemGroup>
 		<None Remove="Views\**\*.xaml" />
-		<None Remove="Assets\Rememory.Core.Old" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Content Remove="Assets\IconsDev\**\*" />
 		<Content Remove="Assets\IconsRelease\**\*" />
-		<Content Remove="Assets\Rememory.Core.Old\**\*" />
 		<Content Condition="'$(Configuration)' == 'Debug'" Include="Assets\IconsDev\**\*">
 			<Link>Assets\%(RecursiveDir)%(Filename)%(Extension)</Link>
 		</Content>
 		<Content Condition="'$(Configuration)' == 'Release'" Include="Assets\IconsRelease\**\*">
 			<Link>Assets\%(RecursiveDir)%(Filename)%(Extension)</Link>
 		</Content>
-	</ItemGroup>
-
-	<ItemGroup>
-		<ContentWithTargetPath Include="Assets\Rememory.Core.Old\Rememory.Core.Old.dll">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<TargetPath>Rememory.Core.Old.dll</TargetPath>
-		</ContentWithTargetPath>
 	</ItemGroup>
 
 	<ItemGroup>
