@@ -59,6 +59,7 @@ namespace Rememory.Views.Controls
                     clipData.PropertyChanged += control.ClipData_PropertyChanged;
 
                     control.UpdateMetadata(clipData.Metadata);
+                    control.PreviewUrl.SearchHighlight(control.SearchText, clipData.Data);
                 }
             }
         }
@@ -67,14 +68,7 @@ namespace Rememory.Views.Controls
         {
             if (d is LinkPreview control && e.NewValue is string searchText)
             {
-                if (string.IsNullOrEmpty(searchText))
-                {
-                    control.PreviewUrl.TextHighlighters.Clear();
-                }
-                else
-                {
-                    control.PreviewUrl.SearchHighlight(searchText);
-                }
+                control.PreviewUrl.SearchHighlight(searchText);
             }
         }
 

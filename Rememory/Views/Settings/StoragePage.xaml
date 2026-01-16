@@ -10,10 +10,7 @@
       xmlns:models="using:Rememory.Models"
       DataContext="{x:Bind ViewModel}">
     <Page.Resources>
-        <converters:OwnerPathToImageConverter x:Key="OwnerPathToImageConverter" />
-        <converters:StringFormatResourceConverter x:Key="StringFormatResourceConverter" />
         <converters:EnumToIndexConverter x:Key="EnumToIndexConverter" />
-        <tkconverters:StringVisibilityConverter x:Key="StringVisibilityConverter" />
         <tkconverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </Page.Resources>
 

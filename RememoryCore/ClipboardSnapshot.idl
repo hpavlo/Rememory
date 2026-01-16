@@ -1,0 +1,14 @@
+import "FormatRecord.idl";
+
+namespace RememoryCore
+{
+    [default_interface]
+    runtimeclass ClipboardSnapshot
+    {
+        String OwnerPath { get; set; };
+        Windows.Storage.Streams.IBuffer OwnerIcon { get; set; };
+        Windows.Foundation.Collections.IVector<FormatRecord> Records { get; set; };
+
+        ClipboardSnapshot();
+    };
+}

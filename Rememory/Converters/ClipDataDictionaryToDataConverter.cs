@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Data;
-using Rememory.Helper;
 using Rememory.Models;
+using RememoryCore;
 using System;
 using System.Collections.Generic;
 

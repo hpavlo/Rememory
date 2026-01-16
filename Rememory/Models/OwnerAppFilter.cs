@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Text.RegularExpressions;
 
 namespace Rememory.Models
 {
@@ -11,11 +12,19 @@ namespace Rememory.Models
             set => SetProperty(ref _name, value);
         }
 
+        private Regex? _compiledRegex;
         private string _pattern = string.Empty;
         public string Pattern
         {
             get => _pattern;
-            set => SetProperty(ref _pattern, value);
+            set
+            {
+                if (SetProperty(ref _pattern, value))
+                {
+                    var normalizedPattern = Pattern.Replace('\\', '/').Replace("*", ".*");
+                    _compiledRegex = new(normalizedPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                }
+            }
         }
 
         private int _filteredCount = 0;
@@ -25,12 +34,12 @@ namespace Rememory.Models
             set => SetProperty(ref _filteredCount, value);
         }
 
-        public OwnerAppFilter() { }
-
         public OwnerAppFilter(string name, string pattern)
         {
-            _name = name;
-            _pattern = pattern;
+            Name = name;
+            Pattern = pattern;
         }
+
+        public bool IsMatch(string value) => _compiledRegex?.IsMatch(value) ?? false;
     }
 }

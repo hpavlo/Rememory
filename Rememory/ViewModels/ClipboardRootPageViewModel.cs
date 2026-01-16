@@ -10,6 +10,7 @@ using Rememory.Models.Metadata;
 using Rememory.Views;
 using Rememory.Views.Editor;
 using Rememory.Views.Settings;
+using RememoryCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -39,6 +40,8 @@ namespace Rememory.ViewModels
         private readonly ISearchService _searchService = App.Current.Services.GetService<ISearchService>()!;
         private readonly IOwnerService _ownerService = App.Current.Services.GetService<IOwnerService>()!;
         private readonly ITagService _tagService = App.Current.Services.GetService<ITagService>()!;
+        // Monitors
+        private readonly ClipboardMonitor _clipboardMonitor = App.Current.Services.GetService<ClipboardMonitor>()!;
 
         // Using to get last active window if clipboard window is pinned
         private readonly ActiveWindowHook _activeWindowHook = new();
@@ -127,11 +130,11 @@ namespace Rememory.ViewModels
                     SettingsContext.IsClipboardMonitoringEnabled = value;
                     if (value)
                     {
-                        _clipboardService.StartClipboardMonitor(App.Current.ClipboardWindowHandle);
+                        _clipboardMonitor.StartMonitoring((ulong)App.Current.ClipboardWindowHandle);
                     }
                     else
                     {
-                        _clipboardService.StopClipboardMonitor(App.Current.ClipboardWindowHandle);
+                        _clipboardMonitor.StopMonitoring();
                     }
                     OnPropertyChanged();
                 }
@@ -227,7 +230,7 @@ namespace Rememory.ViewModels
             _clipboardService.AllClipsDeleted += ClipboardService_AllClipsDeleted;
             if (IsClipboardMonitoringEnabled)
             {
-                _clipboardService.StartClipboardMonitor(App.Current.ClipboardWindowHandle);
+                _clipboardMonitor.StartMonitoring((ulong)App.Current.ClipboardWindowHandle);
             }
 
             RootAppNode = new AppTreeViewNode { Title = "/Clipboard/FilterTreeView_Apps/Text".GetLocalizedResource(), IsExpanded = true };
@@ -266,7 +269,11 @@ namespace Rememory.ViewModels
             ClipsCollection?.Clear();
             ClipsCollection = [.. _clipboardService.Clips.Where(ClipFilterBySelectedMenu)];
 
-            HashSet<string> distinctPaths = [.. ClipsCollection.Select(item => item.Owner?.Path).Distinct()];
+            HashSet<string> distinctPaths = [.. ClipsCollection
+                .Select(item => item.Owner?.Path)
+                .Where(path => path is not null)
+                .Distinct()
+                .Cast<string>()];
             // Update app filter tree view
             RootAppNode.Children.Clear();
             RootAppNode.Children = [.._ownerService.Owners.Values
@@ -472,13 +479,13 @@ namespace Rememory.ViewModels
                         switch (dataItem.Key)
                         {
                             case ClipboardFormat.Html:
-                                dataPackage.SetData(ClipboardFormat.Html.GetDescription(), storageStream);
+                                dataPackage.SetData(FormatManager.FormatToName(ClipboardFormat.Html), storageStream);
                                 break;
                             case ClipboardFormat.Rtf:
-                                dataPackage.SetData(ClipboardFormat.Rtf.GetDescription(), storageStream);
+                                dataPackage.SetData(FormatManager.FormatToName(ClipboardFormat.Rtf), storageStream);
                                 break;
                             case ClipboardFormat.Png:
-                                dataPackage.SetData(ClipboardFormat.Png.GetDescription(), storageStream);
+                                dataPackage.SetData(FormatManager.FormatToName(ClipboardFormat.Png), storageStream);
                                 break;
                             case ClipboardFormat.Bitmap:
                                 dataPackage.SetBitmap(RandomAccessStreamReference.CreateFromStream(storageStream));
@@ -640,13 +647,16 @@ namespace Rememory.ViewModels
         private void ToggleClipboardMonitoringEnabled() => IsClipboardMonitoringEnabled = !IsClipboardMonitoringEnabled;
 
         [RelayCommand]
+        private void OpenWindow() => App.Current.ClipboardWindow.ShowWindow();
+
+        [RelayCommand]
+        private void CloseWindow() => App.Current.ClipboardWindow.HideWindow();
+
+        [RelayCommand]
         private void OpenSettingsWindow() => SettingsWindow.ShowSettingsWindow();
 
         [RelayCommand]
         private void QuitApp() => App.Current.Exit();
-
-        [RelayCommand]
-        private void CloseWindow() => App.Current.ClipboardWindow.HideWindow();
 
         #region Single Clip context menu commands
 
@@ -782,7 +792,7 @@ namespace Rememory.ViewModels
             }
             else if (dataModel.Format == ClipboardFormat.Text)
             {
-                picker.SuggestedFileName = string.Format($"{ClipboardFormatHelper.FILE_NAME_FORMAT}.txt", clipDataFormat.Item1.ClipTime);
+                picker.SuggestedFileName = string.Format($"{ClipboardFormatHelper.FileNameFormat_}.txt", clipDataFormat.Item1.ClipTime);
             }
 
             var fileFilter = ClipboardFormatHelper.SaveAsFormatFilters.GetValueOrDefault(dataModel.Format);
@@ -820,16 +830,14 @@ namespace Rememory.ViewModels
         [RelayCommand(CanExecute = nameof(CanAddOwnerToFilters))]
         private void AddOwnerToFilters(OwnerModel? owner)
         {
-            if (owner is null || string.IsNullOrEmpty(owner.Path)) return;
+            if (owner is null || string.IsNullOrEmpty(owner.Path))
+            {
+                return;
+            }
 
             if (!SettingsContext.OwnerAppFilters.Any(filter => filter.Pattern.Equals(owner.Path)))
             {
-                OwnerAppFilter filter = new()
-                {
-                    Pattern = owner.Path,
-                    Name = owner.Name ?? string.Empty
-                };
-
+                OwnerAppFilter filter = new(owner.Name ?? string.Empty, owner.Path);
                 SettingsContext.OwnerAppFilters.Add(filter);
                 SettingsContext.SaveOwnerAppFilters();
             }

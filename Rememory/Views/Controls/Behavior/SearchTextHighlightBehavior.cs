@@ -18,8 +18,11 @@ namespace Rememory.Views.Controls.Behavior
         /// Use only after text is set or set in manually
         /// </summary>
         /// <param name="searchText">Search pattern</param>
-        public static void SearchHighlight(this TextBlock textBlock, string searchText)
+        /// <param name="textData">The data we are searching in. If it's null - the data comes from <paramref name="textBlock"/></param>
+        public static void SearchHighlight(this TextBlock textBlock, string searchText, string? textData = null)
         {
+            textBlock.TextHighlighters.Clear();
+
             if (string.IsNullOrWhiteSpace(searchText))
             {
                 return;
@@ -27,7 +30,7 @@ namespace Rememory.Views.Controls.Behavior
 
             // Regex to find all matches
             var regex = new Regex(Regex.Escape(searchText), RegexOptions.IgnoreCase);
-            var matches = regex.Matches(textBlock.Text);
+            var matches = regex.Matches(textData ?? textBlock.Text);
 
             var highlighter = new TextHighlighter();
             highlighter.Background = new SolidColorBrush(HighlightColor);
@@ -37,7 +40,6 @@ namespace Rememory.Views.Controls.Behavior
                 highlighter.Ranges.Add(new(match.Index, match.Length));
             }
 
-            textBlock.TextHighlighters.Clear();
             textBlock.TextHighlighters.Add(highlighter);
         }
 

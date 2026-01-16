@@ -15,6 +15,7 @@ using Rememory.Helper.WindowBackdrop;
 using Rememory.Models;
 using Rememory.ViewModels;
 using Rememory.Views.Controls.Behavior;
+using RememoryCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,6 +29,7 @@ namespace Rememory.Views
     public sealed partial class ClipboardRootPage : Page
     {
         public readonly ClipboardRootPageViewModel ViewModel = new();
+        public readonly MenuFlyout TrayIconMenu;
 
         /// <summary>
         /// Contains all selected clips ordered by selection time.
@@ -74,6 +76,8 @@ namespace Rememory.Views
 
             ViewModel.SettingsContext.PropertyChanged += SettingsContext_PropertyChanged;
             ClipsListView.Items.VectorChanged += ClipsListView_Items_VectorChanged;
+
+            TrayIconMenu = (MenuFlyout)Resources["TrayIconContextMenu"];
 
             _previewTextFlyout = (Flyout)Resources["PreviewTextFlyout"];
             _previewRtfFlyout = (Flyout)Resources["PreviewRtfFlyout"];
@@ -401,7 +405,7 @@ namespace Rememory.Views
                         var textBlock = (TextBlock)_previewTextFlyout.Content;
                         textBlock.Text = dataItem.Key == ClipboardFormat.Text
                             ? dataItem.Value.Data
-                            : dataItem.Value.Data.Replace(RememoryCoreHelper.FILES_PATHS_DIVIDER, Environment.NewLine + Environment.NewLine);
+                            : dataItem.Value.Data.Replace(FormatManager.FilePathsSeparator, Environment.NewLine + Environment.NewLine);
                         textBlock.SearchHighlight(ViewModel.SearchString);
                         _previewTextFlyout.ShowAt(this);
                         return;

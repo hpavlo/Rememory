@@ -1,5 +1,6 @@
 ﻿using Rememory.Contracts;
 using Rememory.Models;
+using RememoryCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,26 +29,42 @@ namespace Rememory.Services
             _cancellationTokenSource?.Cancel();
         }
 
-        private async void SearchingAsync(IEnumerable<ClipModel> items,
+        private static async Task SearchingAsync(IEnumerable<ClipModel> items,
                                     string searchString,
                                     ObservableCollection<ClipModel> foundItems,
                                     CancellationToken cancellationToken)
         {
-            App.Current.DispatcherQueue.TryEnqueue(foundItems.Clear);
-            await Task.Delay(50);
-            foreach (var item in items)
+            try
             {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    break;
-                }
+                await Task.Delay(300, cancellationToken);
 
-                if ((item.Data.TryGetValue(Helper.ClipboardFormat.Text, out DataModel? dataModel) || item.Data.TryGetValue(Helper.ClipboardFormat.Files, out dataModel)) &&
-                    dataModel.Data.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                var matches = await Task.Run(() =>
                 {
-                    App.Current.DispatcherQueue.TryEnqueue(() => foundItems.Add(item));
-                }
+                    var results = new List<ClipModel>();
+                    foreach (var item in items)
+                    {
+                        cancellationToken.ThrowIfCancellationRequested();
+
+                        if ((item.Data.TryGetValue(ClipboardFormat.Text, out var dataModel) ||
+                             item.Data.TryGetValue(ClipboardFormat.Files, out dataModel)) &&
+                            dataModel.Data.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                        {
+                            results.Add(item);
+                        }
+                    }
+                    return results;
+                }, cancellationToken);
+
+                App.Current.DispatcherQueue.TryEnqueue(() =>
+                {
+                    foundItems.Clear();
+                    foreach (var match in matches)
+                    {
+                        foundItems.Add(match);
+                    }
+                });
             }
+            catch (OperationCanceledException) { }
         }
     }
 }

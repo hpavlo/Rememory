@@ -13,7 +13,8 @@ void GetOwnerIcon(const WCHAR* ownerPath, LONG* iconLength, BYTE** iconPixels)
 
 void FreeOwnerIcon(BYTE** iconPixels)
 {
-    if (*iconPixels) {
+    if (*iconPixels)
+    {
         free(*iconPixels);
         *iconPixels = nullptr;
     }
@@ -27,6 +28,7 @@ bool OwnerHelper::GetOwnerPath(const HWND owner, WCHAR* ownerPath)
     {
         return false;
     }
+
     DWORD processId = 0;
     GetWindowThreadProcessId(owner, &processId);
 
@@ -61,7 +63,8 @@ void OwnerHelper::LoadOwnerIcon(const WCHAR* ownerPath, LONG* iconLength, BYTE**
 {
     HICON hIcon = ExtractIcon(NULL, ownerPath, 0);
 
-    if (!hIcon) {
+    if (!hIcon)
+    {
         *iconLength = 0;
         *iconPixels = nullptr;
         return;

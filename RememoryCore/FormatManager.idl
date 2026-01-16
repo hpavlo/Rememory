@@ -1,0 +1,28 @@
+namespace RememoryCore
+{
+    enum ClipboardFormat
+    {
+        Text,
+        Bitmap,
+        Files,
+        Rtf,
+        Html,
+        Png
+    };
+
+    [default_interface]
+    runtimeclass FormatManager
+    {
+        static String RootHistoryFolderName { get; };
+        static String RtfFolderName { get; };
+        static String HtmlFolderName { get; };
+        static String PngFolderName { get; };
+        static String BitmapFolderName { get; };
+        static String FilePathsSeparator { get; };
+
+        static String FormatToName(ClipboardFormat format);
+        static ClipboardFormat FormatFromName(String formatName);
+        static String GenerateFileName(ClipboardFormat format);
+        static String GetFormatFolderName(ClipboardFormat format);
+    };
+}

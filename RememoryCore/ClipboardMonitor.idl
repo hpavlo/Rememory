@@ -1,0 +1,22 @@
+import "ClipboardSnapshot.idl";
+
+namespace RememoryCore
+{
+    [default_interface]
+    runtimeclass ClipboardMonitor
+    {
+        String HistoryFolderPath{ get; set; };
+        UInt64 MaxDataSize{ get; set; };
+
+        ClipboardMonitor();
+        void StartMonitoring(UInt64 windowHandle);
+        void StopMonitoring();
+
+
+        //[interface_name("RememoryCore.IClipboardWriter")]
+        Boolean SetClipboardData(Windows.Foundation.Collections.IMapView<ClipboardFormat, String> dataMap);
+
+        //[interface_name("RememoryCore.IClipboardEvents")]
+        event Windows.Foundation.TypedEventHandler<ClipboardMonitor, RememoryCore.ClipboardSnapshot> ContentDetected;
+    }
+}

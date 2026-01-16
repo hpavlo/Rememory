@@ -1,15 +1,11 @@
-﻿using Microsoft.Windows.Storage;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Rememory.Models;
+using RememoryCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.Marshalling;
 
 namespace Rememory.Helper
 {
@@ -19,85 +15,13 @@ namespace Rememory.Helper
     /// </summary>
     public static class ClipboardFormatHelper
     {
-        #region Constants for Folder Structure
-
-        /// <summary>
-        /// The root directory name within the application's local data folder where non-text clipboard data is stored.
-        /// </summary>
-        public const string ROOT_HISTORY_FOLDER_NAME = "History";
-
-        /// <summary>
-        /// The subfolder name within the history root for storing RTF format files.
-        /// </summary>
-        public const string FORMAT_FOLDER_NAME_RTF = "RtfFormat";
-
-        /// <summary>
-        /// The subfolder name within the history root for storing HTML format files.
-        /// </summary>
-        public const string FORMAT_FOLDER_NAME_HTML = "HtmlFormat";
-
-        /// <summary>
-        /// The subfolder name within the history root for storing PNG format files.
-        /// </summary>
-        public const string FORMAT_FOLDER_NAME_PNG = "PngFormat";
-
-        /// <summary>
-        /// The subfolder name within the history root for storing BITMAP format files.
-        /// </summary>
-        public const string FORMAT_FOLDER_NAME_BITMAP = "BitmapFormat";
-
-        #endregion
-
-        #region Constants for File Naming
+        private static readonly ClipboardMonitor _clipboardMonitor = App.Current.Services.GetService<ClipboardMonitor>()!;
 
         /// <summary>
         /// The base date/time format string used for generating unique filenames for stored clipboard data files.
         /// Format: YearMonthDay_HourMinuteSecondMillisecond (e.g., 20231027_153005123).
         /// </summary>
-        public const string FILE_NAME_FORMAT = "{0:yyyyMMdd_HHmmssfff}";
-
-        /// <summary>
-        /// The complete filename format string for RTF files, including the extension.
-        /// </summary>
-        public const string FILE_NAME_FORMAT_RTF = $"{FILE_NAME_FORMAT}.rtf";
-
-        /// <summary>
-        /// The complete filename format string for HTML files, including the extension.
-        /// </summary>
-        public const string FILE_NAME_FORMAT_HTML = $"{FILE_NAME_FORMAT}.html";
-
-        /// <summary>
-        /// The complete filename format string for PNG files, including the extension.
-        /// </summary>
-        public const string FILE_NAME_FORMAT_PNG = $"{FILE_NAME_FORMAT}.png";
-
-        /// <summary>
-        /// The complete filename format string for BITMAP files, including the extension.
-        /// </summary>
-        public const string FILE_NAME_FORMAT_BITMAP = $"{FILE_NAME_FORMAT}.bmp";
-
-        #endregion
-
-        /// <summary>
-        /// Gets the absolute path to the root directory used for storing non-text clipboard history files.
-        /// Typically located within the application's local data folder (e.g., AppData\Local\...).
-        /// </summary>
-        public static readonly string RootHistoryFolderPath = Path.Combine(ApplicationData.GetDefault().LocalPath, ROOT_HISTORY_FOLDER_NAME);
-
-        /// <summary>
-        /// Dictionary mapping the application-defined <see cref="ClipboardFormat"/> enum
-        /// to the corresponding native Windows clipboard format identifiers (UINT).
-        /// Used for interacting with the native clipboard API.
-        /// </summary>
-        public static readonly Dictionary<ClipboardFormat, uint> DataTypeFormats = new()
-        {
-            { ClipboardFormat.Text, NativeHelper.CF_UNICODETEXT },
-            { ClipboardFormat.Bitmap, NativeHelper.CF_BITMAP },
-            { ClipboardFormat.Files, NativeHelper.CF_HDROP },
-            { ClipboardFormat.Rtf, NativeHelper.RegisterClipboardFormat("Rich Text Format") },
-            { ClipboardFormat.Html, NativeHelper.RegisterClipboardFormat("HTML Format") },
-            { ClipboardFormat.Png, NativeHelper.RegisterClipboardFormat("PNG") }
-        };
+        public const string FileNameFormat_ = "{0:yyyyMMdd_HHmmssfff}";
 
         /// <summary>
         /// Provides a mapping between <see cref="ClipboardFormat"/> values and their
@@ -111,54 +35,6 @@ namespace Rememory.Helper
             { ClipboardFormat.Html, new("HTML file (*.htm;*.html)", [".htm", ".html"]) },
             { ClipboardFormat.Png, new("PNG image (*.png)", [".png"]) }
         };
-
-        /// <summary>
-        /// Dictionary mapping <see cref="ClipboardFormat"/> to functions that convert raw clipboard data
-        /// (represented by an unmanaged memory pointer and size) into a managed string representation.
-        /// For non-text formats, this string is typically the path to a temporary file where the data was saved.
-        /// </summary>
-        public static unsafe readonly Dictionary<ClipboardFormat, Func<(IntPtr Pointer, UIntPtr Size), string>> DataTypeToStringConverters = new()
-        {
-            { ClipboardFormat.Text, _ => ConvertPointerToString(_.Pointer, _.Size) },
-            { ClipboardFormat.Bitmap, _ => ConvertBitmapToFile(_.Pointer, _.Size) },
-            { ClipboardFormat.Files, _ => ConvertPointerToString(_.Pointer, _.Size) },
-            { ClipboardFormat.Rtf, _ => ConvertPointerToFile(_.Pointer, _.Size, ClipboardFormat.Rtf) },   // Marshal.PtrToStringUTF8 to directly convert the data
-            { ClipboardFormat.Html, _ => ConvertPointerToFile(_.Pointer, _.Size, ClipboardFormat.Html) },   // Marshal.PtrToStringUTF8
-            { ClipboardFormat.Png, _ => ConvertPointerToFile(_.Pointer, _.Size, ClipboardFormat.Png) }
-        };
-
-        /// <summary>
-        /// Dictionary mapping <see cref="ClipboardFormat"/> to functions that convert managed string data
-        /// (either plain text or a file path for binary formats) into an unmanaged memory pointer (`IntPtr`)
-        /// suitable for placing onto the native clipboard.
-        /// </summary>
-        public static unsafe readonly Dictionary<ClipboardFormat, Func<string, IntPtr>> DataTypeToUnmanagedConverters = new()
-        {
-            { ClipboardFormat.Text, _ => (IntPtr)Utf16StringMarshaller.ConvertToUnmanaged(_) },
-            { ClipboardFormat.Bitmap, _ => (IntPtr)Utf16StringMarshaller.ConvertToUnmanaged(_) },
-            { ClipboardFormat.Files, _ => (IntPtr)Utf16StringMarshaller.ConvertToUnmanaged(_) },
-            { ClipboardFormat.Rtf, ConvertFileToPointer },   // Utf8StringMarshaller
-            { ClipboardFormat.Html, ConvertFileToPointer },   // Utf8StringMarshaller
-            { ClipboardFormat.Png, ConvertFileToPointer }
-        };
-
-        /// <summary>
-        /// Retrieves the <see cref="ClipboardFormat"/> enum key corresponding to the given native clipboard format identifier.
-        /// Performs a reverse lookup in the <see cref="DataTypeFormats"/> dictionary.
-        /// </summary>
-        /// <param name="formatId">The native clipboard format identifier (UINT).</param>
-        /// <returns>The matching <see cref="ClipboardFormat"/> enum value, or <c>null</c> if no match is found.</returns>
-        public static ClipboardFormat? GetFormatKeyByValue(uint formatId)
-        {
-            foreach (var kvp in DataTypeFormats)
-            {
-                if (kvp.Value == formatId)
-                {
-                    return kvp.Key;
-                }
-            }
-            return null;
-        }
 
         /// <summary>
         /// Compares two <see cref="ClipModel"/> objects for data equality.
@@ -228,21 +104,22 @@ namespace Rememory.Helper
         }
 
         /// <summary>
-        /// Attempts to delete all known external data format folders (RTF, HTML, PNG)
-        /// located within the <see cref="RootHistoryFolderPath"/>.
+        /// Attempts to delete all known external data format folders (RTF, HTML, PNG, Bitmap)
         /// </summary>
         public static void ClearAllExternalData()
         {
+            var historyFolder = _clipboardMonitor.HistoryFolderPath;
+
             try
             {
-                DeleteFolder(Path.Combine(RootHistoryFolderPath, FORMAT_FOLDER_NAME_RTF));
-                DeleteFolder(Path.Combine(RootHistoryFolderPath, FORMAT_FOLDER_NAME_HTML));
-                DeleteFolder(Path.Combine(RootHistoryFolderPath, FORMAT_FOLDER_NAME_PNG));
-                DeleteFolder(Path.Combine(RootHistoryFolderPath, FORMAT_FOLDER_NAME_BITMAP));
+                DeleteFolder(Path.Combine(historyFolder, FormatManager.RtfFolderName));
+                DeleteFolder(Path.Combine(historyFolder, FormatManager.HtmlFolderName));
+                DeleteFolder(Path.Combine(historyFolder, FormatManager.PngFolderName));
+                DeleteFolder(Path.Combine(historyFolder, FormatManager.BitmapFolderName));
             }
             catch { }
 
-            void DeleteFolder(string path)
+            static void DeleteFolder(string path)
             {
                 if (Directory.Exists(path))
                 {
@@ -301,267 +178,16 @@ namespace Rememory.Helper
 
             string formatFolderName = format switch
             {
-                ClipboardFormat.Rtf => FORMAT_FOLDER_NAME_RTF,
-                ClipboardFormat.Html => FORMAT_FOLDER_NAME_HTML,
-                ClipboardFormat.Png => FORMAT_FOLDER_NAME_PNG,
-                ClipboardFormat.Bitmap => FORMAT_FOLDER_NAME_BITMAP,
+                ClipboardFormat.Rtf => FormatManager.RtfFolderName,
+                ClipboardFormat.Html => FormatManager.HtmlFolderName,
+                ClipboardFormat.Png => FormatManager.PngFolderName,
+                ClipboardFormat.Bitmap => FormatManager.BitmapFolderName,
                 // Explicitly handle Text or throw for unsupported formats intended for file storage.
                 ClipboardFormat.Text => throw new ArgumentException("Text format should not be stored as an external file.", nameof(format)),
                 _ => throw new NotImplementedException($"Folder mapping not implemented for format: {format}")
             };
 
-            return Path.Combine(RootHistoryFolderPath, formatFolderName, fileName);
+            return Path.Combine(_clipboardMonitor.HistoryFolderPath, formatFolderName, fileName);
         }
-
-        /// <summary>
-        /// Reads the binary content of a specified file into unmanaged memory allocated via <see cref="Marshal.AllocHGlobal"/>.
-        /// </summary>
-        /// <param name="filePath">The path to the file to read.</param>
-        /// <returns>
-        /// An <see cref="IntPtr"/> pointing to the allocated unmanaged memory containing the file data.
-        /// Returns <see cref="IntPtr.Zero"/> if the file path is null/empty, the file doesn't exist,
-        /// or an error occurs during reading or allocation.
-        /// </returns>
-        /// <remarks>
-        /// The caller is responsible for freeing the returned pointer using <see cref="Marshal.FreeHGlobal"/>
-        /// when it's no longer needed to prevent memory leaks.
-        /// </remarks>
-        private static unsafe IntPtr ConvertFileToPointer(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return IntPtr.Zero;
-            }
-
-            FileInfo fileInfo;
-            try
-            {
-                fileInfo = new FileInfo(filePath);
-                if (!fileInfo.Exists)
-                {
-                    return IntPtr.Zero;
-                }
-            }
-            catch (Exception) // Catch potential exceptions from FileInfo constructor (e.g., invalid path chars, security)
-            {
-                return IntPtr.Zero;
-            }
-
-            long fileSize = fileInfo.Length;
-            IntPtr dataPointer = Marshal.AllocHGlobal((int)fileSize);
-
-            try
-            {
-                using FileStream fs = new(filePath, FileMode.Open, FileAccess.Read);
-                fs.Read(new Span<byte>((void*)dataPointer, (int)fileSize));
-            }
-            catch (Exception)
-            {
-                Marshal.FreeHGlobal(dataPointer);
-                return IntPtr.Zero;
-            }
-
-            return dataPointer;
-        }
-
-        /// <summary>
-        /// Converts unmanaged memory pointer to string in unicode format.
-        /// </summary>
-        /// <param name="dataPointer">An <see cref="IntPtr"/> pointing to the unmanaged binary data.</param>
-        /// <param name="dataSize">The size (in bytes) of the data pointed to by <paramref name="dataPointer"/>.</param>
-        /// <returns>The data, converted to string in unicode.</returns>
-        private static string ConvertPointerToString(IntPtr dataPointer, UIntPtr dataSize)
-        {
-            if (!ClipSizeValidate(dataSize))
-            {
-                return string.Empty;
-            }
-
-            return Marshal.PtrToStringUni(dataPointer) ?? string.Empty;
-        }
-
-        /// <summary>
-        /// Writes binary data from an unmanaged memory pointer to a new file.
-        /// A unique filename is generated based on the current timestamp and format.
-        /// </summary>
-        /// <param name="dataPointer">An <see cref="IntPtr"/> pointing to the unmanaged binary data.</param>
-        /// <param name="dataSize">The size (in bytes) of the data pointed to by <paramref name="dataPointer"/>.</param>
-        /// <param name="format">The <see cref="ClipboardFormat"/> used to determine the file extension and subfolder.</param>
-        /// <returns>The full path to the newly created file, or <see cref="string.Empty"/> if an error occurs.</returns>
-        private static unsafe string ConvertPointerToFile(IntPtr dataPointer, UIntPtr dataSize, ClipboardFormat format)
-        {
-            if (dataPointer == IntPtr.Zero || dataSize == UIntPtr.Zero)
-            {
-                return string.Empty;
-            }
-
-            if (!ClipSizeValidate(dataSize))
-            {
-                return string.Empty;
-            }
-
-            string filePath = GenerateFilePath(format);
-
-            try
-            {
-                using FileStream fs = new(filePath, FileMode.Create, FileAccess.Write);
-                fs.Write(new ReadOnlySpan<byte>((void*)dataPointer, (int)dataSize));
-            }
-            catch (Exception)
-            {
-                return string.Empty;
-            }
-
-            return filePath;
-        }
-
-        /// <summary>
-        /// Writes bitmap data from an unmanaged memory pointer with BITMAP struct and the pixels to a new file.
-        /// A unique filename is generated based on the current timestamp and format.
-        /// </summary>
-        /// <param name="dataPointer"> pointing to the unmanaged BITMAP struct and the pixels.</param>
-        /// /// <param name="dataSize">The size (in bytes) of the data pointed to by <paramref name="dataPointer"/>.</param>
-        /// <returns>The full path to the newly created file, or <see cref="string.Empty"/> if an error occurs.</returns>
-        private static unsafe string ConvertBitmapToFile(IntPtr dataPointer, UIntPtr dataSize)
-        {
-            if (!ClipSizeValidate(dataSize))
-            {
-                return string.Empty;
-            }
-
-            try
-            {
-                NativeHelper.BITMAP bitmapStruct = Marshal.PtrToStructure<NativeHelper.BITMAP>(dataPointer);
-                IntPtr pData = dataPointer + Marshal.SizeOf<NativeHelper.BITMAP>();
-                int stride = (bitmapStruct.bmWidth * bitmapStruct.bmBitsPixel + 31) / 32 * 4;
-
-                using Bitmap bitmap = new(
-                    bitmapStruct.bmWidth,
-                    bitmapStruct.bmHeight,
-                    stride,
-                    bitmapStruct.bmBitsPixel switch
-                    {
-                        1 => PixelFormat.Format1bppIndexed,
-                        4 => PixelFormat.Format4bppIndexed,
-                        8 => PixelFormat.Format8bppIndexed,
-                        16 => PixelFormat.Format16bppRgb565,
-                        24 => PixelFormat.Format24bppRgb,
-                        32 => PixelFormat.Format32bppArgb,
-                        _ => throw new NotSupportedException($"Bit depth {bitmapStruct.bmBitsPixel} is not supported.")
-                    },
-                    pData);
-
-                string filePath = GenerateFilePath(ClipboardFormat.Bitmap);
-                bitmap.Save(filePath, ImageFormat.Bmp);
-                return filePath;
-            }
-            catch
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        /// Validates the size of clipboard data based on application settings.
-        /// </summary>
-        /// <param name="dataSize">Data size to validate.</param>
-        /// <returns>true if validation is disabled or the size does not exceed the maximum allowed size (in bytes).</returns>
-        private static bool ClipSizeValidate(UIntPtr dataSize) => !SettingsContext.Instance.IsClipSizeValidationEnabled || dataSize <= (nuint)(SettingsContext.Instance.MaxClipSize * 1024 * 1024);
-
-        /// <summary>
-        /// Generates a temporary Bitmap file from PNG data if available and required.
-        /// </summary>
-        /// <param name="dataModel">The data model with a path to PNG file.</param>
-        /// <param name="tempBitmapPath">Output parameter for the path of the generated bitmap file.</param>
-        /// <returns>True if a bitmap was generated, false otherwise.</returns>
-        public static bool TryGenerateBitmapFromPng(DataModel dataModel, out string tempBitmapPath)
-        {
-            tempBitmapPath = string.Empty;
-
-            if (dataModel.Format != ClipboardFormat.Png)
-            {
-                return false;
-            }
-
-            try
-            {
-                // Generate a unique temporary file path for the bitmap
-                tempBitmapPath = Path.Combine(ApplicationData.GetDefault().TemporaryPath, string.Format(FILE_NAME_FORMAT_BITMAP, DateTime.Now));
-
-                // Create a Bitmap from the PNG data and save it as a BMP file
-                using Bitmap bitmap = new(dataModel.Data);
-                bitmap.Save(tempBitmapPath, ImageFormat.Bmp);
-                return true;
-            }
-            catch
-            {
-                tempBitmapPath = string.Empty; // Ensure path is empty on error
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Generates a unique, absolute file path for storing external clipboard data based on the format.
-        /// Ensures the target directory exists.
-        /// </summary>
-        /// <param name="format">The <see cref="ClipboardFormat"/> determining the subfolder and file extension.</param>
-        /// <returns>A unique, absolute file path.</returns>
-        /// <exception cref="NotImplementedException">Thrown if the format is not supported for file generation.</exception>
-        private static string GenerateFilePath(ClipboardFormat format)
-        {
-            // Determine filename format string based on enum value
-            string fileNameFormat = format switch
-            {
-                ClipboardFormat.Rtf => FILE_NAME_FORMAT_RTF,
-                ClipboardFormat.Html => FILE_NAME_FORMAT_HTML,
-                ClipboardFormat.Png => FILE_NAME_FORMAT_PNG,
-                ClipboardFormat.Bitmap => FILE_NAME_FORMAT_BITMAP,
-                _ => throw new NotImplementedException($"File path generation not implemented for format: {format}")
-            };
-
-            // Generate the unique filename using the current time
-            string fileName = string.Format(fileNameFormat, DateTime.Now);
-
-            // Construct the full path using the helper method (which handles subfolders)
-            string fullPath = ConvertFileNameToFullPath(fileName, format);
-
-            // Ensure the target directory exists before returning the path
-            // Path.GetDirectoryName can return null if the path is invalid/root
-            string? directoryPath = Path.GetDirectoryName(fullPath);
-            if (!string.IsNullOrEmpty(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);
-            }
-            else
-            {
-                throw new IOException($"Could not determine directory path for {fullPath}");
-            }
-
-            return fullPath;
-        }
-    }
-
-    /// <summary>
-    /// Represents the supported clipboard data formats within the application.
-    /// </summary>
-    public enum ClipboardFormat
-    {
-        [Description("CF_UNICODETEXT")]
-        Text,
-
-        [Description("CF_BITMAP")]
-        Bitmap,
-
-        [Description("CF_HDROP")]
-        Files,
-
-        [Description("Rich Text Format")]
-        Rtf,
-
-        [Description("HTML Format")]
-        Html,
-
-        [Description("PNG")]
-        Png
     }
 }

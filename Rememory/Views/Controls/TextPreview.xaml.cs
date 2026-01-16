@@ -30,20 +30,19 @@ namespace Rememory.Views.Controls
             InitializeComponent();
         }
 
-        private static void OnClipDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) { }
+        private static void OnClipDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TextPreview control && e.NewValue is DataModel clipData)
+            {
+                control.PreviewTextBlock.SearchHighlight(control.SearchText, clipData.Data);
+            }
+        }
 
         private static void OnSearchTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is TextPreview control && e.NewValue is string searchText)
             {
-                if (string.IsNullOrEmpty(searchText))
-                {
-                    control.PreviewTextBlock.TextHighlighters.Clear();
-                }
-                else
-                {
-                    control.PreviewTextBlock.SearchHighlight(searchText);
-                }
+                control.PreviewTextBlock.SearchHighlight(searchText);
             }
         }
 

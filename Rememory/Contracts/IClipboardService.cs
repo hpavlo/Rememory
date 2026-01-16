@@ -1,9 +1,9 @@
 ﻿using Rememory.Helper;
 using Rememory.Models;
+using RememoryCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Windows.Storage;
 
 namespace Rememory.Contracts
 {
@@ -45,18 +45,6 @@ namespace Rememory.Contracts
         /// This list represents the current working collection displayed to the user.
         /// </summary>
         IList<ClipModel> Clips { get; }
-
-        /// <summary>
-        /// Starts monitoring the system clipboard for changes using the specified window handle.
-        /// </summary>
-        /// <param name="windowHandle">The handle of the application window to associate with the clipboard monitoring chain.</param>
-        void StartClipboardMonitor(IntPtr windowHandle);
-
-        /// <summary>
-        /// Stops monitoring the system clipboard associated with the specified window handle.
-        /// </summary>
-        /// <param name="windowHandle">The handle of the application window previously used to start monitoring.</param>
-        void StopClipboardMonitor(IntPtr windowHandle);
 
         /// <summary>
         /// Sets the data into the system clipboard.

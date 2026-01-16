@@ -1,10 +1,12 @@
 ﻿using CommunityToolkit.WinUI.Helpers;
 using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.DependencyInjection;
 using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Models;
 using Rememory.Models.Metadata;
 using Rememory.Services.Migrations;
+using RememoryCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,12 +19,16 @@ namespace Rememory.Services
     /// </summary>
     public class SqliteService : IStorageService
     {
-        private readonly string _connectionString = $"Data Source={Path.Combine(ClipboardFormatHelper.RootHistoryFolderPath, "ClipboardManager.db")}";
+        private readonly ClipboardMonitor _clipboardMonitor = App.Current.Services.GetService<ClipboardMonitor>()!;
+        private readonly string _connectionString;
         private int _currentVersion;
 
         public SqliteService()
         {
-            Directory.CreateDirectory(ClipboardFormatHelper.RootHistoryFolderPath);
+            var historyFolder = _clipboardMonitor.HistoryFolderPath;
+            Directory.CreateDirectory(historyFolder);
+            _connectionString = $"Data Source={Path.Combine(historyFolder, "ClipboardManager.db")}";
+
             using var connection = CreateAndOpenConnection();
             ApplyMigrations(connection);
         }
@@ -537,7 +543,7 @@ namespace Rememory.Services
             while (reader.Read())
             {
                 int id = reader.GetInt32(0);
-                ClipboardFormat format = EnumExtensions.FromDescription<ClipboardFormat>(reader.GetString(1));
+                ClipboardFormat format = FormatManager.FormatFromName(reader.GetString(1));
                 string data = reader.GetString(2);
                 byte[] hash = (byte[])reader.GetValue(3);
                 MetadataFormat? metadataFormat = reader.IsDBNull(4) ? null : EnumExtensions.FromDescription<MetadataFormat>(reader.GetString(4));
@@ -581,7 +587,7 @@ namespace Rememory.Services
 
             foreach (var data in dataCollection)
             {
-                formatParameter.Value = data.Format.GetDescription();
+                formatParameter.Value = FormatManager.FormatToName(data.Format);
                 dataParameter.Value = data.IsFile() ? ClipboardFormatHelper.ConvertFullPathToFileName(data.Data) : data.Data;
                 hashParameter.Value = data.Hash;
 
@@ -700,7 +706,7 @@ namespace Rememory.Services
                     "Database error",
                     0x10);   // MB_ICONERROR | MB_OK
 
-                App.Current.Exit();
+                Environment.Exit(1);
             }
 
             try
@@ -732,7 +738,7 @@ namespace Rememory.Services
                 }
                 else
                 {
-                    App.Current.Exit();
+                    Environment.Exit(1);
                 }
             }
         }

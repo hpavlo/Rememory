@@ -1,0 +1,9 @@
+namespace RememoryCore
+{
+    [default_interface]
+    runtimeclass ProcessInfo
+    {
+        static String GetProcessPath(UInt64 windowHandle);
+        static Windows.Storage.Streams.IBuffer GetProcessIcon(String processPath);
+    };
+}

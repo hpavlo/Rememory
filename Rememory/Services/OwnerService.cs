@@ -142,7 +142,7 @@ namespace Rememory.Services
                     "Rememory - Database error",
                     0x10);   // MB_ICONERROR | MB_OK
 
-                App.Current.Exit();
+                Environment.Exit(1);
             }
 
             return [];

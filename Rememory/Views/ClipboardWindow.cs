@@ -1,12 +1,12 @@
 ﻿using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Rememory.Helper;
 using Rememory.Helper.WindowBackdrop;
 using Rememory.Models;
 using Rememory.Views.Settings;
 using System;
 using System.Drawing;
-using System.Runtime.InteropServices.Marshalling;
 using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.Graphics;
@@ -20,6 +20,10 @@ namespace Rememory.Views
     {
         public SettingsContext SettingsContext => SettingsContext.Instance;
         public readonly bool IsRoundedCornerSupported;
+
+        private const uint TrayIconId_ = 0;
+        public TrayIcon TrayIcon { get; private set; }
+        public MenuFlyout? TrayIconMenu { get; private set; }
 
         private bool _isPinned = false;
         public bool IsPinned
@@ -52,8 +56,7 @@ namespace Rememory.Views
             nint dwmResult = NativeHelper.DwmSetWindowAttribute(this.GetWindowHandle(), NativeHelper.DWMWA_WINDOW_CORNER_PREFERENCE, ref cornerPreference, sizeof(int));
             IsRoundedCornerSupported = dwmResult == 0;
 
-            RememoryCoreHelper.AddWindowProc(this.GetWindowHandle());
-            AddTrayIcon();
+            TrayIcon = CreateTrayIcon();
 
             _messageMonitor = new WindowMessageMonitor(this.GetWindowHandle());
             _messageMonitor.WindowMessageReceived += WindowMessageReceived;
@@ -108,34 +111,34 @@ namespace Rememory.Views
             ((FrameworkElement)Content).ActualThemeChanged += ClipboardWindow_ActualThemeChanged;
         }
 
-        public static PointInt32 AdjustWindowPositionToWorkArea(PointInt32 position, SizeInt32 size)
+        public static PointInt32 AdjustWindowPositionToWorkArea(PointInt32 position, SizeInt32 size, Rectangle? workArea = null)
         {
-            var workArea = NativeHelper.GetWorkAreaRectangle(out _, out _);
+            var workAreaRect = workArea ?? NativeHelper.GetWorkAreaRectangle(out _, out _);
             int deltaX = 0;
             int deltaY = 0;
 
             // Adjust horisontal position
-            if (position.X < workArea.Left)
+            if (position.X < workAreaRect.Left)
             {
-                deltaX = workArea.Left - position.X;
+                deltaX = workAreaRect.Left - position.X;
             }
-            if (position.Y < workArea.Top)
+            if (position.Y < workAreaRect.Top)
             {
-                deltaY = workArea.Top - position.Y;
+                deltaY = workAreaRect.Top - position.Y;
             }
 
             // Adjust vertical position
-            if (position.X + size.Width > workArea.Right)
+            if (position.X + size.Width > workAreaRect.Right)
             {
-                deltaX = workArea.Right - position.X - size.Width;
+                deltaX = workAreaRect.Right - position.X - size.Width;
             }
-            if (position.Y + size.Height > workArea.Bottom)
+            if (position.Y + size.Height > workAreaRect.Bottom)
             {
-                deltaY = workArea.Bottom - position.Y - size.Height;
+                deltaY = workAreaRect.Bottom - position.Y - size.Height;
             }
 
             // return new position only if there is enough space
-            if (size.Width < workArea.Width && size.Height < workArea.Height)
+            if (size.Width < workAreaRect.Width && size.Height < workAreaRect.Height)
             {
                 return new(position.X + deltaX, position.Y + deltaY);
             }
@@ -171,35 +174,11 @@ namespace Rememory.Views
                         App.Current.Exit();
                     }
                     break;
-
-                case NativeHelper.WM_COMMAND:
-                    switch (args.Message.WParam)
-                    {
-                        case RememoryCoreHelper.TRAY_OPEN_COMMAND:
-                            ShowWindow();
-                            break;
-                        case RememoryCoreHelper.TRAY_TOGGLE_MONITORING_COMMAND:
-                            if (Content is ClipboardRootPage rootPage)
-                            {
-                                rootPage.ViewModel.IsClipboardMonitoringEnabled = !rootPage.ViewModel.IsClipboardMonitoringEnabled;
-                            }
-                            break;
-                        case RememoryCoreHelper.TRAY_SETTINGS_COMMAND:
-                            SettingsWindow.ShowSettingsWindow();
-                            break;
-                        case RememoryCoreHelper.TRAY_EXIT_COMMAND:
-                            App.Current.Exit();
-                            break;
-                    }
-                    break;
-                case RememoryCoreHelper.TRAY_NOTIFICATION:
-                    if (args.Message.LParam == NativeHelper.WM_LBUTTONUP)
-                        ShowWindow();
-                    break;
                 default:
                     if (args.Message.MessageId == WM_TASKBARCREATED)
                     {
-                        AddTrayIcon();
+                        TrayIcon.IsVisible = false;
+                        TrayIcon.IsVisible = true;
                     }
                     break;
             }
@@ -229,22 +208,18 @@ namespace Rememory.Views
             ((FrameworkElement)Content).ActualThemeChanged -= ClipboardWindow_ActualThemeChanged;
         }
 
-        private unsafe void AddTrayIcon()
+        private TrayIcon CreateTrayIcon()
         {
-            RememoryCoreHelper.CreateTrayIcon(this.GetWindowHandle(),
-                new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged(
-                    $"{"TrayIconMenu_Open".GetLocalizedResource()}\t{KeyboardHelper.ShortcutToString(SettingsContext.ActivationShortcut, "+")}")),
-                new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged(SettingsContext.IsClipboardMonitoringEnabled
-                    ? "TrayIconMenu_PauseMonitoring".GetLocalizedResource()
-                    : "TrayIconMenu_ResumeMonitoring".GetLocalizedResource())),
-                new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged("TrayIconMenu_Settings".GetLocalizedResource())),
-                new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged("TrayIconMenu_Exit".GetLocalizedResource())),
 #if DEBUG
-                new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged($"{"AppDescription".GetLocalizedResource()} (Dev)"))
+            string toltip = $"{"AppDescription".GetLocalizedResource()} (Dev)";
 #else
-                new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged("AppDescription".GetLocalizedResource()))
+            string toltip = "AppDescription".GetLocalizedResource();
 #endif
-                );
+            var trayIcon = new TrayIcon(TrayIconId_, AppContext.BaseDirectory + "Assets\\WindowIcon.ico", toltip);
+            trayIcon.ContextMenu += (s, a) => a.Flyout = TrayIconMenu ??= (Content is ClipboardRootPage rootPage && rootPage.IsLoaded ? rootPage.TrayIconMenu : null);
+            trayIcon.Selected += (s, a) => ShowWindow();
+            trayIcon.IsVisible = true;
+            return trayIcon;
         }
 
         private void MoveToStartPosition()
@@ -277,7 +252,7 @@ namespace Rememory.Views
                     break;
                 case ClipboardWindowPosition.Cursor:
                     NativeHelper.GetCursorPos(out var cursorPos);
-                    var newPos = AdjustWindowPositionToWorkArea(cursorPos, new((int)independedWidth, (int)independedHeight));
+                    var newPos = AdjustWindowPositionToWorkArea(cursorPos, new((int)independedWidth, (int)independedHeight), workArea);
                     this.MoveAndResize(newPos.X, newPos.Y, scaledWidth, scaledHeight);
                     break;
                 case ClipboardWindowPosition.ScreenCenter:

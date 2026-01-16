@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.WinUI.Helpers;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.Windows.Globalization;
@@ -8,6 +9,7 @@ using Rememory.Helper;
 using Rememory.Helper.WindowBackdrop;
 using Rememory.Services;
 using Rememory.Views;
+using RememoryCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,7 +17,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.Marshalling;
 using System.Text.Json;
 
 namespace Rememory.Models
@@ -25,7 +26,8 @@ namespace Rememory.Models
         private static SettingsContext? _instance;
         public static SettingsContext Instance => _instance ??= new SettingsContext();
 
-        private static readonly ApplicationDataContainer _localSettings = ApplicationData.GetDefault().LocalSettings;
+        private readonly ClipboardMonitor _clipboardMonitor = App.Current.Services.GetService<ClipboardMonitor>()!;
+        private readonly ApplicationDataContainer _localSettings = ApplicationData.GetDefault().LocalSettings;
 
         #region General
 
@@ -58,17 +60,7 @@ namespace Rememory.Models
         public List<int> ActivationShortcut
         {
             get => _activationShortcut ??= GetSettingValue<List<int>>(ActivationShortcutDefault);
-            set
-            {
-                if (SetSettingsProperty(ref _activationShortcut, value))
-                {
-                    unsafe
-                    {
-                        RememoryCoreHelper.UpdateTrayIconMenuItem(RememoryCoreHelper.TRAY_OPEN_COMMAND, new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged(
-                            $"{"TrayIconMenu_Open".GetLocalizedResource()}\t{KeyboardHelper.ShortcutToString(value, "+")}")));
-                    }
-                }
-            }
+            set => SetSettingsProperty(ref _activationShortcut, value);
         }
 
 
@@ -355,12 +347,19 @@ namespace Rememory.Models
         public bool IsClipSizeValidationEnabled
         {
             get => _isClipSizeValidationEnabled ??= GetSettingValue<bool>();
-            set => SetSettingsProperty(ref _isClipSizeValidationEnabled, value);
+            set
+            {
+                if (SetSettingsProperty(ref _isClipSizeValidationEnabled, value))
+                {
+                    SetMaxDataSize(MaxClipSize);
+                }
+            }
         }
 
 
         private int? _maxClipSize;
         private static bool MaxClipSizeValidate(int value) => value >= ClipSizeLowerBound && value <= ClipSizeUpperBound;
+        private void SetMaxDataSize(int value) => _clipboardMonitor.MaxDataSize = IsClipSizeValidationEnabled ? (ulong)value * 1024 * 1024 : ulong.MaxValue;
 
         public static readonly int ClipSizeLowerBound = 1;
         public static readonly int ClipSizeUpperBound = 64;
@@ -368,8 +367,22 @@ namespace Rememory.Models
         [Settings("MaxClipSize", DefaultValue = 8, Validator = nameof(MaxClipSizeValidate))]
         public int MaxClipSize
         {
-            get => _maxClipSize ??= GetSettingValue<int>();
-            set => SetSettingsProperty(ref _maxClipSize, value);
+            get
+            {
+                if (_maxClipSize == null)
+                {
+                    _maxClipSize = GetSettingValue<int>();
+                    SetMaxDataSize(_maxClipSize.Value);
+                }
+                return _maxClipSize.Value;
+            }
+            set
+            {
+                if (SetSettingsProperty(ref _maxClipSize, value))
+                {
+                    SetMaxDataSize(value);
+                }
+            }
         }
 
         #endregion
@@ -392,23 +405,15 @@ namespace Rememory.Models
         public bool IsClipboardMonitoringEnabled
         {
             get => _isClipboardMonitoringEnabled ??= GetSettingValue<bool>();
-            set
-            {
-                if (SetSettingsProperty(ref _isClipboardMonitoringEnabled, value))
-                {
-                    unsafe
-                    {
-                        RememoryCoreHelper.UpdateTrayIconMenuItem(RememoryCoreHelper.TRAY_TOGGLE_MONITORING_COMMAND, new IntPtr(Utf16StringMarshaller.ConvertToUnmanaged(
-                            value ? "Pause monitoring" : "Resume monitoring")));
-                    }
-                }
-            }
+            set => SetSettingsProperty(ref _isClipboardMonitoringEnabled, value);
         }
 
         private SettingsContext()
         {
             _supportedLanguages = ApplicationLanguages.ManifestLanguages.ToList();
             _supportedLanguages.Insert(0, string.Empty);   // Default language
+
+            SetMaxDataSize(MaxClipSize);
         }
 
         private T GetSettingValue<T>(object? overrideDefault = null, [CallerMemberName] string? propertyName = null)
