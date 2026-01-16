@@ -1,14 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.9.34728.123
+# Visual Studio Version 18
+VisualStudioVersion = 18.2.11408.102 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rememory", "Rememory\Rememory.csproj", "{803429E1-51B0-4925-B035-957B6D17A954}"
-	ProjectSection(ProjectDependencies) = postProject
-		{986F1070-47C5-40CB-8161-F151A646E368} = {986F1070-47C5-40CB-8161-F151A646E368}
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Rememory.Core.Old", "Rememory.Core.Old\Rememory.Core.Old.vcxproj", "{986F1070-47C5-40CB-8161-F151A646E368}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RememoryCore", "RememoryCore\RememoryCore.vcxproj", "{581B3BA8-437B-4FF0-A6A2-EF94BBB1747B}"
 EndProject
@@ -40,18 +35,6 @@ Global
 		{803429E1-51B0-4925-B035-957B6D17A954}.Release|x86.ActiveCfg = Release|x86
 		{803429E1-51B0-4925-B035-957B6D17A954}.Release|x86.Build.0 = Release|x86
 		{803429E1-51B0-4925-B035-957B6D17A954}.Release|x86.Deploy.0 = Release|x86
-		{986F1070-47C5-40CB-8161-F151A646E368}.Debug|ARM64.ActiveCfg = Debug|x64
-		{986F1070-47C5-40CB-8161-F151A646E368}.Debug|ARM64.Build.0 = Debug|x64
-		{986F1070-47C5-40CB-8161-F151A646E368}.Debug|x64.ActiveCfg = Debug|x64
-		{986F1070-47C5-40CB-8161-F151A646E368}.Debug|x64.Build.0 = Debug|x64
-		{986F1070-47C5-40CB-8161-F151A646E368}.Debug|x86.ActiveCfg = Debug|Win32
-		{986F1070-47C5-40CB-8161-F151A646E368}.Debug|x86.Build.0 = Debug|Win32
-		{986F1070-47C5-40CB-8161-F151A646E368}.Release|ARM64.ActiveCfg = Release|x64
-		{986F1070-47C5-40CB-8161-F151A646E368}.Release|ARM64.Build.0 = Release|x64
-		{986F1070-47C5-40CB-8161-F151A646E368}.Release|x64.ActiveCfg = Release|x64
-		{986F1070-47C5-40CB-8161-F151A646E368}.Release|x64.Build.0 = Release|x64
-		{986F1070-47C5-40CB-8161-F151A646E368}.Release|x86.ActiveCfg = Release|Win32
-		{986F1070-47C5-40CB-8161-F151A646E368}.Release|x86.Build.0 = Release|Win32
 		{581B3BA8-437B-4FF0-A6A2-EF94BBB1747B}.Debug|ARM64.ActiveCfg = Debug|ARM64
 		{581B3BA8-437B-4FF0-A6A2-EF94BBB1747B}.Debug|ARM64.Build.0 = Debug|ARM64
 		{581B3BA8-437B-4FF0-A6A2-EF94BBB1747B}.Debug|x64.ActiveCfg = Debug|x64
