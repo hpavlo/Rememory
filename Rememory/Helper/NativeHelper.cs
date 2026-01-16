@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Text;
@@ -105,7 +104,7 @@ namespace Rememory.Helper
         internal static extern uint GetWindowThreadProcessId(IntPtr hwnd, out uint lpdwProcessId);
 
         [DllImport("user32.dll")]
-        internal static extern bool ClientToScreen(IntPtr hWnd, ref Point lpPoint);
+        internal static extern bool ClientToScreen(IntPtr hWnd, ref PointInt32 lpPoint);
 
         [DllImport("user32.dll")]
         internal static extern bool GetCursorPos(out PointInt32 lpPoint);
@@ -145,7 +144,7 @@ namespace Rememory.Helper
         /// <param name="dpiX">dpiX of the monitor</param>
         /// <param name="dpiY">dpiY of the monitor</param>
         /// <returns><see cref="Rectangle"/> of the monitor work area where the cursor is currently located</returns>
-        internal static Rectangle GetWorkAreaRectangle(out uint dpiX, out uint dpiY)
+        internal static RectInt32 GetWorkAreaRectangle(out uint dpiX, out uint dpiY)
         {
             GetCursorPos(out var point);
             IntPtr monitor = MonitorFromPoint(point, MONITOR_DEFAULTTONEAREST);
@@ -153,7 +152,7 @@ namespace Rememory.Helper
             GetMonitorInfo(monitor, info);
 
             GetDpiForMonitor(monitor, 0, out dpiX, out dpiY);   // Get MDT_EFFECTIVE_DPI
-            return new Rectangle(
+            return new RectInt32(
                 info.rcWork.left,
                 info.rcWork.top,
                 info.rcWork.right - info.rcWork.left,

@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using UIAutomationClient;
+using Windows.Graphics;
 
 namespace Rememory.Helper
 {
@@ -12,9 +12,9 @@ namespace Rememory.Helper
     /// </summary>
     public class TextBoxCaretHelper
     {
-        public static bool GetCaretPosition(out Rectangle rect)
+        public static bool GetCaretPosition(out RectInt32 rect)
         {
-            rect = Rectangle.Empty;
+            rect = new RectInt32();
 
             if (TryGetCaretPosGUI(ref rect)) return true;
             if (TryGetCaretPosAcc(ref rect)) return true;
@@ -23,9 +23,9 @@ namespace Rememory.Helper
             return false;
         }
 
-        private static bool TryGetCaretPosGUI(ref Rectangle rect)
+        private static bool TryGetCaretPosGUI(ref RectInt32 rect)
         {
-            Rectangle tempRect = Rectangle.Empty;
+            RectInt32 tempRect = new();
 
             IntPtr foregroundWindow = NativeHelper.GetForegroundWindow();
             uint threadId = NativeHelper.GetWindowThreadProcessId(foregroundWindow, out var processId);
@@ -33,15 +33,15 @@ namespace Rememory.Helper
 
             if (GetGUIThreadInfo(threadId, ref guiThreadInfo))
             {
-                Point point = new(guiThreadInfo.rectCaret.left, guiThreadInfo.rectCaret.top);
+                PointInt32 point = new(guiThreadInfo.rectCaret.left, guiThreadInfo.rectCaret.top);
 
                 if (NativeHelper.ClientToScreen(guiThreadInfo.hwndCaret, ref point))
                 {
-                    tempRect = new Rectangle(point.X, point.Y, guiThreadInfo.rectCaret.right - guiThreadInfo.rectCaret.left, guiThreadInfo.rectCaret.bottom - guiThreadInfo.rectCaret.top);
+                    tempRect = new RectInt32(point.X, point.Y, guiThreadInfo.rectCaret.right - guiThreadInfo.rectCaret.left, guiThreadInfo.rectCaret.bottom - guiThreadInfo.rectCaret.top);
                 }
             }
 
-            if (!tempRect.IsEmpty)
+            if (!IsRectEmpty(tempRect))
             {
                 rect = tempRect;
                 return true;
@@ -50,9 +50,9 @@ namespace Rememory.Helper
             return false;
         }
 
-        private static bool TryGetCaretPosUIA(ref Rectangle rect)
+        private static bool TryGetCaretPosUIA(ref RectInt32 rect)
         {
-            Rectangle tempRect = Rectangle.Empty;
+            RectInt32 tempRect = new();
 
             try
             {
@@ -97,14 +97,14 @@ namespace Rememory.Helper
                             int width = (int)boundingRect[2];
                             int height = (int)boundingRect[3];
 
-                            tempRect = new Rectangle(left, top, isExpanded ? 0 : width, height);
+                            tempRect = new RectInt32(left, top, isExpanded ? 0 : width, height);
                         }
                     }
                 }
             }
             catch { }
 
-            if (!tempRect.IsEmpty)
+            if (!IsRectEmpty(tempRect))
             {
                 rect = tempRect;
                 return true;
@@ -113,9 +113,9 @@ namespace Rememory.Helper
             return false;
         }
 
-        private static bool TryGetCaretPosAcc(ref Rectangle rect)
+        private static bool TryGetCaretPosAcc(ref RectInt32 rect)
         {
-            Rectangle tempRect = Rectangle.Empty;
+            RectInt32 tempRect = new();
 
             Guid guid = typeof(IAccessible).GUID;
             int objidCaret = -8;   // 0xFFFFFFF8
@@ -130,15 +130,25 @@ namespace Rememory.Helper
                     if (accessibleObject is IAccessible accessible)
                     {
                         accessible.accLocation(out int x, out int y, out int w, out int h, 0);
-                        tempRect = new Rectangle(x, y, w, h);
+                        tempRect = new RectInt32(x, y, w, h);
                     }
                 }).GetAwaiter().GetResult();
             }
             catch { }
 
-            if (!tempRect.IsEmpty)
+            if (!IsRectEmpty(tempRect))
             {
                 rect = tempRect;
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool IsRectEmpty(RectInt32 rect)
+        {
+            if (rect.X == 0 && rect.Y == 0 && rect.Width == 0 && rect.Height == 0)
+            {
                 return true;
             }
 
