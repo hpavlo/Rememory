@@ -4,7 +4,7 @@ using System;
 
 namespace Rememory.Converters
 {
-    public class DateTimeToHumanReadableConverter : IValueConverter
+    public partial class DateTimeToHumanReadableConverter : IValueConverter
     {
         // https://www.unicode.org/cldr/charts/46/supplemental/language_plural_rules.html
         public object Convert(object value, Type targetType, object parameter, string language)

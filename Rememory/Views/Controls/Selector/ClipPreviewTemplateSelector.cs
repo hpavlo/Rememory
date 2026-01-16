@@ -1,8 +1,8 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Rememory.Helper;
 using Rememory.Models;
 using Rememory.Models.Metadata;
+using RememoryCore;
 
 namespace Rememory.Views.Controls.Selector
 {

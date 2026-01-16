@@ -2,9 +2,9 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using Rememory.Contracts;
-using Rememory.Helper;
 using Rememory.Models;
 using Rememory.Views.Editor;
+using RememoryCore;
 using System;
 using System.Security.Cryptography;
 using System.Text;

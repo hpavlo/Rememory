@@ -10,6 +10,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rememory", "Rememory\Rememo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Rememory.Core.Old", "Rememory.Core.Old\Rememory.Core.Old.vcxproj", "{986F1070-47C5-40CB-8161-F151A646E368}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RememoryCore", "RememoryCore\RememoryCore.vcxproj", "{581B3BA8-437B-4FF0-A6A2-EF94BBB1747B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -50,6 +52,18 @@ Global
 		{986F1070-47C5-40CB-8161-F151A646E368}.Release|x64.Build.0 = Release|x64
 		{986F1070-47C5-40CB-8161-F151A646E368}.Release|x86.ActiveCfg = Release|Win32
 		{986F1070-47C5-40CB-8161-F151A646E368}.Release|x86.Build.0 = Release|Win32
+		{581B3BA8-437B-4FF0-A6A2-EF94BBB1747B}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{581B3BA8-437B-4FF0-A6A2-EF94BBB1747B}.Debug|ARM64.Build.0 = Debug|ARM64
+		{581B3BA8-437B-4FF0-A6A2-EF94BBB1747B}.Debug|x64.ActiveCfg = Debug|x64
+		{581B3BA8-437B-4FF0-A6A2-EF94BBB1747B}.Debug|x64.Build.0 = Debug|x64
+		{581B3BA8-437B-4FF0-A6A2-EF94BBB1747B}.Debug|x86.ActiveCfg = Debug|Win32
+		{581B3BA8-437B-4FF0-A6A2-EF94BBB1747B}.Debug|x86.Build.0 = Debug|Win32
+		{581B3BA8-437B-4FF0-A6A2-EF94BBB1747B}.Release|ARM64.ActiveCfg = Release|ARM64
+		{581B3BA8-437B-4FF0-A6A2-EF94BBB1747B}.Release|ARM64.Build.0 = Release|ARM64
+		{581B3BA8-437B-4FF0-A6A2-EF94BBB1747B}.Release|x64.ActiveCfg = Release|x64
+		{581B3BA8-437B-4FF0-A6A2-EF94BBB1747B}.Release|x64.Build.0 = Release|x64
+		{581B3BA8-437B-4FF0-A6A2-EF94BBB1747B}.Release|x86.ActiveCfg = Release|Win32
+		{581B3BA8-437B-4FF0-A6A2-EF94BBB1747B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

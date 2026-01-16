@@ -9,9 +9,12 @@ namespace Rememory.Converters
     {
         public new object Convert(object value, Type targetType, object parameter, string language)
         {
-            string resourceName = parameter as string;
+            if (parameter is string resourceName)
+            {
+                return base.Convert(value, targetType, resourceName.GetLocalizedResource(), language);
+            }
 
-            return base.Convert(value, targetType, resourceName.GetLocalizedResource(), language);
+            return parameter;
         }
     }
 }

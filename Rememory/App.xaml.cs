@@ -10,6 +10,7 @@ using Rememory.Models;
 using Rememory.Services;
 using Rememory.Views;
 using Rememory.Views.Settings;
+using RememoryCore;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -39,8 +40,8 @@ namespace Rememory
 
         public Microsoft.UI.Dispatching.DispatcherQueue DispatcherQueue { get; private set; } = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
 
-        private string[] _launchArguments;
-        private IKeyboardMonitor _keyboardMonitor;
+        private readonly string[] _launchArguments;
+        private readonly IKeyboardMonitor _keyboardMonitor;
         private bool _closeApp = false;
 
         /// <summary>
@@ -102,7 +103,7 @@ namespace Rememory
             Exit();
         }
 
-        private void SetCulture(string culture)
+        private static void SetCulture(string culture)
         {
             var cultureInfo = new CultureInfo(culture);
 
@@ -121,13 +122,14 @@ namespace Rememory
         {
             var services = new ServiceCollection();
 
+            services.AddSingleton<ClipboardMonitor>();
+            services.AddSingleton<IKeyboardMonitor, KeyboardMonitor>();
             services.AddSingleton<IClipboardService, ClipboardService>();
             services.AddSingleton<IStorageService, SqliteService>();
             services.AddSingleton<ISearchService, SearchService>();
             services.AddSingleton<ILinkPreviewService, LinkPreviewService>();
             services.AddSingleton<ICleanupDataService, CleanupDataService>();
             services.AddSingleton<IThemeService, ThemeService>();
-            services.AddSingleton<IKeyboardMonitor, KeyboardMonitor>();
             services.AddSingleton<IOwnerService, OwnerService>();
             services.AddSingleton<ITagService, TagService>();
             services.AddTransient<IStartupService, TaskSchedulerStartupService>();

@@ -101,18 +101,22 @@ bool ClipboardDataHelper::CompareClipboardData(DataItemsRef previousData, DataIt
     {
         return false;
     }
+
     for (const auto& newItem : newData)
     {
         void* data = GlobalLock(newItem.data);
         auto* prewItem = GetDataByFormat(previousData, newItem.format);
 
-        if (!prewItem || prewItem->size != newItem.size || memcmp(prewItem->data, newItem.data, newItem.size))
+        if (!prewItem || prewItem->size != newItem.size || memcmp(prewItem->data, data, newItem.size))
         {
             GlobalUnlock(data);
             return false;
         }
 
-        GlobalUnlock(data);
+        if (data)
+        {
+            GlobalUnlock(data);
+        }
     }
     return true;
 }
@@ -143,11 +147,13 @@ FormatDataItem* ClipboardDataHelper::GetDataByFormat(DataItemsRef clipboardData,
 
 bool ClipboardDataHelper::GetBitmapAndPixels(HBITMAP hBitmap, BITMAP& outBitmap, std::vector<BYTE>& outPixelData)
 {
-    if (!hBitmap) {
+    if (!hBitmap)
+    {
         return false;
     }
 
-    if (GetObject(hBitmap, sizeof(BITMAP), &outBitmap) == 0) {
+    if (GetObject(hBitmap, sizeof(BITMAP), &outBitmap) == 0)
+    {
         return false;
     }
 
@@ -156,7 +162,8 @@ bool ClipboardDataHelper::GetBitmapAndPixels(HBITMAP hBitmap, BITMAP& outBitmap,
         return false;
     }
     HDC hdcMem = CreateCompatibleDC(hdcScreen);
-    if (!hdcMem) {
+    if (!hdcMem)
+    {
         ReleaseDC(NULL, hdcScreen);
         return false;
     }
@@ -182,13 +189,15 @@ bool ClipboardDataHelper::GetBitmapAndPixels(HBITMAP hBitmap, BITMAP& outBitmap,
         return false;
     }
 
-    if (bmi.bmiHeader.biSizeImage == 0) {
+    if (bmi.bmiHeader.biSizeImage == 0)
+    {
         // If image size is 0, calculate it manually
         DWORD dwBytesPerRow = ((bmi.bmiHeader.biWidth * bmi.bmiHeader.biBitCount + 31) / 32) * 4;
         bmi.bmiHeader.biSizeImage = dwBytesPerRow * abs(bmi.bmiHeader.biHeight);
     }
 
-    if (bmi.bmiHeader.biSizeImage == 0 || bmi.bmiHeader.biSizeImage > 64 * 1024 * 1024) {   // 64Mb limit
+    if (bmi.bmiHeader.biSizeImage == 0 || bmi.bmiHeader.biSizeImage > 64 * 1024 * 1024)   // 64Mb limit
+    {
         DeleteDC(hdcMem);
         ReleaseDC(NULL, hdcScreen);
         return false;

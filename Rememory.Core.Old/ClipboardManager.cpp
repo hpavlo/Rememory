@@ -229,7 +229,7 @@ void ClipboardManager::HandleClipboardData()
             HANDLE hDropEffect = GetClipboardData(RegisterClipboardFormat(CFSTR_PREFERREDDROPEFFECT));
             if (!hDropEffect)
             {
-                continue;
+                //continue;
             }
             DWORD* dropEffect = (DWORD*)GlobalLock(hDropEffect);
             if (dropEffect)

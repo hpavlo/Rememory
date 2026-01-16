@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Rememory.Helper;
 using Rememory.Models.Metadata;
+using RememoryCore;
 
 namespace Rememory.Models
 {

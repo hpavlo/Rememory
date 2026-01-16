@@ -9,7 +9,7 @@ using Windows.System;
 
 namespace Rememory.Converters
 {
-    public class VirtualKeyToTextConverter : IValueConverter
+    public partial class VirtualKeyToTextConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

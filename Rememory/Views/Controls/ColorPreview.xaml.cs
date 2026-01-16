@@ -40,6 +40,7 @@ namespace Rememory.Views.Controls
                 var color = ToArgb(control.ClipData.Data).ToColor();
                 control.ColorPreviewBorder.Background = new SolidColorBrush(color);
                 control.ColorNameTextBlock.Text = Microsoft.UI.ColorHelper.ToDisplayName(color);
+                control.ColorCodeTextBlock.SearchHighlight(clipData.Data);
             }
         }
 
@@ -47,14 +48,7 @@ namespace Rememory.Views.Controls
         {
             if (d is ColorPreview control && e.NewValue is string searchText)
             {
-                if (string.IsNullOrEmpty(searchText))
-                {
-                    control.ColorCodeTextBlock.TextHighlighters.Clear();
-                }
-                else
-                {
-                    control.ColorCodeTextBlock.SearchHighlight(searchText);
-                }
+                control.ColorCodeTextBlock.SearchHighlight(searchText);
             }
         }
 

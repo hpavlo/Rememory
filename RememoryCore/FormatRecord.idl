@@ -1,0 +1,14 @@
+import "FormatManager.idl";
+
+namespace RememoryCore
+{
+    [default_interface]
+    runtimeclass FormatRecord
+    {
+        ClipboardFormat Format { get; set; };
+        String Data { get; set; };
+        Windows.Storage.Streams.IBuffer Hash { get; set; };
+
+        FormatRecord();
+    };
+}

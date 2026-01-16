@@ -1,15 +1,16 @@
-﻿using Rememory.Contracts;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Models;
 using Rememory.Models.Metadata;
 using Rememory.Views.BriefMessage;
+using RememoryCore;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.Marshalling;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -18,6 +19,8 @@ namespace Rememory.Services
 {
     public partial class ClipboardService : IClipboardService
     {
+        private readonly ClipboardMonitor _clipboardMonitor = App.Current.Services.GetService<ClipboardMonitor>()!;
+
         public event EventHandler<ClipboardEventArgs>? NewClipAdded;
         public event EventHandler<ClipboardEventArgs>? ClipMovedToTop;
         public event EventHandler<ClipboardEventArgs>? FavoriteClipChanged;
@@ -33,7 +36,6 @@ namespace Rememory.Services
         private readonly ITagService _tagService;
         private readonly ILinkPreviewService _linkPreviewService;
 
-        private readonly ClipboardMonitorCallback _clipboardCallback;
         private readonly Regex _hexColorRegex = HexColorRegex();
         private readonly Regex _hexColorRegexOptionalPrefix = HexColorRegexOptionalPrefix();
 
@@ -43,126 +45,29 @@ namespace Rememory.Services
             _ownerService = ownerService;
             _tagService = tagService;
             _linkPreviewService = linkPreviewService;
-            _clipboardCallback = OnNewClipDetected;
+            _clipboardMonitor.ContentDetected += ClipboardMonitor_ContentDetected;
 
             Clips = ReadClipsFromStorage();
         }
 
-        public void StartClipboardMonitor(IntPtr windowHandle)
-        {
-            RememoryCoreHelper.StartClipboardMonitor(windowHandle, _clipboardCallback);
-        }
-
-        public void StopClipboardMonitor(IntPtr windowHandle)
-        {
-            RememoryCoreHelper.StopClipboardMonitor(windowHandle);
-        }
-
         public bool SetClipboardData(Dictionary<ClipboardFormat, DataModel> data, TextCaseType? caseType = null)
         {
-            // Determine the list of formats to process
-            List<ClipboardFormat> selectedFormats = [.. data.Keys];
+            var dataMap = new Dictionary<ClipboardFormat, string>();
 
-            string tempBitmapPath = string.Empty;
-            bool generateBitmapFromPng = false;
-
-            // Handle special case: if PNG is requested, also add Bitmap format and generate the bitmap file
-            if (data.TryGetValue(ClipboardFormat.Png, out var pngData))
+            foreach (var item in data)
             {
-                generateBitmapFromPng = ClipboardFormatHelper.TryGenerateBitmapFromPng(pngData, out tempBitmapPath);
-                if (generateBitmapFromPng && !selectedFormats.Contains(ClipboardFormat.Bitmap))
+                string finalData = item.Value.Data;
+
+                // Apply Text Case transformation if needed
+                if (item.Key == ClipboardFormat.Text && caseType.HasValue)
                 {
-                    // Insert Bitmap before Png if Png is present but Bitmap isn't explicitly requested
-                    int pngIndex = selectedFormats.IndexOf(ClipboardFormat.Png);
-                    if (pngIndex >= 0)
-                    {
-                        selectedFormats.Insert(pngIndex, ClipboardFormat.Bitmap);
-                    }
+                    finalData = finalData.ConvertText(caseType.Value);
                 }
+
+                dataMap[item.Key] = finalData;
             }
 
-            // Prepare the unmanaged structure for clipboard data info
-            ClipboardDataInfo dataInfo = new()
-            {
-                FormatCount = (uint)selectedFormats.Count,
-                FirstItem = Marshal.AllocHGlobal(selectedFormats.Count * Marshal.SizeOf(typeof(FormatDataItem)))
-            };
-
-            IntPtr unmanagedValuePointer = IntPtr.Zero;
-            nint currentPtr = dataInfo.FirstItem;
-
-
-            // TODO specify order for each clip by their priority
-
-
-            // Process each selected format, convert data, and populate the unmanaged structure
-            foreach (var currentFormat in selectedFormats)
-            {
-                IntPtr dataPtr = IntPtr.Zero;
-
-                try
-                {
-                    // Convert data for the current format to unmanaged memory
-                    if (currentFormat == ClipboardFormat.Bitmap && !string.IsNullOrEmpty(tempBitmapPath))
-                    {
-                        dataPtr = ClipboardFormatHelper.DataTypeToUnmanagedConverters[currentFormat](tempBitmapPath);
-                    }
-                    else if (data.TryGetValue(currentFormat, out var dataModel))
-                    {
-                        dataPtr = ClipboardFormatHelper.DataTypeToUnmanagedConverters[currentFormat](
-                            currentFormat == ClipboardFormat.Text && caseType.HasValue
-                            ? dataModel.Data.ConvertText(caseType.Value)
-                            : dataModel.Data);
-                    }
-
-                    // Keep track of the unmanaged valur for the bitmap or files formats
-                    if (currentFormat == ClipboardFormat.Bitmap || currentFormat == ClipboardFormat.Files)
-                    {
-                        unmanagedValuePointer = dataPtr;
-                    }
-
-                    Marshal.StructureToPtr(new FormatDataItem
-                    {
-                        Format = ClipboardFormatHelper.DataTypeFormats[currentFormat],
-                        Data = dataPtr
-                    }, currentPtr, false);
-                    // Move the pointer to the next position in the unmanaged memory block
-                    currentPtr = nint.Add(currentPtr, Marshal.SizeOf<FormatDataItem>());
-                }
-                catch { }
-            }
-
-            bool result = RememoryCoreHelper.SetDataToClipboard(ref dataInfo);
-
-            // Clean up allocated unmanaged memory
-            if (dataInfo.FirstItem != IntPtr.Zero)
-            {
-                Marshal.FreeHGlobal(dataInfo.FirstItem);
-            }
-            if (unmanagedValuePointer != IntPtr.Zero)
-            {
-                unsafe
-                {
-                    Utf16StringMarshaller.Free((ushort*)unmanagedValuePointer);
-                }                
-            }
-
-            // Schedule asynchronous cleanup of the temporary bitmap file
-            if (!string.IsNullOrEmpty(tempBitmapPath))
-            {
-                Task.Run(async () =>
-                {
-                    // Wait for a short period to ensure the native clipboard operation is complete
-                    await Task.Delay(5_000);
-                    try
-                    {
-                        File.Delete(tempBitmapPath);
-                    }
-                    catch { }
-                });
-            }
-
-            return result;
+            return _clipboardMonitor.SetClipboardData(dataMap);
         }
 
         public void AddClip(ClipModel clip)
@@ -357,83 +262,71 @@ namespace Rememory.Services
                     "Rememory - Database error",
                     0x10);   // MB_ICONERROR | MB_OK
 
-                App.Current.Exit();
+                Environment.Exit(1);
             }
 
             return [];
         }
 
-        private bool OnNewClipDetected(ref ClipboardDataInfo dataInfo)
+        private void ClipboardMonitor_ContentDetected(ClipboardMonitor sender, ClipboardSnapshot snapshot)
         {
-            string? ownerPath = Marshal.PtrToStringUni(dataInfo.OwnerPath);
-            byte[]? iconPixels = null;
-            if (!string.IsNullOrEmpty(ownerPath))
-            {
-                // Check should filter this source app or not
-                var replacedOwnerPath = ownerPath.Replace('\\', '/');
-                try
-                {
-                    var ownerFilter = SettingsContext.OwnerAppFilters.FirstOrDefault(filter => ownerPath.Equals(filter.Pattern)
-                        || Regex.IsMatch(replacedOwnerPath, $"^{filter.Pattern.Replace('\\', '/').Replace("*", ".*")}$"));
-                    if (ownerFilter is not null)
-                    {
-                        ownerFilter.FilteredCount++;
-                        SettingsContext.SaveOwnerAppFilters();
-                        return false;
-                    }
-                }
-                catch { }
+            string? ownerPath = snapshot.OwnerPath;
+            byte[]? iconPixels = snapshot.OwnerIcon?.ToArray();
 
-                if (dataInfo.IconPixels != 0)
-                {
-                    iconPixels = new byte[dataInfo.IconLength];
-                    Marshal.Copy(dataInfo.IconPixels, iconPixels, 0, dataInfo.IconLength);
-                }
+            if (!string.IsNullOrEmpty(ownerPath) && IsOwnerPathExcluded(ownerPath))
+            {
+                return;
             }
 
             ClipModel clip = new();
 
-            for (uint i = 0; i < dataInfo.FormatCount; i++)
+            foreach (var record in snapshot.Records)
             {
-                var dataFormatInfo = Marshal.PtrToStructure<FormatDataItem>((nint)(dataInfo.FirstItem + i * Marshal.SizeOf<FormatDataItem>()));
-
-                ClipboardFormat? dataFormat = ClipboardFormatHelper.GetFormatKeyByValue(dataFormatInfo.Format);
-                if (dataFormat is null)
+                if (!string.IsNullOrEmpty(record.Data) && record.Hash is not null && record.Hash.Length > 0)
                 {
-                    continue;
+                    DataModel clipData = new(record.Format, record.Data, record.Hash.ToArray());
+                    clip.Data.TryAdd(record.Format, clipData);
                 }
-
-                string convertedData = ClipboardFormatHelper.DataTypeToStringConverters[dataFormat.Value]((dataFormatInfo.Data, dataFormatInfo.Size));
-                if (string.IsNullOrEmpty(convertedData))
-                {
-                    continue;
-                }
-
-                var hash = new byte[32];
-                Marshal.Copy(dataFormatInfo.Hash, hash, 0, 32);
-
-                DataModel clipData = new(dataFormat.Value, convertedData, hash);
-                clip.Data.TryAdd(dataFormat.Value, clipData);
             }
 
             if (clip.Data.Count == 0)
             {
-                return false;
+                return;
             }
 
-            _ownerService.RegisterClipOwner(clip, ownerPath, iconPixels);
-
-            if (!TryMoveDuplicateItem(clip))
+            App.Current.DispatcherQueue.TryEnqueue(() =>
             {
-                AddClip(clip);
-            }
+                _ownerService.RegisterClipOwner(clip, ownerPath, iconPixels);
 
-            if (SettingsContext.IsClipCopyMessageEnabled)
+                if (!TryMoveDuplicateItem(clip))
+                {
+                    AddClip(clip);
+                }
+
+                if (SettingsContext.IsClipCopyMessageEnabled)
+                {
+                    ShowToolTipMessage(clip);
+                }
+            });
+        }
+
+        private bool IsOwnerPathExcluded(string ownerPath)
+        {
+            var normalizedPath = ownerPath.Replace('\\', '/');
+            try
             {
-                ShowToolTipMessage(clip);
-            }
+                var ownerFilter = SettingsContext.OwnerAppFilters.FirstOrDefault(filter =>
+                    string.Equals(normalizedPath, filter.Pattern.Replace('\\', '/'), StringComparison.OrdinalIgnoreCase) || filter.IsMatch(normalizedPath));
 
-            return true;
+                if (ownerFilter is not null)
+                {
+                    ownerFilter.FilteredCount++;
+                    SettingsContext.SaveOwnerAppFilters();
+                    return true;
+                }
+            }
+            catch { }
+            return false;
         }
 
         private bool TryMoveDuplicateItem(ClipModel newClip)
@@ -470,7 +363,7 @@ namespace Rememory.Services
             return false;
         }
 
-        private void ShowToolTipMessage(ClipModel clip)
+        private static void ShowToolTipMessage(ClipModel clip)
         {
             string iconGlyph = string.Empty;
 

@@ -30,6 +30,32 @@
         <converters:ClipDataDictionaryToDataConverter x:Key="ClipDataDictionaryToDataConverter" />
         <converters:DateTimeToHumanReadableConverter x:Key="DateTimeToHumanReadableConverter" />
         <converters:DataFooterInfoConverter x:Key="DataFooterInfoConverter" />
+        <converters:ShortcutToTextConverter x:Key="ShortcutToTextConverter" />
+
+        <MenuFlyout x:Key="TrayIconContextMenu"
+                    x:DefaultBindMode="OneWay">
+            <MenuFlyoutItem Text="Open"
+                            Icon="{tk:FontIcon Glyph=&#xE8A7;}"
+                            Command="{x:Bind ViewModel.OpenWindowCommand}"
+                            KeyboardAcceleratorTextOverride="{x:Bind ViewModel.SettingsContext.ActivationShortcut, Converter={StaticResource ShortcutToTextConverter}}" />
+            <MenuFlyoutItem Text="Pause monitoring"
+                            Icon="{tk:FontIcon Glyph=&#xF0E3;}"
+                            Command="{x:Bind ViewModel.ToggleClipboardMonitoringEnabledCommand}"
+                            IsEnabled="{x:Bind ViewModel.IsClipboardMonitoringEnabled}"
+                            Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}" />
+            <MenuFlyoutItem Text="Resume monitoring"
+                            Icon="{tk:FontIcon Glyph=&#xF0E3;}"
+                            Command="{x:Bind ViewModel.ToggleClipboardMonitoringEnabledCommand}"
+                            IsEnabled="{x:Bind ViewModel.IsClipboardMonitoringEnabled, Converter={StaticResource BoolNegationConverter}}"
+                            Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}" />
+            <MenuFlyoutSeparator />
+            <MenuFlyoutItem Text="Settings"
+                            Icon="{tk:FontIcon Glyph=&#xE713;}"
+                            Command="{x:Bind ViewModel.OpenSettingsWindowCommand}" />
+            <MenuFlyoutItem Text="Exit"
+                            Icon="{tk:FontIcon Glyph=&#xEA39;}"
+                            Command="{x:Bind ViewModel.QuitAppCommand}" />
+        </MenuFlyout>
 
         <selector:NavigationTabTemplateSelector x:Key="NavigationTabTemplateSelector"
                                                 TabItemTemplate="{StaticResource TabItemTemplate}"
@@ -124,6 +150,7 @@
                 </Grid.RowDefinitions>
 
                 <ContentControl x:Name="PreviewPresenter"
+                                x:Phase="2"
                                 Grid.Column="0"
                                 Grid.Row="0"
                                 Grid.ColumnSpan="4"
@@ -136,6 +163,7 @@
 
                 <ListView x:Name="ClipTagsListView"
                           x:Load="{x:Bind HasTags}"
+                          x:Phase="3"
                           Grid.Column="0"
                           Grid.Row="1"
                           Grid.ColumnSpan="3"
@@ -200,13 +228,15 @@
 
                 <FontIcon x:Name="ClipFavoriteIcon"
                           x:Load="{x:Bind IsFavorite}"
+                          x:Phase="1"
                           Grid.Column="0"
                           Grid.Row="2"
                           Margin="0,0,8,0"
                           Glyph="&#xE734;"
                           FontSize="{StaticResource CaptionTextBlockFontSize}" />
 
-                <TextBlock Grid.Column="1"
+                <TextBlock x:Phase="1"
+                           Grid.Column="1"
                            Grid.Row="2"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center"
@@ -216,7 +246,8 @@
                            Text="{Binding Result}"
                            TextTrimming="CharacterEllipsis" />
 
-                <TextBlock Grid.Column="2"
+                <TextBlock x:Phase="1"
+                           Grid.Column="2"
                            Grid.Row="2"
                            Margin="8,0,0,0"
                            TextWrapping="Wrap"
@@ -228,6 +259,7 @@
 
                 <Image x:Name="ClipIconBitmap"
                        x:Load="{x:Bind Owner.IconBitmap, Converter={StaticResource EmptyObjectToBoolConverter}}"
+                       x:Phase="1"
                        Grid.Column="3"
                        Grid.Row="2"
                        Height="16"
@@ -481,7 +513,7 @@
                             Command="{x:Bind ViewModel.ToggleWindowPinnedCommand}"
                             IsEnabled="{x:Bind ViewModel.IsWindowPinned, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
                             Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
-                            Icon="{tk:FontIcon FontSize=16, Glyph=&#xE718;}">
+                            Icon="{tk:FontIcon Glyph=&#xE718;}">
                 <MenuFlyoutItem.KeyboardAccelerators>
                     <KeyboardAccelerator Key="T"
                                          Modifiers="Control"/>
@@ -492,7 +524,7 @@
                             Command="{x:Bind ViewModel.ToggleWindowPinnedCommand}"
                             IsEnabled="{x:Bind ViewModel.IsWindowPinned, Mode=OneWay}"
                             Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
-                            Icon="{tk:FontIcon FontSize=16, Glyph=&#xE77A;}">
+                            Icon="{tk:FontIcon Glyph=&#xE77A;}">
                 <MenuFlyoutItem.KeyboardAccelerators>
                     <KeyboardAccelerator Key="T"
                                          Modifiers="Control" />
@@ -503,7 +535,7 @@
                             Command="{x:Bind ViewModel.ToggleClipboardMonitoringEnabledCommand}"
                             IsEnabled="{x:Bind ViewModel.IsClipboardMonitoringEnabled, Mode=OneWay}"
                             Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
-                            Icon="{tk:FontIcon FontSize=16, Glyph=&#xF0E3;}">
+                            Icon="{tk:FontIcon Glyph=&#xF0E3;}">
                 <MenuFlyoutItem.KeyboardAccelerators>
                     <KeyboardAccelerator Key="M"
                                          Modifiers="Control" />
@@ -514,7 +546,7 @@
                             Command="{x:Bind ViewModel.ToggleClipboardMonitoringEnabledCommand}"
                             IsEnabled="{x:Bind ViewModel.IsClipboardMonitoringEnabled, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
                             Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
-                            Icon="{tk:FontIcon FontSize=16, Glyph=&#xF0E3;}">
+                            Icon="{tk:FontIcon Glyph=&#xF0E3;}">
                 <MenuFlyoutItem.KeyboardAccelerators>
                     <KeyboardAccelerator Key="M"
                                          Modifiers="Control" />
@@ -524,11 +556,11 @@
             <MenuFlyoutItem x:Uid="/Clipboard/TitleBarMenu_Settings"
                             AccessKey="S"
                             Command="{x:Bind ViewModel.OpenSettingsWindowCommand}"
-                            Icon="{tk:FontIcon FontSize=16, Glyph=&#xE713;}" />
+                            Icon="{tk:FontIcon Glyph=&#xE713;}" />
             <MenuFlyoutItem x:Uid="/Clipboard/TitleBarMenu_Quit"
                             AccessKey="Q"
                             Command="{x:Bind ViewModel.QuitAppCommand}"
-                            Icon="{tk:FontIcon FontSize=16, Glyph=&#xEA39;}" />
+                            Icon="{tk:FontIcon Glyph=&#xEA39;}" />
         </MenuFlyout>
 
         <Flyout x:Key="FilterButtonFlyout"

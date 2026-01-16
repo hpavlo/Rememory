@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using Rememory.Helper;
+using RememoryCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -287,7 +288,7 @@ namespace Rememory.Services.Migrations
                         continue;
                     }
 
-                    formatParameter.Value = dataItem.Key.GetDescription();
+                    formatParameter.Value = FormatManager.FormatToName(dataItem.Key);
                     dataParameter.Value = dataItem.Value;
                     hashParameter.Value = hashMap[dataItem.Key];
                     metadataFormatParameter.Value = hasLinkMetadata && dataItem.Key == ClipboardFormat.Text ? "Link" : (object)DBNull.Value;
@@ -373,7 +374,7 @@ namespace Rememory.Services.Migrations
             while (dataReader.Read())
             {
                 int id = dataReader.GetInt32(0);
-                ClipboardFormat? format = EnumExtensions.FromDescription<ClipboardFormat>(dataReader.GetString(1));
+                ClipboardFormat format = FormatManager.FormatFromName(dataReader.GetString(1));
                 string data = dataReader.GetString(2);
                 byte[] hash = (byte[])dataReader.GetValue(3);
 
@@ -400,8 +401,8 @@ namespace Rememory.Services.Migrations
                 }
 
                 lastClipId = id;
-                dataTemp.Add(format!.Value, data);
-                hashTemp.Add(format!.Value, hash);
+                dataTemp.Add(format, data);
+                hashTemp.Add(format, hash);
             }
 
             if (lastClipId > 0 && dataTemp.Count > 0 && hashTemp.Count > 0)

@@ -2,10 +2,10 @@
 using Microsoft.UI.Xaml.Data;
 using Rememory.Contracts;
 using Rememory.Helper;
+using RememoryCore;
 using System;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.Marshalling;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace Rememory.Converters
 {
@@ -28,28 +28,14 @@ namespace Rememory.Converters
                 return null;
             }
 
-            var pathPointer = Utf16StringMarshaller.ConvertToUnmanaged(ownerPath);
-            int length = 0;
-            IntPtr pixelsPointer = IntPtr.Zero;
+            var iconPixels = ProcessInfo.GetProcessIcon(ownerPath)?.ToArray();
 
-            RememoryCoreHelper.GetOwnerIcon((IntPtr)pathPointer, ref length, ref pixelsPointer);
-
-            if (length == 0 || pixelsPointer == IntPtr.Zero)
+            if (iconPixels is null)
             {
                 return null;
             }
 
-            byte[] pixels = new byte[length];
-            Marshal.Copy(pixelsPointer, pixels, 0, length);
-
-            // Free all resources
-            Utf16StringMarshaller.Free(pathPointer);
-            if (pixelsPointer != IntPtr.Zero)
-            {
-                RememoryCoreHelper.FreeOwnerIcon(ref pixelsPointer);
-            }
-
-            return BitmapHelper.GetBitmapFromBytes(pixels);
+            return BitmapHelper.GetBitmapFromBytes(iconPixels);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
