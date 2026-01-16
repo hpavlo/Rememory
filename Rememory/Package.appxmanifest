@@ -29,6 +29,7 @@
 		<Resource Language="en-US"/>
 		<Resource Language="fr-FR"/>
 		<Resource Language="ko-KR"/>
+		<Resource Language="pt-PT"/>
 		<Resource Language="uk-UA"/>
 		<Resource Language="zh-CN"/>
 	</Resources>

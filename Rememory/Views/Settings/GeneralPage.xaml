@@ -32,6 +32,7 @@
                     <ComboBoxItem x:Uid="/Settings/General_AppLanguage_English" />
                     <ComboBoxItem x:Uid="/Settings/General_AppLanguage_French" />
                     <ComboBoxItem x:Uid="/Settings/General_AppLanguage_Korean" />
+                    <ComboBoxItem x:Uid="/Settings/General_AppLanguage_Portuguese" />
                     <ComboBoxItem x:Uid="/Settings/General_AppLanguage_Ukrainian" />
                     <ComboBoxItem x:Uid="/Settings/General_AppLanguage_ChineseSimplified" />
                 </ComboBox>
