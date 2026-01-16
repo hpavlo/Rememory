@@ -6,7 +6,6 @@ using Rememory.Helper.WindowBackdrop;
 using Rememory.Models;
 using Rememory.Views.Settings;
 using System;
-using System.Drawing;
 using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.Graphics;
@@ -111,30 +110,30 @@ namespace Rememory.Views
             ((FrameworkElement)Content).ActualThemeChanged += ClipboardWindow_ActualThemeChanged;
         }
 
-        public static PointInt32 AdjustWindowPositionToWorkArea(PointInt32 position, SizeInt32 size, Rectangle? workArea = null)
+        public static PointInt32 AdjustWindowPositionToWorkArea(PointInt32 position, SizeInt32 size, RectInt32? workArea = null)
         {
             var workAreaRect = workArea ?? NativeHelper.GetWorkAreaRectangle(out _, out _);
             int deltaX = 0;
             int deltaY = 0;
 
             // Adjust horisontal position
-            if (position.X < workAreaRect.Left)
+            if (position.X < workAreaRect.X)
             {
-                deltaX = workAreaRect.Left - position.X;
+                deltaX = workAreaRect.X - position.X;
             }
-            if (position.Y < workAreaRect.Top)
+            if (position.Y < workAreaRect.Y)
             {
-                deltaY = workAreaRect.Top - position.Y;
+                deltaY = workAreaRect.Y - position.Y;
             }
 
             // Adjust vertical position
-            if (position.X + size.Width > workAreaRect.Right)
+            if (position.X + size.Width > workAreaRect.X + workAreaRect.Width)
             {
-                deltaX = workAreaRect.Right - position.X - size.Width;
+                deltaX = workAreaRect.X + workAreaRect.Width - position.X - size.Width;
             }
-            if (position.Y + size.Height > workAreaRect.Bottom)
+            if (position.Y + size.Height > workAreaRect.Y + workAreaRect.Height)
             {
-                deltaY = workAreaRect.Bottom - position.Y - size.Height;
+                deltaY = workAreaRect.Y + workAreaRect.Height - position.Y - size.Height;
             }
 
             // return new position only if there is enough space
@@ -247,8 +246,8 @@ namespace Rememory.Views
                         workArea,
                         scaledWidth,
                         scaledHeight,
-                        (int)(workArea.Right - independedWidth - independedMarginX),
-                        (int)(workArea.Bottom - independedHeight - independedMarginY));
+                        (int)(workArea.X + workArea.Width - independedWidth - independedMarginX),
+                        (int)(workArea.Y + workArea.Height - independedHeight - independedMarginY));
                     break;
                 case ClipboardWindowPosition.Cursor:
                     NativeHelper.GetCursorPos(out var cursorPos);
@@ -257,17 +256,17 @@ namespace Rememory.Views
                     break;
                 case ClipboardWindowPosition.ScreenCenter:
                     this.MoveAndResize(
-                        workArea.Left + (workArea.Width - independedWidth) / 2,
-                        workArea.Top + (workArea.Height - independedHeight) / 2,
+                        workArea.X + (workArea.Width - independedWidth) / 2,
+                        workArea.Y + (workArea.Height - independedHeight) / 2,
                         scaledWidth,
                         scaledHeight);
                     break;
                 case ClipboardWindowPosition.LastPosition:
                     // Check if last position is out of work area
-                    if (AppWindow.Position.X >= workArea.Left
-                        && AppWindow.Position.X - independedWidth <= workArea.Right
-                        && AppWindow.Position.Y >= workArea.Top
-                        && AppWindow.Position.Y - independedHeight <= workArea.Bottom)
+                    if (AppWindow.Position.X >= workArea.X
+                        && AppWindow.Position.X - independedWidth <= workArea.X + workArea.Width
+                        && AppWindow.Position.Y >= workArea.Y
+                        && AppWindow.Position.Y - independedHeight <= workArea.Y + workArea.Height)
                     {
                         this.MoveAndResize(
                             AppWindow.Position.X,
@@ -278,66 +277,64 @@ namespace Rememory.Views
                     else
                     {
                         this.MoveAndResize(
-                            workArea.Left + (workArea.Width - independedWidth) / 2,
-                            workArea.Top + (workArea.Height - independedHeight) / 2,
+                            workArea.X + (workArea.Width - independedWidth) / 2,
+                            workArea.Y + (workArea.Height - independedHeight) / 2,
                             scaledWidth,
                             scaledHeight);
                     }
                     break;
                 case ClipboardWindowPosition.Right:
                     this.MoveAndResize(
-                        workArea.Right - independedWidth - independedMarginX,
-                        workArea.Top + independedMarginY,
+                        workArea.X + workArea.Width - independedWidth - independedMarginX,
+                        workArea.Y + independedMarginY,
                         scaledWidth,
                         (workArea.Height - 2 * independedMarginY) / dpiScaleY);
                     break;
                 case ClipboardWindowPosition.RightCorner:
                     this.MoveAndResize(
-                        workArea.Right - independedWidth - independedMarginX,
-                        workArea.Bottom - independedHeight - independedMarginY,
+                        workArea.X + workArea.Width - independedWidth - independedMarginX,
+                        workArea.Y + workArea.Height - independedHeight - independedMarginY,
                         scaledWidth,
                         scaledHeight);
                     break;
             }
         }
 
-        private void PositionWindowRelativeToCaret(Rectangle workArea, int windowWidth, int windowHeight, int defaultPositionX, int defaultPositionY)
+        private void PositionWindowRelativeToCaret(RectInt32 workArea, int windowWidth, int windowHeight, int defaultPositionX, int defaultPositionY)
         {
             int x = defaultPositionX;
             int y = defaultPositionY;
 
-            TextBoxCaretHelper.GetCaretPosition(out var caretRect);
-
-            if (!caretRect.IsEmpty)
+            if (TextBoxCaretHelper.GetCaretPosition(out var caretRect))
             {
-                if (workArea.Right - caretRect.Right > windowWidth)
+                if (workArea.X + workArea.Width - (caretRect.X + caretRect.Width) > windowWidth)
                 {
-                    x = caretRect.Right;
+                    x = caretRect.X + caretRect.Width;
                 }
-                else if (workArea.Right - caretRect.Left > windowWidth)
+                else if (workArea.X + workArea.Width - caretRect.X > windowWidth)
                 {
-                    x = caretRect.Left;
+                    x = caretRect.X;
                 }
                 else
                 {
-                    x = workArea.Right - windowWidth;
+                    x = workArea.X + workArea.Width - windowWidth;
                 }
 
-                if (workArea.Bottom - caretRect.Bottom > windowHeight)
+                if (workArea.Y + workArea.Height - (caretRect.Y + caretRect.Height) > windowHeight)
                 {
-                    y = caretRect.Bottom;
+                    y = caretRect.Y + caretRect.Height;
                 }
-                else if (caretRect.Top - workArea.Top > windowHeight)
+                else if (caretRect.Y - workArea.Y > windowHeight)
                 {
-                    y = caretRect.Top - windowHeight;
+                    y = caretRect.Y - windowHeight;
                 }
-                else if (workArea.Bottom - caretRect.Top > windowHeight)
+                else if (workArea.Y + workArea.Height - caretRect.Y > windowHeight)
                 {
-                    y = caretRect.Top;
+                    y = caretRect.Y;
                 }
                 else
                 {
-                    y = workArea.Bottom - windowHeight;
+                    y = workArea.Y + workArea.Height - windowHeight;
                 }
             }
 
