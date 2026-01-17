@@ -30,8 +30,32 @@ Get Rememory today and never lose track of copied information again!
 
 [Privacy Policy](./PRIVACY.md)
 
-## Translation
+## Localization Status
 
 [![Crowdin](https://badges.crowdin.net/rememory/localized.svg)](https://crowdin.com/project/rememory)
 
+### Supported Languages
+
+These languages are fully translated and ready to use:
+
+* Arabic
+* Chinese Simplified
+* French
+* German
+* Korean
+* Portuguese
+* Ukrainian
+
+### Help Needed
+
+We are looking for contributors to help finish the translations for the following languages:
+
+* Greek
+* Italian
+* Japanese
+* Polish
+* Spanish
+* Turkish
+
 [Translate the project on Crowdin](https://crowdin.com/project/rememory)
+
