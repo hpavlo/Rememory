@@ -227,14 +227,14 @@ namespace Rememory.Views
             double dpiScaleX = dpiX / 96.0;   // 96 is a default DPI (scale 100%)
             double dpiScaleY = dpiY / 96.0;
 
-            int scaledWidth = SettingsContext.WindowWidth;
-            int scaledHeight = SettingsContext.WindowHeight;
-            int scaledMargin = SettingsContext.WindowMargin;
+            int windowWidth = SettingsContext.WindowWidth;
+            int windowHeight = SettingsContext.WindowHeight;
+            int windowMargin = SettingsContext.WindowMargin;
 
-            double independedWidth = scaledWidth * dpiScaleX;
-            double independedHeight = scaledHeight * dpiScaleY;
-            double independedMarginX = scaledMargin * dpiScaleX;
-            double independedMarginY = scaledMargin * dpiScaleY;
+            double independedWidth = windowWidth * dpiScaleX;
+            double independedHeight = windowHeight * dpiScaleY;
+            double independedMarginX = windowMargin * dpiScaleX;
+            double independedMarginY = windowMargin * dpiScaleY;
 
             //this.AppWindow.MoveAndResize - requires restart after DPI update, width and height depends on DPI
             //this.MoveAndResize - don't require restart after DPI update
@@ -242,24 +242,25 @@ namespace Rememory.Views
             switch (SettingsContext.WindowPosition)
             {
                 case ClipboardWindowPosition.Caret:
-                    PositionWindowRelativeToCaret(
+                    var caretPosition = GetPositionWindowRelativeToCaret(
                         workArea,
-                        scaledWidth,
-                        scaledHeight,
+                        (int)independedWidth,
+                        (int)independedHeight,
                         (int)(workArea.X + workArea.Width - independedWidth - independedMarginX),
                         (int)(workArea.Y + workArea.Height - independedHeight - independedMarginY));
+                    this.MoveAndResize(caretPosition.X, caretPosition.Y, windowWidth, windowHeight);
                     break;
                 case ClipboardWindowPosition.Cursor:
                     NativeHelper.GetCursorPos(out var cursorPos);
-                    var newPos = AdjustWindowPositionToWorkArea(cursorPos, new((int)independedWidth, (int)independedHeight), workArea);
-                    this.MoveAndResize(newPos.X, newPos.Y, scaledWidth, scaledHeight);
+                    var newcursorPositionPos = AdjustWindowPositionToWorkArea(cursorPos, AppWindow.Size, workArea);
+                    this.MoveAndResize(newcursorPositionPos.X, newcursorPositionPos.Y, windowWidth, windowHeight);
                     break;
                 case ClipboardWindowPosition.ScreenCenter:
                     this.MoveAndResize(
                         workArea.X + (workArea.Width - independedWidth) / 2,
                         workArea.Y + (workArea.Height - independedHeight) / 2,
-                        scaledWidth,
-                        scaledHeight);
+                        windowWidth,
+                        windowHeight);
                     break;
                 case ClipboardWindowPosition.LastPosition:
                     // Check if last position is out of work area
@@ -271,74 +272,74 @@ namespace Rememory.Views
                         this.MoveAndResize(
                             AppWindow.Position.X,
                             AppWindow.Position.Y,
-                            scaledWidth,
-                            scaledHeight);
+                            windowWidth,
+                            windowHeight);
                     }
                     else
                     {
                         this.MoveAndResize(
                             workArea.X + (workArea.Width - independedWidth) / 2,
                             workArea.Y + (workArea.Height - independedHeight) / 2,
-                            scaledWidth,
-                            scaledHeight);
+                            windowWidth,
+                            windowHeight);
                     }
                     break;
                 case ClipboardWindowPosition.Right:
                     this.MoveAndResize(
                         workArea.X + workArea.Width - independedWidth - independedMarginX,
                         workArea.Y + independedMarginY,
-                        scaledWidth,
+                        windowWidth,
                         (workArea.Height - 2 * independedMarginY) / dpiScaleY);
                     break;
                 case ClipboardWindowPosition.RightCorner:
                     this.MoveAndResize(
                         workArea.X + workArea.Width - independedWidth - independedMarginX,
                         workArea.Y + workArea.Height - independedHeight - independedMarginY,
-                        scaledWidth,
-                        scaledHeight);
+                        windowWidth,
+                        windowHeight);
                     break;
             }
         }
 
-        private void PositionWindowRelativeToCaret(RectInt32 workArea, int windowWidth, int windowHeight, int defaultPositionX, int defaultPositionY)
+        private PointInt32 GetPositionWindowRelativeToCaret(RectInt32 workArea, int independedWidth, int independedHeight, int defaultPositionX, int defaultPositionY)
         {
             int x = defaultPositionX;
             int y = defaultPositionY;
 
             if (TextBoxCaretHelper.GetCaretPosition(out var caretRect))
             {
-                if (workArea.X + workArea.Width - (caretRect.X + caretRect.Width) > windowWidth)
+                if (workArea.X + workArea.Width - (caretRect.X + caretRect.Width) > independedWidth)
                 {
                     x = caretRect.X + caretRect.Width;
                 }
-                else if (workArea.X + workArea.Width - caretRect.X > windowWidth)
+                else if (workArea.X + workArea.Width - caretRect.X > independedWidth)
                 {
                     x = caretRect.X;
                 }
                 else
                 {
-                    x = workArea.X + workArea.Width - windowWidth;
+                    x = workArea.X + workArea.Width - independedWidth;
                 }
 
-                if (workArea.Y + workArea.Height - (caretRect.Y + caretRect.Height) > windowHeight)
+                if (workArea.Y + workArea.Height - (caretRect.Y + caretRect.Height) > independedHeight)
                 {
                     y = caretRect.Y + caretRect.Height;
                 }
-                else if (caretRect.Y - workArea.Y > windowHeight)
+                else if (caretRect.Y - workArea.Y > independedHeight)
                 {
-                    y = caretRect.Y - windowHeight;
+                    y = caretRect.Y - independedHeight;
                 }
-                else if (workArea.Y + workArea.Height - caretRect.Y > windowHeight)
+                else if (workArea.Y + workArea.Height - caretRect.Y > independedHeight)
                 {
                     y = caretRect.Y;
                 }
                 else
                 {
-                    y = workArea.Y + workArea.Height - windowHeight;
+                    y = workArea.Y + workArea.Height - independedHeight;
                 }
             }
 
-            this.MoveAndResize(x, y, windowWidth, windowHeight);
+            return new(x, y);
         }
     }
 
