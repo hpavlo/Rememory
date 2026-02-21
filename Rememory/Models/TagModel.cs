@@ -1,29 +1,53 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.WinUI.Helpers;
 using Microsoft.UI.Xaml.Media;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace Rememory.Models
 {
-    public partial class TagModel(string name, SolidColorBrush colorBrush, bool isCleaningEnabled) : ObservableObject
+    public partial class TagModel : ObservableObject
     {
         public int Id { get; set; }
 
-        private string _name = name;
+        private string _name = string.Empty;
         public string Name
         {
             get => _name;
             set => SetProperty(ref _name, value);
         }
 
-        private SolidColorBrush _colorBrush = colorBrush;
-        public SolidColorBrush ColorBrush
+        private string _colorHex = string.Empty;
+        public string ColorHex
         {
-            get => _colorBrush;
-            set => SetProperty(ref _colorBrush, value);
+            get => _colorHex;
+            set
+            {
+                if (SetProperty(ref _colorHex, value))
+                {
+                    if (App.Current.DispatcherQueue.HasThreadAccess)
+                    {
+                        // Already on UI thread, run directly
+                        ColorBrush = new SolidColorBrush(_colorHex.ToColor());
+                    }
+                    else
+                    {
+                        // Not on UI thread, enqueue
+                        App.Current.DispatcherQueue.TryEnqueue(() => ColorBrush = new SolidColorBrush(_colorHex.ToColor()));
+                    }
+                }
+            }
         }
 
-        private bool _isCleaningEnabled = isCleaningEnabled;
+        private SolidColorBrush? _colorBrush;
+        public SolidColorBrush? ColorBrush
+        {
+            get => _colorBrush;
+            private set => SetProperty(ref _colorBrush, value);
+        }
+
+        private bool _isCleaningEnabled;
+
         public bool IsCleaningEnabled
         {
             get => _isCleaningEnabled;
@@ -33,6 +57,13 @@ namespace Rememory.Models
         public IList<ClipModel> Clips { get; set; } = [];
 
         public int ClipsCount => Clips.Count;
+
+        public TagModel(string name, string colorHex, bool isCleaningEnabled)
+        {
+            Name = name;
+            ColorHex = colorHex;
+            IsCleaningEnabled = isCleaningEnabled;
+        }
 
         public void TogglePropertyUpdate([CallerMemberName] string propertyName = "")
         {

@@ -1,3 +1,4 @@
+using CommunityToolkit.WinUI.Helpers;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Rememory.Helper;
@@ -42,7 +43,7 @@ namespace Rememory.Views.Settings
 
             if (dialogResult == ContentDialogResult.Primary)
             {
-                ViewModel.AddTag(dialogContent.TagName, dialogContent.SelectedColor, dialogContent.IsCleaningEnabled);
+                ViewModel.AddTag(dialogContent.TagName, dialogContent.SelectedColor.Color.ToHex(), dialogContent.IsCleaningEnabled);
             }
         }
 
@@ -61,7 +62,7 @@ namespace Rememory.Views.Settings
 
             if (dialogResult == ContentDialogResult.Primary)
             {
-                ViewModel.EditTag(tag, dialogContent.TagName, dialogContent.SelectedColor, dialogContent.IsCleaningEnabled);
+                ViewModel.EditTag(tag, dialogContent.TagName, dialogContent.SelectedColor.Color.ToHex(), dialogContent.IsCleaningEnabled);
             }
         }
     }

@@ -699,6 +699,10 @@
                             Command="{x:Bind ViewModel.EditClipCommand}"
                             Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
                             Icon="{tk:FontIcon Glyph=&#xE70F;}" />
+            <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_Export"
+                            CommandParameter="{Binding}"
+                            Command="{x:Bind ViewModel.ExportClipCommand}"
+                            Icon="{tk:FontIcon Glyph=&#xEDE2;}" />
             <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_Delete"
                             KeyboardAcceleratorTextOverride="Shift+Delete"
                             CommandParameter="{Binding}"
@@ -767,6 +771,10 @@
                             Command="{x:Bind ViewModel.CopyClipsCommand}"
                             Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
                             Icon="{tk:FontIcon Glyph=&#xE8C8;}" />
+            <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_Export"
+                            CommandParameter="{x:Bind OrderedSelectedClips, Mode=OneWay}"
+                            Command="{x:Bind ViewModel.ExportClipsCommand}"
+                            Icon="{tk:FontIcon Glyph=&#xEDE2;}" />
             <MenuFlyoutItem x:Uid="/Clipboard/Clip_ContextMenu_Delete"
                             CommandParameter="{x:Bind OrderedSelectedClips, Mode=OneWay}"
                             Command="{x:Bind ViewModel.DeleteClipsCommand}"

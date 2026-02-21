@@ -12,6 +12,8 @@ namespace Rememory.Helper
     /// </summary>
     public class TextBoxCaretHelper
     {
+        private static readonly IUIAutomation _uiAutomation = new CUIAutomation();
+
         public static bool GetCaretPosition(out RectInt32 rect)
         {
             rect = new RectInt32();
@@ -56,8 +58,7 @@ namespace Rememory.Helper
 
             try
             {
-                IUIAutomation uiAutomation = new CUIAutomation();
-                IUIAutomationElement focusedElement = uiAutomation.GetFocusedElement();
+                IUIAutomationElement focusedElement = _uiAutomation.GetFocusedElement();
 
                 if (focusedElement is null)
                 {

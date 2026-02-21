@@ -1,11 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.UI.Xaml.Media;
 using Rememory.Contracts;
 using Rememory.Models;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace Rememory.ViewModels.Settings
 {
@@ -22,16 +20,16 @@ namespace Rememory.ViewModels.Settings
             Tags = [.. _tagService.Tags];
         }
 
-        public void AddTag(string name, SolidColorBrush colorBrush, bool isCleaningEnabled)
+        public void AddTag(string name, string colorHex, bool isCleaningEnabled)
         {
-            _tagService.RegisterTag(name.Trim(), colorBrush, isCleaningEnabled);
-            Tags.Add(_tagService.Tags.Where(t => t.Name.Equals(name.Trim())).First());
+            var tag = _tagService.RegisterTag(name.Trim(), colorHex, isCleaningEnabled);
+            Tags.Add(tag);
         }
 
-        public void EditTag(TagModel tag, string name, SolidColorBrush colorBrush, bool isCleaningEnabled)
+        public void EditTag(TagModel tag, string name, string colorHex, bool isCleaningEnabled)
         {
             tag.Name = name.Trim();
-            tag.ColorBrush = colorBrush;
+            tag.ColorHex = colorHex;
             tag.IsCleaningEnabled = isCleaningEnabled;
             _tagService.UpdateTag(tag);
         }

@@ -6,7 +6,7 @@
       xmlns:tk="using:CommunityToolkit.WinUI"
       xmlns:tkcontrols="using:CommunityToolkit.WinUI.Controls">
     <ScrollViewer Padding="56,20,56,5">
-        <StackPanel>
+        <StackPanel Padding="0,0,0,28">
             <tkcontrols:SettingsCard Margin="0,0,0,5"
                                      Header="{x:Bind AppName}"
                                      HeaderIcon="{tk:FontIcon Glyph=&#xE946;}">

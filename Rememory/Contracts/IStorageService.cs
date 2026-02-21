@@ -2,6 +2,7 @@
 using Rememory.Models.Metadata;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Rememory.Contracts
 {
@@ -21,7 +22,8 @@ namespace Rememory.Contracts
         /// Adds a new owner record to the storage. The Id property of the owner object might be updated after insertion.
         /// </summary>
         /// <param name="owner">The <see cref="OwnerModel"/> object to add.</param>
-        void AddOwner(OwnerModel owner);
+        /// <returns>Owner id.</returns>
+        int AddOwner(OwnerModel owner);
 
         /// <summary>
         /// Updates an existing owner record in the storage based on its Id.
@@ -41,19 +43,21 @@ namespace Rememory.Contracts
         /// <param name="owners">A dictionary of pre-loaded owners (Id -> OwnerModel) used to efficiently associate clips with their owners during retrieval.</param>
         /// <param name="tags">A list of pre-loaded tags used to efficiently associate clips with their tags during retrieval.</param>
         /// <returns>An enumerable collection of <see cref="ClipModel"/>, including associated data, tags and owner information.</returns>
-        IEnumerable<ClipModel> GetClips(Dictionary<int, OwnerModel> owners, IList<TagModel> tags);
+        IEnumerable<ClipModel> GetClips(IEnumerable<OwnerModel> owners, IEnumerable<TagModel> tags);
 
         /// <summary>
         /// Adds a new clip record to the storage, including its associated data formats. The Id property of the clip object might be updated after insertion.
         /// </summary>
         /// <param name="clip">The <see cref="ClipModel"/> object to add.</param>
-        void AddClip(ClipModel clip);
+        /// <returns>Clip id.</returns>
+        int AddClip(ClipModel clip, int? ownerId);
 
         /// <summary>
         /// Updates an existing clip record in the storage (e.g., IsFavorite status, associated OwnerId) based on its Id.
         /// </summary>
         /// <param name="clip">The <see cref="ClipModel"/> object with updated information.</param>
-        void UpdateClip(ClipModel clip);
+        /// <param name="ownerId">Owner id we should save to clip.</param>
+        void UpdateClip(ClipModel clip, int? ownerId);
 
         /// <summary>
         /// Deletes a clip record from the storage using its unique identifier. Associated data might also be deleted depending on implementation or database constraints.
@@ -90,7 +94,8 @@ namespace Rememory.Contracts
         /// Adds a new tag to the database and assigns it an ID.
         /// </summary>
         /// <param name="tag">The tag to add.</param>
-        void AddTag(TagModel tag);
+        /// <returns>Tag id.</returns>
+        int AddTag(TagModel tag);
 
         /// <summary>
         /// Updates an existing tag's name in the database.
@@ -107,9 +112,8 @@ namespace Rememory.Contracts
         /// <summary>
         /// Associates a clip with a tag in the database.
         /// </summary>
-        /// <param name="clipId">The clip's ID.</param>
-        /// <param name="tagId">The tag's ID.</param>
-        void AddClipTag(int clipId, int tagId);
+        /// <param name="clipTags">collection of clip id and tag id pair to add.</param>
+        void AddClipTags(IEnumerable<(int ClipId, int TagId)> clipTags);
 
         /// <summary>
         /// Removes the association between a clip and a tag from the database.
@@ -138,5 +142,11 @@ namespace Rememory.Contracts
         /// <param name="filesMetadata">The <see cref="FilesMetadataModel"/> containing the metadata to add.</param>
         /// <param name="dataId">The unique identifier of the <see cref="DataModel"/> item to which this metadata belongs.</param>
         void AddFilesMetadata(FilesMetadataModel filesMetadata, int dataId);
+
+        /// <summary>
+        /// Save clips with all related data to DB.
+        /// </summary>
+        /// <param name="clips">Clips to save.</param>
+        Task<bool> ExportClipsAsync(IEnumerable<ClipModel> clips);
     }
 }

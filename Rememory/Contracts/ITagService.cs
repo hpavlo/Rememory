@@ -1,5 +1,4 @@
-﻿using Microsoft.UI.Xaml.Media;
-using Rememory.Models;
+﻿using Rememory.Models;
 using System;
 using System.Collections.Generic;
 
@@ -30,9 +29,10 @@ namespace Rememory.Contracts
         /// Registers a new tag by adding it to the collection and storing it in the database.
         /// </summary>
         /// <param name="name">The name of the tag to register.</param>
-        /// <param name="colorBrush">Tag color brush.</param>
+        /// <param name="colorHex">Tag color HEX.</param>
         /// <param name="isCleaningEnabled">If checked, old clips with this tag will be cleaned up.</param>
-        void RegisterTag(string name, SolidColorBrush colorBrush, bool isCleaningEnabled);
+        /// <returns>New registered tag model</returns>
+        TagModel RegisterTag(string name, string colorHex, bool isCleaningEnabled);
 
         /// <summary>
         /// Unregisters a tag by removing its association with clips and deleting it from storage.

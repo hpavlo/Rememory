@@ -444,6 +444,30 @@
   <data name="Storage_EraseDataFlyoutButton.Content" xml:space="preserve">
     <value>Yes, delete all data</value>
   </data>
+  <data name="Storage_BackupSection.Text" xml:space="preserve">
+    <value>Backup</value>
+  </data>
+  <data name="Storage_ExportClips.Header" xml:space="preserve">
+    <value>Export clipboard history</value>
+  </data>
+  <data name="Storage_ExportClips.Description" xml:space="preserve">
+    <value>Save all clips to a backup file. This process may take a few minutes</value>
+  </data>
+  <data name="Storage_ExportButton.Content" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="Storage_ImportClips.Header" xml:space="preserve">
+    <value>Import clips from backup file</value>
+  </data>
+  <data name="Storage_ImportClips.Description" xml:space="preserve">
+    <value>Restore clips from a backup file. Depending on file size, this may take some time</value>
+  </data>
+  <data name="Storage_ImportButton.Content" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="Storage_ImportWarning.Message" xml:space="preserve">
+    <value>Importing older data may cause some clips to be removed if they fall outside the retention period or exceed the maximum clip limit</value>
+  </data>
   <data name="Storage_CleanupSection.Text" xml:space="preserve">
     <value>Cleanup</value>
   </data>

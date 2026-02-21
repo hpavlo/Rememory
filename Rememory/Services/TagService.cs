@@ -1,5 +1,4 @@
-﻿using Microsoft.UI.Xaml.Media;
-using Rememory.Contracts;
+﻿using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Models;
 using System;
@@ -23,12 +22,13 @@ namespace Rememory.Services
             Tags = ReadTagsFromStorage();
         }
 
-        public void RegisterTag(string name, SolidColorBrush colorBrush, bool isCleaningEnabled)
+        public TagModel RegisterTag(string name, string colorHex, bool isCleaningEnabled)
         {
-            TagModel tag = new(name, colorBrush, isCleaningEnabled);
+            TagModel tag = new(name, colorHex, isCleaningEnabled);
             Tags.Add(tag);
             _storageService.AddTag(tag);
             OnTagRegistered(tag);
+            return tag;
         }
 
         public void UnregisterTag(TagModel tag)
@@ -57,7 +57,7 @@ namespace Rememory.Services
                 tag.Clips.Add(clip);
                 clip.TogglePropertyUpdate(nameof(clip.HasTags));
                 tag.TogglePropertyUpdate(nameof(tag.ClipsCount));
-                _storageService.AddClipTag(clip.Id, tag.Id);
+                _storageService.AddClipTags([(clip.Id, tag.Id)]);
             }
         }
 

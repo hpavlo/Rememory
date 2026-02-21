@@ -36,9 +36,9 @@ namespace Rememory.Contracts
         event EventHandler<ClipboardEventArgs> ClipDeleted;
 
         /// <summary>
-        /// Occurs when all clips have been deleted from the collection.
+        /// Occurs when clips collection has been updated.
         /// </summary>
-        event EventHandler<ClipboardEventArgs> AllClipsDeleted;
+        event EventHandler<ClipboardEventArgs> ClipsCollectionChanged;
 
         /// <summary>
         /// Gets the in-memory list of tracked clips (<see cref="ClipModel"/>).
@@ -59,6 +59,12 @@ namespace Rememory.Contracts
         /// </summary>
         /// <param name="clip">The new clip model to add.</param>
         void AddClip(ClipModel clip);
+
+        /// <summary>
+        /// Insert new clips to main collection and sort them
+        /// </summary>
+        /// <param name="clips">Clips to insert</param>
+        void InsertClips(IEnumerable<ClipModel> clips);
 
         /// <summary>
         /// Moves the specified existing clip to the beginning (top) of the collection

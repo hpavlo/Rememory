@@ -6,8 +6,9 @@
       xmlns:tk="using:CommunityToolkit.WinUI"
       xmlns:tkcontrols="using:CommunityToolkit.WinUI.Controls"
       DataContext="{x:Bind ViewModel}">
+    
     <ScrollViewer Padding="56,20,56,5">
-        <StackPanel>
+        <StackPanel Padding="0,0,0,28">
             <TextBlock x:Uid="/Settings/Metadata_LinkPreviewSection"
                        Margin="0,8,0,8"
                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"

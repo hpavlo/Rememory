@@ -118,20 +118,25 @@ namespace Rememory
             ApplicationLanguages.PrimaryLanguageOverride = culture;
         }
 
-        private static IServiceProvider ConfigureServices()
+        private static ServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
 
             services.AddSingleton<ClipboardMonitor>();
             services.AddSingleton<IKeyboardMonitor, KeyboardMonitor>();
             services.AddSingleton<IClipboardService, ClipboardService>();
-            services.AddSingleton<IStorageService, SqliteService>();
+            services.AddSingleton<IStorageService>(sp =>
+            {
+                var monitor = sp.GetRequiredService<ClipboardMonitor>();
+                return SqliteService.CreateMain(monitor.HistoryFolderPath);
+            });
             services.AddSingleton<ISearchService, SearchService>();
             services.AddSingleton<ILinkPreviewService, LinkPreviewService>();
             services.AddSingleton<ICleanupDataService, CleanupDataService>();
             services.AddSingleton<IThemeService, ThemeService>();
             services.AddSingleton<IOwnerService, OwnerService>();
             services.AddSingleton<ITagService, TagService>();
+            services.AddSingleton<IClipTransferService, ClipTransferService>();
             services.AddTransient<IStartupService, TaskSchedulerStartupService>();
 
             return services.BuildServiceProvider();

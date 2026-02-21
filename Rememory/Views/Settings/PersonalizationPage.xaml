@@ -13,7 +13,7 @@
     </Page.Resources>
 
     <ScrollViewer Padding="56,20,56,5">
-        <StackPanel>
+        <StackPanel Padding="0,0,0,28">
             <tkcontrols:SettingsCard x:Uid="/Settings/Personalization_AppTheme"
                                      Margin="0,0,0,5"
                                      HeaderIcon="{tk:FontIcon Glyph=&#xE790;}">

@@ -17,7 +17,7 @@
     </Page.Resources>
 
     <ScrollViewer Padding="56,20,56,5">
-        <StackPanel>
+        <StackPanel Padding="0,0,0,28">
             <tkcontrols:SettingsExpander x:Uid="/Settings/Filters_OwnerFilters"
                                          HeaderIcon="{tk:FontIcon Glyph=&#xE71C;}"
                                          IsExpanded="True">

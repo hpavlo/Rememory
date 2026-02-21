@@ -25,7 +25,7 @@ namespace Rememory.Services
         public event EventHandler<ClipboardEventArgs>? ClipMovedToTop;
         public event EventHandler<ClipboardEventArgs>? FavoriteClipChanged;
         public event EventHandler<ClipboardEventArgs>? ClipDeleted;
-        public event EventHandler<ClipboardEventArgs>? AllClipsDeleted;
+        public event EventHandler<ClipboardEventArgs>? ClipsCollectionChanged;
 
         public SettingsContext SettingsContext => SettingsContext.Instance;
 
@@ -73,7 +73,7 @@ namespace Rememory.Services
         public void AddClip(ClipModel clip)
         {
             Clips.Insert(0, clip);
-            _storageService.AddClip(clip);
+            _storageService.AddClip(clip, GetNonEmptyOwnerId(clip));   // Don't save empty owner id
 
             if (clip.Data.TryGetValue(ClipboardFormat.Text, out var textData))
             {
@@ -111,10 +111,21 @@ namespace Rememory.Services
             }
         }
 
+        public void InsertClips(IEnumerable<ClipModel> clips)
+        {
+            foreach (var clip in clips)
+            {
+                Clips.Add(clip);
+            }
+
+            Clips = [.. Clips.OrderByDescending(c => c.ClipTime)];
+            OnClipsCollectionChanged(Clips);
+        }
+
         public void MoveClipToTop(ClipModel clip)
         {
             clip.ClipTime = DateTime.Now;
-            _storageService.UpdateClip(clip);
+            _storageService.UpdateClip(clip, GetNonEmptyOwnerId(clip));
 
             // Move the clip only if it's not on the top
             if (Clips.First() != clip)
@@ -128,7 +139,7 @@ namespace Rememory.Services
         public void ToggleClipFavorite(ClipModel clip)
         {
             clip.IsFavorite = !clip.IsFavorite;
-            _storageService.UpdateClip(clip);
+            _storageService.UpdateClip(clip, GetNonEmptyOwnerId(clip));
             OnFavoriteClipChanged(Clips, clip);
         }
 
@@ -225,7 +236,7 @@ namespace Rememory.Services
             _ownerService.UnregisterAllOwners();
             ClipboardFormatHelper.ClearAllExternalData();
 
-            OnAllClipsDeleted(Clips);
+            OnClipsCollectionChanged(Clips);
         }
 
         protected virtual void OnNewClipAdded(IList<ClipModel> clips, ClipModel newClip)
@@ -244,16 +255,16 @@ namespace Rememory.Services
         {
             ClipDeleted?.Invoke(this, new(clips, newClip));
         }
-        protected virtual void OnAllClipsDeleted(IList<ClipModel> clips)
+        protected virtual void OnClipsCollectionChanged(IList<ClipModel> clips)
         {
-            AllClipsDeleted?.Invoke(this, new(clips));
+            ClipsCollectionChanged?.Invoke(this, new(clips));
         }
 
         private IList<ClipModel> ReadClipsFromStorage()
         {
             try
             {
-                return [.. _storageService.GetClips(_ownerService.Owners.Values.ToDictionary(o => o.Id), _tagService.Tags)];
+                return [.. _storageService.GetClips(_ownerService.Owners.Values, _tagService.Tags)];
             }
             catch
             {
@@ -348,7 +359,7 @@ namespace Rememory.Services
                     toMove.Owner = newClip.Owner;   // newClip.Owner is already registered
                 }
 
-                _storageService.UpdateClip(toMove);
+                _storageService.UpdateClip(toMove, GetNonEmptyOwnerId(toMove));
                 newClip.Owner = null;
                 newClip.ClearExternalDataFiles();
 
@@ -382,6 +393,8 @@ namespace Rememory.Services
 
             BriefMessageWindow.ShowBriefMessage(iconGlyph);
         }
+
+        private static int? GetNonEmptyOwnerId(ClipModel clip) => clip.Owner?.Id != 0 ? clip.Owner?.Id : null;
 
         [GeneratedRegex(@"^#([a-fA-F0-9]{8}|[a-fA-F0-9]{6}|[a-fA-F0-9]{4}|[a-fA-F0-9]{3})$")]
         private static partial Regex HexColorRegex();

@@ -25,7 +25,17 @@ namespace Rememory.Models
                 if (_icon != value)
                 {
                     _icon = value;
-                    IconBitmap = _icon is null ? null : BitmapHelper.GetBitmapFromBytes(_icon);
+
+                    if (App.Current.DispatcherQueue.HasThreadAccess)
+                    {
+                        // Already on UI thread, run directly
+                        UpdateIconBitmap(_icon);
+                    }
+                    else
+                    {
+                        // Not on UI thread, enqueue
+                        App.Current.DispatcherQueue.TryEnqueue(() => UpdateIconBitmap(_icon));
+                    }
                 }
             }
         }
@@ -38,5 +48,10 @@ namespace Rememory.Models
         }
 
         public int ClipsCount { get; set; } = 0;
+
+        private void UpdateIconBitmap(byte[]? icon)
+        {
+            IconBitmap = icon is null ? null : BitmapHelper.GetBitmapFromBytes(icon);
+        }
     }
 }

@@ -16,7 +16,7 @@
 
     <ScrollViewer Padding="56,20,56,5">
         <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
+            <VisualStateGroup x:Name="MaxClipSize">
                 <VisualState x:Name="MaxClipSizeWarningEnabledState">
                     <VisualState.StateTriggers>
                         <tk:CompareStateTrigger Value="{x:Bind ViewModel.SettingsContext.MaxClipSize, Mode=OneWay}"
@@ -29,9 +29,98 @@
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
+
+            <VisualStateGroup x:Name="ExportStatus">
+                <VisualState x:Name="ExportDefaultState">
+                    <VisualState.StateTriggers>
+                        <tk:IsNullOrEmptyStateTrigger Value="{x:Bind ViewModel.IsExportedSuccessfully, Mode=OneWay}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ExportStatusInfoBadge.Visibility"
+                                Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="ExportedSuccessfullyState">
+                    <VisualState.StateTriggers>
+                        <tk:IsEqualStateTrigger Value="{x:Bind ViewModel.IsExportedSuccessfully, Mode=OneWay}"
+                                                To="True" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ExportStatusInfoBadge.Visibility"
+                                Value="Visible" />
+                        <Setter Target="ExportStatusInfoBadge.Style"
+                                Value="{ThemeResource SuccessIconInfoBadgeStyle}" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="ExportFailedState">
+                    <VisualState.StateTriggers>
+                        <tk:IsEqualStateTrigger Value="{x:Bind ViewModel.IsExportedSuccessfully, Mode=OneWay}"
+                                                To="False" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ExportStatusInfoBadge.Visibility"
+                                Value="Visible" />
+                        <Setter Target="ExportStatusInfoBadge.Style"
+                                Value="{ThemeResource CriticalIconInfoBadgeStyle}" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+
+            <VisualStateGroup x:Name="ImportStatus">
+                <VisualState x:Name="ImportDefaultState">
+                    <VisualState.StateTriggers>
+                        <tk:IsNullOrEmptyStateTrigger Value="{x:Bind ViewModel.IsImportedSuccessfully, Mode=OneWay}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ImportStatusInfoBadge.Visibility"
+                                Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="ImportedSuccessfullyState">
+                    <VisualState.StateTriggers>
+                        <tk:IsEqualStateTrigger Value="{x:Bind ViewModel.IsImportedSuccessfully, Mode=OneWay}"
+                                                To="True" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ImportStatusInfoBadge.Visibility"
+                                Value="Visible" />
+                        <Setter Target="ImportStatusInfoBadge.Style"
+                                Value="{ThemeResource SuccessIconInfoBadgeStyle}" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="ImportFailedState">
+                    <VisualState.StateTriggers>
+                        <tk:IsEqualStateTrigger Value="{x:Bind ViewModel.IsImportedSuccessfully, Mode=OneWay}"
+                                                To="False" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ImportStatusInfoBadge.Visibility"
+                                Value="Visible" />
+                        <Setter Target="ImportStatusInfoBadge.Style"
+                                Value="{ThemeResource CriticalIconInfoBadgeStyle}" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+
+            <VisualStateGroup x:Name="ImportWarningMessage">
+                <VisualState x:Name="WarningIsVisible">
+                    <VisualState.StateTriggers>
+                        <tk:IsEqualStateTrigger Value="{x:Bind ImportClipsWarningInfoBar.IsOpen, Mode=OneWay}"
+                                                To="True" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ImportClipsSettingsCard.CornerRadius"
+                                Value="4,4,0,0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <StackPanel>
+        <StackPanel Padding="0,0,0,28">
             <tkcontrols:SettingsCard x:Uid="/Settings/Storage_EraseData"
                                      Margin="0,0,0,5"
                                      HeaderIcon="{tk:FontIcon Glyph=&#xE75C;}">
@@ -41,6 +130,7 @@
                                VerticalAlignment="Center"
                                Visibility="Collapsed"
                                Style="{ThemeResource SuccessIconInfoBadgeStyle}" />
+
                     <Button x:Uid="/Settings/Storage_EraseDataButton">
                         <Button.Flyout>
                             <Flyout x:Name="EraseDataFlyout"
@@ -57,6 +147,65 @@
                 </StackPanel>
             </tkcontrols:SettingsCard>
 
+            <TextBlock x:Uid="/Settings/Storage_BackupSection"
+                       Margin="0,28,0,8"
+                       Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
+
+            <tkcontrols:SettingsCard x:Uid="/Settings/Storage_ExportClips"
+                                     Margin="0,0,0,5"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xEDE2;}">
+                <Grid ColumnSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <ProgressRing Grid.Column="0"
+                                  IsIndeterminate="True"
+                                  IsActive="{x:Bind ViewModel.IsExportInProgress, Mode=OneWay}"
+                                  Visibility="{x:Bind ViewModel.IsExportInProgress, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                    <InfoBadge x:Name="ExportStatusInfoBadge"
+                               Grid.Column="0"
+                               VerticalAlignment="Center" />
+
+                    <Button x:Uid="/Settings/Storage_ExportButton"
+                            Grid.Column="1"
+                            Command="{x:Bind ViewModel.ExportAllClipsCommand}" />
+                </Grid>
+            </tkcontrols:SettingsCard>
+
+            <tkcontrols:SettingsCard x:Name="ImportClipsSettingsCard"
+                                     x:Uid="/Settings/Storage_ImportClips"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xE8B5;}">
+                <Grid ColumnSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <ProgressRing Grid.Column="0"
+                                  IsIndeterminate="True"
+                                  IsActive="{x:Bind ViewModel.IsImportInProgress, Mode=OneWay}"
+                                  Visibility="{x:Bind ViewModel.IsImportInProgress, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                    <InfoBadge x:Name="ImportStatusInfoBadge"
+                               Grid.Column="0"
+                               VerticalAlignment="Center" />
+
+                    <Button x:Uid="/Settings/Storage_ImportButton"
+                            Grid.Column="1"
+                            Command="{x:Bind ViewModel.ImportClipsCommand}" />
+                </Grid>
+            </tkcontrols:SettingsCard>
+
+            <InfoBar x:Name="ImportClipsWarningInfoBar"
+                     x:Uid="/Settings/Storage_ImportWarning"
+                     BorderThickness="1,0,1,1"
+                     CornerRadius="0,0,4,4"
+                     IsClosable="False" />
+
             <TextBlock x:Uid="/Settings/Storage_CleanupSection"
                        Margin="0,28,0,8"
                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
@@ -66,7 +215,8 @@
                                          Margin="0,0,0,5"
                                          HeaderIcon="{tk:FontIcon Glyph=&#xE74E;}"
                                          IsExpanded="True">
-                <ComboBox SelectedIndex="{x:Bind ViewModel.CleanupType, Mode=TwoWay, Converter={StaticResource EnumToIndexConverter}}">
+                <ComboBox SelectedIndex="{x:Bind ViewModel.CleanupType, Mode=TwoWay, Converter={StaticResource EnumToIndexConverter}}"
+                          SelectionChanged="CleanupTypeComboBox_SelectionChanged">
                     <ComboBoxItem x:Uid="/Settings/Storage_CleanupType_RetentionPeriod" />
                     <ComboBoxItem x:Uid="/Settings/Storage_CleanupType_Quantity" />
                 </ComboBox>
@@ -75,7 +225,8 @@
                     <tkcontrols:SettingsCard x:Uid="/Settings/Storage_RetentionPeriod"
                                              IsEnabled="{x:Bind ViewModel.IsRetentionPeriodParametersEnabled, Mode=OneWay}"
                                              Visibility="{x:Bind ViewModel.IsRetentionPeriodParametersEnabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.CleanupTimeSpan, Mode=TwoWay, Converter={StaticResource EnumToIndexConverter}}">
+                        <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.CleanupTimeSpan, Mode=TwoWay, Converter={StaticResource EnumToIndexConverter}}"
+                                  SelectionChanged="RetentionPeriodComboBox_SelectionChanged">
                             <ComboBoxItem x:Uid="/Settings/Storage_RetentionPeriod_Daily" />
                             <ComboBoxItem x:Uid="/Settings/Storage_RetentionPeriod_Weekly" />
                             <ComboBoxItem x:Uid="/Settings/Storage_RetentionPeriod_Monthly" />
@@ -107,7 +258,7 @@
 
             <tkcontrols:SettingsExpander x:Uid="/Settings/Storage_SizeLimit"
                                          HeaderIcon="{tk:FontIcon Glyph=&#xE898;}"
-                                         IsExpanded="{x:Bind ViewModel.SettingsContext.IsClipSizeValidationEnabled, Mode=OneTime}">
+                                         IsExpanded="{x:Bind ViewModel.SettingsContext.IsClipSizeValidationEnabled, Mode=OneWay}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsClipSizeValidationEnabled, Mode=TwoWay}" />
 
                 <tkcontrols:SettingsExpander.Items>

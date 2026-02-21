@@ -47,7 +47,8 @@ namespace Rememory.Contracts
         /// <param name="clip">The clip being processed. Its <c>Owner</c> property will be set.</param>
         /// <param name="path">The path associated with the owner (e.g., application path). Can be null, often defaulted to an empty string for unknown owners.</param>
         /// <param name="icon">The icon associated with the owner. Can be null.</param>
-        void RegisterClipOwner(ClipModel clip, string? path, byte[]? icon);
+        /// <returns>New registered owner model</returns>
+        OwnerModel RegisterClipOwner(ClipModel clip, string? path, byte[]? icon);
 
         /// <summary>
         /// Decrements the internal clip count for the owner associated with the provided clip.

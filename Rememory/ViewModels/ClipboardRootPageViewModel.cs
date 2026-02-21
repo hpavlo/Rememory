@@ -7,6 +7,7 @@ using Rememory.Helper;
 using Rememory.Hooks;
 using Rememory.Models;
 using Rememory.Models.Metadata;
+using Rememory.Services;
 using Rememory.Views;
 using Rememory.Views.Editor;
 using Rememory.Views.Settings;
@@ -40,6 +41,7 @@ namespace Rememory.ViewModels
         private readonly ISearchService _searchService = App.Current.Services.GetService<ISearchService>()!;
         private readonly IOwnerService _ownerService = App.Current.Services.GetService<IOwnerService>()!;
         private readonly ITagService _tagService = App.Current.Services.GetService<ITagService>()!;
+        private readonly IClipTransferService _clipTransferService = App.Current.Services.GetService<IClipTransferService>()!;
         // Monitors
         private readonly ClipboardMonitor _clipboardMonitor = App.Current.Services.GetService<ClipboardMonitor>()!;
 
@@ -227,7 +229,7 @@ namespace Rememory.ViewModels
             _clipboardService.FavoriteClipChanged += ClipboardService_FavoriteClipChanged;
             _clipboardService.ClipMovedToTop += ClipboardService_ClipMovedToTop;
             _clipboardService.ClipDeleted += ClipboardService_ClipDeleted;
-            _clipboardService.AllClipsDeleted += ClipboardService_AllClipsDeleted;
+            _clipboardService.ClipsCollectionChanged += ClipboardService_ClipsCollectionChanged;
             if (IsClipboardMonitoringEnabled)
             {
                 _clipboardMonitor.StartMonitoring((ulong)App.Current.ClipboardWindowHandle);
@@ -385,10 +387,10 @@ namespace Rememory.ViewModels
             _ = SearchMode && _searchContext.Remove(a.ChangedClip);
         }
 
-        private void ClipboardService_AllClipsDeleted(object? sender, ClipboardEventArgs a)
+        private void ClipboardService_ClipsCollectionChanged(object? sender, ClipboardEventArgs a)
         {
             SearchMode = false;
-            ClipsCollection.Clear();
+            UpdateClipsList();
         }
 
         #endregion
@@ -800,10 +802,17 @@ namespace Rememory.ViewModels
 
             var pickFileResult = await picker.PickSaveFileAsync();
 
-            if (!string.IsNullOrEmpty(pickFileResult.Path))
+            if (!string.IsNullOrEmpty(pickFileResult?.Path))
             {
                 await _clipboardService.SaveClipToFileAsync(dataModel, pickFileResult.Path);
             }
+        }
+
+        [RelayCommand]
+        private async Task ExportClip(ClipModel? clip)
+        {
+            if (clip is null) return;
+            await ExportClips([clip]);
         }
 
         [RelayCommand(CanExecute = nameof(CanEditClip))]
@@ -948,6 +957,24 @@ namespace Rememory.ViewModels
             var filteredClips = clips.Where(clip => clip.Data.ContainsKey(ClipboardFormat.Text)).ToArray();
             var dataModel = GenerateCombinedTextDataModel(filteredClips);
             SendDataToClipboard(new Dictionary<ClipboardFormat, DataModel> { { ClipboardFormat.Text, dataModel } });
+        }
+
+        [RelayCommand]
+        private async Task ExportClips(IEnumerable<ClipModel>? clips)
+        {
+            if (clips is null) return;
+            var clipsCopy = clips.ToArray();
+
+            var picker = new FileSavePicker(App.Current.ClipboardWindow.AppWindow.OwnerWindowId);
+            picker.SuggestedFileName = string.Format(ClipTransferService.BackupFileNameFormat_, DateTime.Now);
+            picker.FileTypeChoices.Add(ClipTransferService.BackupFileType_);
+
+            var pickFileResult = await picker.PickSaveFileAsync();
+
+            if (!string.IsNullOrEmpty(pickFileResult?.Path))
+            {
+                await _clipTransferService.ExportAsync(clipsCopy, pickFileResult.Path);
+            }
         }
 
         [RelayCommand]

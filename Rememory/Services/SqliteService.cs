@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.WinUI.Helpers;
 using Microsoft.Data.Sqlite;
-using Microsoft.Extensions.DependencyInjection;
 using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Models;
@@ -11,33 +10,65 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Rememory.Services
 {
     /// <summary>
     /// SQlite implementation of <see cref="IStorageService"/>
     /// </summary>
-    public class SqliteService : IStorageService
+    public class SqliteService : IStorageService, IDisposable
     {
-        private readonly ClipboardMonitor _clipboardMonitor = App.Current.Services.GetService<ClipboardMonitor>()!;
         private readonly string _connectionString;
         private int _currentVersion;
+        /// <summary>
+        /// Optionally updates the model ID with the new DB primary key
+        /// </summary>
+        private bool _updateModelIds;
+        /// <summary>
+        /// Used for backup to avoid opening new connection each time
+        /// </summary>
+        private SqliteConnection? _cachedConnection;
 
-        public SqliteService()
+        private SqliteService(string connectionString, bool updateModelIds, bool cacheConnections)
         {
-            var historyFolder = _clipboardMonitor.HistoryFolderPath;
-            Directory.CreateDirectory(historyFolder);
-            _connectionString = $"Data Source={Path.Combine(historyFolder, "ClipboardManager.db")}";
+            _connectionString = connectionString;
+            _updateModelIds = updateModelIds;
 
-            using var connection = CreateAndOpenConnection();
-            ApplyMigrations(connection);
+            if (cacheConnections)
+            {
+                _cachedConnection = new SqliteConnection(connectionString);
+                _cachedConnection.Open();
+            }
+        }
+
+        public void Dispose()
+        {
+            (_cachedConnection as IDisposable)?.Dispose();
+            _cachedConnection = null;
+        }
+
+        public static SqliteService CreateMain(string historyFolder)
+        {
+            Directory.CreateDirectory(historyFolder);
+            var path = Path.Combine(historyFolder, "ClipboardManager.db");
+            var service = new SqliteService($"Data Source={path}", true, false);
+            service.InitializeDatabase();
+            return service;
+        }
+
+        public static SqliteService CreateForBackup(string tempFilePath)
+        {
+            var service = new SqliteService($"Data Source={tempFilePath};Pooling=false", false, true);
+            service.InitializeDatabase();
+            return service;
         }
 
         #region Owners
 
         public IEnumerable<OwnerModel> GetOwners()
         {
-            using var connection = CreateAndOpenConnection();
+            var connection = CreateOpenedConnection();
             using var command = connection.CreateCommand();
             command.CommandText = @"
             SELECT
@@ -59,11 +90,13 @@ namespace Rememory.Services
 
                 yield return new OwnerModel(path) { Id = id, Name = name, Icon = icon };
             }
+
+            TryDisposeConnection(connection);
         }
 
-        public void AddOwner(OwnerModel owner)
+        public int AddOwner(OwnerModel owner)
         {
-            using var connection = CreateAndOpenConnection();
+            var connection = CreateOpenedConnection();
             using var command = connection.CreateCommand();
             command.CommandText = @"
             INSERT INTO
@@ -78,12 +111,22 @@ namespace Rememory.Services
             command.Parameters.AddWithValue("path", owner.Path);
             command.Parameters.AddWithValue("name", owner.Name ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("icon", owner.Icon ?? (object)DBNull.Value);
-            owner.Id = Convert.ToInt32(command.ExecuteScalar());
+
+            var id = Convert.ToInt32(command.ExecuteScalar());
+
+            TryDisposeConnection(connection);
+
+            if (_updateModelIds)
+            {
+                owner.Id = id;
+            }
+
+            return id;
         }
 
         public void UpdateOwner(OwnerModel owner)
         {
-            using var connection = CreateAndOpenConnection();
+            var connection = CreateOpenedConnection();
             using var command = connection.CreateCommand();
             command.CommandText = @"
             UPDATE Owners
@@ -98,11 +141,13 @@ namespace Rememory.Services
             command.Parameters.AddWithValue("name", owner.Name ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("icon", owner.Icon ?? (object)DBNull.Value);
             command.ExecuteNonQuery();
+
+            TryDisposeConnection(connection);
         }
 
         public void DeleteOwner(int id)
         {
-            using var connection = CreateAndOpenConnection();
+            var connection = CreateOpenedConnection();
             using var command = connection.CreateCommand();
             command.CommandText = @"
             DELETE FROM Owners
@@ -112,16 +157,19 @@ namespace Rememory.Services
 
             command.Parameters.AddWithValue("id", id);
             command.ExecuteNonQuery();
+
+            TryDisposeConnection(connection);
         }
 
         #endregion
 
         #region Clips
 
-        public IEnumerable<ClipModel> GetClips(Dictionary<int, OwnerModel> owners, IList<TagModel> tags)
+        public IEnumerable<ClipModel> GetClips(IEnumerable<OwnerModel> owners, IEnumerable<TagModel> tags)
         {
-            using var connection = CreateAndOpenConnection();
+            var connection = CreateOpenedConnection();
 
+            Dictionary<int, OwnerModel> ownersDictionary = owners.ToDictionary(owner => owner.Id);
             Dictionary<int, TagModel> tagsDictionary = tags.ToDictionary(tag => tag.Id);
             Dictionary<int, List<int>> clipTagsDictionary = GetClipTags(connection)
                 .GroupBy(pair => pair.Item1)
@@ -154,7 +202,7 @@ namespace Rememory.Services
                     ClipTime = clipTime,
                     IsFavorite = isFavorite,
                     // Using 0 for the empty owner
-                    Owner = owners.TryGetValue(ownerId ?? 0, out var owner) ? owner : null,
+                    Owner = ownersDictionary.TryGetValue(ownerId ?? 0, out var owner) ? owner : null,
                     Data = GetDataByClipId(id, connection).ToDictionary(d => d.Format),
                     Tags = clipTagsDictionary.TryGetValue(id, out var tagIds) ? [.. tagIds.Where(tagsDictionary.ContainsKey).Select(id => tagsDictionary[id])] : []
                 };
@@ -176,11 +224,13 @@ namespace Rememory.Services
                 }
                 yield return clip;
             }
+
+            TryDisposeConnection(connection);
         }
 
-        public void AddClip(ClipModel clip)
+        public int AddClip(ClipModel clip, int? ownerId)
         {
-            using var connection = CreateAndOpenConnection();
+            var connection = CreateOpenedConnection();
             using var command = connection.CreateCommand();
             command.CommandText = @"
             INSERT INTO
@@ -192,23 +242,30 @@ namespace Rememory.Services
               last_insert_rowid();
             ";
 
-            // Don't save empty owner id
-            int? ownerId = clip.Owner?.Id != 0 ? clip.Owner?.Id : null;
-
             command.Parameters.AddWithValue("clipTime", clip.ClipTime);
             command.Parameters.AddWithValue("isFavorite", clip.IsFavorite);
             command.Parameters.AddWithValue("ownerId", ownerId ?? (object)DBNull.Value);
-            clip.Id = Convert.ToInt32(command.ExecuteScalar());
+
+            var id = Convert.ToInt32(command.ExecuteScalar());
+
+            if (_updateModelIds)
+            {
+                clip.Id = id;
+            }
 
             if (clip.Data is not null)
             {
-                AddData(clip.Id, clip.Data.Values, connection);
+                AddData(id, clip.Data.Values, connection);
             }
+
+            TryDisposeConnection(connection);
+
+            return id;
         }
 
-        public void UpdateClip(ClipModel clip)
+        public void UpdateClip(ClipModel clip, int? ownerId)
         {
-            using var connection = CreateAndOpenConnection();
+            var connection = CreateOpenedConnection();
             using var command = connection.CreateCommand();
             command.CommandText = @"
             UPDATE Clips
@@ -220,19 +277,18 @@ namespace Rememory.Services
               Id = @id;
             ";
 
-            // Don't save empty owner id
-            int? ownerId = clip.Owner?.Id != 0 ? clip.Owner?.Id : null;
-
             command.Parameters.AddWithValue("id", clip.Id);
             command.Parameters.AddWithValue("clipTime", clip.ClipTime);
             command.Parameters.AddWithValue("isFavorite", clip.IsFavorite);
             command.Parameters.AddWithValue("ownerId", ownerId ?? (object)DBNull.Value);
             command.ExecuteNonQuery();
+
+            TryDisposeConnection(connection);
         }
 
         public void DeleteClip(int id)
         {
-            using var connection = CreateAndOpenConnection();
+            var connection = CreateOpenedConnection();
             using var command = connection.CreateCommand();
             command.CommandText = @"
             DELETE FROM Clips
@@ -242,11 +298,13 @@ namespace Rememory.Services
 
             command.Parameters.AddWithValue("id", id);
             command.ExecuteNonQuery();
+
+            TryDisposeConnection(connection);
         }
 
         public void DeleteOldClipsByTime(DateTime cutoffTime, bool deleteFavoriteClips)
         {
-            using var connection = CreateAndOpenConnection();
+            var connection = CreateOpenedConnection();
             using var command = connection.CreateCommand();
             command.CommandText = @"
             DELETE FROM Clips
@@ -275,11 +333,13 @@ namespace Rememory.Services
             command.Parameters.AddWithValue("cutoffTime", cutoffTime);
             command.Parameters.AddWithValue("deleteFavoriteClips", deleteFavoriteClips);
             command.ExecuteNonQuery();
+
+            TryDisposeConnection(connection);
         }
 
         public void DeleteOldClipsByQuantity(int quantity, bool deleteFavoriteClips)
         {
-            using var connection = CreateAndOpenConnection();
+            var connection = CreateOpenedConnection();
             using var command = connection.CreateCommand();
             command.CommandText = @"
             DELETE FROM Clips
@@ -317,11 +377,13 @@ namespace Rememory.Services
             command.Parameters.AddWithValue("deleteFavoriteClips", deleteFavoriteClips);
             command.Parameters.AddWithValue("quantity", quantity);
             command.ExecuteNonQuery();
+
+            TryDisposeConnection(connection);
         }
 
         public void DeleteAllClips()
         {
-            using var connection = CreateAndOpenConnection();
+            var connection = CreateOpenedConnection();
             using var command = connection.CreateCommand();
             command.CommandText = @"
             DELETE FROM Clips;
@@ -330,6 +392,8 @@ namespace Rememory.Services
             VACUUM;
             ";
             command.ExecuteNonQuery();
+
+            TryDisposeConnection(connection);
         }
 
         #endregion
@@ -338,7 +402,7 @@ namespace Rememory.Services
 
         public IEnumerable<TagModel> GetTags()
         {
-            using var connection = CreateAndOpenConnection();
+            var connection = CreateOpenedConnection();
             using var command = connection.CreateCommand();
             command.CommandText = @"
             SELECT
@@ -358,13 +422,15 @@ namespace Rememory.Services
                 string color = reader.GetString(2);
                 bool isCleaningEnabled = reader.GetBoolean(3);
 
-                yield return new TagModel(name, new Microsoft.UI.Xaml.Media.SolidColorBrush(color.ToColor()), isCleaningEnabled) { Id = id };
+                yield return new TagModel(name, color, isCleaningEnabled) { Id = id };
             }
+
+            TryDisposeConnection(connection);
         }
 
-        public void AddTag(TagModel tag)
+        public int AddTag(TagModel tag)
         {
-            using var connection = CreateAndOpenConnection();
+            var connection = CreateOpenedConnection();
             using var command = connection.CreateCommand();
             command.CommandText = @"
             INSERT INTO
@@ -377,14 +443,24 @@ namespace Rememory.Services
             ";
 
             command.Parameters.AddWithValue("name", tag.Name);
-            command.Parameters.AddWithValue("color", tag.ColorBrush.Color.ToHex());
+            command.Parameters.AddWithValue("color", tag.ColorHex);
             command.Parameters.AddWithValue("isCleaningEnabled", tag.IsCleaningEnabled);
-            tag.Id = Convert.ToInt32(command.ExecuteScalar());
+
+            var id = Convert.ToInt32(command.ExecuteScalar());
+
+            TryDisposeConnection(connection);
+
+            if (_updateModelIds)
+            {
+                tag.Id = id;
+            }
+
+            return id;
         }
 
         public void UpdateTag(TagModel tag)
         {
-            using var connection = CreateAndOpenConnection();
+            var connection = CreateOpenedConnection();
             using var command = connection.CreateCommand();
             command.CommandText = @"
             UPDATE Tags
@@ -398,14 +474,16 @@ namespace Rememory.Services
 
             command.Parameters.AddWithValue("id", tag.Id);
             command.Parameters.AddWithValue("name", tag.Name);
-            command.Parameters.AddWithValue("color", tag.ColorBrush.Color.ToHex());
+            command.Parameters.AddWithValue("color", tag.ColorHex);
             command.Parameters.AddWithValue("isCleaningEnabled", tag.IsCleaningEnabled);
             command.ExecuteNonQuery();
+
+            TryDisposeConnection(connection);
         }
 
         public void DeleteTag(int id)
         {
-            using var connection = CreateAndOpenConnection();
+            var connection = CreateOpenedConnection();
             using var command = connection.CreateCommand();
             command.CommandText = @"
             DELETE FROM Tags
@@ -415,11 +493,13 @@ namespace Rememory.Services
 
             command.Parameters.AddWithValue("id", id);
             command.ExecuteNonQuery();
+
+            TryDisposeConnection(connection);
         }
 
-        public void AddClipTag(int clipId, int tagId)
+        public void AddClipTags(IEnumerable<(int ClipId, int TagId)> clipTags)
         {
-            using var connection = CreateAndOpenConnection();
+            var connection = CreateOpenedConnection();
             using var command = connection.CreateCommand();
             command.CommandText = @"
             INSERT INTO
@@ -428,14 +508,25 @@ namespace Rememory.Services
               (@clipId, @tagId);
             ";
 
-            command.Parameters.AddWithValue("clipId", clipId);
-            command.Parameters.AddWithValue("tagId", tagId);
-            command.ExecuteNonQuery();
+            var clipIdParameter = command.CreateParameter();
+            clipIdParameter.ParameterName = "clipId";
+            var tagIdParameter = command.CreateParameter();
+            tagIdParameter.ParameterName = "tagId";
+            command.Parameters.AddRange([clipIdParameter, tagIdParameter]);
+
+            foreach (var (ClipId, TagId) in clipTags)
+            {
+                clipIdParameter.Value = ClipId;
+                tagIdParameter.Value = TagId;
+                command.ExecuteNonQuery();
+            }
+
+            TryDisposeConnection(connection);
         }
 
         public void DeleteClipTag(int clipId, int tagId)
         {
-            using var connection = CreateAndOpenConnection();
+            var connection = CreateOpenedConnection();
             using var command = connection.CreateCommand();
             command.CommandText = @"
             DELETE FROM ClipTags
@@ -447,6 +538,8 @@ namespace Rememory.Services
             command.Parameters.AddWithValue("clipId", clipId);
             command.Parameters.AddWithValue("tagId", tagId);
             command.ExecuteNonQuery();
+
+            TryDisposeConnection(connection);
         }
 
         #endregion
@@ -455,7 +548,7 @@ namespace Rememory.Services
 
         public void AddLinkMetadata(LinkMetadataModel linkMetadata, int dataId)
         {
-            using var connection = CreateAndOpenConnection();
+            var connection = CreateOpenedConnection();
             using var command = connection.CreateCommand();
             command.CommandText = @"
             INSERT INTO
@@ -477,11 +570,13 @@ namespace Rememory.Services
             command.Parameters.AddWithValue("image", linkMetadata.Image ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("metadataFormat", linkMetadata.Format.GetDescription());
             command.ExecuteNonQuery();
+
+            TryDisposeConnection(connection);
         }
 
         public void AddColorMetadata(ColorMetadataModel colorMetadata, int dataId)
         {
-            using var connection = CreateAndOpenConnection();
+            var connection = CreateOpenedConnection();
             using var command = connection.CreateCommand();
             command.CommandText = @"
             UPDATE Data
@@ -494,11 +589,13 @@ namespace Rememory.Services
             command.Parameters.AddWithValue("id", dataId);
             command.Parameters.AddWithValue("metadataFormat", colorMetadata.Format.GetDescription());
             command.ExecuteNonQuery();
+
+            TryDisposeConnection(connection);
         }
 
         public void AddFilesMetadata(FilesMetadataModel filesMetadata, int dataId)
         {
-            using var connection = CreateAndOpenConnection();
+            var connection = CreateOpenedConnection();
             using var command = connection.CreateCommand();
             command.CommandText = @"
             INSERT INTO
@@ -518,9 +615,76 @@ namespace Rememory.Services
             command.Parameters.AddWithValue("foldersCout", filesMetadata.FoldersCount);
             command.Parameters.AddWithValue("metadataFormat", filesMetadata.Format.GetDescription());
             command.ExecuteNonQuery();
+
+            TryDisposeConnection(connection);
         }
 
         #endregion
+
+        public async Task<bool> ExportClipsAsync(IEnumerable<ClipModel> clips)
+        {
+            return await Task.Run(() =>
+            {
+                _cachedConnection = CreateOpenedConnection();
+
+                try
+                {
+                    var owners = clips
+                        .Select(clip => clip.Owner)
+                        .Where(owner => owner is not null && owner.Id != 0)
+                        .Cast<OwnerModel>()
+                        .Distinct();
+
+                    Dictionary<int, int> exportedOwnerIds = [];
+
+                    foreach (var owner in owners)
+                    {
+                        var savedId = AddOwner(owner);
+                        exportedOwnerIds.Add(owner.Id, savedId);
+                    }
+
+                    Dictionary<int, int> exportedClipIds = [];
+
+                    foreach (var clip in clips)
+                    {
+                        int? ownerId = (clip.Owner?.Id is not null && exportedOwnerIds.TryGetValue(clip.Owner.Id, out var exportedOwnerId))
+                            ? exportedOwnerId
+                            : null;
+                        var savedId = AddClip(clip, ownerId);
+                        exportedClipIds.Add(clip.Id, savedId);
+                    }
+
+                    var clipsWithTags = clips
+                        .Where(clip => clip.HasTags)
+                        .ToArray();
+
+                    var tags = clipsWithTags
+                        .SelectMany(clip => clip.Tags)
+                        .Distinct();
+
+                    Dictionary<int, int> exportedTagIds = [];
+
+                    foreach (var tag in tags)
+                    {
+                        var savedId = AddTag(tag);
+                        exportedTagIds.Add(tag.Id, savedId);
+                    }
+
+                    var clipTags = clipsWithTags.SelectMany(clip => clip.Tags.Select(tag => (exportedClipIds[clip.Id], exportedTagIds[tag.Id])));
+                    AddClipTags(clipTags);
+
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+                finally
+                {
+                    _cachedConnection.Dispose();
+                }
+            });
+        }
 
         private IEnumerable<DataModel> GetDataByClipId(int clipId, SqliteConnection connection)
         {
@@ -565,7 +729,7 @@ namespace Rememory.Services
             }
         }
 
-        private void AddData(int clipId, ICollection<DataModel> dataCollection, SqliteConnection connection)
+        private void AddData(int clipId, IEnumerable<DataModel> dataCollection, SqliteConnection connection)
         {
             using var command = connection.CreateCommand();
             command.CommandText = @"
@@ -591,7 +755,25 @@ namespace Rememory.Services
                 dataParameter.Value = data.IsFile() ? ClipboardFormatHelper.ConvertFullPathToFileName(data.Data) : data.Data;
                 hashParameter.Value = data.Hash;
 
-                data.Id = Convert.ToInt32(command.ExecuteScalar());
+                var id = Convert.ToInt32(command.ExecuteScalar());
+
+                if (_updateModelIds)
+                {
+                    data.Id = id;
+                }
+
+                switch (data.Metadata)
+                {
+                    case LinkMetadataModel linkMetadata:
+                        AddLinkMetadata(linkMetadata, id);
+                        break;
+                    case ColorMetadataModel colorMetadata:
+                        AddColorMetadata(colorMetadata, id);
+                        break;
+                    case FilesMetadataModel filesMetadata:
+                        AddFilesMetadata(filesMetadata, id);
+                        break;
+                }
             }
         }
 
@@ -681,11 +863,32 @@ namespace Rememory.Services
             return null;
         }
 
-        private SqliteConnection CreateAndOpenConnection()
+        private void InitializeDatabase()
         {
+            var connection = CreateOpenedConnection();
+            ApplyMigrations(connection);
+
+            TryDisposeConnection(connection);
+        }
+
+        private SqliteConnection CreateOpenedConnection()
+        {
+            if (_cachedConnection is not null)
+            {
+                return _cachedConnection;
+            }
+
             var connection = new SqliteConnection(_connectionString);
             connection.Open();
             return connection;
+        }
+
+        private void TryDisposeConnection(SqliteConnection connection)
+        {
+            if (connection != _cachedConnection)
+            {
+                connection.Dispose();
+            }
         }
 
         #region DB migration
@@ -759,14 +962,14 @@ namespace Rememory.Services
             return migrations;
         }
 
-        private int GetDatabaseVersion(SqliteConnection connection)
+        private static int GetDatabaseVersion(SqliteConnection connection)
         {
             using var command = connection.CreateCommand();
             command.CommandText = "PRAGMA user_version;";
             return (int)(long)(command.ExecuteScalar() ?? 0);
         }
 
-        private void SetDatabaseVersion(SqliteConnection connection, int version)
+        private static void SetDatabaseVersion(SqliteConnection connection, int version)
         {
             using var command = connection.CreateCommand();
             command.CommandText = $"PRAGMA user_version = {version};";

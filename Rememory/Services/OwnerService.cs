@@ -30,7 +30,7 @@ namespace Rememory.Services
             Owners.Add(emptyOwner.Path, emptyOwner);
         }
 
-        public void RegisterClipOwner(ClipModel clip, string? path, byte[]? icon)
+        public OwnerModel RegisterClipOwner(ClipModel clip, string? path, byte[]? icon)
         {
             // If we don't have owner info, we will take the empty owner
             path ??= string.Empty;
@@ -76,6 +76,8 @@ namespace Rememory.Services
             {
                 OnOwnerRegistered(owner);
             }
+
+            return owner;
         }
 
         public void UnregisterClipOwner(ClipModel clip)
@@ -111,6 +113,10 @@ namespace Rememory.Services
         public void UnregisterAllOwners()
         {
             Owners.Clear();
+
+            OwnerModel emptyOwner = CreateEmptyOwner();
+            Owners.Add(emptyOwner.Path, emptyOwner);
+
             OnAllOwnersUnregistered();
         }
 
