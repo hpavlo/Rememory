@@ -216,6 +216,9 @@
   <data name="Clip_ContextMenu_Edit.Text" xml:space="preserve">
     <value>编辑</value>
   </data>
+  <data name="Clip_ContextMenu_Export.Text" xml:space="preserve">
+    <value>导出</value>
+  </data>
   <data name="Clip_ContextMenu_Delete.Text" xml:space="preserve">
     <value>删除</value>
   </data>

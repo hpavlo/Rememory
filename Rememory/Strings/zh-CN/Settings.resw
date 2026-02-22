@@ -444,6 +444,30 @@
   <data name="Storage_EraseDataFlyoutButton.Content" xml:space="preserve">
     <value>确认，删除所有数据</value>
   </data>
+  <data name="Storage_BackupSection.Text" xml:space="preserve">
+    <value>备份</value>
+  </data>
+  <data name="Storage_ExportClips.Header" xml:space="preserve">
+    <value>导出剪贴板历史记录</value>
+  </data>
+  <data name="Storage_ExportClips.Description" xml:space="preserve">
+    <value>将所有片段保存到备份文件。此过程可能需要几分钟</value>
+  </data>
+  <data name="Storage_ExportButton.Content" xml:space="preserve">
+    <value>导出</value>
+  </data>
+  <data name="Storage_ImportClips.Header" xml:space="preserve">
+    <value>从备份文件导入素材</value>
+  </data>
+  <data name="Storage_ImportClips.Description" xml:space="preserve">
+    <value>从备份文件恢复素材。根据文件大小，这可能需要一些时间</value>
+  </data>
+  <data name="Storage_ImportButton.Content" xml:space="preserve">
+    <value>导入</value>
+  </data>
+  <data name="Storage_ImportWarning.Message" xml:space="preserve">
+    <value>导入旧数据可能会导致某些片段被删除，如果它们超出保留期或超过最大片段限制</value>
+  </data>
   <data name="Storage_CleanupSection.Text" xml:space="preserve">
     <value>清理</value>
   </data>

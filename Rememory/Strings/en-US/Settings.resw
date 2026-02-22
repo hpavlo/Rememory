@@ -466,7 +466,7 @@
     <value>Import</value>
   </data>
   <data name="Storage_ImportWarning.Message" xml:space="preserve">
-    <value>Importing older data may cause some clips to be removed if they fall outside the retention period or exceed the maximum clip limit</value>
+    <value>Importing older data may cause some clips to be removed if they fall outside the retention period or exceed the maximum clips limit</value>
   </data>
   <data name="Storage_CleanupSection.Text" xml:space="preserve">
     <value>Cleanup</value>

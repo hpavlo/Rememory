@@ -118,171 +118,171 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="PauseMonitoringBanner.Text" xml:space="preserve">
-    <value>Speicherung der Zwischenablage wurde angehalten</value>
+    <value>Se ha pausado el guardado de datos en el potapapeles</value>
   </data>
   <data name="ClipFooter_CharactersCount.Text" xml:space="preserve">
-    <value>{0, plural, one {# Zeichen} other {# Zeichen}}</value>
+    <value>{0, plural, one {# caracter} other {# caracteres}}</value>
   </data>
   <data name="ClipFooter_FilesCount.Text" xml:space="preserve">
-    <value>{0, plural, one {# Datei} other {# Dateien}}</value>
+    <value>{0, plural, one {# archivo} other {# archivos}}</value>
   </data>
   <data name="ClipFooter_FoldersCount.Text" xml:space="preserve">
-    <value>{0, plural, one {# Ordner} other {# Ordner}}</value>
+    <value>{0, plural, one {# carpeta} other {# carpetas}}</value>
   </data>
   <data name="ClipFooter_FilesAndFoldersCountDivider.Text" xml:space="preserve">
     <value>, </value>
   </data>
   <data name="ClipFooter_ImageSize.Text" xml:space="preserve">
-    <value>Größe: {0} x {1}</value>
+    <value>Tamaño: {0} x {1}</value>
   </data>
   <data name="ClipFooter_Time_DaysAgo.Text" xml:space="preserve">
-    <value>{0, plural, one {Vor # Tag} other {Vor # Tagen}}</value>
+    <value>Hace {0, plural, one {# día} other {# días}}</value>
   </data>
   <data name="ClipFooter_Time_HoursAgo.Text" xml:space="preserve">
-    <value>{0, plural,one {Vor # Stunde} other {Vor # Stunden}}</value>
+    <value>Hace {0, plural, one {# hora} other {# horas}}</value>
   </data>
   <data name="ClipFooter_Time_MinutesAgo.Text" xml:space="preserve">
-    <value>{0, plural, one {Vor # Minute} other {Vor # Minuten}}</value>
+    <value>Hace {0, plural, one {# minuto} other {# minutos}}</value>
   </data>
   <data name="ClipFooter_Time_SecondsAgo.Text" xml:space="preserve">
-    <value>{0, plural, one {Vor # Sekunde} other {Vor # Sekunden}}</value>
+    <value>Hace {0, plural, one {# segundo} other {# segundos}}</value>
   </data>
   <data name="ClipFooter_Time_Now.Text" xml:space="preserve">
-    <value>Jetzt</value>
+    <value>Ahora</value>
   </data>
   <data name="Clip_NoPreview.Text" xml:space="preserve">
-    <value>Keine Vorschau</value>
+    <value>Sin vista previa</value>
   </data>
   <data name="Clip_FilesPreview_MoreFilesCount.Text" xml:space="preserve">
-    <value>{0} weitere</value>
+    <value>{0} más</value>
   </data>
   <data name="Clip_ContextMenu_AddToFavorites.Text" xml:space="preserve">
-    <value>Zu Favoriten hinzufügen</value>
+    <value>Añadir a favoritos</value>
   </data>
   <data name="Clip_ContextMenu_RemoveFromFavorites.Text" xml:space="preserve">
-    <value>Aus Favoriten entfernen</value>
+    <value>Quitar de favoritos</value>
   </data>
   <data name="Clip_ContextMenu_OpenInBrowser.Text" xml:space="preserve">
-    <value>Im Browser öffnen</value>
+    <value>Abrir en el navegador</value>
   </data>
   <data name="Clip_ContextMenu_OpenInFlyout.Text" xml:space="preserve">
-    <value>Im Ausklappmenü öffnen</value>
+    <value>Abrir en ventana emergente</value>
   </data>
   <data name="Clip_ContextMenu_Paste.Text" xml:space="preserve">
-    <value>Einfügen</value>
+    <value>Pegar</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs.Text" xml:space="preserve">
-    <value>Einfügen als</value>
+    <value>Pegar como</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs_PlainText.Text" xml:space="preserve">
-    <value>Klartext</value>
+    <value>Texto plano</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs_CamelCase.Text" xml:space="preserve">
-    <value>Camel case</value>
+    <value>Primera letra minúscula, demás primeras letras en mayúscula y todo junto (camel case)</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs_CapitalizedCase.Text" xml:space="preserve">
-    <value>Großgeschriebene Wörter</value>
+    <value>Cada palabra en mayúscula</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs_InvertCase.Text" xml:space="preserve">
-    <value>Schreibweise umkehren</value>
+    <value>Alternar mayúsculas y minúsculas</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs_KebabCase.Text" xml:space="preserve">
-    <value>Kebab case</value>
+    <value>Guiones medios en vez de espacios (kebab case)</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs_LowerCase.Text" xml:space="preserve">
-    <value>Kleinbuchstaben</value>
+    <value>Minúsculas</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs_PascalCase.Text" xml:space="preserve">
-    <value>Pascal case</value>
+    <value>Cada primera letra en mayúscula y sin espacios (Pascal case)</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs_SentenceCase.Text" xml:space="preserve">
-    <value>Satzanfänge groß</value>
+    <value>Oración (Sentence case)</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs_SnakeCase.Text" xml:space="preserve">
-    <value>Snake case</value>
+    <value>Guiones bajos en vez de espacio (snake case)</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs_TrimWhitespace.Text" xml:space="preserve">
-    <value>Leerzeichen kürzen</value>
+    <value>Eliminar espacios en blanco</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs_UpperCase.Text" xml:space="preserve">
-    <value>Großbuchstaben</value>
+    <value>Mayúsculas</value>
   </data>
   <data name="Clip_ContextMenu_Copy.Text" xml:space="preserve">
-    <value>Kopieren</value>
+    <value>Copiar</value>
   </data>
   <data name="Clip_ContextMenu_SaveAs.Text" xml:space="preserve">
-    <value>Speichern als</value>
+    <value>Guardar como</value>
   </data>
   <data name="Clip_ContextMenu_Edit.Text" xml:space="preserve">
-    <value>Bearbeiten</value>
+    <value>Editar</value>
   </data>
   <data name="Clip_ContextMenu_Export.Text" xml:space="preserve">
-    <value>Export</value>
+    <value>Exportar</value>
   </data>
   <data name="Clip_ContextMenu_Delete.Text" xml:space="preserve">
-    <value>Löschen</value>
+    <value>Borrar</value>
   </data>
   <data name="Clip_ContextMenu_Tags.Text" xml:space="preserve">
-    <value>Tags</value>
+    <value>Etiquetas</value>
   </data>
   <data name="Clip_ContextMenu_FilterSource.Text" xml:space="preserve">
-    <value>Diese Quelle filtern</value>
+    <value>Filtrar esta fuente</value>
   </data>
   <data name="NavigationTab_Home.Text" xml:space="preserve">
-    <value>Startseite</value>
+    <value>Inicio</value>
   </data>
   <data name="NavigationTab_Favorites.Text" xml:space="preserve">
-    <value>Favoriten</value>
+    <value>Favoritos</value>
   </data>
   <data name="NavigationTab_Images.Text" xml:space="preserve">
-    <value>Bilder</value>
+    <value>Imágenes</value>
   </data>
   <data name="NavigationTab_Files.Text" xml:space="preserve">
-    <value>Dateien</value>
+    <value>Archivos</value>
   </data>
   <data name="NavigationTab_Links.Text" xml:space="preserve">
-    <value>Links</value>
+    <value>Enlaces</value>
   </data>
   <data name="SearchBox.PlaceholderText" xml:space="preserve">
-    <value>Suche</value>
+    <value>Búsqueda</value>
   </data>
   <data name="TitleBar_CloseButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Schließen</value>
+    <value>Cerrar</value>
   </data>
   <data name="TitleBar_MoreButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Mehr</value>
+    <value>Más</value>
   </data>
   <data name="TitleBarMenu_PauseMonitoring.Text" xml:space="preserve">
-    <value>Überwachung pausieren</value>
+    <value>Pausar monitorización</value>
   </data>
   <data name="TitleBarMenu_ResumeMonitoring.Text" xml:space="preserve">
-    <value>Überwachung wiederaufnehmen</value>
+    <value>Resumir monitorización</value>
   </data>
   <data name="TitleBarMenu_PinWindow.Text" xml:space="preserve">
-    <value>Fenster anheften</value>
+    <value>Fijar ventana</value>
   </data>
   <data name="TitleBarMenu_UnpinWindow.Text" xml:space="preserve">
-    <value>Fenster lösen</value>
+    <value>Desfijar ventana</value>
   </data>
   <data name="TitleBarMenu_Settings.Text" xml:space="preserve">
-    <value>Einstellungen</value>
+    <value>Ajustes</value>
   </data>
   <data name="TitleBarMenu_Quit.Text" xml:space="preserve">
-    <value>Beenden</value>
+    <value>Salir</value>
   </data>
   <data name="FilterButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Filter</value>
+    <value>Filtro</value>
   </data>
   <data name="FilterTreeView_Apps.Text" xml:space="preserve">
-    <value>Apps</value>
+    <value>Aplicaciones</value>
   </data>
   <data name="MultiSelectionButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Auswahlmodus</value>
+    <value>Modo de selección</value>
   </data>
   <data name="SelectAllClips.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Alles auswählen</value>
+    <value>Seleccionar todo</value>
   </data>
   <data name="SelectedClipsCount.Text" xml:space="preserve">
-    <value>{0, plural, one {# Clip ausgewählt} other {# Clips ausgewählt}}</value>
+    <value>{0, plural, one {# clip seleccionado} other {# clips seleccionados}}</value>
   </data>
 </root>

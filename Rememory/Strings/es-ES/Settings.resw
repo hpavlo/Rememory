@@ -118,169 +118,169 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="WindowTitle.Text" xml:space="preserve">
-    <value>{0} - الإعدادات</value>
+    <value>{0} - Ajustes</value>
   </data>
   <data name="PageTitle_General.Content" xml:space="preserve">
-    <value>عام</value>
+    <value>General</value>
   </data>
   <data name="PageTitle_Personalization.Content" xml:space="preserve">
-    <value>التخصيص</value>
+    <value>Personalización</value>
   </data>
   <data name="PageTitle_Clipboard.Content" xml:space="preserve">
-    <value>الحافظة</value>
+    <value>Portapapeles</value>
   </data>
   <data name="PageTitle_Metadata.Content" xml:space="preserve">
-    <value>البيانات الوصفية</value>
+    <value>Metadatos</value>
   </data>
   <data name="PageTitle_Tags.Content" xml:space="preserve">
-    <value>الوسوم</value>
+    <value>Etiquetas</value>
   </data>
   <data name="PageTitle_Storage.Content" xml:space="preserve">
-    <value>التخزين</value>
+    <value>Almacenamiento</value>
   </data>
   <data name="PageTitle_Filters.Content" xml:space="preserve">
-    <value>عوامل التصفية</value>
+    <value>Filtros</value>
   </data>
   <data name="PageTitle_About.Content" xml:space="preserve">
-    <value>حول</value>
+    <value>Acerca de</value>
   </data>
   <data name="General_AppLanguage.Header" xml:space="preserve">
-    <value>لغة التطبيق</value>
+    <value>Idioma de la aplicación</value>
   </data>
   <data name="General_AppLanguage.Description" xml:space="preserve">
-    <value>اختر لغة التطبيق أو استخدم اللغة الافتراضية للنظام</value>
+    <value>Elige el idioma de la aplicación o usa el predeterminado del sistema</value>
   </data>
   <data name="General_AppLanguage_Default.Content" xml:space="preserve">
-    <value>افتراضي</value>
+    <value>Predeterminado</value>
   </data>
   <data name="General_AppLanguage_Arabic.Content" xml:space="preserve">
-    <value>العربية</value>
+    <value>Árabico</value>
   </data>
   <data name="General_AppLanguage_ChineseSimplified.Content" xml:space="preserve">
-    <value>الصينية (المبسطة)</value>
+    <value>Chino (Simplificado)</value>
   </data>
   <data name="General_AppLanguage_English.Content" xml:space="preserve">
-    <value>الإنجليزية</value>
+    <value>Inglés</value>
   </data>
   <data name="General_AppLanguage_French.Content" xml:space="preserve">
-    <value>الفرنسية</value>
+    <value>Francés</value>
   </data>
   <data name="General_AppLanguage_German.Content" xml:space="preserve">
-    <value>الألمانية</value>
+    <value>Alemán</value>
   </data>
   <data name="General_AppLanguage_Greek.Content" xml:space="preserve">
-    <value>اليونانية</value>
+    <value>Griego</value>
   </data>
   <data name="General_AppLanguage_Italian.Content" xml:space="preserve">
-    <value>الإيطالية</value>
+    <value>Italiano</value>
   </data>
   <data name="General_AppLanguage_Japanese.Content" xml:space="preserve">
-    <value>اليابانية</value>
+    <value>Japonés</value>
   </data>
   <data name="General_AppLanguage_Korean.Content" xml:space="preserve">
-    <value>الكورية</value>
+    <value>Coreano</value>
   </data>
   <data name="General_AppLanguage_Polish.Content" xml:space="preserve">
-    <value>البولندية</value>
+    <value>Polaco</value>
   </data>
   <data name="General_AppLanguage_Portuguese.Content" xml:space="preserve">
-    <value>البرتغالية</value>
+    <value>Portugués</value>
   </data>
   <data name="General_AppLanguage_Spanish.Content" xml:space="preserve">
-    <value>الإسبانية</value>
+    <value>Español</value>
   </data>
   <data name="General_AppLanguage_Turkish.Content" xml:space="preserve">
-    <value>التركية</value>
+    <value>Turco</value>
   </data>
   <data name="General_AppLanguage_Ukrainian.Content" xml:space="preserve">
-    <value>الأوكرانية</value>
+    <value>Ucraniano</value>
   </data>
   <data name="General_AppLanguageFlyout.Title" xml:space="preserve">
-    <value>يتطلب إعادة التشغيل</value>
+    <value>Se requiere un reinicio</value>
   </data>
   <data name="General_AppLanguageFlyout.Subtitle" xml:space="preserve">
-    <value>لتغيير لغة التطبيق، يجب إعادة تشغيل البرنامج</value>
+    <value>Para cambiar el idioma de la aplicación, reinicia el programa.</value>
   </data>
   <data name="General_AppLanguageFlyoutButton.Content" xml:space="preserve">
-    <value>إعادة تشغيل التطبيق</value>
+    <value>Reiniciar aplicación</value>
   </data>
   <data name="General_ShortcutsSection.Text" xml:space="preserve">
-    <value>الاختصارات</value>
+    <value>Atajos</value>
   </data>
   <data name="General_ActivationShortcut.Header" xml:space="preserve">
-    <value>اختصار التفعيل</value>
+    <value>Atajo de activación</value>
   </data>
   <data name="General_ActivationShortcut.Description" xml:space="preserve">
-    <value>عيّن تركيبة الاختصار لفتح مدير الحافظة</value>
+    <value>Configurar el atajo de teclado para abrir el portapapeles</value>
   </data>
   <data name="General_ActivationShortcutButton.Text" xml:space="preserve">
-    <value>تغيير الاختصار</value>
+    <value>Cambiar atajo</value>
   </data>
   <data name="General_StartupSection.Text" xml:space="preserve">
-    <value>بدء التشغيل</value>
+    <value>Inicio</value>
   </data>
   <data name="General_RestartAsAdmin.Header" xml:space="preserve">
-    <value>إعادة التشغيل كمسؤول</value>
+    <value>Reiniciar como Administrador</value>
   </data>
   <data name="General_RunningAsAdmin.Header" xml:space="preserve">
-    <value>يعمل كمسؤول</value>
+    <value>Ejecutando como Administrador</value>
   </data>
   <data name="General_RestartAsAdminButton.Content" xml:space="preserve">
-    <value>إعادة التشغيل كمسؤول</value>
+    <value>Reiniciar como Administrador</value>
   </data>
   <data name="General_RestartAsAdmin.Description" xml:space="preserve">
-    <value>إعدادات متقدمة تتطلب صلاحيات المسؤول</value>
+    <value>Ajustes avanzados que requieren privilegios de administrador</value>
   </data>
   <data name="General_AlwaysRunAsAdmin.Header" xml:space="preserve">
-    <value>تشغيل دائمًا كمسؤول</value>
+    <value>Siempre ejecutar como Administrador</value>
   </data>
   <data name="General_AlwaysRunAsAdmin.Description" xml:space="preserve">
-    <value>فعّل هذا الخيار لتشغيل التطبيق دائمًا بصلاحيات المسؤول</value>
+    <value>Activa esta opción para ejecutar siempre la aplicación con privilegios de administrador</value>
   </data>
   <data name="General_RunAtStartup.Header" xml:space="preserve">
-    <value>تشغيل عند بدء التشغيل</value>
+    <value>Ejecutar en el arranque</value>
   </data>
   <data name="General_RunAtStartup.Description" xml:space="preserve">
-    <value>فعّل هذا الخيار لتشغيل Rememory تلقائيًا عند بدء تشغيل الكمبيوتر</value>
+    <value>Activa esta opción para ejecutar automáticamente Rememory cuando tu computadora se prenda</value>
   </data>
   <data name="General_NotificationOnStartup.Header" xml:space="preserve">
-    <value>إشعار عند بدء التشغيل</value>
+    <value>Notificación al iniciar</value>
   </data>
   <data name="General_NotificationOnStartup.Description" xml:space="preserve">
-    <value>عرض إشعار بعد فتح التطبيق</value>
+    <value>Mostrar una notificación luego de abrir la aplicación</value>
   </data>
   <data name="Personalization_AppTheme.Header" xml:space="preserve">
-    <value>سمة التطبيق</value>
+    <value>Tema de la aplicación</value>
   </data>
   <data name="Personalization_AppTheme.Description" xml:space="preserve">
-    <value>اختر السمة المفضلة لواجهة التطبيق</value>
+    <value>Selecciona tu tema preferido para la interfaz de la aplicación</value>
   </data>
   <data name="Personalization_AppTheme_Default.Content" xml:space="preserve">
-    <value>افتراضي</value>
+    <value>Predeterminado</value>
   </data>
   <data name="Personalization_AppTheme_Light.Content" xml:space="preserve">
-    <value>فاتح</value>
+    <value>Claro</value>
   </data>
   <data name="Personalization_AppTheme_Dark.Content" xml:space="preserve">
-    <value>داكن</value>
+    <value>Oscuro</value>
   </data>
   <data name="Personalization_BackgroundSection.Text" xml:space="preserve">
-    <value>الخلفية</value>
+    <value>Fondo</value>
   </data>
   <data name="Personalization_Backdrop.Header" xml:space="preserve">
-    <value>الخلفية الزجاجية</value>
+    <value>Fondo</value>
   </data>
   <data name="Personalization_Backdrop.Description" xml:space="preserve">
-    <value>تغيير الخلفية داخل النافذة</value>
+    <value>Cambiar fondo de la ventana</value>
   </data>
   <data name="Personalization_Backdrop_None.Content" xml:space="preserve">
-    <value>لا شيء</value>
+    <value>Ninguno</value>
   </data>
   <data name="Personalization_Backdrop_Acrylic.Content" xml:space="preserve">
-    <value>Acrylic</value>
+    <value>Acrílico</value>
   </data>
   <data name="Personalization_Backdrop_ThinAcrylic.Content" xml:space="preserve">
-    <value>Thin Acrylic</value>
+    <value>Acrílico Fino</value>
   </data>
   <data name="Personalization_Backdrop_Mica.Content" xml:space="preserve">
     <value>Mica</value>
@@ -289,301 +289,301 @@
     <value>Mica Alt</value>
   </data>
   <data name="Personalization_BackgroundColor.Header" xml:space="preserve">
-    <value>لون الخلفية</value>
+    <value>Color de fondo</value>
   </data>
   <data name="Personalization_BackgroundColor.Description" xml:space="preserve">
-    <value>تغيير لون الخلفية داخل النافذة</value>
+    <value>Cambiar color de fondo en la ventana</value>
   </data>
   <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
-    <value>نافذة الحافظة</value>
+    <value>Ventana del portapapeles</value>
   </data>
   <data name="Personalization_CompactView.Header" xml:space="preserve">
-    <value>العرض المضغوط</value>
+    <value>Vista compacta</value>
   </data>
   <data name="Personalization_CompactView.Description" xml:space="preserve">
-    <value>يعرض المقاطع بتنسيق مضغوط وسطر واحد لتوفير المساحة</value>
+    <value>Muestra los clips en un formato compacto de una sola línea para guardar espacio</value>
   </data>
   <data name="Personalization_WindowPosition.Header" xml:space="preserve">
-    <value>موضع نافذة الحافظة</value>
+    <value>Posición de la ventana del portapapeles</value>
   </data>
   <data name="Personalization_WindowPosition.Description" xml:space="preserve">
-    <value>تخصيص موضع النافذة على الشاشة</value>
+    <value>Personalizar la posición de la ventana en tu pantalla</value>
   </data>
   <data name="Personalization_WindowPosition_Caret.Content" xml:space="preserve">
-    <value>المؤشر النصي</value>
+    <value>Cursor</value>
   </data>
   <data name="Personalization_WindowPosition_Cursor.Content" xml:space="preserve">
-    <value>المؤشر</value>
+    <value>Puntero</value>
   </data>
   <data name="Personalization_WindowPosition_ScreenCenter.Content" xml:space="preserve">
-    <value>منتصف الشاشة</value>
+    <value>Centro de la pantalla</value>
   </data>
   <data name="Personalization_WindowPosition_LastPosition.Content" xml:space="preserve">
-    <value>الموضع الأخير</value>
+    <value>Última posición</value>
   </data>
   <data name="Personalization_WindowPosition_Right.Content" xml:space="preserve">
-    <value>اليمين</value>
+    <value>Derecha</value>
   </data>
   <data name="Personalization_WindowPosition_RightCorner.Content" xml:space="preserve">
-    <value>الزاوية اليمنى</value>
+    <value>Esquina derecha</value>
   </data>
   <data name="Personalization_WindowWidth.Header" xml:space="preserve">
-    <value>العرض</value>
+    <value>Ancho</value>
   </data>
   <data name="Personalization_WindowWidth.Description" xml:space="preserve">
-    <value>تحديد عرض النافذة (بالبكسل)</value>
+    <value>Establece el ancho de la ventana (en píxeles)</value>
   </data>
   <data name="Personalization_WindowHeight.Header" xml:space="preserve">
-    <value>الارتفاع</value>
+    <value>Altura</value>
   </data>
   <data name="Personalization_WindowHeight.Description" xml:space="preserve">
-    <value>تحديد ارتفاع النافذة (بالبكسل)</value>
+    <value>Establece el alto de la ventana (en píxeles)</value>
   </data>
   <data name="Personalization_WindowMargin.Header" xml:space="preserve">
-    <value>الهامش</value>
+    <value>Margen</value>
   </data>
   <data name="Personalization_WindowMargin.Description" xml:space="preserve">
-    <value>تحديد الهامش حول النافذة (بالبكسل)</value>
+    <value>Establece el margen alrededor de la ventana (en píxeles)</value>
   </data>
   <data name="Clipboard_ClipsSection.Text" xml:space="preserve">
-    <value>المقاطع</value>
+    <value>Clips</value>
   </data>
   <data name="Clipboard_DragAndDrop.Header" xml:space="preserve">
-    <value>السحب والإفلات</value>
+    <value>Arrastrar y soltar</value>
   </data>
   <data name="Clipboard_DragAndDrop.Description" xml:space="preserve">
-    <value>تمكين السحب والإفلات للمقاطع</value>
+    <value>Activar arrastrar y soltar en los clips</value>
   </data>
   <data name="Clipboard_DeveloperStringCaseConversions.Header" xml:space="preserve">
-    <value>تحويل حالة النص للمطورين</value>
+    <value>Casos de conversión de cadenas de texto para Desarrolladores</value>
   </data>
   <data name="Clipboard_DeveloperStringCaseConversions.Description" xml:space="preserve">
-    <value>تمكين الأوامر المتقدمة لتحويل النص إلى Camel Case وPascal Case وSnake Case وKebab Case</value>
+    <value>Activa comandos avanzados para convertir texto a Camel Case, Pascal Case, Snake Case y Kebab Case</value>
   </data>
   <data name="Clipboard_SearchBarSection.Text" xml:space="preserve">
-    <value>شريط البحث</value>
+    <value>Barra de búsqueda</value>
   </data>
   <data name="Clipboard_SearchBoxFocus.Header" xml:space="preserve">
-    <value>تركيز مربع البحث</value>
+    <value>Foco de la barra de búsqueda</value>
   </data>
   <data name="Clipboard_SearchBoxFocus.Description" xml:space="preserve">
-    <value>سيتم التركيز تلقائيًا على حقل البحث عند فتح النافذة</value>
+    <value>El campo de búsqueda recibirá el foco automáticamente cuando la ventana se abra</value>
   </data>
   <data name="Clipboard_ClearSearchOnOpen.Header" xml:space="preserve">
-    <value>مسح البحث عند الفتح</value>
+    <value>Limpiar la búsqueda al abrir</value>
   </data>
   <data name="Clipboard_ClearSearchOnOpen.Description" xml:space="preserve">
-    <value>مسح نص البحث عند فتح النافذة</value>
+    <value>Limpiar el cuadro de búsqueda cuando la ventana se abra</value>
   </data>
   <data name="Clipboard_TabsSection.Text" xml:space="preserve">
-    <value>علامات التبويب</value>
+    <value>Pestañas</value>
   </data>
   <data name="Clipboard_SetInitialTabOnOpen.Header" xml:space="preserve">
-    <value>تعيين علامة التبويب الأولية عند الفتح</value>
+    <value>Establecer la pestaña inicial al abrir</value>
   </data>
   <data name="Clipboard_SetInitialTabOnOpen.Description" xml:space="preserve">
-    <value>ابدأ بعلامة التبويب "الرئيسية" عند فتح النافذة</value>
+    <value>Iniciar con la pestaña Inicio cuando la ventana se abra</value>
   </data>
   <data name="Clipboard_OtherSection.Text" xml:space="preserve">
-    <value>أخرى</value>
+    <value>Otro</value>
   </data>
   <data name="Clipboard_RememberPinState.Header" xml:space="preserve">
-    <value>تذكر حالة تثبيت النافذة</value>
+    <value>Recordar estado de ventana fijada</value>
   </data>
   <data name="Clipboard_RememberPinState.Description" xml:space="preserve">
-    <value>يتتبع ما إذا كنت قد ثبّت النافذة، بحيث تفتح بنفس الطريقة في المرة التالية</value>
+    <value>Hace un seguimiento de si fijaste la ventana, abriéndola así la proxima vez</value>
   </data>
   <data name="Clipboard_ClipCopyMessage.Header" xml:space="preserve">
-    <value>رسالة تأكيد النسخ</value>
+    <value>Copiar mensaje de confirmación</value>
   </data>
   <data name="Clipboard_ClipCopyMessage.Description" xml:space="preserve">
-    <value>عرض رسالة قصيرة عند نسخ المحتوى إلى الحافظة</value>
+    <value>Muestra un breve mensaje cuando se copia el contenido al portapapeles</value>
   </data>
   <data name="Metadata_LinkPreviewSection.Text" xml:space="preserve">
-    <value>معاينة الرابط</value>
+    <value>Vista previa de enlaces</value>
   </data>
   <data name="Metadata_LinkPreview.Header" xml:space="preserve">
-    <value>معاينة الرابط</value>
+    <value>Vista previa de enlaces</value>
   </data>
   <data name="Metadata_LinkPreview.Description" xml:space="preserve">
-    <value>تحميل معلومات معاينة الرابط. ستظل البيانات المحملة مسبقًا دون تغيير</value>
+    <value>Cargar información de la vista previa del enlace. Los datos previamente cargados no serán cambiados</value>
   </data>
   <data name="Metadata_ColorPreviewSection.Text" xml:space="preserve">
-    <value>معاينة اللون</value>
+    <value>Vista previa del color</value>
   </data>
   <data name="Metadata_HexColorPrefix.Header" xml:space="preserve">
-    <value>يتطلب بادئة اللون السداسي</value>
+    <value>Requerir prefijo hexadecimal del color</value>
   </data>
   <data name="Metadata_HexColorPrefix.Description" xml:space="preserve">
-    <value>إذا تم التمكين، سيتم التعرف فقط على رموز الألوان السداسية التي تبدأ بـ "#" كألوان صالحة</value>
+    <value>Si se activa, solo los códigos de color hexadecimal que empiecen con '#' se reconocerán como colores válidos</value>
   </data>
   <data name="Tags_Tags.Header" xml:space="preserve">
-    <value>الوسوم</value>
+    <value>Etiquetas</value>
   </data>
   <data name="Tags_Tags.Description" xml:space="preserve">
-    <value>أنشئ وسومًا مخصصة وعيّنها إلى المقاطع الخاصة بك</value>
+    <value>Crea etiquetas personalizados y asígnalas a tus clips</value>
   </data>
   <data name="Tags_TagsButton.Content" xml:space="preserve">
-    <value>إضافة وسم</value>
+    <value>Añadir etiqueta</value>
   </data>
   <data name="Tags_Tag_ClipsCount.Text" xml:space="preserve">
-    <value>عدد المقاطع: {0}</value>
+    <value>Cantidad de clips: {0}</value>
   </data>
   <data name="Storage_EraseData.Header" xml:space="preserve">
-    <value>مسح بيانات الحافظة</value>
+    <value>Borrar datos del portapapeles</value>
   </data>
   <data name="Storage_EraseData.Description" xml:space="preserve">
-    <value>إزالة جميع بيانات الحافظة المحفوظة من جهازك</value>
+    <value>Quitar todos los datos guardados del portapapeles de tu computadora</value>
   </data>
   <data name="Storage_EraseDataButton.Content" xml:space="preserve">
-    <value>حذف جميع البيانات</value>
+    <value>Borrar todos los datos</value>
   </data>
   <data name="Storage_EraseDataFlyout.Text" xml:space="preserve">
-    <value>هل أنت متأكد أنك تريد حذف جميع البيانات المحفوظة؟</value>
+    <value>¿Estás seguro de querer eliminar todos los datos guardados?</value>
   </data>
   <data name="Storage_EraseDataFlyoutButton.Content" xml:space="preserve">
-    <value>نعم، احذف جميع البيانات</value>
+    <value>Sí, borrar todos los datos</value>
   </data>
   <data name="Storage_BackupSection.Text" xml:space="preserve">
-    <value>النسخ الاحتياطي</value>
+    <value>Copiar</value>
   </data>
   <data name="Storage_ExportClips.Header" xml:space="preserve">
-    <value>تصدير سجل الحافظة</value>
+    <value>Exportar historial del portapapeles</value>
   </data>
   <data name="Storage_ExportClips.Description" xml:space="preserve">
-    <value>حفظ جميع المقاطع في ملف النسخ الاحتياطي. قد تستغرق هذه العملية بضع دقائق</value>
+    <value>Guardar todos los clips en un archivo de copia de seguridad. Este proceso puede tardar unos minutos</value>
   </data>
   <data name="Storage_ExportButton.Content" xml:space="preserve">
-    <value>تصدير</value>
+    <value>Exportar</value>
   </data>
   <data name="Storage_ImportClips.Header" xml:space="preserve">
-    <value>استيراد مقاطع الفيديو من ملف النسخ الاحتياطي</value>
+    <value>Importar clips del archivo de copia de seguridad</value>
   </data>
   <data name="Storage_ImportClips.Description" xml:space="preserve">
-    <value>استعادة المقاطع من ملف النسخ الاحتياطي. تبعاً لحجم الملف، قد يستغرق هذا بعض الوقت</value>
+    <value>Restaurar clips de un archivo de copia de seguridad. Dependiendo del tamaño del archivo, esto puede tomar algo de tiempo</value>
   </data>
   <data name="Storage_ImportButton.Content" xml:space="preserve">
-    <value>استيراد</value>
+    <value>Importar</value>
   </data>
   <data name="Storage_ImportWarning.Message" xml:space="preserve">
-    <value>وقد يؤدي استيراد البيانات الأقدم إلى إزالة بعض المقطوعات إذا وقعت خارج فترة الاحتفاظ أو تجاوزت الحد الأقصى لعدد المقطوعات</value>
+    <value>La importación de datos antiguos puede causar que algunos clips sean removidos si quedan fuera del período de retención o exceden el límite máximo de clips</value>
   </data>
   <data name="Storage_CleanupSection.Text" xml:space="preserve">
-    <value>تنظيف</value>
+    <value>Limpieza</value>
   </data>
   <data name="Storage_CleanupType.Header" xml:space="preserve">
-    <value>نوع التنظيف</value>
+    <value>Tipo de limpiado</value>
   </data>
   <data name="Storage_CleanupType.Description" xml:space="preserve">
-    <value>حدد كيفية حذف المقاطع القديمة</value>
+    <value>Especifica cómo los clips viejos deberían eliminarse</value>
   </data>
   <data name="Storage_CleanupType_RetentionPeriod.Content" xml:space="preserve">
-    <value>فترة الاحتفاظ</value>
+    <value>Periodo de retención</value>
   </data>
   <data name="Storage_CleanupType_Quantity.Content" xml:space="preserve">
-    <value>الكمية</value>
+    <value>Cantidad</value>
   </data>
   <data name="Storage_CleanupQuantity.Header" xml:space="preserve">
-    <value>الحد الأقصى لعدد المقاطع</value>
+    <value>Cantidad máxima de clips</value>
   </data>
   <data name="Storage_CleanupQuantity.Description" xml:space="preserve">
-    <value>يحدد الحد الأقصى لعدد المقاطع التي يمكن تخزينها على القرص</value>
+    <value>Determina el número máximo de clips que pueden almacenarse en tu disco</value>
   </data>
   <data name="Storage_RetentionPeriod.Header" xml:space="preserve">
-    <value>فترة الاحتفاظ بالبيانات</value>
+    <value>Periodo de retención de datos</value>
   </data>
   <data name="Storage_RetentionPeriod.Description" xml:space="preserve">
-    <value>حدد مدة الاحتفاظ ببيانات الحافظة على القرص</value>
+    <value>Especifica qué tanto tiempo los datos en el portapapeles deberían mantenerse en tu disco</value>
   </data>
   <data name="Storage_RetentionPeriod_Daily.Content" xml:space="preserve">
-    <value>يوميًا</value>
+    <value>Diariamente</value>
   </data>
   <data name="Storage_RetentionPeriod_Weekly.Content" xml:space="preserve">
-    <value>أسبوعيًا</value>
+    <value>Semanalmente</value>
   </data>
   <data name="Storage_RetentionPeriod_Monthly.Content" xml:space="preserve">
-    <value>شهريًا</value>
+    <value>Mensualmente</value>
   </data>
   <data name="Storage_RetentionPeriod_Always.Content" xml:space="preserve">
-    <value>دائمًا</value>
+    <value>Siempre</value>
   </data>
   <data name="Storage_FavoriteClipsCleaning.Header" xml:space="preserve">
-    <value>تنظيف المقاطع المفضلة</value>
+    <value>Limpiar clips favoritos</value>
   </data>
   <data name="Storage_FavoriteClipsCleaning.Description" xml:space="preserve">
-    <value>إزالة المقاطع المفضلة التي تتجاوز فترة الاحتفاظ</value>
+    <value>Quitar clips favoritos que excedan el periodo de retención</value>
   </data>
   <data name="Storage_ClipLimitsSection.Text" xml:space="preserve">
-    <value>حدود المقاطع</value>
+    <value>Límite de clips</value>
   </data>
   <data name="Storage_SizeLimit.Header" xml:space="preserve">
-    <value>حد حجم المقطع</value>
+    <value>Límite de tamaño del clip</value>
   </data>
   <data name="Storage_SizeLimit.Description" xml:space="preserve">
-    <value>تحديد الحد الأقصى المسموح به لحجم كل مقطع. سيتم تجاهل المقاطع التي تتجاوز هذا الحد</value>
+    <value>Establece el tamaño máximo permitido por clip. Los clips que excedan este límite se descartarán</value>
   </data>
   <data name="Storage_MaxClipSize.Header" xml:space="preserve">
-    <value>أقصى حجم للمقطع</value>
+    <value>Tamaño máximo del clip</value>
   </data>
   <data name="Storage_MaxClipSize.Description" xml:space="preserve">
-    <value>الحجم الأقصى المسموح به لكل مقطع (بالميغابايت)</value>
+    <value>Tamaño máximo permitido por clip (en MB)</value>
   </data>
   <data name="Storage_ClipSizeWarning.ToolTipService.ToolTip" xml:space="preserve">
-    <value>قد يؤدي إلى زيادة استخدام القرص</value>
+    <value>Podría incrementar el uso del disco</value>
   </data>
   <data name="Filters_OwnerFilters.Header" xml:space="preserve">
-    <value>عوامل تصفية التطبيقات المالكة</value>
+    <value>Filtros de aplicaciones</value>
   </data>
   <data name="Filters_OwnerFilters.Description" xml:space="preserve">
-    <value>لن يقوم مدير الحافظة بحفظ أي بيانات من هذه البرامج</value>
+    <value>El gestor del portapapeles no guardará ningún dato de esos programas</value>
   </data>
   <data name="Filters_OwnerFiltersButton.Content" xml:space="preserve">
-    <value>إضافة عامل تصفية</value>
+    <value>Añadir filtro</value>
   </data>
   <data name="Filters_OwnerFiltersWarning.ToolTipService.ToolTip" xml:space="preserve">
-    <value>قد لا تعمل التصفية بشكل صحيح مع تطبيقات UWP وWebView2</value>
+    <value>El filtrado podría no funcionar correctamente con aplicaciones
+UWP y WebView2</value>
   </data>
   <data name="Filters_Filter_ClipsCount.Text" xml:space="preserve">
-    <value>{0 ,plural, zero {لا توجد مقاطع مفلترة} one {مقطع واحد مفلتر} two {مقطعان مفلتران} few {# مقاطع مفلترة} many {# مقطعًا مفلترًا} other {# مقطع مفلتر}}</value>
+    <value>Clips filtrados: {0}</value>
   </data>
   <data name="About_Repository.Header" xml:space="preserve">
-    <value>مستودع GitHub</value>
+    <value>Repositorio de GitHub</value>
   </data>
   <data name="ShortcutDialog_Title.Text" xml:space="preserve">
-    <value>اختصار التفعيل</value>
+    <value>Atajo de activación</value>
   </data>
   <data name="ShortcutDialog_Subtitle.Text" xml:space="preserve">
-    <value>اضغط على مجموعة مفاتيح لتغيير هذا الاختصار</value>
+    <value>Presiona una combinación de teclas para cambiar este atajo</value>
   </data>
   <data name="ShortcutDialog_ErrorInfo.Title" xml:space="preserve">
-    <value>اختصار غير صالح</value>
+    <value>Atajo inválido</value>
   </data>
   <data name="ShortcutDialog_ErrorInfo.Message" xml:space="preserve">
-    <value>يجب أن يبدأ الاختصار بمفتاح Windows أو Ctrl أو Alt أو Shift</value>
+    <value>El atajo debería empezar con la tecla Windows, Ctrl, Alt o Shift</value>
   </data>
   <data name="TagDialog_Title.Text" xml:space="preserve">
-    <value>تحرير الوسم</value>
+    <value>Editar etiqueta</value>
   </data>
   <data name="TagDialog_Name.PlaceholderText" xml:space="preserve">
-    <value>الاسم</value>
+    <value>Nombre</value>
   </data>
   <data name="TagDialog_CleanupCheckBox.Content" xml:space="preserve">
-    <value>
-السماح بتنظيف المقاطع التي تحتوي على هذه العلامة</value>
+    <value>Permitir limpiar los clips con esta etiqueta</value>
   </data>
   <data name="FilterDialog_Title.Text" xml:space="preserve">
-    <value>تحرير عامل التصفية</value>
+    <value>Editar filtro</value>
   </data>
   <data name="FilterDialog_Name.PlaceholderText" xml:space="preserve">
-    <value>الاسم</value>
+    <value>Nombre</value>
   </data>
   <data name="FilterDialog_Pattern.PlaceholderText" xml:space="preserve">
-    <value>النمط</value>
+    <value>Patrón</value>
   </data>
   <data name="FilterDialog_ExampleButton.Content" xml:space="preserve">
-    <value>أمثلة على الأنماط</value>
+    <value>Ejemplos de patrón</value>
   </data>
   <data name="FilterDialog_TeachingTip.Title" xml:space="preserve">
-    <value>أمثلة على الأنماط</value>
+    <value>Ejemplos de patrón</value>
   </data>
 </root>

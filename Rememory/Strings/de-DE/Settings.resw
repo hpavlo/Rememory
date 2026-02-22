@@ -444,6 +444,30 @@
   <data name="Storage_EraseDataFlyoutButton.Content" xml:space="preserve">
     <value>Ja, alle Daten löschen</value>
   </data>
+  <data name="Storage_BackupSection.Text" xml:space="preserve">
+    <value>Sicherung</value>
+  </data>
+  <data name="Storage_ExportClips.Header" xml:space="preserve">
+    <value>Zwischenablage exportieren</value>
+  </data>
+  <data name="Storage_ExportClips.Description" xml:space="preserve">
+    <value>Alle Clips in einer Backup-Datei speichern. Dieser Vorgang kann einige Minuten dauern</value>
+  </data>
+  <data name="Storage_ExportButton.Content" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="Storage_ImportClips.Header" xml:space="preserve">
+    <value>Clips aus Backup-Datei importieren</value>
+  </data>
+  <data name="Storage_ImportClips.Description" xml:space="preserve">
+    <value>Wiederherstellen von Clips aus einer Sicherungsdatei. Abhängig von der Dateigröße kann dies einige Zeit dauern</value>
+  </data>
+  <data name="Storage_ImportButton.Content" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="Storage_ImportWarning.Message" xml:space="preserve">
+    <value>Der Import älterer Daten kann dazu führen, dass einige Clips entfernt werden, wenn sie außerhalb des Speicherzeitraums liegen oder die maximale Clips Grenze überschreiten</value>
+  </data>
   <data name="Storage_CleanupSection.Text" xml:space="preserve">
     <value>Aufräumen</value>
   </data>

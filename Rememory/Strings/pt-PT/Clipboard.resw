@@ -216,6 +216,9 @@
   <data name="Clip_ContextMenu_Edit.Text" xml:space="preserve">
     <value>Editar</value>
   </data>
+  <data name="Clip_ContextMenu_Export.Text" xml:space="preserve">
+    <value>Exportar</value>
+  </data>
   <data name="Clip_ContextMenu_Delete.Text" xml:space="preserve">
     <value>Apagar</value>
   </data>

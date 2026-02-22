@@ -444,6 +444,30 @@
   <data name="Storage_EraseDataFlyoutButton.Content" xml:space="preserve">
     <value>Так, видалити усі дані</value>
   </data>
+  <data name="Storage_BackupSection.Text" xml:space="preserve">
+    <value>Резервне копіювання</value>
+  </data>
+  <data name="Storage_ExportClips.Header" xml:space="preserve">
+    <value>Експортувати історію буфера обміну</value>
+  </data>
+  <data name="Storage_ExportClips.Description" xml:space="preserve">
+    <value>Зберегти всі кліпи в файл резервної копії. Цей процес може тривати кілька хвилин</value>
+  </data>
+  <data name="Storage_ExportButton.Content" xml:space="preserve">
+    <value>Експортувати</value>
+  </data>
+  <data name="Storage_ImportClips.Header" xml:space="preserve">
+    <value>Імпортувати кліпи з файлу резервної копії</value>
+  </data>
+  <data name="Storage_ImportClips.Description" xml:space="preserve">
+    <value>Відновити кліпи з файлу резервної копії. В залежності від розміру файлу це може тривати деякий час</value>
+  </data>
+  <data name="Storage_ImportButton.Content" xml:space="preserve">
+    <value>Імпортувати</value>
+  </data>
+  <data name="Storage_ImportWarning.Message" xml:space="preserve">
+    <value>Імпортування старих даних може призвести до видалення деяких кліпів, якщо вони потрапляють за період збереження або перевищують максимальний ліміт</value>
+  </data>
   <data name="Storage_CleanupSection.Text" xml:space="preserve">
     <value>Очищення</value>
   </data>

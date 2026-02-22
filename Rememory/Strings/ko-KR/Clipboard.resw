@@ -216,6 +216,9 @@
   <data name="Clip_ContextMenu_Edit.Text" xml:space="preserve">
     <value>편집</value>
   </data>
+  <data name="Clip_ContextMenu_Export.Text" xml:space="preserve">
+    <value>내보내기</value>
+  </data>
   <data name="Clip_ContextMenu_Delete.Text" xml:space="preserve">
     <value>삭제</value>
   </data>

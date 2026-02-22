@@ -118,171 +118,171 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="PauseMonitoringBanner.Text" xml:space="preserve">
-    <value>Speicherung der Zwischenablage wurde angehalten</value>
+    <value>Panoya veri kaydı duraklatıldı</value>
   </data>
   <data name="ClipFooter_CharactersCount.Text" xml:space="preserve">
-    <value>{0, plural, one {# Zeichen} other {# Zeichen}}</value>
+    <value>{0, plural, one {# karakter} other {# karakter}}</value>
   </data>
   <data name="ClipFooter_FilesCount.Text" xml:space="preserve">
-    <value>{0, plural, one {# Datei} other {# Dateien}}</value>
+    <value>{0, plural, one {# dosya} other {# dosya}}</value>
   </data>
   <data name="ClipFooter_FoldersCount.Text" xml:space="preserve">
-    <value>{0, plural, one {# Ordner} other {# Ordner}}</value>
+    <value>{0, plural, one {# klasör} other {# klasör}}</value>
   </data>
   <data name="ClipFooter_FilesAndFoldersCountDivider.Text" xml:space="preserve">
     <value>, </value>
   </data>
   <data name="ClipFooter_ImageSize.Text" xml:space="preserve">
-    <value>Größe: {0} x {1}</value>
+    <value>Boyut: {0} x {1}</value>
   </data>
   <data name="ClipFooter_Time_DaysAgo.Text" xml:space="preserve">
-    <value>{0, plural, one {Vor # Tag} other {Vor # Tagen}}</value>
+    <value>{0, plural, one {# gün önce} other {# gün önce}}</value>
   </data>
   <data name="ClipFooter_Time_HoursAgo.Text" xml:space="preserve">
-    <value>{0, plural,one {Vor # Stunde} other {Vor # Stunden}}</value>
+    <value>{0, plural, one {# saat önce} other {# saat önce}}</value>
   </data>
   <data name="ClipFooter_Time_MinutesAgo.Text" xml:space="preserve">
-    <value>{0, plural, one {Vor # Minute} other {Vor # Minuten}}</value>
+    <value>{0, plural, one {# dakika önce} other {# dakika önce}}</value>
   </data>
   <data name="ClipFooter_Time_SecondsAgo.Text" xml:space="preserve">
-    <value>{0, plural, one {Vor # Sekunde} other {Vor # Sekunden}}</value>
+    <value>{0, plural, one {# saniye önce} other {# saniye önce}}</value>
   </data>
   <data name="ClipFooter_Time_Now.Text" xml:space="preserve">
-    <value>Jetzt</value>
+    <value>Şimdi</value>
   </data>
   <data name="Clip_NoPreview.Text" xml:space="preserve">
-    <value>Keine Vorschau</value>
+    <value>Önizleme yok</value>
   </data>
   <data name="Clip_FilesPreview_MoreFilesCount.Text" xml:space="preserve">
-    <value>{0} weitere</value>
+    <value>{0} daha fazla</value>
   </data>
   <data name="Clip_ContextMenu_AddToFavorites.Text" xml:space="preserve">
-    <value>Zu Favoriten hinzufügen</value>
+    <value>Favorilere ekle</value>
   </data>
   <data name="Clip_ContextMenu_RemoveFromFavorites.Text" xml:space="preserve">
-    <value>Aus Favoriten entfernen</value>
+    <value>Favorilerden kaldır</value>
   </data>
   <data name="Clip_ContextMenu_OpenInBrowser.Text" xml:space="preserve">
-    <value>Im Browser öffnen</value>
+    <value>Tarayıcıda aç</value>
   </data>
   <data name="Clip_ContextMenu_OpenInFlyout.Text" xml:space="preserve">
-    <value>Im Ausklappmenü öffnen</value>
+    <value>Açılır Menü'de aç</value>
   </data>
   <data name="Clip_ContextMenu_Paste.Text" xml:space="preserve">
-    <value>Einfügen</value>
+    <value>Yapıştır</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs.Text" xml:space="preserve">
-    <value>Einfügen als</value>
+    <value>Farklı yapıştır</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs_PlainText.Text" xml:space="preserve">
-    <value>Klartext</value>
+    <value>Düz metin</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs_CamelCase.Text" xml:space="preserve">
-    <value>Camel case</value>
+    <value>camelCase</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs_CapitalizedCase.Text" xml:space="preserve">
-    <value>Großgeschriebene Wörter</value>
+    <value>Baş Harfi Büyük</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs_InvertCase.Text" xml:space="preserve">
-    <value>Schreibweise umkehren</value>
+    <value>Büyük/Küçük Harf Ters Çevir</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs_KebabCase.Text" xml:space="preserve">
-    <value>Kebab case</value>
+    <value>kebab-case</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs_LowerCase.Text" xml:space="preserve">
-    <value>Kleinbuchstaben</value>
+    <value>hepsi küçük harf</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs_PascalCase.Text" xml:space="preserve">
-    <value>Pascal case</value>
+    <value>PascalCase</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs_SentenceCase.Text" xml:space="preserve">
-    <value>Satzanfänge groß</value>
+    <value>Cümlenin ilk harfi büyük</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs_SnakeCase.Text" xml:space="preserve">
-    <value>Snake case</value>
+    <value>snake_case</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs_TrimWhitespace.Text" xml:space="preserve">
-    <value>Leerzeichen kürzen</value>
+    <value>Boşlukları kaldır</value>
   </data>
   <data name="Clip_ContextMenu_PasteAs_UpperCase.Text" xml:space="preserve">
-    <value>Großbuchstaben</value>
+    <value>HEPSİ BÜYÜK HARF</value>
   </data>
   <data name="Clip_ContextMenu_Copy.Text" xml:space="preserve">
-    <value>Kopieren</value>
+    <value>Kopyala</value>
   </data>
   <data name="Clip_ContextMenu_SaveAs.Text" xml:space="preserve">
-    <value>Speichern als</value>
+    <value>Farklı Kaydet</value>
   </data>
   <data name="Clip_ContextMenu_Edit.Text" xml:space="preserve">
-    <value>Bearbeiten</value>
+    <value>Düzenle</value>
   </data>
   <data name="Clip_ContextMenu_Export.Text" xml:space="preserve">
-    <value>Export</value>
+    <value>Dışa Aktar</value>
   </data>
   <data name="Clip_ContextMenu_Delete.Text" xml:space="preserve">
-    <value>Löschen</value>
+    <value>Sil</value>
   </data>
   <data name="Clip_ContextMenu_Tags.Text" xml:space="preserve">
-    <value>Tags</value>
+    <value>Etiketler</value>
   </data>
   <data name="Clip_ContextMenu_FilterSource.Text" xml:space="preserve">
-    <value>Diese Quelle filtern</value>
+    <value>Bu kaynağı filtrele</value>
   </data>
   <data name="NavigationTab_Home.Text" xml:space="preserve">
-    <value>Startseite</value>
+    <value>Ana Menü</value>
   </data>
   <data name="NavigationTab_Favorites.Text" xml:space="preserve">
-    <value>Favoriten</value>
+    <value>Favoriler</value>
   </data>
   <data name="NavigationTab_Images.Text" xml:space="preserve">
-    <value>Bilder</value>
+    <value>Resimler</value>
   </data>
   <data name="NavigationTab_Files.Text" xml:space="preserve">
-    <value>Dateien</value>
+    <value>Dosyalar</value>
   </data>
   <data name="NavigationTab_Links.Text" xml:space="preserve">
-    <value>Links</value>
+    <value>Linkler</value>
   </data>
   <data name="SearchBox.PlaceholderText" xml:space="preserve">
-    <value>Suche</value>
+    <value>Arama</value>
   </data>
   <data name="TitleBar_CloseButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Schließen</value>
+    <value>Kapat</value>
   </data>
   <data name="TitleBar_MoreButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Mehr</value>
+    <value>Daha Fazlası</value>
   </data>
   <data name="TitleBarMenu_PauseMonitoring.Text" xml:space="preserve">
-    <value>Überwachung pausieren</value>
+    <value>İzleme duraklatıldı</value>
   </data>
   <data name="TitleBarMenu_ResumeMonitoring.Text" xml:space="preserve">
-    <value>Überwachung wiederaufnehmen</value>
+    <value>İzleme devam ediyor</value>
   </data>
   <data name="TitleBarMenu_PinWindow.Text" xml:space="preserve">
-    <value>Fenster anheften</value>
+    <value>Pencereyi sabitle</value>
   </data>
   <data name="TitleBarMenu_UnpinWindow.Text" xml:space="preserve">
-    <value>Fenster lösen</value>
+    <value>Pencereyi sabitlemeyi kaldır</value>
   </data>
   <data name="TitleBarMenu_Settings.Text" xml:space="preserve">
-    <value>Einstellungen</value>
+    <value>Ayarlar</value>
   </data>
   <data name="TitleBarMenu_Quit.Text" xml:space="preserve">
-    <value>Beenden</value>
+    <value>Çık</value>
   </data>
   <data name="FilterButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Filter</value>
+    <value>Filtre</value>
   </data>
   <data name="FilterTreeView_Apps.Text" xml:space="preserve">
-    <value>Apps</value>
+    <value>Uygulamalar</value>
   </data>
   <data name="MultiSelectionButton.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Auswahlmodus</value>
+    <value>Seçim modu</value>
   </data>
   <data name="SelectAllClips.ToolTipService.ToolTip" xml:space="preserve">
-    <value>Alles auswählen</value>
+    <value>Hepsini seç</value>
   </data>
   <data name="SelectedClipsCount.Text" xml:space="preserve">
-    <value>{0, plural, one {# Clip ausgewählt} other {# Clips ausgewählt}}</value>
+    <value>{0, plural, one {# klip seçildi} other {# klip seçildi}}</value>
   </data>
 </root>
