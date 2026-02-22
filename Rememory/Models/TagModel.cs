@@ -10,48 +10,43 @@ namespace Rememory.Models
     {
         public int Id { get; set; }
 
-        private string _name = string.Empty;
         public string Name
         {
-            get => _name;
-            set => SetProperty(ref _name, value);
-        }
+            get;
+            set => SetProperty(ref field, value);
+        } = string.Empty;
 
-        private string _colorHex = string.Empty;
         public string ColorHex
         {
-            get => _colorHex;
+            get;
             set
             {
-                if (SetProperty(ref _colorHex, value))
+                if (SetProperty(ref field, value))
                 {
                     if (App.Current.DispatcherQueue.HasThreadAccess)
                     {
                         // Already on UI thread, run directly
-                        ColorBrush = new SolidColorBrush(_colorHex.ToColor());
+                        ColorBrush = new SolidColorBrush(ColorHex.ToColor());
                     }
                     else
                     {
                         // Not on UI thread, enqueue
-                        App.Current.DispatcherQueue.TryEnqueue(() => ColorBrush = new SolidColorBrush(_colorHex.ToColor()));
+                        App.Current.DispatcherQueue.TryEnqueue(() => ColorBrush = new SolidColorBrush(ColorHex.ToColor()));
                     }
                 }
             }
-        }
+        } = string.Empty;
 
-        private SolidColorBrush? _colorBrush;
         public SolidColorBrush? ColorBrush
         {
-            get => _colorBrush;
-            private set => SetProperty(ref _colorBrush, value);
+            get;
+            private set => SetProperty(ref field, value);
         }
-
-        private bool _isCleaningEnabled;
 
         public bool IsCleaningEnabled
         {
-            get => _isCleaningEnabled;
-            set => SetProperty(ref _isCleaningEnabled, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public IList<ClipModel> Clips { get; set; } = [];

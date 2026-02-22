@@ -14,11 +14,10 @@ namespace Rememory.Models
 
         public byte[] Hash { get; set; } = hash;
 
-        private IMetadata? _metadata;
         public IMetadata? Metadata
         {
-            get => _metadata;
-            set => SetProperty(ref _metadata, value);
+            get;
+            set => SetProperty(ref field, value);
         }
     }
 }

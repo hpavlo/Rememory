@@ -5,34 +5,31 @@ namespace Rememory.Models
 {
     public partial class OwnerAppFilter : ObservableObject
     {
-        private string _name = string.Empty;
         public string Name
         {
-            get => _name;
-            set => SetProperty(ref _name, value);
-        }
+            get;
+            set => SetProperty(ref field, value);
+        } = string.Empty;
 
         private Regex? _compiledRegex;
-        private string _pattern = string.Empty;
         public string Pattern
         {
-            get => _pattern;
+            get;
             set
             {
-                if (SetProperty(ref _pattern, value))
+                if (SetProperty(ref field, value))
                 {
                     var normalizedPattern = Pattern.Replace('\\', '/').Replace("*", ".*");
                     _compiledRegex = new(normalizedPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
                 }
             }
-        }
+        } = string.Empty;
 
-        private int _filteredCount = 0;
         public int FilteredCount
         {
-            get => _filteredCount;
-            set => SetProperty(ref _filteredCount, value);
-        }
+            get;
+            set => SetProperty(ref field, value);
+        } = 0;
 
         public OwnerAppFilter(string name, string pattern)
         {

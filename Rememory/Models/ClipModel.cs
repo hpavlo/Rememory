@@ -14,19 +14,17 @@ namespace Rememory.Models
 
         public int Id { get; set; }
 
-        private DateTime _clipTime = DateTime.Now;
         public DateTime ClipTime
         {
-            get => _clipTime;
-            set => SetProperty(ref _clipTime, value);
-        }
+            get;
+            set => SetProperty(ref field, value);
+        } = DateTime.Now;
 
-        private bool _isFavorite = false;
         public bool IsFavorite
         {
-            get => _isFavorite;
-            set => SetProperty(ref _isFavorite, value);
-        }
+            get;
+            set => SetProperty(ref field, value);
+        } = false;
 
         public OwnerModel? Owner { get; set; }
 
@@ -36,15 +34,10 @@ namespace Rememory.Models
 
         #endregion
 
-        private bool _isOpenInEditor = false;
         /// <summary>
         /// <c>True</c> if this clip is currently opened in editor 
         /// </summary>
-        public bool IsOpenInEditor
-        {
-            get => _isOpenInEditor;
-            set => SetProperty(ref _isOpenInEditor, value);
-        }
+        public bool IsOpenInEditor { get;  set => SetProperty(ref field, value); } = false;
 
         /// <summary>
         /// Used to show this clip in Links tab

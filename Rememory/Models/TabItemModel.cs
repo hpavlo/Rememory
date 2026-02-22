@@ -7,18 +7,16 @@ namespace Rememory.Models
     {
         private const string TAG_GLYPH = "\uEA3B";
 
-        private string _title;
         public string Title
         {
-            get => _title;
-            set => SetProperty(ref _title, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
-        private string _glyph;
         public string Glyph
         {
-            get => _glyph;
-            set => SetProperty(ref _glyph, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public NavigationTabItemType Type { get; private set; }
@@ -29,15 +27,15 @@ namespace Rememory.Models
 
         public TabItemModel(string title, string glyph, NavigationTabItemType type)
         {
-            _title = title;
-            _glyph = glyph;
+            Title = title;
+            Glyph = glyph;
             Type = type;
         }
 
         public TabItemModel(TagModel tag)
         {
-            _title = tag.Name;
-            _glyph = TAG_GLYPH;
+            Title = tag.Name;
+            Glyph = TAG_GLYPH;
             Type = NavigationTabItemType.Tag;
             Tag = tag;
             tag.PropertyChanged += Tag_PropertyChanged;

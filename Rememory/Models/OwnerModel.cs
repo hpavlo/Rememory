@@ -10,41 +10,38 @@ namespace Rememory.Models
 
         public string Path { get; set; } = path;
 
-        private string? _name;
         public string? Name
         {
-            get => _name;
-            set => SetProperty(ref _name, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
-        private byte[]? _icon;
         public byte[]? Icon
         {
-            get => _icon;
+            get;
             set {
-                if (_icon != value)
+                if (field != value)
                 {
-                    _icon = value;
+                    field = value;
 
                     if (App.Current.DispatcherQueue.HasThreadAccess)
                     {
                         // Already on UI thread, run directly
-                        UpdateIconBitmap(_icon);
+                        UpdateIconBitmap(Icon);
                     }
                     else
                     {
                         // Not on UI thread, enqueue
-                        App.Current.DispatcherQueue.TryEnqueue(() => UpdateIconBitmap(_icon));
+                        App.Current.DispatcherQueue.TryEnqueue(() => UpdateIconBitmap(Icon));
                     }
                 }
             }
         }
 
-        private SoftwareBitmapSource? _iconBitmap;
         public SoftwareBitmapSource? IconBitmap
         {
-            get => _iconBitmap;
-            private set => SetProperty(ref _iconBitmap, value);
+            get;
+            private set => SetProperty(ref field, value);
         }
 
         public int ClipsCount { get; set; } = 0;

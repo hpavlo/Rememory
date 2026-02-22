@@ -23,8 +23,7 @@ namespace Rememory.Models
 {
     public partial class SettingsContext : ObservableObject
     {
-        private static SettingsContext? _instance;
-        public static SettingsContext Instance => _instance ??= new SettingsContext();
+        public static SettingsContext Instance => field ??= new SettingsContext();
 
         private readonly ClipboardMonitor _clipboardMonitor = App.Current.Services.GetService<ClipboardMonitor>()!;
         private readonly ApplicationDataContainer _localSettings = ApplicationData.GetDefault().LocalSettings;

@@ -7,40 +7,35 @@ namespace Rememory.Models
 {
     public partial class AppTreeViewNode : ObservableObject
     {
-        private string _title = string.Empty;
         public string Title
         {
-            get => _title;
-            set => SetProperty(ref _title, value);
-        }
+            get;
+            set => SetProperty(ref field, value);
+        } = string.Empty;
 
-        private SoftwareBitmapSource? _image;
         public SoftwareBitmapSource? Image
         {
-            get => _image;
-            set => SetProperty(ref _image, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
-        private string _ownerPath = string.Empty;
         public string OwnerPath
         {
-            get => _ownerPath;
-            set => SetProperty(ref _ownerPath, value);
-        }
+            get;
+            set => SetProperty(ref field, value);
+        } = string.Empty;
 
-        private bool _isExpanded = false;
         public bool IsExpanded
         {
-            get => _isExpanded;
-            set => SetProperty(ref _isExpanded, value);
-        }
+            get;
+            set => SetProperty(ref field, value);
+        } = false;
 
-        private ObservableCollection<AppTreeViewNode> _children = [];
         public ObservableCollection<AppTreeViewNode> Children
         {
-            get => _children;
-            set => SetProperty(ref _children, value);
-        }
+            get;
+            set => SetProperty(ref field, value);
+        } = [];
 
         public bool IsSelected = true;
 
