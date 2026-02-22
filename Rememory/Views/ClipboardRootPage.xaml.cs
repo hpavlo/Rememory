@@ -392,7 +392,15 @@ namespace Rememory.Views
                         richEditBox.IsReadOnly = false;
                         try
                         {
-                            richEditBox.Document.SetText(TextSetOptions.FormatRtf, File.ReadAllText(dataItem.Value.Data).Replace("{\\rtf", "{\\rtf1"));
+                            string rtf = File.ReadAllText(dataItem.Value.Data);
+                            const string marker = "{\\rtf";
+
+                            if (rtf.Length >= marker.Length && rtf.AsSpan().StartsWith(marker.AsSpan(), StringComparison.Ordinal))
+                            {
+                                rtf = string.Concat("{\\rtf1", rtf.AsSpan(marker.Length));
+                            }
+
+                            richEditBox.Document.SetText(TextSetOptions.FormatRtf, rtf);
                             richEditBox.SearchHighligh(ViewModel.SearchString);
                             richEditBox.IsReadOnly = true;
                             _previewRtfFlyout.ShowAt(this);
