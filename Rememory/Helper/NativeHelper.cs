@@ -121,11 +121,15 @@ namespace Rememory.Helper
 
         /// <param name="dpiX">dpiX of the monitor</param>
         /// <param name="dpiY">dpiY of the monitor</param>
-        /// <returns><see cref="Rectangle"/> of the monitor work area where the cursor is currently located</returns>
-        internal static RectInt32 GetWorkAreaRectangle(out uint dpiX, out uint dpiY)
+        /// <returns><see cref="Rectangle"/> of the monitor work area under the point or where the cursor is currently located</returns>
+        internal static RectInt32 GetWorkAreaRectangle(out uint dpiX, out uint dpiY, PointInt32? point = null)
         {
-            GetCursorPos(out var point);
-            IntPtr monitor = MonitorFromPoint(point, MONITOR_DEFAULTTONEAREST);
+            if (!point.HasValue)
+            {
+                GetCursorPos(out var cursorPoint);
+                point = cursorPoint;
+            }
+            IntPtr monitor = MonitorFromPoint(point.Value, MONITOR_DEFAULTTONEAREST);
             MonitorInfoEx info = new();
             GetMonitorInfo(monitor, info);
 

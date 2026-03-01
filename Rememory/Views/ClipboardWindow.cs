@@ -243,9 +243,6 @@ namespace Rememory.Views
             {
                 case ClipboardWindowPosition.Caret:
                     var caretPosition = GetPositionWindowRelativeToCaret(
-                        workArea,
-                        (int)independedWidth,
-                        (int)independedHeight,
                         (int)(workArea.X + workArea.Width - independedWidth - independedMarginX),
                         (int)(workArea.Y + workArea.Height - independedHeight - independedMarginY));
                     this.MoveAndResize(caretPosition.X, caretPosition.Y, windowWidth, windowHeight);
@@ -301,13 +298,17 @@ namespace Rememory.Views
             }
         }
 
-        private PointInt32 GetPositionWindowRelativeToCaret(RectInt32 workArea, int independedWidth, int independedHeight, int defaultPositionX, int defaultPositionY)
+        private PointInt32 GetPositionWindowRelativeToCaret(int defaultPositionX, int defaultPositionY)
         {
             int x = defaultPositionX;
             int y = defaultPositionY;
 
             if (TextBoxCaretHelper.GetCaretPosition(out var caretRect))
             {
+                var workArea = NativeHelper.GetWorkAreaRectangle(out var dpiX, out var dpiY, new(caretRect.X, caretRect.Y));
+                var independedWidth = (int)(SettingsContext.WindowWidth * dpiX / 96.0);
+                var independedHeight = (int)(SettingsContext.WindowHeight * dpiY / 96.0);
+
                 if (workArea.X + workArea.Width - (caretRect.X + caretRect.Width) > independedWidth)
                 {
                     x = caretRect.X + caretRect.Width;
