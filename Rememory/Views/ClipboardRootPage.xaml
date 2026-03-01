@@ -150,7 +150,6 @@
                 </Grid.RowDefinitions>
 
                 <ContentControl x:Name="PreviewPresenter"
-                                x:Phase="2"
                                 Grid.Column="0"
                                 Grid.Row="0"
                                 Grid.ColumnSpan="4"
@@ -163,7 +162,6 @@
 
                 <ListView x:Name="ClipTagsListView"
                           x:Load="{x:Bind HasTags}"
-                          x:Phase="3"
                           Grid.Column="0"
                           Grid.Row="1"
                           Grid.ColumnSpan="3"
@@ -228,15 +226,13 @@
 
                 <FontIcon x:Name="ClipFavoriteIcon"
                           x:Load="{x:Bind IsFavorite}"
-                          x:Phase="1"
                           Grid.Column="0"
                           Grid.Row="2"
                           Margin="0,0,8,0"
                           Glyph="&#xE734;"
                           FontSize="{StaticResource CaptionTextBlockFontSize}" />
 
-                <TextBlock x:Phase="1"
-                           Grid.Column="1"
+                <TextBlock Grid.Column="1"
                            Grid.Row="2"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center"
@@ -246,8 +242,7 @@
                            Text="{Binding Result}"
                            TextTrimming="CharacterEllipsis" />
 
-                <TextBlock x:Phase="1"
-                           Grid.Column="2"
+                <TextBlock Grid.Column="2"
                            Grid.Row="2"
                            Margin="8,0,0,0"
                            TextWrapping="Wrap"
@@ -259,7 +254,6 @@
 
                 <Image x:Name="ClipIconBitmap"
                        x:Load="{x:Bind Owner.IconBitmap, Converter={StaticResource EmptyObjectToBoolConverter}}"
-                       x:Phase="1"
                        Grid.Column="3"
                        Grid.Row="2"
                        Height="16"
