@@ -21,6 +21,7 @@ Get Rememory today and never lose track of copied information again!
 - Owner app filters
 - Multiple selection
 - Tags
+- Clips backup
 
 ## Download
 
@@ -44,6 +45,8 @@ These languages are fully translated and ready to use:
 * German
 * Korean
 * Portuguese
+* Spanish
+* Turkish
 * Ukrainian
 
 ### Help Needed
@@ -54,8 +57,6 @@ We are looking for contributors to help finish the translations for the followin
 * Italian
 * Japanese
 * Polish
-* Spanish
-* Turkish
 
 [Translate the project on Crowdin](https://crowdin.com/project/rememory)
 
