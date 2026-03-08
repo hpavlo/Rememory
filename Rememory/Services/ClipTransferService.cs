@@ -140,7 +140,7 @@ namespace Rememory.Services
             // Data files extract
             
             var dataFilesToExtract = archive.Entries
-                .Where(entry => SupportedFormatFolders_.Any(supportedFolderName => entry.FullName.StartsWith(supportedFolderName)))
+                .Where(entry => entry.Length > 0 && SupportedFormatFolders_.Any(supportedFolderName => entry.FullName.StartsWith(supportedFolderName)))
                 .Select(entry => new KeyValuePair<string, ZipArchiveEntry>(Path.Combine(_clipboardMonitor.HistoryFolderPath, entry.FullName), entry))
                 .Where(dataFileEntryPair => !File.Exists(dataFileEntryPair.Key));
 
