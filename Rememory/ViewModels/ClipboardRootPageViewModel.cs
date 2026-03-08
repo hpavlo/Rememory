@@ -99,12 +99,12 @@ namespace Rememory.ViewModels
         /// </summary>
         public bool IsWindowPinned
         {
-            get => App.Current.ClipboardWindow.IsPinned;
+            get => App.Current.ClipboardWindow.Pinned;
             set
             {
-                if (App.Current.ClipboardWindow.IsPinned != value)
+                if (App.Current.ClipboardWindow.Pinned != value)
                 {
-                    App.Current.ClipboardWindow.IsPinned = value;
+                    App.Current.ClipboardWindow.Pinned = value;
                     // Use event hook only if window is pinned
                     if (value)
                     {

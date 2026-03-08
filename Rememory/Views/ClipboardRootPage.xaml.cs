@@ -30,13 +30,14 @@ namespace Rememory.Views
     {
         public readonly ClipboardRootPageViewModel ViewModel = new();
         public readonly MenuFlyout TrayIconMenu;
+        public Border WindowCaptionArea => WindowCaptionBorder;
 
         /// <summary>
         /// Contains all selected clips ordered by selection time.
         /// </summary>
         public List<ClipModel> OrderedSelectedClips { get; private set; } = [];
 
-        private readonly ClipboardWindow _window;
+        private readonly ClipboardWindow _window = App.Current.ClipboardWindow;
         private IThemeService ThemeService => App.Current.ThemeService;
 
         private readonly Flyout _previewTextFlyout;
@@ -61,10 +62,9 @@ namespace Rememory.Views
             { ClipboardFormat.Bitmap, "Bitmap" }
         };
 
-        public ClipboardRootPage(ClipboardWindow window)
+        public ClipboardRootPage()
         {
             InitializeComponent();
-            _window = window;
             _window.Showing += Window_Showing;
             _window.Hiding += Window_Hiding;
             _window.AppWindow.Closing += Window_Closing;
@@ -213,66 +213,6 @@ namespace Rememory.Views
         }
 
         private void SetFocusOnFirstClipInList() => ((UIElement)FocusManager.FindFirstFocusableElement(ClipsListView))?.Focus(FocusState.Programmatic);
-
-        #region Window moving
-
-        private PointerUpdateKind _lastPointerClickKind;
-        private int _startPointerX = 0, _startPointerY = 0, _startWindowX = 0, _startWindowY = 0;
-        private bool _isWindowMoving = false;
-
-        private void WindowDragArea_PointerPressed(object sender, PointerRoutedEventArgs e)
-        {
-            var properties = e.GetCurrentPoint((UIElement)sender).Properties;
-
-            if ((_lastPointerClickKind = properties.PointerUpdateKind) != PointerUpdateKind.LeftButtonPressed)
-            {
-                return;
-            }
-
-            if (ViewModel.SettingsContext.WindowPosition != ClipboardWindowPosition.Right)
-            {
-                ((UIElement)sender).CapturePointer(e.Pointer);
-                _startWindowX = _window.AppWindow.Position.X;
-                _startWindowY = _window.AppWindow.Position.Y;
-                NativeHelper.GetCursorPos(out var pt);
-                _startPointerX = pt.X;
-                _startPointerY = pt.Y;
-                _isWindowMoving = true;
-            }
-        }
-
-        private void WindowDragArea_PointerReleased(object sender, PointerRoutedEventArgs e)
-        {
-            ((UIElement)sender).ReleasePointerCaptures();
-            _isWindowMoving = false;
-            _window.AppWindow.Move(ClipboardWindow.AdjustWindowPositionToWorkArea(_window.AppWindow.Position, _window.AppWindow.Size));
-        }
-
-        private void WindowDragArea_PointerMoved(object sender, PointerRoutedEventArgs e)
-        {
-            var properties = e.GetCurrentPoint((UIElement)sender).Properties;
-            if (properties.IsLeftButtonPressed)
-            {
-                NativeHelper.GetCursorPos(out var pt);
-
-                if (_isWindowMoving && (Math.Abs(_startPointerX - pt.X) > 5 || Math.Abs(_startPointerY - pt.Y) > 5))
-                {
-                    _window.AppWindow.Move(new(_startWindowX + (pt.X - _startPointerX), _startWindowY + (pt.Y - _startPointerY)));
-                }
-                e.Handled = true;
-            }
-        }
-
-        private void WindowDragArea_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
-        {
-            if (_lastPointerClickKind == PointerUpdateKind.LeftButtonPressed
-                && ViewModel.ToggleWindowPinnedCommand.CanExecute(null))
-            {
-                ViewModel.ToggleWindowPinnedCommand.Execute(null);
-            }
-        }
-
-        #endregion
 
         #region Context menu items
 

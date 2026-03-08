@@ -345,6 +345,12 @@
   <data name="Personalization_WindowMargin.Description" xml:space="preserve">
     <value>Establece el margen alrededor de la ventana (en píxeles)</value>
   </data>
+  <data name="Personalization_WindowMouseResize.Header" xml:space="preserve">
+    <value>Redimensionar con el ratón</value>
+  </data>
+  <data name="Personalization_WindowMouseResize.Description" xml:space="preserve">
+    <value>Permite cambiar el tamaño de la ventana arrastrando sus bordes con el cursor del ratón</value>
+  </data>
   <data name="Clipboard_ClipsSection.Text" xml:space="preserve">
     <value>Clips</value>
   </data>

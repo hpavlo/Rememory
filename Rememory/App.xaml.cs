@@ -28,8 +28,8 @@ namespace Rememory
         /// Gets the current <see cref="App"/> instance in use
         /// </summary>
         public new static App Current => (App)Application.Current;
-        public IntPtr ClipboardWindowHandle { get; private set; }
         public ClipboardWindow ClipboardWindow { get; private set; }
+        public IntPtr ClipboardWindowHandle => ClipboardWindow.Handle;
         public IThemeService ThemeService { get; private set; }
         public SettingsContext SettingsContext => SettingsContext.Instance;
 
@@ -42,7 +42,6 @@ namespace Rememory
 
         private readonly string[] _launchArguments;
         private readonly IKeyboardMonitor _keyboardMonitor;
-        private bool _closeApp = false;
 
         /// <summary>
         /// Initializes the singleton application object.
@@ -66,16 +65,8 @@ namespace Rememory
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
             ClipboardWindow = new ClipboardWindow();
+            ClipboardWindow.InitWindowContent();
             ClipboardWindow.Closed += ClipboardWindow_Closed;
-            ClipboardWindowHandle = WindowNative.GetWindowHandle(ClipboardWindow);
-
-            var rootPage = new ClipboardRootPage(ClipboardWindow);
-            // Return if we closed app during ClipboardRootPage initializing
-            if (_closeApp) return;
-
-            ClipboardWindow.Content = rootPage;
-            ClipboardWindow.InitSystemBackdrop();
-            ClipboardWindow.InitSystemThemeTrigger();
 
             _keyboardMonitor.StartMonitor();
 
@@ -97,7 +88,6 @@ namespace Rememory
 
         private void ClipboardWindow_Closed(object sender, WindowEventArgs args)
         {
-            _closeApp = true;
             ClipboardWindow.Closed -= ClipboardWindow_Closed;
             _keyboardMonitor.StopMonitor();
             Exit();

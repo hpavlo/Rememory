@@ -788,11 +788,8 @@
         </MenuFlyout>
     </Page.Resources>
 
-    <!-- Using BorderBrush to display border on Windows 10 (not visible on Win11) -->
     <Grid x:Name="RootGrid"
           CornerRadius="0"
-          BorderThickness="1"
-          BorderBrush="{ThemeResource AccentAAFillColorDisabled}"
           Background="{x:Bind ViewModel.SettingsContext.WindowBackgroundBrush, Mode=OneWay}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -816,16 +813,14 @@
                                                 To="True" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="RootGrid.Padding"
-                                Value="-1" />
                         <Setter Target="RootGrid.BorderThickness"
-                                Value="2" />
-                        <Setter Target="RootGrid.BorderBrush"
-                                Value="{ThemeResource SystemAccentColor}" />
+                                Value="0" />
+                        <Setter Target="PinnedWindowBorder.Visibility"
+                                Value="Visible" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
-            
+
             <VisualStateGroup>
                 <VisualState x:Name="RoundedCornerState">
                     <VisualState.StateTriggers>
@@ -834,6 +829,8 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="RootGrid.CornerRadius"
+                                Value="7" />
+                        <Setter Target="PinnedWindowBorder.CornerRadius"
                                 Value="7" />
                     </VisualState.Setters>
                 </VisualState>
@@ -889,15 +886,9 @@
             </controls:NavigationTabList.Resources>
         </controls:NavigationTabList>
 
-        <Border x:Name="WindowDragArea"
+        <Border x:Name="WindowCaptionBorder"
                 Grid.Column="1"
-                Grid.Row="0"
-                Background="Transparent"
-                PointerPressed="WindowDragArea_PointerPressed"
-                PointerReleased="WindowDragArea_PointerReleased"
-                PointerMoved="WindowDragArea_PointerMoved"
-                DoubleTapped="WindowDragArea_DoubleTapped"
-                ContextFlyout="{StaticResource TitleBarContextMenuFlyout}">
+                Grid.Row="0">
             <TextBlock Margin="8,8,8,8"
                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                        VerticalAlignment="Center"
@@ -1058,5 +1049,12 @@
                       VerticalAlignment="Center"
                       Click="SelectAllCheckBox_Click" />
         </Grid>
+
+        <Border x:Name="PinnedWindowBorder"
+                Grid.ColumnSpan="3"
+                Grid.RowSpan="5"
+                BorderThickness="2"
+                BorderBrush="{ThemeResource SystemAccentColor}"
+                Visibility="Collapsed"/>
     </Grid>
 </Page>

@@ -10,7 +10,7 @@ namespace Rememory.Helper
     {
         private static readonly ResourceManager _resourceManager = new();
         private static readonly CultureInfo _locale = CultureInfo.CurrentCulture;
-        private static readonly MessageFormatter _formatter = new(useCache: false, locale: _locale.TwoLetterISOLanguageName);
+        private static readonly MessageFormatter _formatter = new(useCache: false, culture: _locale);
 
         public static string GetLocalizedResource(this string resourceKey)
         {

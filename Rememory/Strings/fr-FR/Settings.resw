@@ -345,6 +345,12 @@
   <data name="Personalization_WindowMargin.Description" xml:space="preserve">
     <value>Définir la marge autour de la fenêtre (en pixels)</value>
   </data>
+  <data name="Personalization_WindowMouseResize.Header" xml:space="preserve">
+    <value>Redimensionner avec la souris</value>
+  </data>
+  <data name="Personalization_WindowMouseResize.Description" xml:space="preserve">
+    <value>Permet de redimensionner la fenêtre en faisant glisser ses bordures avec le curseur de la souris</value>
+  </data>
   <data name="Clipboard_ClipsSection.Text" xml:space="preserve">
     <value>Clips</value>
   </data>

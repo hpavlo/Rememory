@@ -110,7 +110,7 @@ namespace Rememory.Views.BriefMessage
 
         private static void CalculateWindowPosition(out int x, out int y, out int scaledWidth, out int scaledHeight)
         {
-            var workArea = NativeHelper.GetWorkAreaRectangle(out var dpiX, out var dpiY);
+            var workArea = NativeHelper.GetWorkAreaFromPoint(out var dpiX, out var dpiY);
             double dpiScaleX = dpiX / 96.0;   // 96 is a default DPI (scale 100%)
             double dpiScaleY = dpiY / 96.0;
 

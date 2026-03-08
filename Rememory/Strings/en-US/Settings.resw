@@ -345,6 +345,12 @@
   <data name="Personalization_WindowMargin.Description" xml:space="preserve">
     <value>Set the margin around the window (in pixels)</value>
   </data>
+  <data name="Personalization_WindowMouseResize.Header" xml:space="preserve">
+    <value>Resize with mouse</value>
+  </data>
+  <data name="Personalization_WindowMouseResize.Description" xml:space="preserve">
+    <value>Enable resizing the window by dragging its borders using the mouse cursor</value>
+  </data>
   <data name="Clipboard_ClipsSection.Text" xml:space="preserve">
     <value>Clips</value>
   </data>

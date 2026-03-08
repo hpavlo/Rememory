@@ -180,6 +180,16 @@ namespace Rememory.Models
             set => SetSettingsProperty(ref _windowMargin, value);
         }
 
+
+        private bool? _isWindowResizeByMouseEnabled;
+
+        [Settings("IsWindowResizeByMouseEnabled", DefaultValue = false)]
+        public bool IsWindowResizeByMouseEnabled
+        {
+            get => _isWindowResizeByMouseEnabled ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _isWindowResizeByMouseEnabled, value);
+        }
+
         #endregion
 
         #region Clipboard

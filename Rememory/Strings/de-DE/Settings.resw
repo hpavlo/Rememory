@@ -345,6 +345,12 @@
   <data name="Personalization_WindowMargin.Description" xml:space="preserve">
     <value>Legen Sie den Rand um das Fenster herum fest (in Pixeln)</value>
   </data>
+  <data name="Personalization_WindowMouseResize.Header" xml:space="preserve">
+    <value>Mit der Maus ändern</value>
+  </data>
+  <data name="Personalization_WindowMouseResize.Description" xml:space="preserve">
+    <value>Ermöglicht das Ändern der Fenstergröße durch Ziehen der Ränder mit dem Mauszeiger</value>
+  </data>
   <data name="Clipboard_ClipsSection.Text" xml:space="preserve">
     <value>Clips</value>
   </data>

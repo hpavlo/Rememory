@@ -9,8 +9,10 @@ namespace Rememory.Helper
     public static class NativeHelper
     {
         public const uint WM_QUERYENDSESSION = 0x0011;
-        public const uint WM_ENDSESSION = 0x16;
-        public const uint WM_SETTINGCHANGE = 0x001A;
+        public const uint WM_ENDSESSION = 0x0016;
+        public const uint WM_NCLBUTTONDBLCLK = 0x00A3;
+        public const uint WM_NCRBUTTONUP = 0x00A5;
+        public const uint WM_DPICHANGED = 0x02E0;
         public const uint SPI_SETLOGICALDPIOVERRIDE = 0x009F;
 
         [DllImport("kernel32.dll")]
@@ -94,10 +96,19 @@ namespace Rememory.Helper
         internal static extern bool GetMonitorInfo(IntPtr hmonitor, [In, Out] MonitorInfoEx info);
 
         [DllImport("Shcore.dll")]
-        private static extern IntPtr GetDpiForMonitor([In] IntPtr hmonitor, [In] int dpiType, [Out] out uint dpiX, [Out] out uint dpiY);
+        internal static extern IntPtr GetDpiForMonitor([In] IntPtr hmonitor, [In] int dpiType, [Out] out uint dpiX, [Out] out uint dpiY);
 
-        [DllImport("User32.dll")]
+        [DllImport("user32.dll")]
+        internal static extern uint GetDpiForWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        internal static extern bool ScreenToClient(IntPtr hWnd, ref PointInt32 lpPoint);
+
+        [DllImport("user32.dll")]
         internal static extern IntPtr MonitorFromPoint(PointInt32 pt, int flags);
+
+        [DllImport("user32.dll")]
+        internal static extern IntPtr MonitorFromWindow(IntPtr hWnd, uint dwFlags);
 
         [StructLayout(LayoutKind.Sequential)]
         internal struct Rect
@@ -119,10 +130,11 @@ namespace Rememory.Helper
             public char[] szDevice = new char[32];
         }
 
-        /// <param name="dpiX">dpiX of the monitor</param>
-        /// <param name="dpiY">dpiY of the monitor</param>
-        /// <returns><see cref="Rectangle"/> of the monitor work area under the point or where the cursor is currently located</returns>
-        internal static RectInt32 GetWorkAreaRectangle(out uint dpiX, out uint dpiY, PointInt32? point = null)
+        /// <param name="dpiX">dpiX of the monitor.</param>
+        /// <param name="dpiY">dpiY of the monitor.</param>
+        /// <param name="point">Optional point to get area from.</param>
+        /// <returns><see cref="Rectangle"/> of the monitor work area under the point or where the cursor is currently located.</returns>
+        internal static RectInt32 GetWorkAreaFromPoint(out uint dpiX, out uint dpiY, PointInt32? point = null)
         {
             if (!point.HasValue)
             {
@@ -132,8 +144,8 @@ namespace Rememory.Helper
             IntPtr monitor = MonitorFromPoint(point.Value, MONITOR_DEFAULTTONEAREST);
             MonitorInfoEx info = new();
             GetMonitorInfo(monitor, info);
-
             GetDpiForMonitor(monitor, 0, out dpiX, out dpiY);   // Get MDT_EFFECTIVE_DPI
+
             return new RectInt32(
                 info.rcWork.left,
                 info.rcWork.top,

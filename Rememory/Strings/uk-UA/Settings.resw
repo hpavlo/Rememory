@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="WindowTitle.Text" xml:space="preserve">
-    <value>{0} - Налаштування</value>
+    <value>{0} - налаштування</value>
   </data>
   <data name="PageTitle_General.Content" xml:space="preserve">
     <value>Загальні</value>
@@ -344,6 +344,12 @@
   </data>
   <data name="Personalization_WindowMargin.Description" xml:space="preserve">
     <value>Встановити відступ навколо вікна (у пікселях)</value>
+  </data>
+  <data name="Personalization_WindowMouseResize.Header" xml:space="preserve">
+    <value>Змінити розмір мишею</value>
+  </data>
+  <data name="Personalization_WindowMouseResize.Description" xml:space="preserve">
+    <value>Дозволяє змінювати розмір вікна, перетягуючи його межі курсором миші</value>
   </data>
   <data name="Clipboard_ClipsSection.Text" xml:space="preserve">
     <value>Кліпи</value>

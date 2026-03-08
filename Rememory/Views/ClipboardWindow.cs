@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Windowing;
+﻿using Microsoft.UI.Input;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Rememory.Helper;
@@ -6,10 +7,12 @@ using Rememory.Helper.WindowBackdrop;
 using Rememory.Models;
 using Rememory.Views.Settings;
 using System;
+using System.Runtime.InteropServices;
 using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.Graphics;
 using Windows.System;
+using WinRT.Interop;
 using WinUIEx;
 using WinUIEx.Messaging;
 
@@ -17,28 +20,34 @@ namespace Rememory.Views
 {
     public class ClipboardWindow : WindowEx
     {
-        public SettingsContext SettingsContext => SettingsContext.Instance;
-        public readonly bool IsRoundedCornerSupported;
+        private const uint TrayIconId = 0;
+        private static readonly int WM_TASKBARCREATED = NativeHelper.RegisterWindowMessage("TaskbarCreated");
 
-        private const uint TrayIconId_ = 0;
+        public SettingsContext SettingsContext => SettingsContext.Instance;
+        private MenuFlyout? TitleBarContextMenu => field ??= _rootPage?.Resources["TitleBarContextMenuFlyout"] as MenuFlyout;
+
+        public readonly bool IsRoundedCornerSupported;
+        private readonly InputNonClientPointerSource _inputNonClientPointerSource;
+        private readonly WindowMessageMonitor _messageMonitor;
+
+        private bool _pinned = false;
+        private ClipboardRootPage? _rootPage;
+
+        public IntPtr Handle { get; private set; }
         public TrayIcon TrayIcon { get; private set; }
         public MenuFlyout? TrayIconMenu { get; private set; }
 
-        private bool _isPinned = false;
-        public bool IsPinned
+        public bool Pinned
         {
-            get => IsAlwaysOnTop && _isPinned;
+            get => IsAlwaysOnTop && _pinned;
             set {
-                int borderColor = (_isPinned = value) ? NativeHelper.DWMWA_COLOR_NONE : NativeHelper.DWMWA_COLOR_DEFAULT;
-                NativeHelper.DwmSetWindowAttribute(this.GetWindowHandle(), NativeHelper.DWMWA_BORDER_COLOR, ref borderColor, sizeof(int));
+                int borderColor = (_pinned = value) ? NativeHelper.DWMWA_COLOR_NONE : NativeHelper.DWMWA_COLOR_DEFAULT;
+                NativeHelper.DwmSetWindowAttribute(Handle, NativeHelper.DWMWA_BORDER_COLOR, ref borderColor, sizeof(int));
             }
         }
 
         public event TypedEventHandler<ClipboardWindow, EventArgs>? Showing;
         public event TypedEventHandler<ClipboardWindow, EventArgs>? Hiding;
-
-        private static int WM_TASKBARCREATED = NativeHelper.RegisterWindowMessage("TaskbarCreated");
-        private WindowMessageMonitor _messageMonitor;
 
         public ClipboardWindow()
         {
@@ -47,6 +56,10 @@ namespace Rememory.Views
             IsResizable = false;
             IsMaximizable = false;
             IsMinimizable = false;
+            MinWidth = SettingsContext.WindowWidthLowerBound;
+            MaxWidth = SettingsContext.WindowWidthUpperBound;
+            MinHeight = SettingsContext.WindowHeightLowerBound;
+            MaxHeight = SettingsContext.WindowHeightUpperBound;
             AppWindow.SetTaskbarIcon(AppContext.BaseDirectory + "Assets\\WindowIcon.ico");
             AppWindow.SetTitleBarIcon(AppContext.BaseDirectory + "Assets\\WindowIcon.ico");
 
@@ -55,10 +68,14 @@ namespace Rememory.Views
             nint dwmResult = NativeHelper.DwmSetWindowAttribute(this.GetWindowHandle(), NativeHelper.DWMWA_WINDOW_CORNER_PREFERENCE, ref cornerPreference, sizeof(int));
             IsRoundedCornerSupported = dwmResult == 0;
 
+            Handle = WindowNative.GetWindowHandle(this);
             TrayIcon = CreateTrayIcon();
 
             _messageMonitor = new WindowMessageMonitor(this.GetWindowHandle());
             _messageMonitor.WindowMessageReceived += WindowMessageReceived;
+
+            _inputNonClientPointerSource = InputNonClientPointerSource.GetForWindowId(AppWindow.Id);
+            _inputNonClientPointerSource.ExitedMoveSize += InputNonClientPointerSource_ExitedMoveSize;
 
             Activated += Window_Activated;
             AppWindow.Closing += Window_Closing;
@@ -93,71 +110,55 @@ namespace Rememory.Views
             return true;
         }
 
-        // Call it after set Content of window
-        public bool InitSystemBackdrop()
+        public void InitWindowContent()
         {
+            _rootPage = new ClipboardRootPage();
+            Content = _rootPage;
+
             if (WindowBackdropHelper.IsSystemBackdropSupported)
             {
                 var backdropHelper = new WindowBackdropHelper(this);
-                return backdropHelper.TryInitializeBackdrop();
-            }
-            return false;
-        }
-
-        // Call it after set Content of window
-        public void InitSystemThemeTrigger()
-        {
-            ((FrameworkElement)Content).ActualThemeChanged += ClipboardWindow_ActualThemeChanged;
-        }
-
-        public static PointInt32 AdjustWindowPositionToWorkArea(PointInt32 position, SizeInt32 size, RectInt32? workArea = null)
-        {
-            var workAreaRect = workArea ?? NativeHelper.GetWorkAreaRectangle(out _, out _);
-            int deltaX = 0;
-            int deltaY = 0;
-
-            // Adjust horisontal position
-            if (position.X < workAreaRect.X)
-            {
-                deltaX = workAreaRect.X - position.X;
-            }
-            if (position.Y < workAreaRect.Y)
-            {
-                deltaY = workAreaRect.Y - position.Y;
+                backdropHelper.TryInitializeBackdrop();
             }
 
-            // Adjust vertical position
-            if (position.X + size.Width > workAreaRect.X + workAreaRect.Width)
-            {
-                deltaX = workAreaRect.X + workAreaRect.Width - position.X - size.Width;
-            }
-            if (position.Y + size.Height > workAreaRect.Y + workAreaRect.Height)
-            {
-                deltaY = workAreaRect.Y + workAreaRect.Height - position.Y - size.Height;
-            }
-
-            // return new position only if there is enough space
-            if (size.Width < workAreaRect.Width && size.Height < workAreaRect.Height)
-            {
-                return new(position.X + deltaX, position.Y + deltaY);
-            }
-
-            return position;
+            _rootPage.ActualThemeChanged += ClipboardWindow_ActualThemeChanged;
+            _rootPage.WindowCaptionArea.SizeChanged += WindowCaptionArea_SizeChanged;
         }
 
         private void ClipboardWindow_ActualThemeChanged(FrameworkElement sender, object args) => App.Current.ThemeService.ApplyTheme();
+
+        private void WindowCaptionArea_SizeChanged(object sender, SizeChangedEventArgs e) => UpdateCaptionRegion();
 
         private void WindowMessageReceived(object? sender, WindowMessageEventArgs args)
         {
             switch (args.Message.MessageId)
             {
-                case NativeHelper.WM_SETTINGCHANGE:
-                    if (args.Message.WParam == NativeHelper.SPI_SETLOGICALDPIOVERRIDE)   // Update position and size on DPI update
+                case NativeHelper.WM_DPICHANGED:
+                    var rect = Marshal.PtrToStructure<NativeHelper.Rect>(args.Message.LParam);
+                    UpdateResizeRegions(new(rect.right - rect.left, rect.bottom - rect.top));
+                    UpdateCaptionRegion();
+                    break;
+                case NativeHelper.WM_NCLBUTTONDBLCLK:   // Double click on caption area
+                    if (args.Message.WParam == 2   // HTCAPTION
+                        && (_rootPage?.ViewModel.ToggleWindowPinnedCommand.CanExecute(null) ?? false))
                     {
-                        MoveToStartPosition();
+                        _rootPage?.ViewModel.ToggleWindowPinnedCommand.Execute(null);
+                    }
+                    args.Handled = true;
+                    break;
+                case NativeHelper.WM_NCRBUTTONUP:
+                    if (args.Message.WParam == 2)   // HTCAPTION
+                    {
+                        int x = (short)(args.Message.LParam.ToInt32() & 0xFFFF);
+                        int y = (short)((args.Message.LParam.ToInt32() >> 16) & 0xFFFF);
+
+                        var point = new PointInt32(x, y);
+                        NativeHelper.ScreenToClient(Handle, ref point);
+
+                        float scale = (float)GetDpiScaleFactor();
+                        TitleBarContextMenu?.ShowAt(_rootPage, new(point.X / scale, point.Y / scale));
                     }
                     break;
-
                 case NativeHelper.WM_QUERYENDSESSION:
                     if (args.Message.LParam == 1)   // ENDSESSION_CLOSEAPP
                     {
@@ -185,7 +186,7 @@ namespace Rememory.Views
 
         private void Window_Activated(object sender, WindowActivatedEventArgs args)
         {
-            if (!IsPinned && args.WindowActivationState == WindowActivationState.Deactivated)
+            if (!Pinned && args.WindowActivationState == WindowActivationState.Deactivated)
             {
                 HideWindow();
             }
@@ -204,7 +205,23 @@ namespace Rememory.Views
             AppWindow.Closing -= Window_Closing;
             Closed -= Window_Closed;
             _messageMonitor.WindowMessageReceived -= WindowMessageReceived;
-            ((FrameworkElement)Content).ActualThemeChanged -= ClipboardWindow_ActualThemeChanged;
+            _rootPage?.ActualThemeChanged -= ClipboardWindow_ActualThemeChanged;
+        }
+
+        private void InputNonClientPointerSource_ExitedMoveSize(InputNonClientPointerSource sender, ExitedMoveSizeEventArgs args)
+        {
+            if (args.MoveSizeOperation == MoveSizeOperation.Move)
+            {
+                var displayArea = DisplayArea.GetFromWindowId(AppWindow.Id, DisplayAreaFallback.Nearest);
+                var newPosition = AdjustWindowPositionToWorkArea(AppWindow.Position, AppWindow.Size, displayArea.WorkArea);
+                AppWindow.Move(newPosition);
+            }
+            else
+            {
+                SettingsContext.WindowWidth = (int)Width;
+                SettingsContext.WindowHeight = (int)Height;
+                UpdateResizeRegions();
+            }
         }
 
         private TrayIcon CreateTrayIcon()
@@ -214,16 +231,77 @@ namespace Rememory.Views
 #else
             string toltip = "AppDescription".GetLocalizedResource();
 #endif
-            var trayIcon = new TrayIcon(TrayIconId_, AppContext.BaseDirectory + "Assets\\WindowIcon.ico", toltip);
-            trayIcon.ContextMenu += (s, a) => a.Flyout = TrayIconMenu ??= (Content is ClipboardRootPage rootPage && rootPage.IsLoaded ? rootPage.TrayIconMenu : null);
+            var trayIcon = new TrayIcon(TrayIconId, AppContext.BaseDirectory + "Assets\\WindowIcon.ico", toltip);
+            trayIcon.ContextMenu += (s, a) => a.Flyout = TrayIconMenu ??= (_rootPage?.IsLoaded ?? false) ? _rootPage.TrayIconMenu : null;
             trayIcon.Selected += (s, a) => ShowWindow();
             trayIcon.IsVisible = true;
             return trayIcon;
         }
 
-        private void MoveToStartPosition()
+        private double GetDpiScaleFactor() => NativeHelper.GetDpiForWindow(Handle) / 96.0;
+
+        private RectInt32 MakeRect(double x, double y, double width, double height, double scale)
         {
-            var workArea = NativeHelper.GetWorkAreaRectangle(out var dpiX, out var dpiY);
+            return new((int)(x * scale), (int)(y * scale), (int)(width * scale), (int)(height * scale));
+        }
+
+        private void SetBorderRegion(NonClientRegionKind kind, double x, double y, double width, double height, double scale)
+        {
+            _inputNonClientPointerSource.SetRegionRects(kind, [MakeRect(x, y, width, height, scale)]);
+        }
+
+        private void SetBorderRegion(NonClientRegionKind kind, double x, double y, double width, double height)
+        {
+            _inputNonClientPointerSource.SetRegionRects(kind, [MakeRect(x, y, width, height, 1)]);
+        }
+
+        private void UpdateResizeRegions(SizeInt32? windowSize = null)
+        {
+            if (!SettingsContext.IsWindowResizeByMouseEnabled)
+            {
+                _inputNonClientPointerSource.ClearRegionRects(NonClientRegionKind.LeftBorder);
+                _inputNonClientPointerSource.ClearRegionRects(NonClientRegionKind.TopBorder);
+                _inputNonClientPointerSource.ClearRegionRects(NonClientRegionKind.RightBorder);
+                _inputNonClientPointerSource.ClearRegionRects(NonClientRegionKind.BottomBorder);
+                return;
+            }
+
+            double scale = GetDpiScaleFactor();
+            double thickness = 5 * scale;
+            double width = windowSize?.Width ?? AppWindow.Size.Width;
+            double height = windowSize?.Height ?? AppWindow.Size.Height;
+
+            if (SettingsContext.WindowPosition == ClipboardWindowPosition.Right)
+            {
+                SetBorderRegion(NonClientRegionKind.LeftBorder, 0, 0, thickness, height);
+                _inputNonClientPointerSource.ClearRegionRects(NonClientRegionKind.TopBorder);
+                _inputNonClientPointerSource.ClearRegionRects(NonClientRegionKind.RightBorder);
+                _inputNonClientPointerSource.ClearRegionRects(NonClientRegionKind.BottomBorder);
+            }
+            else
+            {
+                SetBorderRegion(NonClientRegionKind.LeftBorder, 0, 0, thickness, height);
+                SetBorderRegion(NonClientRegionKind.TopBorder, 0, 0, width, thickness);
+                SetBorderRegion(NonClientRegionKind.RightBorder, width - thickness, 0, thickness, height);
+                SetBorderRegion(NonClientRegionKind.BottomBorder, 0, height - thickness, width, thickness);
+            }
+        }
+
+        private void UpdateCaptionRegion()
+        {
+            if (_rootPage is null)
+            {
+                return;
+            }
+
+            double scale = GetDpiScaleFactor();
+            var captionPoint = _rootPage.WindowCaptionArea.TransformToVisual(_rootPage).TransformPoint(new(0, 0));
+            SetBorderRegion(NonClientRegionKind.Caption, captionPoint.X, captionPoint.Y, _rootPage.WindowCaptionArea.ActualWidth, _rootPage.WindowCaptionArea.ActualHeight, scale);
+        }
+
+        private void MoveToStartPosition(ClipboardWindowPosition? position = null)
+        {
+            var workArea = NativeHelper.GetWorkAreaFromPoint(out var dpiX, out var dpiY);
             double dpiScaleX = dpiX / 96.0;   // 96 is a default DPI (scale 100%)
             double dpiScaleY = dpiY / 96.0;
 
@@ -239,7 +317,7 @@ namespace Rememory.Views
             //this.AppWindow.MoveAndResize - requires restart after DPI update, width and height depends on DPI
             //this.MoveAndResize - don't require restart after DPI update
 
-            switch (SettingsContext.WindowPosition)
+            switch (position ?? SettingsContext.WindowPosition)
             {
                 case ClipboardWindowPosition.Caret:
                     var caretPosition = GetPositionWindowRelativeToCaret(
@@ -249,8 +327,8 @@ namespace Rememory.Views
                     break;
                 case ClipboardWindowPosition.Cursor:
                     NativeHelper.GetCursorPos(out var cursorPos);
-                    var newcursorPositionPos = AdjustWindowPositionToWorkArea(cursorPos, AppWindow.Size, workArea);
-                    this.MoveAndResize(newcursorPositionPos.X, newcursorPositionPos.Y, windowWidth, windowHeight);
+                    var newCursorPositionPos = AdjustWindowPositionToWorkArea(cursorPos, AppWindow.Size, workArea);
+                    this.MoveAndResize(newCursorPositionPos.X, newCursorPositionPos.Y, windowWidth, windowHeight);
                     break;
                 case ClipboardWindowPosition.ScreenCenter:
                     this.MoveAndResize(
@@ -296,6 +374,40 @@ namespace Rememory.Views
                         windowHeight);
                     break;
             }
+
+            UpdateResizeRegions();
+        }
+
+        private PointInt32 AdjustWindowPositionToWorkArea(PointInt32 position, SizeInt32 size, RectInt32 workArea)
+        {
+            int deltaX = 0;
+            int deltaY = 0;
+
+            if (position.X < workArea.X)
+            {
+                deltaX = workArea.X - position.X;
+            }
+            if (position.Y < workArea.Y)
+            {
+                deltaY = workArea.Y - position.Y;
+            }
+
+            if (position.X + size.Width > workArea.X + workArea.Width)
+            {
+                deltaX = workArea.X + workArea.Width - position.X - size.Width;
+            }
+            if (position.Y + size.Height > workArea.Y + workArea.Height)
+            {
+                deltaY = workArea.Y + workArea.Height - position.Y - size.Height;
+            }
+
+            // return new position only if there is enough space
+            if (size.Width < workArea.Width && size.Height < workArea.Height)
+            {
+                return new(position.X + deltaX, position.Y + deltaY);
+            }
+
+            return position;
         }
 
         private PointInt32 GetPositionWindowRelativeToCaret(int defaultPositionX, int defaultPositionY)
@@ -305,7 +417,7 @@ namespace Rememory.Views
 
             if (TextBoxCaretHelper.GetCaretPosition(out var caretRect))
             {
-                var workArea = NativeHelper.GetWorkAreaRectangle(out var dpiX, out var dpiY, new(caretRect.X, caretRect.Y));
+                var workArea = NativeHelper.GetWorkAreaFromPoint(out var dpiX, out var dpiY, new(caretRect.X, caretRect.Y));
                 var independedWidth = (int)(SettingsContext.WindowWidth * dpiX / 96.0);
                 var independedHeight = (int)(SettingsContext.WindowHeight * dpiY / 96.0);
 

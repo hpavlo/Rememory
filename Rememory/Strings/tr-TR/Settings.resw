@@ -345,6 +345,12 @@
   <data name="Personalization_WindowMargin.Description" xml:space="preserve">
     <value>Pencerenin kenar boşluğunu ayarlayın (piksel cinsinden)</value>
   </data>
+  <data name="Personalization_WindowMouseResize.Header" xml:space="preserve">
+    <value>Fare ile yeniden boyutlandır</value>
+  </data>
+  <data name="Personalization_WindowMouseResize.Description" xml:space="preserve">
+    <value>Pencereyi fare imlecini kullanarak kenarlarını sürükleyerek yeniden boyutlandırmayı etkinleştir</value>
+  </data>
   <data name="Clipboard_ClipsSection.Text" xml:space="preserve">
     <value>Klipler</value>
   </data>
