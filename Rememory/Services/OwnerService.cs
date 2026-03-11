@@ -27,7 +27,7 @@ namespace Rememory.Services
             Owners = ReadOwnersFromStorage().ToDictionary(o => o.Path);
 
             OwnerModel emptyOwner = CreateEmptyOwner();
-            Owners.Add(emptyOwner.Path, emptyOwner);
+            Owners[emptyOwner.Path] = emptyOwner;
         }
 
         public OwnerModel RegisterClipOwner(ClipModel clip, string? path, byte[]? icon)
@@ -115,7 +115,7 @@ namespace Rememory.Services
             Owners.Clear();
 
             OwnerModel emptyOwner = CreateEmptyOwner();
-            Owners.Add(emptyOwner.Path, emptyOwner);
+            Owners[emptyOwner.Path] = emptyOwner;
 
             OnAllOwnersUnregistered();
         }
@@ -154,7 +154,11 @@ namespace Rememory.Services
             return [];
         }
 
-        private OwnerModel CreateEmptyOwner()
+        /// <summary>
+        /// Used to create owner that doesn't exist or was not detected on clipboard event.
+        /// This owner should have id 0, and shouln't be saved to DB
+        /// </summary>
+        private static OwnerModel CreateEmptyOwner()
         {
             return new OwnerModel(string.Empty)
             {

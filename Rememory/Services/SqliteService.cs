@@ -202,7 +202,7 @@ namespace Rememory.Services
                     ClipTime = clipTime,
                     IsFavorite = isFavorite,
                     // Using 0 for the empty owner
-                    Owner = ownersDictionary.TryGetValue(ownerId ?? 0, out var owner) ? owner : null,
+                    Owner = ownersDictionary.TryGetValue(ownerId ?? 0, out var owner) ? owner : ownersDictionary[0],
                     Data = GetDataByClipId(id, connection).ToDictionary(d => d.Format),
                     Tags = clipTagsDictionary.TryGetValue(id, out var tagIds) ? [.. tagIds.Where(tagsDictionary.ContainsKey).Select(id => tagsDictionary[id])] : []
                 };
