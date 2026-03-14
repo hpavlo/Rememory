@@ -13,7 +13,7 @@ namespace Rememory.Converters
     {
         private readonly IOwnerService _ownerAppService = App.Current.Services.GetService<IOwnerService>()!;
 
-        public unsafe object? Convert(object value, Type targetType, object parameter, string language)
+        public object? Convert(object value, Type targetType, object parameter, string language)
         {
             var ownerPath = (string)value;
 

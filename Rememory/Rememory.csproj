@@ -12,7 +12,6 @@
 		<DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
 		<UseWinUI>true</UseWinUI>
 		<EnableMsixTooling>true</EnableMsixTooling>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<StartupObject>Rememory.Program</StartupObject>
 		<DefaultLanguage>en-US</DefaultLanguage>
 		<Nullable>Enable</Nullable>

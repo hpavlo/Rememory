@@ -101,7 +101,7 @@ namespace Rememory.Views.Editor
                     : "/Editor/CharactersCount/Text".GetLocalizedFormatResource(EditorTextBox.Text.Length);
         }
 
-        private unsafe void PresenterButton_Click(object sender, RoutedEventArgs e)
+        private void PresenterButton_Click(object sender, RoutedEventArgs e)
         {
             var button = (Button)sender;
 

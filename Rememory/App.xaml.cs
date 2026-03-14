@@ -15,7 +15,6 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using WinRT.Interop;
 
 namespace Rememory
 {
