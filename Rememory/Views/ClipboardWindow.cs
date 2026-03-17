@@ -133,31 +133,30 @@ namespace Rememory.Views
         {
             switch (args.Message.MessageId)
             {
+                // Update position and size on DPI update
+                case NativeHelper.WM_SETTINGCHANGE when args.Message.WParam == NativeHelper.SPI_SETLOGICALDPIOVERRIDE:
+                    MoveToStartPosition();
+                    break;
                 case NativeHelper.WM_DPICHANGED:
                     var rect = Marshal.PtrToStructure<NativeHelper.Rect>(args.Message.LParam);
                     UpdateResizeRegions(new(rect.right - rect.left, rect.bottom - rect.top));
                     UpdateCaptionRegion();
                     break;
-                case NativeHelper.WM_NCLBUTTONDBLCLK:   // Double click on caption area
-                    if (args.Message.WParam == 2   // HTCAPTION
-                        && (_rootPage?.ViewModel.ToggleWindowPinnedCommand.CanExecute(null) ?? false))
+                // Double click on caption area
+                case NativeHelper.WM_NCLBUTTONDBLCLK when args.Message.WParam == 2:   // HTCAPTION
+                    if (_rootPage?.ViewModel.ToggleWindowPinnedCommand.CanExecute(null) ?? false)
                     {
                         _rootPage?.ViewModel.ToggleWindowPinnedCommand.Execute(null);
                     }
                     args.Handled = true;
                     break;
-                case NativeHelper.WM_NCRBUTTONUP:
-                    if (args.Message.WParam == 2)   // HTCAPTION
-                    {
-                        int x = (short)(args.Message.LParam.ToInt32() & 0xFFFF);
-                        int y = (short)((args.Message.LParam.ToInt32() >> 16) & 0xFFFF);
-
-                        var point = new PointInt32(x, y);
-                        NativeHelper.ScreenToClient(Handle, ref point);
-
-                        float scale = (float)GetDpiScaleFactor();
-                        TitleBarContextMenu?.ShowAt(_rootPage, new(point.X / scale, point.Y / scale));
-                    }
+                case NativeHelper.WM_NCRBUTTONUP when args.Message.WParam == 2:   // HTCAPTION
+                    int x = (short)(args.Message.LParam.ToInt32() & 0xFFFF);
+                    int y = (short)((args.Message.LParam.ToInt32() >> 16) & 0xFFFF);
+                    var point = new PointInt32(x, y);
+                    NativeHelper.ScreenToClient(Handle, ref point);
+                    float scale = (float)GetDpiScaleFactor();
+                    TitleBarContextMenu?.ShowAt(_rootPage, new(point.X / scale, point.Y / scale));
                     break;
                 case NativeHelper.WM_QUERYENDSESSION:
                     if (args.Message.LParam == 1)   // ENDSESSION_CLOSEAPP
@@ -168,11 +167,8 @@ namespace Rememory.Views
                     args.Handled = true;
                     break;
 
-                case NativeHelper.WM_ENDSESSION:
-                    if (args.Message.WParam != 0)   // wParam = 1 means the session is ending
-                    {
-                        App.Current.Exit();
-                    }
+                case NativeHelper.WM_ENDSESSION when args.Message.WParam != 0:   // wParam = 1 means the session is ending
+                    App.Current.Exit();
                     break;
                 default:
                     if (args.Message.MessageId == WM_TASKBARCREATED)

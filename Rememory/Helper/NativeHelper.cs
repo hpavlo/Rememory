@@ -10,6 +10,7 @@ namespace Rememory.Helper
     {
         public const uint WM_QUERYENDSESSION = 0x0011;
         public const uint WM_ENDSESSION = 0x0016;
+        public const uint WM_SETTINGCHANGE = 0x001A;
         public const uint WM_NCLBUTTONDBLCLK = 0x00A3;
         public const uint WM_NCRBUTTONUP = 0x00A5;
         public const uint WM_DPICHANGED = 0x02E0;
