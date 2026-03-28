@@ -1,8 +1,21 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Rememory.Helper;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace Rememory.Models
 {
+    public static class TabItemFactory
+    {
+        public static IEnumerable<TabItemModel> GetDefaultTabs() => [
+                new(NavigationTabItemType.Home, "/Clipboard/NavigationTab_Home/Text".GetLocalizedResource(), "\uE80F", "/Clipboard/NavigationTab_Home/Description".GetLocalizedResource(), "\uF0E3"),
+                new(NavigationTabItemType.Fovorites, "/Clipboard/NavigationTab_Favorites/Text".GetLocalizedResource(), "\uE734", "/Clipboard/NavigationTab_Favorites/Description".GetLocalizedResource()),
+                new(NavigationTabItemType.Images, "/Clipboard/NavigationTab_Images/Text".GetLocalizedResource(), "\uE8B9", "/Clipboard/NavigationTab_Images/Description".GetLocalizedResource()),
+                new(NavigationTabItemType.Files, "/Clipboard/NavigationTab_Files/Text".GetLocalizedResource(), "\uE8B7", "/Clipboard/NavigationTab_Files/Description".GetLocalizedResource()),
+                new(NavigationTabItemType.Links, "/Clipboard/NavigationTab_Links/Text".GetLocalizedResource(), "\uE71B", "/Clipboard/NavigationTab_Links/Description".GetLocalizedResource())
+            ];
+    }
+
     public partial class TabItemModel : ObservableObject
     {
         private const string TAG_GLYPH = "\uEA3B";
@@ -19,25 +32,41 @@ namespace Rememory.Models
             set => SetProperty(ref field, value);
         }
 
+        public string BigGlyph
+        {
+            get;
+            set => SetProperty(ref field, value);
+        }
+
+        public string EmptyListMessage
+        {
+            get;
+            set => SetProperty(ref field, value);
+        }
+
         public NavigationTabItemType Type { get; private set; }
 
         public TagModel? Tag { get; private set; }
 
         public bool IsTag => Type == NavigationTabItemType.Tag && Tag is not null;
 
-        public TabItemModel(string title, string glyph, NavigationTabItemType type)
+        public TabItemModel(NavigationTabItemType type, string title, string glyph, string emptyListMessage, string? bigGlyph = null)
         {
+            Type = type;
             Title = title;
             Glyph = glyph;
-            Type = type;
+            BigGlyph = bigGlyph ?? glyph;
+            EmptyListMessage = emptyListMessage;
         }
 
         public TabItemModel(TagModel tag)
         {
-            Title = tag.Name;
-            Glyph = TAG_GLYPH;
             Type = NavigationTabItemType.Tag;
             Tag = tag;
+            Title = tag.Name;
+            Glyph = TAG_GLYPH;
+            BigGlyph = TAG_GLYPH;
+            EmptyListMessage = "Clipboard/NavigationTab_Tag/Description".GetLocalizedResource();
             tag.PropertyChanged += Tag_PropertyChanged;
         }
 

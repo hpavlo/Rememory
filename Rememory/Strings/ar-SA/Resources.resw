@@ -129,19 +129,19 @@
   <data name="AppNotification_Text" xml:space="preserve">
     <value>اضغط على {0} لفتح التطبيق</value>
   </data>
-  <data name="TrayIconMenu_Open" xml:space="preserve">
+  <data name="TrayIconMenu_Open.Text" xml:space="preserve">
     <value>فتح</value>
   </data>
-  <data name="TrayIconMenu_PauseMonitoring" xml:space="preserve">
+  <data name="TrayIconMenu_PauseMonitoring.Text" xml:space="preserve">
     <value>إيقاف المراقبة مؤقتًا</value>
   </data>
-  <data name="TrayIconMenu_ResumeMonitoring" xml:space="preserve">
+  <data name="TrayIconMenu_ResumeMonitoring.Text" xml:space="preserve">
     <value>استئناف المراقبة</value>
   </data>
-  <data name="TrayIconMenu_Settings" xml:space="preserve">
+  <data name="TrayIconMenu_Settings.Text" xml:space="preserve">
     <value>الإعدادات</value>
   </data>
-  <data name="TrayIconMenu_Exit" xml:space="preserve">
+  <data name="TrayIconMenu_Exit.Text" xml:space="preserve">
     <value>خروج</value>
   </data>
   <data name="UnknownOwnerAppTitle" xml:space="preserve">

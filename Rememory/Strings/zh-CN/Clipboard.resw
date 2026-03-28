@@ -231,17 +231,35 @@
   <data name="NavigationTab_Home.Text" xml:space="preserve">
     <value>主页</value>
   </data>
+  <data name="NavigationTab_Home.Description" xml:space="preserve">
+    <value>您最近的副本将显示在这里</value>
+  </data>
   <data name="NavigationTab_Favorites.Text" xml:space="preserve">
     <value>收藏</value>
+  </data>
+  <data name="NavigationTab_Favorites.Description" xml:space="preserve">
+    <value>您最喜欢的素材将显示在这里</value>
   </data>
   <data name="NavigationTab_Images.Text" xml:space="preserve">
     <value>图片</value>
   </data>
+  <data name="NavigationTab_Images.Description" xml:space="preserve">
+    <value>您已复制的图像将显示在这里</value>
+  </data>
   <data name="NavigationTab_Files.Text" xml:space="preserve">
     <value>文件</value>
   </data>
+  <data name="NavigationTab_Files.Description" xml:space="preserve">
+    <value>您已复制的文件将显示在这里</value>
+  </data>
   <data name="NavigationTab_Links.Text" xml:space="preserve">
     <value>链接</value>
+  </data>
+  <data name="NavigationTab_Links.Description" xml:space="preserve">
+    <value>您已复制的链接将显示在此处</value>
+  </data>
+  <data name="NavigationTab_Tag.Description" xml:space="preserve">
+    <value>您标记的素材将显示在这里</value>
   </data>
   <data name="SearchBox.PlaceholderText" xml:space="preserve">
     <value>搜索</value>
@@ -267,7 +285,7 @@
   <data name="TitleBarMenu_Settings.Text" xml:space="preserve">
     <value>设置</value>
   </data>
-  <data name="TitleBarMenu_Quit.Text" xml:space="preserve">
+  <data name="TitleBarMenu_Exit.Text" xml:space="preserve">
     <value>退出</value>
   </data>
   <data name="FilterButton.ToolTipService.ToolTip" xml:space="preserve">

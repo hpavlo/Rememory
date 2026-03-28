@@ -44,7 +44,7 @@ namespace Rememory.ViewModels
         private readonly IClipTransferService _clipTransferService = App.Current.Services.GetService<IClipTransferService>()!;
         // Monitors
         private readonly ClipboardMonitor _clipboardMonitor = App.Current.Services.GetService<ClipboardMonitor>()!;
-
+        
         // Using to get last active window if clipboard window is pinned
         private readonly ActiveWindowHook _activeWindowHook = new();
 
@@ -149,18 +149,18 @@ namespace Rememory.ViewModels
         /// </summary>
         public bool IsSearchEnabled => SelectedTab?.Type != NavigationTabItemType.Images;
 
-        private bool _searchMode = false;
+        private bool _inSearchMode = false;
         /// <summary>
         /// Return true if <see cref="SearchString"/> contains search pattern
         /// </summary>
-        public bool SearchMode
+        public bool InSearchMode
         {
-            get => _searchMode;
+            get => _inSearchMode;
             set
             {
-                if (SetProperty(ref _searchMode, value))
+                if (SetProperty(ref _inSearchMode, value))
                 {
-                    if (_searchMode)
+                    if (_inSearchMode)
                     {
                         _searchContext = ClipsCollection;
                         ClipsCollection = _searchBuffer;
@@ -195,11 +195,11 @@ namespace Rememory.ViewModels
                     if (string.IsNullOrWhiteSpace(_searchString))
                     {
                         _searchService?.StopSearching();
-                        SearchMode = false;
+                        InSearchMode = false;
                     }
                     else
                     {
-                        SearchMode = true;
+                        InSearchMode = true;
                         _searchService?.StartSearching(_searchContext, _searchString, ClipsCollection);
                     }
                 }
@@ -250,14 +250,7 @@ namespace Rememory.ViewModels
 
         private void NavigationTabItemsInit()
         {
-            NavigationTabItems = [
-                new("/Clipboard/NavigationTab_Home/Text".GetLocalizedResource(), "\uE80F", NavigationTabItemType.Home),
-                new("/Clipboard/NavigationTab_Favorites/Text".GetLocalizedResource(), "\uE734", NavigationTabItemType.Fovorites),
-                new("/Clipboard/NavigationTab_Images/Text".GetLocalizedResource(), "\uE8B9", NavigationTabItemType.Images),
-                new("/Clipboard/NavigationTab_Files/Text".GetLocalizedResource(), "\uE8B7", NavigationTabItemType.Files),
-                new("/Clipboard/NavigationTab_Links/Text".GetLocalizedResource(), "\uE71B", NavigationTabItemType.Links),
-            ];
-
+            NavigationTabItems = [..TabItemFactory.GetDefaultTabs()];
             _selectedTab = NavigationTabItems.First();
 
             foreach (var tag in _tagService.Tags)
@@ -346,7 +339,7 @@ namespace Rememory.ViewModels
                 && RootAppNode.Children.Where(app => app.IsSelected).Select(app => app.OwnerPath).Contains(a.ChangedClip.Owner?.Path))
             {
                 // Insert in main collection only
-                if (SearchMode)
+                if (InSearchMode)
                 {
                     _searchContext.Insert(0, a.ChangedClip);
                 }
@@ -375,7 +368,7 @@ namespace Rememory.ViewModels
             }
 
             // If we are in search mode, move clip in main context collection too
-            if (SearchMode && _searchContext.Remove(a.ChangedClip))
+            if (InSearchMode && _searchContext.Remove(a.ChangedClip))
             {
                 _searchContext.Insert(0, a.ChangedClip);
             }
@@ -384,12 +377,12 @@ namespace Rememory.ViewModels
         private void ClipboardService_ClipDeleted(object? sender, ClipboardEventArgs a)
         {
             ClipsCollection.Remove(a.ChangedClip);
-            _ = SearchMode && _searchContext.Remove(a.ChangedClip);
+            _ = InSearchMode && _searchContext.Remove(a.ChangedClip);
         }
 
         private void ClipboardService_ClipsCollectionChanged(object? sender, ClipboardEventArgs a)
         {
-            SearchMode = false;
+            InSearchMode = false;
             UpdateClipsList();
         }
 
@@ -625,7 +618,7 @@ namespace Rememory.ViewModels
                 .Where(item => ClipFilterBySelectedMenu(item) && selectedOwnerPaths.Contains(item.Owner?.Path ?? string.Empty))
                 .ToList();
 
-            if (SearchMode)
+            if (InSearchMode)
             {
                 _searchContext.Clear();
                 _searchContext = [.. filteredClips];
@@ -658,7 +651,7 @@ namespace Rememory.ViewModels
         private void OpenSettingsWindow() => SettingsWindow.ShowSettingsWindow();
 
         [RelayCommand]
-        private void QuitApp() => App.Current.Exit();
+        private void ExitApp() => App.Current.Exit();
 
         #region Single Clip context menu commands
 

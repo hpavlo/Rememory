@@ -231,17 +231,35 @@
   <data name="NavigationTab_Home.Text" xml:space="preserve">
     <value>الرئيسية</value>
   </data>
+  <data name="NavigationTab_Home.Description" xml:space="preserve">
+    <value>النسخ الأخيرة الخاصة بك ستظهر هنا</value>
+  </data>
   <data name="NavigationTab_Favorites.Text" xml:space="preserve">
     <value>المفضلة</value>
+  </data>
+  <data name="NavigationTab_Favorites.Description" xml:space="preserve">
+    <value>مقاطع الفيديو المفضلة لديك ستظهر هنا</value>
   </data>
   <data name="NavigationTab_Images.Text" xml:space="preserve">
     <value>الصور</value>
   </data>
+  <data name="NavigationTab_Images.Description" xml:space="preserve">
+    <value>الصور المنسوخة الخاصة بك ستظهر هنا</value>
+  </data>
   <data name="NavigationTab_Files.Text" xml:space="preserve">
     <value>الملفات</value>
   </data>
+  <data name="NavigationTab_Files.Description" xml:space="preserve">
+    <value>ستظهر ملفاتك المنسوخة هنا</value>
+  </data>
   <data name="NavigationTab_Links.Text" xml:space="preserve">
     <value>الروابط</value>
+  </data>
+  <data name="NavigationTab_Links.Description" xml:space="preserve">
+    <value>الروابط المنسوخة الخاصة بك ستظهر هنا</value>
+  </data>
+  <data name="NavigationTab_Tag.Description" xml:space="preserve">
+    <value>سوف تظهر مقاطع الفيديو الموسومة هنا</value>
   </data>
   <data name="SearchBox.PlaceholderText" xml:space="preserve">
     <value>بحث</value>
@@ -267,7 +285,7 @@
   <data name="TitleBarMenu_Settings.Text" xml:space="preserve">
     <value>الإعدادات</value>
   </data>
-  <data name="TitleBarMenu_Quit.Text" xml:space="preserve">
+  <data name="TitleBarMenu_Exit.Text" xml:space="preserve">
     <value>خروج</value>
   </data>
   <data name="FilterButton.ToolTipService.ToolTip" xml:space="preserve">

@@ -561,6 +561,10 @@ namespace Rememory.Views
 
         private void ClipsListView_Items_VectorChanged(IObservableVector<object> sender, IVectorChangedEventArgs args)
         {
+            EmptyListInfoPanel.Visibility = sender.Count > 0 || ViewModel.InSearchMode
+                ? Visibility.Collapsed
+                : Visibility.Visible;
+
             // To check if new Clip was inserted to ClipsListView
             if (args.CollectionChange == CollectionChange.ItemInserted)
             {

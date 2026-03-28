@@ -34,27 +34,27 @@
 
         <MenuFlyout x:Key="TrayIconContextMenu"
                     x:DefaultBindMode="OneWay">
-            <MenuFlyoutItem Text="Open"
+            <MenuFlyoutItem x:Uid="TrayIconMenu_Open"
                             Icon="{tk:FontIcon Glyph=&#xE8A7;}"
                             Command="{x:Bind ViewModel.OpenWindowCommand}"
                             KeyboardAcceleratorTextOverride="{x:Bind ViewModel.SettingsContext.ActivationShortcut, Converter={StaticResource ShortcutToTextConverter}}" />
-            <MenuFlyoutItem Text="Pause monitoring"
+            <MenuFlyoutItem x:Uid="TrayIconMenu_PauseMonitoring"
                             Icon="{tk:FontIcon Glyph=&#xF0E3;}"
                             Command="{x:Bind ViewModel.ToggleClipboardMonitoringEnabledCommand}"
                             IsEnabled="{x:Bind ViewModel.IsClipboardMonitoringEnabled}"
                             Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}" />
-            <MenuFlyoutItem Text="Resume monitoring"
+            <MenuFlyoutItem x:Uid="TrayIconMenu_ResumeMonitoring"
                             Icon="{tk:FontIcon Glyph=&#xF0E3;}"
                             Command="{x:Bind ViewModel.ToggleClipboardMonitoringEnabledCommand}"
                             IsEnabled="{x:Bind ViewModel.IsClipboardMonitoringEnabled, Converter={StaticResource BoolNegationConverter}}"
                             Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}" />
             <MenuFlyoutSeparator />
-            <MenuFlyoutItem Text="Settings"
+            <MenuFlyoutItem x:Uid="TrayIconMenu_Settings"
                             Icon="{tk:FontIcon Glyph=&#xE713;}"
                             Command="{x:Bind ViewModel.OpenSettingsWindowCommand}" />
-            <MenuFlyoutItem Text="Exit"
+            <MenuFlyoutItem x:Uid="TrayIconMenu_Exit"
                             Icon="{tk:FontIcon Glyph=&#xEA39;}"
-                            Command="{x:Bind ViewModel.QuitAppCommand}" />
+                            Command="{x:Bind ViewModel.ExitAppCommand}" />
         </MenuFlyout>
 
         <selector:NavigationTabTemplateSelector x:Key="NavigationTabTemplateSelector"
@@ -167,8 +167,9 @@
                           Grid.ColumnSpan="3"
                           Margin="0,0,0,8"
                           SelectionMode="None"
+                          IsHitTestVisible="False"
                           ItemsSource="{x:Bind Tags}"
-                          IsHitTestVisible="False">
+                          ItemTemplate="{StaticResource TagPreviewTemplate}">
                     <ListView.Style>
                         <Style TargetType="ListView">
                             <Setter Property="Template">
@@ -208,20 +209,6 @@
                             </Setter>
                         </Style>
                     </ListView.ItemContainerStyle>
-
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="models:TagModel">
-                            <Grid Padding="8,2,8,4"
-                                  CornerRadius="10"
-                                  Background="{x:Bind ColorBrush}">
-                                <TextBlock FontSize="12"
-                                           TextTrimming="CharacterEllipsis"
-                                           VerticalAlignment="Center"
-                                           HorizontalAlignment="Center"
-                                           Text="{x:Bind Name}" />
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
                 </ListView>
 
                 <FontIcon x:Name="ClipFavoriteIcon"
@@ -551,9 +538,9 @@
                             AccessKey="S"
                             Command="{x:Bind ViewModel.OpenSettingsWindowCommand}"
                             Icon="{tk:FontIcon Glyph=&#xE713;}" />
-            <MenuFlyoutItem x:Uid="/Clipboard/TitleBarMenu_Quit"
-                            AccessKey="Q"
-                            Command="{x:Bind ViewModel.QuitAppCommand}"
+            <MenuFlyoutItem x:Uid="/Clipboard/TitleBarMenu_Exit"
+                            AccessKey="E"
+                            Command="{x:Bind ViewModel.ExitAppCommand}"
                             Icon="{tk:FontIcon Glyph=&#xEA39;}" />
         </MenuFlyout>
 
@@ -999,6 +986,33 @@
                        Grid.Column="1"
                        TextWrapping="Wrap" />
         </Grid>
+
+        <StackPanel x:Name="EmptyListInfoPanel"
+                    x:DefaultBindMode="OneWay"
+                    Grid.Column="1"
+                    Grid.Row="3"
+                    Grid.ColumnSpan="2"
+                    MaxWidth="300"
+                    Margin="16 0 36 36"
+                    Spacing="12"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <FontIcon x:Name="EmptyListTabPreview"
+                      x:Load="{x:Bind ViewModel.SelectedTab.IsTag, Converter={StaticResource BoolNegationConverter}}"
+                      FontSize="24"
+                      Glyph="{x:Bind ViewModel.SelectedTab.BigGlyph}" />
+
+            <ContentControl x:Name="EmptyListTagPreview"
+                            x:Load="{x:Bind ViewModel.SelectedTab.IsTag}"
+                            HorizontalAlignment="Center"
+                            DataContext="{x:Bind ViewModel.SelectedTab.Tag}"
+                            ContentTemplate="{StaticResource TagPreviewTemplate}" />
+
+            <TextBlock TextAlignment="Center"
+                       TextWrapping="Wrap"
+                       Text="{x:Bind ViewModel.SelectedTab.EmptyListMessage}" />
+        </StackPanel>
+
 
         <ListView x:Name="ClipsListView"
                   AutomationProperties.AutomationId="ClipsList"

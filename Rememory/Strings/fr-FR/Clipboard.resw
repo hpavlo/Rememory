@@ -231,17 +231,35 @@
   <data name="NavigationTab_Home.Text" xml:space="preserve">
     <value>Accueil</value>
   </data>
+  <data name="NavigationTab_Home.Description" xml:space="preserve">
+    <value>Vos copies récentes apparaîtront ici</value>
+  </data>
   <data name="NavigationTab_Favorites.Text" xml:space="preserve">
     <value>Favoris</value>
+  </data>
+  <data name="NavigationTab_Favorites.Description" xml:space="preserve">
+    <value>Vos clips favoris apparaîtront ici</value>
   </data>
   <data name="NavigationTab_Images.Text" xml:space="preserve">
     <value>Images</value>
   </data>
+  <data name="NavigationTab_Images.Description" xml:space="preserve">
+    <value>Vos images copiées apparaîtront ici</value>
+  </data>
   <data name="NavigationTab_Files.Text" xml:space="preserve">
     <value>Fichiers</value>
   </data>
+  <data name="NavigationTab_Files.Description" xml:space="preserve">
+    <value>Vos fichiers copiés apparaîtront ici</value>
+  </data>
   <data name="NavigationTab_Links.Text" xml:space="preserve">
     <value>Liens</value>
+  </data>
+  <data name="NavigationTab_Links.Description" xml:space="preserve">
+    <value>Vos liens copiés apparaîtront ici</value>
+  </data>
+  <data name="NavigationTab_Tag.Description" xml:space="preserve">
+    <value>Vos clips étiquetés apparaîtront ici</value>
   </data>
   <data name="SearchBox.PlaceholderText" xml:space="preserve">
     <value>Rechercher</value>
@@ -267,7 +285,7 @@
   <data name="TitleBarMenu_Settings.Text" xml:space="preserve">
     <value>Paramètres</value>
   </data>
-  <data name="TitleBarMenu_Quit.Text" xml:space="preserve">
+  <data name="TitleBarMenu_Exit.Text" xml:space="preserve">
     <value>Quitter</value>
   </data>
   <data name="FilterButton.ToolTipService.ToolTip" xml:space="preserve">

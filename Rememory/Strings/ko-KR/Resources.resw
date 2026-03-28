@@ -129,19 +129,19 @@
   <data name="AppNotification_Text" xml:space="preserve">
     <value>{0} 를 눌러 앱을 엽니다</value>
   </data>
-  <data name="TrayIconMenu_Open" xml:space="preserve">
+  <data name="TrayIconMenu_Open.Text" xml:space="preserve">
     <value>열기</value>
   </data>
-  <data name="TrayIconMenu_PauseMonitoring" xml:space="preserve">
+  <data name="TrayIconMenu_PauseMonitoring.Text" xml:space="preserve">
     <value>모니터링 일시 중지</value>
   </data>
-  <data name="TrayIconMenu_ResumeMonitoring" xml:space="preserve">
+  <data name="TrayIconMenu_ResumeMonitoring.Text" xml:space="preserve">
     <value>모니터링 재개</value>
   </data>
-  <data name="TrayIconMenu_Settings" xml:space="preserve">
+  <data name="TrayIconMenu_Settings.Text" xml:space="preserve">
     <value>설정</value>
   </data>
-  <data name="TrayIconMenu_Exit" xml:space="preserve">
+  <data name="TrayIconMenu_Exit.Text" xml:space="preserve">
     <value>종료</value>
   </data>
   <data name="UnknownOwnerAppTitle" xml:space="preserve">

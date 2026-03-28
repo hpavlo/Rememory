@@ -231,17 +231,35 @@
   <data name="NavigationTab_Home.Text" xml:space="preserve">
     <value>홈</value>
   </data>
+  <data name="NavigationTab_Home.Description" xml:space="preserve">
+    <value>최근 기록된 사본들이 여기에 표시됩니다</value>
+  </data>
   <data name="NavigationTab_Favorites.Text" xml:space="preserve">
     <value>즐겨찾기</value>
+  </data>
+  <data name="NavigationTab_Favorites.Description" xml:space="preserve">
+    <value>즐겨찾는 영상 클립이 여기에 표시됩니다</value>
   </data>
   <data name="NavigationTab_Images.Text" xml:space="preserve">
     <value>이미지</value>
   </data>
+  <data name="NavigationTab_Images.Description" xml:space="preserve">
+    <value>복사한 이미지가 여기에 표시됩니다</value>
+  </data>
   <data name="NavigationTab_Files.Text" xml:space="preserve">
     <value>파일</value>
   </data>
+  <data name="NavigationTab_Files.Description" xml:space="preserve">
+    <value>복사한 파일이 여기에 표시됩니다</value>
+  </data>
   <data name="NavigationTab_Links.Text" xml:space="preserve">
     <value>링크</value>
+  </data>
+  <data name="NavigationTab_Links.Description" xml:space="preserve">
+    <value>복사한 링크가 여기에 표시됩니다</value>
+  </data>
+  <data name="NavigationTab_Tag.Description" xml:space="preserve">
+    <value>태그된 클립이 여기에 표시됩니다</value>
   </data>
   <data name="SearchBox.PlaceholderText" xml:space="preserve">
     <value>검색</value>
@@ -267,7 +285,7 @@
   <data name="TitleBarMenu_Settings.Text" xml:space="preserve">
     <value>설정</value>
   </data>
-  <data name="TitleBarMenu_Quit.Text" xml:space="preserve">
+  <data name="TitleBarMenu_Exit.Text" xml:space="preserve">
     <value>종료</value>
   </data>
   <data name="FilterButton.ToolTipService.ToolTip" xml:space="preserve">

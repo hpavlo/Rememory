@@ -129,19 +129,19 @@
   <data name="AppNotification_Text" xml:space="preserve">
     <value>按 {0} 键打开应用程序</value>
   </data>
-  <data name="TrayIconMenu_Open" xml:space="preserve">
+  <data name="TrayIconMenu_Open.Text" xml:space="preserve">
     <value>打开</value>
   </data>
-  <data name="TrayIconMenu_PauseMonitoring" xml:space="preserve">
+  <data name="TrayIconMenu_PauseMonitoring.Text" xml:space="preserve">
     <value>停止监控</value>
   </data>
-  <data name="TrayIconMenu_ResumeMonitoring" xml:space="preserve">
+  <data name="TrayIconMenu_ResumeMonitoring.Text" xml:space="preserve">
     <value>恢复监控</value>
   </data>
-  <data name="TrayIconMenu_Settings" xml:space="preserve">
+  <data name="TrayIconMenu_Settings.Text" xml:space="preserve">
     <value>设置</value>
   </data>
-  <data name="TrayIconMenu_Exit" xml:space="preserve">
+  <data name="TrayIconMenu_Exit.Text" xml:space="preserve">
     <value>退出</value>
   </data>
   <data name="UnknownOwnerAppTitle" xml:space="preserve">

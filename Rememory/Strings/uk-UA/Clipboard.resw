@@ -231,17 +231,35 @@
   <data name="NavigationTab_Home.Text" xml:space="preserve">
     <value>Головна</value>
   </data>
+  <data name="NavigationTab_Home.Description" xml:space="preserve">
+    <value>Ваші останні копії будуть показані тут</value>
+  </data>
   <data name="NavigationTab_Favorites.Text" xml:space="preserve">
     <value>Обране</value>
+  </data>
+  <data name="NavigationTab_Favorites.Description" xml:space="preserve">
+    <value>Ваші обрані кліпи з'являться тут</value>
   </data>
   <data name="NavigationTab_Images.Text" xml:space="preserve">
     <value>Зображення</value>
   </data>
+  <data name="NavigationTab_Images.Description" xml:space="preserve">
+    <value>Ваші скопійовані зображення будуть показані тут</value>
+  </data>
   <data name="NavigationTab_Files.Text" xml:space="preserve">
     <value>Файли</value>
   </data>
+  <data name="NavigationTab_Files.Description" xml:space="preserve">
+    <value>Ваші скопійовані файли будуть показані тут</value>
+  </data>
   <data name="NavigationTab_Links.Text" xml:space="preserve">
     <value>Посилання</value>
+  </data>
+  <data name="NavigationTab_Links.Description" xml:space="preserve">
+    <value>Ваші скопійовані посилання будуть показані тут</value>
+  </data>
+  <data name="NavigationTab_Tag.Description" xml:space="preserve">
+    <value>Ваші відмічені кліпи з'являться тут</value>
   </data>
   <data name="SearchBox.PlaceholderText" xml:space="preserve">
     <value>Пошук</value>
@@ -267,8 +285,8 @@
   <data name="TitleBarMenu_Settings.Text" xml:space="preserve">
     <value>Налаштування</value>
   </data>
-  <data name="TitleBarMenu_Quit.Text" xml:space="preserve">
-    <value>Вийти</value>
+  <data name="TitleBarMenu_Exit.Text" xml:space="preserve">
+    <value>Вихід</value>
   </data>
   <data name="FilterButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>Фільтр</value>

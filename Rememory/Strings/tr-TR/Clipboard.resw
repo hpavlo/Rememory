@@ -231,17 +231,35 @@
   <data name="NavigationTab_Home.Text" xml:space="preserve">
     <value>Ana Menü</value>
   </data>
+  <data name="NavigationTab_Home.Description" xml:space="preserve">
+    <value>Son kopyalarınız burada görünecektir</value>
+  </data>
   <data name="NavigationTab_Favorites.Text" xml:space="preserve">
     <value>Favoriler</value>
+  </data>
+  <data name="NavigationTab_Favorites.Description" xml:space="preserve">
+    <value>En sevdiğiniz klipler burada görünecek</value>
   </data>
   <data name="NavigationTab_Images.Text" xml:space="preserve">
     <value>Resimler</value>
   </data>
+  <data name="NavigationTab_Images.Description" xml:space="preserve">
+    <value>Kopyaladığınız resimler burada görünecektir</value>
+  </data>
   <data name="NavigationTab_Files.Text" xml:space="preserve">
     <value>Dosyalar</value>
   </data>
+  <data name="NavigationTab_Files.Description" xml:space="preserve">
+    <value>Kopyaladığınız dosyalar burada görünecektir</value>
+  </data>
   <data name="NavigationTab_Links.Text" xml:space="preserve">
     <value>Linkler</value>
+  </data>
+  <data name="NavigationTab_Links.Description" xml:space="preserve">
+    <value>Kopyaladığınız bağlantılar burada görünecektir</value>
+  </data>
+  <data name="NavigationTab_Tag.Description" xml:space="preserve">
+    <value>Etiketlediğiniz klipler burada görünecektir</value>
   </data>
   <data name="SearchBox.PlaceholderText" xml:space="preserve">
     <value>Arama</value>
@@ -267,8 +285,8 @@
   <data name="TitleBarMenu_Settings.Text" xml:space="preserve">
     <value>Ayarlar</value>
   </data>
-  <data name="TitleBarMenu_Quit.Text" xml:space="preserve">
-    <value>Çık</value>
+  <data name="TitleBarMenu_Exit.Text" xml:space="preserve">
+    <value>Çıkış</value>
   </data>
   <data name="FilterButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>Filtre</value>

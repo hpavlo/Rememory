@@ -129,19 +129,19 @@
   <data name="AppNotification_Text" xml:space="preserve">
     <value>Натисніть {0}, щоб відкрити додаток</value>
   </data>
-  <data name="TrayIconMenu_Open" xml:space="preserve">
+  <data name="TrayIconMenu_Open.Text" xml:space="preserve">
     <value>Відкрити</value>
   </data>
-  <data name="TrayIconMenu_PauseMonitoring" xml:space="preserve">
+  <data name="TrayIconMenu_PauseMonitoring.Text" xml:space="preserve">
     <value>Призупинити моніторинг</value>
   </data>
-  <data name="TrayIconMenu_ResumeMonitoring" xml:space="preserve">
+  <data name="TrayIconMenu_ResumeMonitoring.Text" xml:space="preserve">
     <value>Відновити моніторинг</value>
   </data>
-  <data name="TrayIconMenu_Settings" xml:space="preserve">
+  <data name="TrayIconMenu_Settings.Text" xml:space="preserve">
     <value>Налаштування</value>
   </data>
-  <data name="TrayIconMenu_Exit" xml:space="preserve">
+  <data name="TrayIconMenu_Exit.Text" xml:space="preserve">
     <value>Вихід</value>
   </data>
   <data name="UnknownOwnerAppTitle" xml:space="preserve">

@@ -231,17 +231,35 @@
   <data name="NavigationTab_Home.Text" xml:space="preserve">
     <value>Home</value>
   </data>
+  <data name="NavigationTab_Home.Description" xml:space="preserve">
+    <value>Your recent copies will show up here</value>
+  </data>
   <data name="NavigationTab_Favorites.Text" xml:space="preserve">
     <value>Favorites</value>
+  </data>
+  <data name="NavigationTab_Favorites.Description" xml:space="preserve">
+    <value>Your favorite clips will show up here</value>
   </data>
   <data name="NavigationTab_Images.Text" xml:space="preserve">
     <value>Images</value>
   </data>
+  <data name="NavigationTab_Images.Description" xml:space="preserve">
+    <value>Your copied images will show up here</value>
+  </data>
   <data name="NavigationTab_Files.Text" xml:space="preserve">
     <value>Files</value>
   </data>
+  <data name="NavigationTab_Files.Description" xml:space="preserve">
+    <value>Your copied files will show up here</value>
+  </data>
   <data name="NavigationTab_Links.Text" xml:space="preserve">
     <value>Links</value>
+  </data>
+  <data name="NavigationTab_Links.Description" xml:space="preserve">
+    <value>Your copied links will show up here</value>
+  </data>
+  <data name="NavigationTab_Tag.Description" xml:space="preserve">
+    <value>Your tagged clips will show up here</value>
   </data>
   <data name="SearchBox.PlaceholderText" xml:space="preserve">
     <value>Search</value>
@@ -267,8 +285,8 @@
   <data name="TitleBarMenu_Settings.Text" xml:space="preserve">
     <value>Settings</value>
   </data>
-  <data name="TitleBarMenu_Quit.Text" xml:space="preserve">
-    <value>Quit</value>
+  <data name="TitleBarMenu_Exit.Text" xml:space="preserve">
+    <value>Exit</value>
   </data>
   <data name="FilterButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>Filter</value>
