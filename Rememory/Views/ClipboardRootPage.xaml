@@ -567,7 +567,7 @@
                                       ItemsSource="{x:Bind Children, Mode=OneWay}"
                                       IsExpanded="{x:Bind IsExpanded, Mode=TwoWay}"
                                       ToolTipService.ToolTip="{x:Bind OwnerPath, Mode=OneWay}">
-                            <Grid Margin="-28 0 8 0"
+                            <Grid Margin="-28,0,8,0"
                                   ColumnSpacing="8">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />

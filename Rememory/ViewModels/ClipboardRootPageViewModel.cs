@@ -158,19 +158,21 @@ namespace Rememory.ViewModels
             get => _inSearchMode;
             set
             {
-                if (SetProperty(ref _inSearchMode, value))
+                if (!SetProperty(ref _inSearchMode, value))
                 {
-                    if (_inSearchMode)
-                    {
-                        _searchContext = ClipsCollection;
-                        ClipsCollection = _searchBuffer;
-                    }
-                    else
-                    {
-                        ClipsCollection = _searchContext;
-                        _searchContext = [];
-                        _searchBuffer.Clear();
-                    }
+                    return;
+                }
+
+                if (_inSearchMode)
+                {
+                    _searchContext = ClipsCollection;
+                    ClipsCollection = _searchBuffer;
+                }
+                else
+                {
+                    ClipsCollection = _searchContext;
+                    _searchContext = [];
+                    _searchBuffer.Clear();
                 }
             }
         }
@@ -190,18 +192,20 @@ namespace Rememory.ViewModels
             get => _searchString;
             set
             {
-                if (SetProperty(ref _searchString, value))
+                if (!SetProperty(ref _searchString, value))
                 {
-                    if (string.IsNullOrWhiteSpace(_searchString))
-                    {
-                        _searchService?.StopSearching();
-                        InSearchMode = false;
-                    }
-                    else
-                    {
-                        InSearchMode = true;
-                        _searchService?.StartSearching(_searchContext, _searchString, ClipsCollection);
-                    }
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(_searchString))
+                {
+                    _searchService?.StopSearch();
+                    InSearchMode = false;
+                }
+                else
+                {
+                    InSearchMode = true;
+                    _searchService?.StartSearch(_searchContext, _searchString, ClipsCollection);
                 }
             }
         }
@@ -622,7 +626,7 @@ namespace Rememory.ViewModels
             {
                 _searchContext.Clear();
                 _searchContext = [.. filteredClips];
-                _searchService?.StartSearching(_searchContext, _searchString, ClipsCollection);
+                _searchService?.StartSearch(_searchContext, _searchString, ClipsCollection);
             }
             else
             {
