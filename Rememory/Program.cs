@@ -1,10 +1,7 @@
 ﻿using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
-using Microsoft.Windows.AppNotifications;
-using Microsoft.Windows.AppNotifications.Builder;
 using Rememory.Helper;
-using Rememory.Models;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -42,14 +39,6 @@ namespace Rememory
                     SynchronizationContext.SetSynchronizationContext(context);
                     _ = new App(args);
                 });
-            }
-            else if (SettingsContext.Instance.IsNotificationOnStartEnabled && activationArgs.Kind != ExtendedActivationKind.ToastNotification)
-            {
-                AppNotificationManager.Default.Show(new AppNotificationBuilder()
-                    .AddText("AppNotification_Title".GetLocalizedResource())
-                    .AddText("AppNotification_Text".GetLocalizedFormatResource(
-                        KeyboardHelper.ShortcutToString(SettingsContext.Instance.ActivationShortcut, "+")))
-                    .BuildNotification());
             }
 
             return 0;
