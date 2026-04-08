@@ -13,6 +13,7 @@ namespace Rememory.Helper
         public const uint WM_SETTINGCHANGE = 0x001A;
         public const uint WM_NCLBUTTONDBLCLK = 0x00A3;
         public const uint WM_NCRBUTTONUP = 0x00A5;
+        public const uint WM_SYSCOMMAND = 0x0112;
         public const uint WM_DPICHANGED = 0x02E0;
         public const uint SPI_SETLOGICALDPIOVERRIDE = 0x009F;
 

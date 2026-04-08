@@ -142,6 +142,14 @@ namespace Rememory.Views
                     UpdateResizeRegions(new(rect.right - rect.left, rect.bottom - rect.top));
                     UpdateCaptionRegion();
                     break;
+                // Prevent window moving if it displays in "Right" position
+                case NativeHelper.WM_SYSCOMMAND:
+                    if ((args.Message.WParam & 0xFFF0) == 0xF010   // SC_MOVE
+                        && SettingsContext.WindowPosition == ClipboardWindowPosition.Right)
+                    {
+                        args.Handled = true;
+                    }
+                    break;
                 // Double click on caption area
                 case NativeHelper.WM_NCLBUTTONDBLCLK when args.Message.WParam == 2:   // HTCAPTION
                     if (_rootPage?.ViewModel.ToggleWindowPinnedCommand.CanExecute(null) ?? false)
@@ -297,7 +305,7 @@ namespace Rememory.Views
 
         private void MoveToStartPosition(ClipboardWindowPosition? position = null)
         {
-            var workArea = NativeHelper.GetWorkAreaFromPoint(out var dpiX, out var dpiY);
+            var workArea = NativeHelper.GetWorkAreaFromPoint(out var dpiX, out var dpiY);   // Monitor DPI under the cursor pointer
             double dpiScaleX = dpiX / 96.0;   // 96 is a default DPI (scale 100%)
             double dpiScaleY = dpiY / 96.0;
 
@@ -305,10 +313,14 @@ namespace Rememory.Views
             int windowHeight = SettingsContext.WindowHeight;
             int windowMargin = SettingsContext.WindowMargin;
 
-            double independedWidth = windowWidth * dpiScaleX;
-            double independedHeight = windowHeight * dpiScaleY;
-            double independedMarginX = windowMargin * dpiScaleX;
-            double independedMarginY = windowMargin * dpiScaleY;
+            int independedWidth = (int)(windowWidth * dpiScaleX);
+            int independedHeight = (int)(windowHeight * dpiScaleY);
+            int independedMarginX = (int)(windowMargin * dpiScaleX);
+            int independedMarginY = (int)(windowMargin * dpiScaleY);
+
+            // RightCorner as fallback position
+            int fallbackPositionX = workArea.X + workArea.Width - independedWidth - independedMarginX;
+            int fallbackPositionY = workArea.Y + workArea.Height - independedHeight - independedMarginY;
 
             //this.AppWindow.MoveAndResize - requires restart after DPI update, width and height depends on DPI
             //this.MoveAndResize - don't require restart after DPI update
@@ -316,58 +328,33 @@ namespace Rememory.Views
             switch (position ?? SettingsContext.WindowPosition)
             {
                 case ClipboardWindowPosition.Caret:
-                    var caretPosition = GetPositionWindowRelativeToCaret(
-                        (int)(workArea.X + workArea.Width - independedWidth - independedMarginX),
-                        (int)(workArea.Y + workArea.Height - independedHeight - independedMarginY));
-                    this.MoveAndResize(caretPosition.X, caretPosition.Y, windowWidth, windowHeight);
+                    var caretPosition = GetPositionWindowRelativeToCaret(fallbackPositionX, fallbackPositionY);
+                    MoveAndResize(caretPosition.X, caretPosition.Y, windowWidth, windowHeight);
                     break;
                 case ClipboardWindowPosition.Cursor:
                     NativeHelper.GetCursorPos(out var cursorPos);
-                    var newCursorPositionPos = AdjustWindowPositionToWorkArea(cursorPos, AppWindow.Size, workArea);
-                    this.MoveAndResize(newCursorPositionPos.X, newCursorPositionPos.Y, windowWidth, windowHeight);
+                    var newCursorPositionPos = AdjustWindowPositionToWorkArea(cursorPos, new(independedWidth, independedHeight), workArea);
+                    MoveAndResize(newCursorPositionPos.X, newCursorPositionPos.Y, windowWidth, windowHeight);
                     break;
                 case ClipboardWindowPosition.ScreenCenter:
-                    this.MoveAndResize(
+                    MoveAndResize(
                         workArea.X + (workArea.Width - independedWidth) / 2,
                         workArea.Y + (workArea.Height - independedHeight) / 2,
                         windowWidth,
                         windowHeight);
                     break;
                 case ClipboardWindowPosition.LastPosition:
-                    // Check if last position is out of work area
-                    if (AppWindow.Position.X >= workArea.X
-                        && AppWindow.Position.X - independedWidth <= workArea.X + workArea.Width
-                        && AppWindow.Position.Y >= workArea.Y
-                        && AppWindow.Position.Y - independedHeight <= workArea.Y + workArea.Height)
-                    {
-                        this.MoveAndResize(
-                            AppWindow.Position.X,
-                            AppWindow.Position.Y,
-                            windowWidth,
-                            windowHeight);
-                    }
-                    else
-                    {
-                        this.MoveAndResize(
-                            workArea.X + (workArea.Width - independedWidth) / 2,
-                            workArea.Y + (workArea.Height - independedHeight) / 2,
-                            windowWidth,
-                            windowHeight);
-                    }
+                    MoveAndResize(AppWindow.Position.X, AppWindow.Position.Y, windowWidth, windowHeight);
                     break;
                 case ClipboardWindowPosition.Right:
-                    this.MoveAndResize(
-                        workArea.X + workArea.Width - independedWidth - independedMarginX,
+                    MoveAndResize(
+                        fallbackPositionX,
                         workArea.Y + independedMarginY,
                         windowWidth,
-                        (workArea.Height - 2 * independedMarginY) / dpiScaleY);
+                        (int)((workArea.Height - 2 * independedMarginY) / dpiScaleY));
                     break;
                 case ClipboardWindowPosition.RightCorner:
-                    this.MoveAndResize(
-                        workArea.X + workArea.Width - independedWidth - independedMarginX,
-                        workArea.Y + workArea.Height - independedHeight - independedMarginY,
-                        windowWidth,
-                        windowHeight);
+                    MoveAndResize(fallbackPositionX, fallbackPositionY, windowWidth, windowHeight);
                     break;
             }
 
@@ -406,10 +393,10 @@ namespace Rememory.Views
             return position;
         }
 
-        private PointInt32 GetPositionWindowRelativeToCaret(int defaultPositionX, int defaultPositionY)
+        private PointInt32 GetPositionWindowRelativeToCaret(int fallbackPositionX, int fallbackPositionY)
         {
-            int x = defaultPositionX;
-            int y = defaultPositionY;
+            int x = fallbackPositionX;
+            int y = fallbackPositionY;
 
             if (TextBoxCaretHelper.GetCaretPosition(out var caretRect))
             {
@@ -449,6 +436,30 @@ namespace Rememory.Views
             }
 
             return new(x, y);
+        }
+
+        /// <summary>
+        /// Move window to new position and resize if required
+        /// </summary>
+        /// <param name="x">X position</param>
+        /// <param name="y">Y position</param>
+        /// <param name="width">Width before DPI scale</param>
+        /// <param name="height">Height before DPI scale</param>
+        private void MoveAndResize(int x, int y, int width, int height)
+        {
+            AppWindow.Move(new(x,y));
+
+            var windowDpiScale = GetDpiScaleFactor();
+            int independedWidth = (int)(width * windowDpiScale);
+            int independedHeight = (int)(height * windowDpiScale);
+
+            // The AppWindow.Size is automatically calculated based on the device's DPI scale,
+            // but this may not be accurate when there are changes in DPI or when the application is run on displays with varying DPI values.
+            // It is recommended to manually adjust the window size after relocating it to the desired position.
+            if (AppWindow.Size.Width != independedWidth || AppWindow.Size.Height != independedHeight)
+            {
+                AppWindow.MoveAndResize(new(x, y, independedWidth, independedHeight));
+            }
         }
     }
 
