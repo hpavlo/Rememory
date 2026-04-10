@@ -8,11 +8,11 @@ namespace Rememory.Models
     public static class TabItemFactory
     {
         public static IEnumerable<TabItemModel> GetDefaultTabs() => [
-                new(NavigationTabItemType.Home, "/Clipboard/NavigationTab_Home/Text".GetLocalizedResource(), "\uE80F", "/Clipboard/NavigationTab_Home/Description".GetLocalizedResource(), "\uF0E3"),
-                new(NavigationTabItemType.Fovorites, "/Clipboard/NavigationTab_Favorites/Text".GetLocalizedResource(), "\uE734", "/Clipboard/NavigationTab_Favorites/Description".GetLocalizedResource()),
-                new(NavigationTabItemType.Images, "/Clipboard/NavigationTab_Images/Text".GetLocalizedResource(), "\uE8B9", "/Clipboard/NavigationTab_Images/Description".GetLocalizedResource()),
-                new(NavigationTabItemType.Files, "/Clipboard/NavigationTab_Files/Text".GetLocalizedResource(), "\uE8B7", "/Clipboard/NavigationTab_Files/Description".GetLocalizedResource()),
-                new(NavigationTabItemType.Links, "/Clipboard/NavigationTab_Links/Text".GetLocalizedResource(), "\uE71B", "/Clipboard/NavigationTab_Links/Description".GetLocalizedResource())
+                new(NavigationTabItemType.Home, "/Clipboard/NavigationTab_Home/Text".GetLocalizedResource(), "\uE80F", "1", "/Clipboard/NavigationTab_Home/Description".GetLocalizedResource(), "\uF0E3"),
+                new(NavigationTabItemType.Fovorites, "/Clipboard/NavigationTab_Favorites/Text".GetLocalizedResource(), "\uE734", "2", "/Clipboard/NavigationTab_Favorites/Description".GetLocalizedResource()),
+                new(NavigationTabItemType.Images, "/Clipboard/NavigationTab_Images/Text".GetLocalizedResource(), "\uE8B9", "3", "/Clipboard/NavigationTab_Images/Description".GetLocalizedResource()),
+                new(NavigationTabItemType.Files, "/Clipboard/NavigationTab_Files/Text".GetLocalizedResource(), "\uE8B7", "4", "/Clipboard/NavigationTab_Files/Description".GetLocalizedResource()),
+                new(NavigationTabItemType.Links, "/Clipboard/NavigationTab_Links/Text".GetLocalizedResource(), "\uE71B", "5", "/Clipboard/NavigationTab_Links/Description".GetLocalizedResource())
             ];
     }
 
@@ -27,6 +27,12 @@ namespace Rememory.Models
         }
 
         public string Glyph
+        {
+            get;
+            set => SetProperty(ref field, value);
+        }
+
+        public string AccessKey
         {
             get;
             set => SetProperty(ref field, value);
@@ -50,11 +56,12 @@ namespace Rememory.Models
 
         public bool IsTag => Type == NavigationTabItemType.Tag && Tag is not null;
 
-        public TabItemModel(NavigationTabItemType type, string title, string glyph, string emptyListMessage, string? bigGlyph = null)
+        public TabItemModel(NavigationTabItemType type, string title, string glyph, string accessKey, string emptyListMessage, string? bigGlyph = null)
         {
             Type = type;
             Title = title;
             Glyph = glyph;
+            AccessKey = accessKey;
             BigGlyph = bigGlyph ?? glyph;
             EmptyListMessage = emptyListMessage;
         }
@@ -66,6 +73,7 @@ namespace Rememory.Models
             Title = tag.Name;
             Glyph = TAG_GLYPH;
             BigGlyph = TAG_GLYPH;
+            AccessKey = string.Empty;
             EmptyListMessage = "Clipboard/NavigationTab_Tag/Description".GetLocalizedResource();
             tag.PropertyChanged += Tag_PropertyChanged;
         }

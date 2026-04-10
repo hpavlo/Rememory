@@ -1,15 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Application
-    x:Class="Rememory.App"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Rememory">
+<Application x:Class="Rememory.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:Rememory"
+             xmlns:tk="using:CommunityToolkit.WinUI"
+             xmlns:tkconverters="using:CommunityToolkit.WinUI.Converters"
+             xmlns:converters="using:Rememory.Converters">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
                 <ResourceDictionary Source="ms-appx:///Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- Converters -->
+            <tkconverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <tkconverters:BoolNegationConverter x:Key="BoolNegationConverter" />
+            <converters:ShortcutToTextConverter x:Key="ShortcutToTextConverter" />
+
+            <!-- Components -->
+            <MenuFlyout x:Key="TrayIconContextMenu">
+                <MenuFlyoutItem x:Uid="TrayIconMenu_Open"
+                                Icon="{tk:FontIcon Glyph=&#xE8A7;}"
+                                Command="{Binding OpenWindowCommand}"
+                                KeyboardAcceleratorTextOverride="{Binding SettingsContext.ActivationShortcut, Converter={StaticResource ShortcutToTextConverter}}" />
+                <MenuFlyoutItem x:Uid="TrayIconMenu_PauseMonitoring"
+                                Icon="{tk:FontIcon Glyph=&#xF0E3;}"
+                                Command="{Binding ToggleClipboardMonitoringEnabledCommand}"
+                                IsEnabled="{Binding IsClipboardMonitoringEnabled}"
+                                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}" />
+                <MenuFlyoutItem x:Uid="TrayIconMenu_ResumeMonitoring"
+                                Icon="{tk:FontIcon Glyph=&#xF0E3;}"
+                                Command="{Binding ToggleClipboardMonitoringEnabledCommand}"
+                                IsEnabled="{Binding IsClipboardMonitoringEnabled, Converter={StaticResource BoolNegationConverter}}"
+                                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}" />
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem x:Uid="TrayIconMenu_Settings"
+                                Icon="{tk:FontIcon Glyph=&#xE713;}"
+                                Command="{Binding OpenSettingsWindowCommand}" />
+                <MenuFlyoutItem x:Uid="TrayIconMenu_Exit"
+                                Icon="{tk:FontIcon Glyph=&#xEA39;}"
+                                Command="{Binding ExitAppCommand}" />
+            </MenuFlyout>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

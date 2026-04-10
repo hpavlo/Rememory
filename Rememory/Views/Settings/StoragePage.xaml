@@ -5,13 +5,11 @@
       xmlns:local="using:Rememory.Views.Settings"
       xmlns:tk="using:CommunityToolkit.WinUI"
       xmlns:tkcontrols="using:CommunityToolkit.WinUI.Controls"
-      xmlns:tkconverters="using:CommunityToolkit.WinUI.Converters"
       xmlns:converters="using:Rememory.Converters"
       xmlns:models="using:Rememory.Models"
       DataContext="{x:Bind ViewModel}">
     <Page.Resources>
         <converters:EnumToIndexConverter x:Key="EnumToIndexConverter" />
-        <tkconverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </Page.Resources>
 
     <ScrollViewer Padding="56,20,56,5">

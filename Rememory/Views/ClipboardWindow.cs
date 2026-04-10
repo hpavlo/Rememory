@@ -82,15 +82,15 @@ namespace Rememory.Views
             Closed += Window_Closed;
         }
 
-        public bool ShowWindow()
+        public bool ShowWindow(ClipboardWindowPosition? position = null)
         {
             if (Visible)
             {
-                MoveToStartPosition();
+                MoveToStartPosition(position);
                 this.SetForegroundWindow();
                 return false;
             }
-            MoveToStartPosition();
+            MoveToStartPosition(position);
             Showing?.Invoke(this, EventArgs.Empty);
             AppWindow.Show();
             IsAlwaysOnTop = true;
@@ -236,8 +236,20 @@ namespace Rememory.Views
             string toltip = "AppDescription".GetLocalizedResource();
 #endif
             var trayIcon = new TrayIcon(TrayIconId, AppContext.BaseDirectory + "Assets\\WindowIcon.ico", toltip);
-            trayIcon.ContextMenu += (s, a) => a.Flyout = TrayIconMenu ??= (_rootPage?.IsLoaded ?? false) ? _rootPage.TrayIconMenu : null;
-            trayIcon.Selected += (s, a) => ShowWindow();
+            trayIcon.ContextMenu += (s, a) =>
+            {
+                if (TrayIconMenu is null)
+                {
+                    TrayIconMenu = (MenuFlyout)App.Current.Resources["TrayIconContextMenu"];
+                    foreach (var item in TrayIconMenu.Items)
+                    {
+                        item.DataContext = _rootPage?.ViewModel;
+                    }
+                }
+
+                a.Flyout = TrayIconMenu;
+            };
+            trayIcon.Selected += (s, a) => ShowWindow(ClipboardWindowPosition.RightCorner);
             trayIcon.IsVisible = true;
             return trayIcon;
         }

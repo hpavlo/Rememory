@@ -1,4 +1,5 @@
 using CommunityToolkit.WinUI;
+using CommunityToolkit.WinUI.Converters;
 using Microsoft.UI;
 using Microsoft.UI.Input;
 using Microsoft.UI.Text;
@@ -29,7 +30,6 @@ namespace Rememory.Views
     public sealed partial class ClipboardRootPage : Page
     {
         public readonly ClipboardRootPageViewModel ViewModel = new();
-        public readonly MenuFlyout TrayIconMenu;
         public Border WindowCaptionArea => WindowCaptionBorder;
 
         /// <summary>
@@ -38,6 +38,7 @@ namespace Rememory.Views
         public List<ClipModel> OrderedSelectedClips { get; private set; } = [];
 
         private readonly ClipboardWindow _window = App.Current.ClipboardWindow;
+        private readonly BoolNegationConverter _boolNegationConverter = new();
         private IThemeService ThemeService => App.Current.ThemeService;
 
         private readonly Flyout _previewTextFlyout;
@@ -76,8 +77,6 @@ namespace Rememory.Views
 
             ViewModel.SettingsContext.PropertyChanged += SettingsContext_PropertyChanged;
             ClipsListView.Items.VectorChanged += ClipsListView_Items_VectorChanged;
-
-            TrayIconMenu = (MenuFlyout)Resources["TrayIconContextMenu"];
 
             _previewTextFlyout = (Flyout)Resources["PreviewTextFlyout"];
             _previewRtfFlyout = (Flyout)Resources["PreviewRtfFlyout"];
@@ -212,7 +211,13 @@ namespace Rememory.Views
             }
         }
 
-        private void SetFocusOnFirstClipInList() => ((UIElement)FocusManager.FindFirstFocusableElement(ClipsListView))?.Focus(FocusState.Programmatic);
+        private void SetFocusOnFirstClipInList()
+        {
+            var firstClipContainer = ClipsListView.ContainerFromIndex(0) as UIElement;
+
+            firstClipContainer?.StartBringIntoView(new() { AnimationDesired = false });
+            firstClipContainer?.Focus(FocusState.Programmatic);
+        }
 
         #region Context menu items
 
@@ -414,7 +419,8 @@ namespace Rememory.Views
                     return;
                 // Left
                 case VirtualKey.Left:
-                    NavigationTabList.Focus(FocusState.Programmatic);
+                    var selectedItemContainer = NavigationTabView.ContainerFromMenuItem(NavigationTabView.SelectedItem) as UIElement;
+                    selectedItemContainer?.Focus(FocusState.Programmatic);
                     return;
             }
 
@@ -519,7 +525,7 @@ namespace Rememory.Views
                 Source = clipModel,
                 Mode = BindingMode.OneWay,
                 Path = new(nameof(clipModel.IsOpenInEditor)),
-                Converter = (IValueConverter)Resources["BoolNegationConverter"]
+                Converter = _boolNegationConverter
             });
         }
 
@@ -634,7 +640,7 @@ namespace Rememory.Views
 
         private void NavigationTabList_KeyDown(object sender, KeyRoutedEventArgs e)
         {
-            if (e.Key == VirtualKey.Right)
+            if (e.Key == VirtualKey.Right && e.OriginalSource is NavigationViewItem)
             {
                 SetFocusOnFirstClipInList();
             }

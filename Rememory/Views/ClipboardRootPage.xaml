@@ -3,9 +3,7 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="using:Rememory.Views"
-      xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
       xmlns:models="using:Rememory.Models"
-      xmlns:vm="using:Rememory.ViewModels"
       xmlns:tk="using:CommunityToolkit.WinUI"
       xmlns:tkconverters="using:CommunityToolkit.WinUI.Converters"
       xmlns:tkcontrols="using:CommunityToolkit.WinUI.Controls"
@@ -19,8 +17,6 @@
       SizeChanged="ClipboardRootPage_SizeChanged"
       KeyDown="RootPage_KeyDown">
     <Page.Resources>
-        <tkconverters:BoolNegationConverter x:Key="BoolNegationConverter" />
-        <tkconverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <tkconverters:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"
                                                 TrueValue="Collapsed"
                                                 FalseValue="Visible" />
@@ -30,32 +26,6 @@
         <converters:ClipDataDictionaryToDataConverter x:Key="ClipDataDictionaryToDataConverter" />
         <converters:DateTimeToHumanReadableConverter x:Key="DateTimeToHumanReadableConverter" />
         <converters:DataFooterInfoConverter x:Key="DataFooterInfoConverter" />
-        <converters:ShortcutToTextConverter x:Key="ShortcutToTextConverter" />
-
-        <MenuFlyout x:Key="TrayIconContextMenu"
-                    x:DefaultBindMode="OneWay">
-            <MenuFlyoutItem x:Uid="TrayIconMenu_Open"
-                            Icon="{tk:FontIcon Glyph=&#xE8A7;}"
-                            Command="{x:Bind ViewModel.OpenWindowCommand}"
-                            KeyboardAcceleratorTextOverride="{x:Bind ViewModel.SettingsContext.ActivationShortcut, Converter={StaticResource ShortcutToTextConverter}}" />
-            <MenuFlyoutItem x:Uid="TrayIconMenu_PauseMonitoring"
-                            Icon="{tk:FontIcon Glyph=&#xF0E3;}"
-                            Command="{x:Bind ViewModel.ToggleClipboardMonitoringEnabledCommand}"
-                            IsEnabled="{x:Bind ViewModel.IsClipboardMonitoringEnabled}"
-                            Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}" />
-            <MenuFlyoutItem x:Uid="TrayIconMenu_ResumeMonitoring"
-                            Icon="{tk:FontIcon Glyph=&#xF0E3;}"
-                            Command="{x:Bind ViewModel.ToggleClipboardMonitoringEnabledCommand}"
-                            IsEnabled="{x:Bind ViewModel.IsClipboardMonitoringEnabled, Converter={StaticResource BoolNegationConverter}}"
-                            Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}" />
-            <MenuFlyoutSeparator />
-            <MenuFlyoutItem x:Uid="TrayIconMenu_Settings"
-                            Icon="{tk:FontIcon Glyph=&#xE713;}"
-                            Command="{x:Bind ViewModel.OpenSettingsWindowCommand}" />
-            <MenuFlyoutItem x:Uid="TrayIconMenu_Exit"
-                            Icon="{tk:FontIcon Glyph=&#xEA39;}"
-                            Command="{x:Bind ViewModel.ExitAppCommand}" />
-        </MenuFlyout>
 
         <selector:NavigationTabTemplateSelector x:Key="NavigationTabTemplateSelector"
                                                 TabItemTemplate="{StaticResource TabItemTemplate}"
@@ -64,18 +34,23 @@
         <DataTemplate x:Key="TabItemTemplate"
                       x:DataType="models:TabItemModel"
                       x:DefaultBindMode="OneWay">
-            <FontIcon Glyph="{x:Bind Glyph}"
-                      FontSize="16"
-                      ToolTipService.ToolTip="{x:Bind Title}" />
+            <NavigationViewItem AccessKey="{x:Bind AccessKey}"
+                                Content="{x:Bind Title}">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="{x:Bind Glyph}" />
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
         </DataTemplate>
 
         <DataTemplate x:Key="TagTabItemTemplate"
                       x:DataType="models:TabItemModel"
                       x:DefaultBindMode="OneWay">
-            <FontIcon Glyph="{x:Bind Glyph}"
-                      FontSize="16"
-                      Foreground="{x:Bind Tag.ColorBrush}"
-                      ToolTipService.ToolTip="{x:Bind Tag.Name}" />
+            <NavigationViewItem Content="{x:Bind Tag.Name}">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="{x:Bind Glyph}"
+                              Foreground="{x:Bind Tag.ColorBrush}" />
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
         </DataTemplate>
 
         <selector:ClipPreviewTemplateSelector x:Key="ClipPreviewTemplateSelector">
@@ -778,20 +753,6 @@
     <Grid x:Name="RootGrid"
           CornerRadius="0"
           Background="{x:Bind ViewModel.SettingsContext.WindowBackgroundBrush, Mode=OneWay}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*"
-                              MinWidth="50" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState x:Name="PinnedWindowState">
@@ -856,217 +817,219 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <controls:NavigationTabList x:Name="NavigationTabList"
+        <NavigationView x:Name="NavigationTabView"
+                        IsPaneOpen="False"
+                        IsSettingsVisible="False"
+                        IsBackButtonVisible="Collapsed"
+                        IsPaneToggleButtonVisible="False"
+                        PaneDisplayMode="LeftCompact"
+                        MenuItemTemplateSelector="{StaticResource NavigationTabTemplateSelector}"
+                        SelectedItem="{x:Bind ViewModel.SelectedTab, Mode=TwoWay}"
+                        MenuItemsSource="{x:Bind ViewModel.NavigationTabItems, Mode=OneWay}"
+                        KeyDown="NavigationTabList_KeyDown">
+            <NavigationView.Resources>
+                <Thickness x:Key="NavigationViewContentGridBorderThickness">0,0,0,0</Thickness>
+                <CornerRadius x:Key="NavigationViewContentGridCornerRadius">0,0,0,0</CornerRadius>
+                <SolidColorBrush x:Key="NavigationViewContentBackground">Transparent</SolidColorBrush>
+            </NavigationView.Resources>
+            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"
+                                          MinWidth="50" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Border x:Name="WindowCaptionBorder"
+                            Grid.Column="0">
+                        <TextBlock Margin="8,10,8,10"
+                                   Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                   VerticalAlignment="Center"
+                                   TextWrapping="NoWrap"
+                                   Text="{x:Bind ViewModel.SelectedTab.Title, Mode=OneWay}"
+                                   Style="{ThemeResource SubtitleTextBlockStyle}" />
+                    </Border>
+
+                    <StackPanel Grid.Column="1"
+                                Margin="8,0,12,0"
+                                Spacing="4"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center">
+                        <Button x:Uid="/Clipboard/TitleBar_MoreButton"
+                                AutomationProperties.AutomationId="TitleBarButtons"
+                                AutomationProperties.Name="More"
+                                AccessKey="M"
+                                Width="32"
+                                Height="32"
+                                Content="{tk:FontIcon FontSize=14, Glyph=&#xE712;}"
+                                Style="{ThemeResource AlternateButtonStyle}"
+                                Flyout="{StaticResource TitleBarContextMenuFlyout}" />
+
+                        <Button x:Uid="/Clipboard/TitleBar_CloseButton"
+                                AutomationProperties.AutomationId="TitleBarButtons"
+                                AutomationProperties.Name="Close Window"
+                                AccessKey="E"
+                                Width="32"
+                                Height="32"
+                                Command="{x:Bind ViewModel.CloseWindowCommand}"
+                                Content="{tk:FontIcon FontSize=14, Glyph=&#xE711;}"
+                                Style="{ThemeResource AlternateButtonStyle}" />
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="1"
+                      ColumnSpacing="4"
+                      Margin="0,0,12,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <AutoSuggestBox x:Name="SearchBox"
+                                    x:Uid="/Clipboard/SearchBox"
+                                    AutomationProperties.AutomationId="SearchBox"
+                                    AutomationProperties.Name="Search Clips"
                                     Grid.Column="0"
-                                    Grid.Row="0"
-                                    Grid.RowSpan="5"
-                                    Margin="4,4,0,4"
-                                    SelectionMode="Single"
-                                    ItemsSource="{x:Bind ViewModel.NavigationTabItems, Mode=OneWay}"
-                                    SelectedItem="{x:Bind ViewModel.SelectedTab, Mode=TwoWay}"
-                                    ItemContainerStyle="{ThemeResource NavigationTabItemStyle}"
-                                    ItemTemplateSelector="{StaticResource NavigationTabTemplateSelector}"
-                                    KeyDown="NavigationTabList_KeyDown">
-            <controls:NavigationTabList.Resources>
-                <Style TargetType="ScrollViewer"
-                       BasedOn="{StaticResource NavigationTabListScrollViewerStyle}" />
-            </controls:NavigationTabList.Resources>
-        </controls:NavigationTabList>
+                                    TabIndex="2"
+                                    VerticalAlignment="Center"
+                                    IsEnabled="{x:Bind ViewModel.IsSearchEnabled, Mode=OneWay}"
+                                    Text="{x:Bind ViewModel.SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    KeyDown="SearchBox_KeyDown" />
 
-        <Border x:Name="WindowCaptionBorder"
-                Grid.Column="1"
-                Grid.Row="0">
-            <TextBlock Margin="8,8,8,8"
-                       Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                       VerticalAlignment="Center"
-                       TextWrapping="NoWrap"
-                       Text="{x:Bind ViewModel.SelectedTab.Title, Mode=OneWay}"
-                       Style="{ThemeResource SubtitleTextBlockStyle}"/>
-        </Border>
+                    <Button x:Name="FilterButton"
+                            x:Uid="/Clipboard/FilterButton"
+                            AutomationProperties.AutomationId="FilterButton"
+                            AutomationProperties.Name="Filter Clips"
+                            AccessKey="F"
+                            Grid.Column="1"
+                            TabIndex="3"
+                            Width="32"
+                            Padding="0"
+                            VerticalAlignment="Stretch"
+                            Content="{tk:FontIcon FontSize=14, Glyph=&#xE71C;}"
+                            Flyout="{StaticResource FilterButtonFlyout}" />
 
-        <StackPanel Grid.Column="3"
-                    Grid.Row="0"
-                    Margin="8,0,12,0"
-                    Spacing="4"
-                    Orientation="Horizontal"
-                    VerticalAlignment="Center">
-            <Button x:Uid="/Clipboard/TitleBar_MoreButton"
-                    AutomationProperties.AutomationId="TitleBarButtons"
-                    AutomationProperties.Name="More"
-                    AccessKey="M"
-                    Width="32"
-                    Height="32"
-                    Content="{tk:FontIcon FontSize=14, Glyph=&#xE712;}"
-                    Style="{ThemeResource AlternateButtonStyle}"
-                    Flyout="{StaticResource TitleBarContextMenuFlyout}" />
+                    <ToggleButton x:Name="MultiSelectionToggleButton"
+                                  x:Uid="/Clipboard/MultiSelectionButton"
+                                  AutomationProperties.AutomationId="MultiSelectionButton"
+                                  AutomationProperties.Name="Enable Multiple Selection"
+                                  AccessKey="S"
+                                  Grid.Column="2"
+                                  TabIndex="4"
+                                  Width="32"
+                                  Padding="0"
+                                  VerticalAlignment="Stretch"
+                                  Content="{tk:FontIcon FontSize=14, Glyph=&#xE762;}" />
+                </Grid>
 
-            <Button x:Uid="/Clipboard/TitleBar_CloseButton"
-                    AutomationProperties.AutomationId="TitleBarButtons"
-                    AutomationProperties.Name="Close Window"
-                    AccessKey="E"
-                    Width="32"
-                    Height="32"
-                    Command="{x:Bind ViewModel.CloseWindowCommand}"
-                    Content="{tk:FontIcon FontSize=14, Glyph=&#xE711;}"
-                    Style="{ThemeResource AlternateButtonStyle}" />
-        </StackPanel>
+                <Grid x:Name="MonitoringPausedBanner"
+                      Grid.Row="2"
+                      Margin="0,0,12,8"
+                      Padding="8"
+                      ColumnSpacing="8"
+                      CornerRadius="{ThemeResource ControlCornerRadius}"
+                      BorderBrush="{ThemeResource InfoBarBorderBrush}"
+                      BorderThickness="{ThemeResource InfoBarBorderThickness}"
+                      Background="{ThemeResource InfoBarWarningSeverityBackgroundBrush}"
+                      Visibility="{x:Bind ViewModel.IsClipboardMonitoringEnabled, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="1"
-              Grid.Row="1"
-              Grid.ColumnSpan="2"
-              ColumnSpacing="4"
-              Margin="4,0,12,8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+                    <FontIcon Margin="4,0,0,0"
+                              FontSize="16"
+                              Glyph="&#xF167;"
+                              Foreground="{ThemeResource InfoBarWarningSeverityIconBackground}" />
 
-            <AutoSuggestBox x:Name="SearchBox"
-                            x:Uid="/Clipboard/SearchBox"
-                            AutomationProperties.AutomationId="SearchBox"
-                            AutomationProperties.Name="Search Clips"
-                            Grid.Column="0"
-                            TabIndex="2"
-                            VerticalAlignment="Center"
-                            IsEnabled="{x:Bind ViewModel.IsSearchEnabled, Mode=OneWay}"
-                            Text="{x:Bind ViewModel.SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            KeyDown="SearchBox_KeyDown"/>
+                    <TextBlock x:Uid="/Clipboard/PauseMonitoringBanner"
+                               Grid.Column="1"
+                               TextWrapping="Wrap" />
+                </Grid>
 
-            <Button x:Name="FilterButton"
-                    x:Uid="/Clipboard/FilterButton"
-                    AutomationProperties.AutomationId="FilterButton"
-                    AutomationProperties.Name="Filter Clips"
-                    AccessKey="F"
-                    Grid.Column="1"
-                    TabIndex="3"
-                    Width="32"
-                    Height="32"
-                    Padding="0"
-                    VerticalAlignment="Stretch"
-                    Content="{tk:FontIcon FontSize=14, Glyph=&#xE71C;}"
-                    Flyout="{StaticResource FilterButtonFlyout}" />
-
-            <ToggleButton x:Name="MultiSelectionToggleButton"
-                          x:Uid="/Clipboard/MultiSelectionButton"
-                          AutomationProperties.AutomationId="MultiSelectionButton"
-                          AutomationProperties.Name="Enable Multiple Selection"
-                          AccessKey="S"
-                          Grid.Column="2"
-                          TabIndex="4"
-                          Width="32"
-                          Height="32"
-                          Padding="0"
-                          VerticalAlignment="Stretch"
-                          Content="{tk:FontIcon FontSize=14, Glyph=&#xE762;}" />
-        </Grid>
-
-        <Grid x:Name="MonitoringPausedBanner"
-              Grid.Column="1"
-              Grid.Row="2"
-              Grid.ColumnSpan="2"
-              Margin="4,0,12,8"
-              Padding="8"
-              ColumnSpacing="8"
-              CornerRadius="{ThemeResource ControlCornerRadius}"
-              BorderBrush="{ThemeResource InfoBarBorderBrush}"
-              BorderThickness="{ThemeResource InfoBarBorderThickness}"
-              Background="{ThemeResource InfoBarWarningSeverityBackgroundBrush}"
-              Visibility="{x:Bind ViewModel.IsClipboardMonitoringEnabled, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <FontIcon Margin="4,0,0,0"
-                      FontSize="16"
-                      Glyph="&#xF167;"
-                      Foreground="{ThemeResource InfoBarWarningSeverityIconBackground}" />
-            <TextBlock x:Uid="/Clipboard/PauseMonitoringBanner"
-                       Grid.Column="1"
-                       TextWrapping="Wrap" />
-        </Grid>
-
-        <StackPanel x:Name="EmptyListInfoPanel"
-                    x:DefaultBindMode="OneWay"
-                    Grid.Column="1"
-                    Grid.Row="3"
-                    Grid.ColumnSpan="2"
-                    MaxWidth="300"
-                    Margin="16 0 36 36"
-                    Spacing="12"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
-            <FontIcon x:Name="EmptyListTabPreview"
-                      x:Load="{x:Bind ViewModel.SelectedTab.IsTag, Converter={StaticResource BoolNegationConverter}}"
-                      FontSize="24"
-                      Glyph="{x:Bind ViewModel.SelectedTab.BigGlyph}" />
-
-            <ContentControl x:Name="EmptyListTagPreview"
-                            x:Load="{x:Bind ViewModel.SelectedTab.IsTag}"
+                <StackPanel x:Name="EmptyListInfoPanel"
+                            x:DefaultBindMode="OneWay"
+                            Grid.Row="3"
+                            MaxWidth="300"
+                            Margin="16 0 36 36"
+                            Spacing="12"
                             HorizontalAlignment="Center"
-                            DataContext="{x:Bind ViewModel.SelectedTab.Tag}"
-                            ContentTemplate="{StaticResource TagPreviewTemplate}" />
+                            VerticalAlignment="Center">
+                    <FontIcon x:Name="EmptyListTabPreview"
+                              x:Load="{x:Bind ViewModel.SelectedTab.IsTag, Converter={StaticResource BoolNegationConverter}}"
+                              FontSize="24"
+                              Glyph="{x:Bind ViewModel.SelectedTab.BigGlyph}" />
 
-            <TextBlock TextAlignment="Center"
-                       TextWrapping="Wrap"
-                       Text="{x:Bind ViewModel.SelectedTab.EmptyListMessage}" />
-        </StackPanel>
+                    <ContentControl x:Name="EmptyListTagPreview"
+                                    x:Load="{x:Bind ViewModel.SelectedTab.IsTag}"
+                                    HorizontalAlignment="Center"
+                                    DataContext="{x:Bind ViewModel.SelectedTab.Tag}"
+                                    ContentTemplate="{StaticResource TagPreviewTemplate}" />
 
+                    <TextBlock TextAlignment="Center"
+                               TextWrapping="Wrap"
+                               Text="{x:Bind ViewModel.SelectedTab.EmptyListMessage}" />
+                </StackPanel>
 
-        <ListView x:Name="ClipsListView"
-                  AutomationProperties.AutomationId="ClipsList"
-                  AutomationProperties.Name="All Clips"
-                  Grid.Column="1"
-                  Grid.Row="3"
-                  Grid.ColumnSpan="2"
-                  TabIndex="1"
-                  SelectionMode="None"
-                  ShowsScrollingPlaceholders="False"
-                  IsItemClickEnabled="True"
-                  CanDragItems="{x:Bind ViewModel.SettingsContext.IsClipsDragAndDropEnabled, Mode=OneWay}"
-                  ItemsSource="{x:Bind ViewModel.ClipsCollection, Mode=OneWay}"
-                  ItemContainerStyle="{StaticResource ClipsListViewStyle}"
-                  ItemTemplate="{StaticResource ClipLayoutTemplate}"
-                  DragItemsStarting="ClipsListView_DragItemsStarting"
-                  ContainerContentChanging="ClipsListView_ContainerContentChanging"
-                  PreviewKeyDown="ClipsListView_PreviewKeyDown"
-                  PreviewKeyUp="ClipsListView_PreviewKeyUp"
-                  GettingFocus="ClipsListView_GettingFocus"
-                  ItemClick="ClipsListView_ItemClick"
-                  SelectionChanged="ClipsListView_SelectionChanged" />
+                <ListView x:Name="ClipsListView"
+                          AutomationProperties.AutomationId="ClipsList"
+                          AutomationProperties.Name="All Clips"
+                          Grid.Row="3"
+                          TabIndex="1"
+                          SelectionMode="None"
+                          ShowsScrollingPlaceholders="False"
+                          IsItemClickEnabled="True"
+                          CanDragItems="{x:Bind ViewModel.SettingsContext.IsClipsDragAndDropEnabled, Mode=OneWay}"
+                          ItemsSource="{x:Bind ViewModel.ClipsCollection, Mode=OneWay}"
+                          ItemContainerStyle="{StaticResource ClipsListViewStyle}"
+                          ItemTemplate="{StaticResource ClipLayoutTemplate}"
+                          DragItemsStarting="ClipsListView_DragItemsStarting"
+                          ContainerContentChanging="ClipsListView_ContainerContentChanging"
+                          PreviewKeyDown="ClipsListView_PreviewKeyDown"
+                          PreviewKeyUp="ClipsListView_PreviewKeyUp"
+                          GettingFocus="ClipsListView_GettingFocus"
+                          ItemClick="ClipsListView_ItemClick"
+                          SelectionChanged="ClipsListView_SelectionChanged" />
 
-        <Grid x:Name="MultipleSelectionFooter"
-              Grid.Column="1"
-              Grid.Row="4"
-              Grid.ColumnSpan="2"
-              Height="32">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+                <Grid x:Name="MultipleSelectionFooter"
+                      Grid.Row="4"
+                      Height="32">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
-            <TextBlock x:Name="SelectedClipsCountTextBlock"
-                       Grid.Column="0"
-                       Margin="8,0,4,0"
-                       Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
-                       VerticalAlignment="Center"
-                       Style="{ThemeResource BodyTextBlockStyle}" />
+                    <TextBlock x:Name="SelectedClipsCountTextBlock"
+                               Grid.Column="0"
+                               Margin="8,0,4,0"
+                               Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                               VerticalAlignment="Center"
+                               Style="{ThemeResource BodyTextBlockStyle}" />
 
-            <CheckBox x:Name="SelectAllCheckBox"
-                      x:Uid="/Clipboard/SelectAllClips"
-                      Grid.Column="1"
-                      MinWidth="20"
-                      MinHeight="20"
-                      Margin="4,0,16,0"
-                      Padding="0"
-                      VerticalAlignment="Center"
-                      Click="SelectAllCheckBox_Click" />
-        </Grid>
+                    <CheckBox x:Name="SelectAllCheckBox"
+                              x:Uid="/Clipboard/SelectAllClips"
+                              Grid.Column="1"
+                              MinWidth="20"
+                              MinHeight="20"
+                              Margin="4,0,16,0"
+                              Padding="0"
+                              VerticalAlignment="Center"
+                              Click="SelectAllCheckBox_Click" />
+                </Grid>
+            </Grid>
+        </NavigationView>
 
         <Border x:Name="PinnedWindowBorder"
-                Grid.ColumnSpan="3"
-                Grid.RowSpan="5"
                 BorderThickness="2"
                 BorderBrush="{ThemeResource SystemAccentColor}"
                 Visibility="Collapsed"/>
