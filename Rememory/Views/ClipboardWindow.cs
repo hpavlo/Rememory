@@ -121,6 +121,8 @@ namespace Rememory.Views
                 backdropHelper.TryInitializeBackdrop();
             }
 
+            TrayIcon.IsVisible = true;
+
             _rootPage.ActualThemeChanged += ClipboardWindow_ActualThemeChanged;
             _rootPage.WindowCaptionArea.SizeChanged += WindowCaptionArea_SizeChanged;
         }
@@ -250,7 +252,6 @@ namespace Rememory.Views
                 a.Flyout = TrayIconMenu;
             };
             trayIcon.Selected += (s, a) => ShowWindow(ClipboardWindowPosition.RightCorner);
-            trayIcon.IsVisible = true;
             return trayIcon;
         }
 
