@@ -78,11 +78,16 @@ namespace Rememory.Views.Controls
                         Files.Add(new(moreFilesText));
                     }
                 }
-                _ = LoadIconsAsync(token);
+
+                var iconSize = (double)Resources["FilePreviewImageSize"];
+                var scale = XamlRoot?.RasterizationScale ?? 1;
+                var scaledIconSize = (int)(iconSize * scale);
+
+                _ = LoadIconsAsync(scaledIconSize, token);
             }
         }
 
-        private async Task LoadIconsAsync(CancellationToken token)
+        private async Task LoadIconsAsync(int iconSize, CancellationToken token)
         {
             foreach (var fileItem in Files)
             {
@@ -92,7 +97,7 @@ namespace Rememory.Views.Controls
                 }
 
                 token.ThrowIfCancellationRequested();
-                fileItem.ImageSource = await FileIconHelper.GetFileIconAsync(fileItem.Path);
+                fileItem.ImageSource = await FileIconHelper.GetFileIconAsync(fileItem.Path, iconSize);
             }
         }
     }

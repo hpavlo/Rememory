@@ -11,6 +11,7 @@
         <tkconverters:EmptyObjectToObjectConverter x:Key="EmptyObjectToBoolConverter"
                                                    NotEmptyValue="True"
                                                    EmptyValue="False" />
+        <x:Double x:Key="FilePreviewImageSize">16</x:Double>
     </UserControl.Resources>
     
     <Grid>
@@ -24,7 +25,7 @@
                 <Style TargetType="ListViewItem"
                        BasedOn="{StaticResource DefaultListViewItemStyle}">
                     <Setter Property="MinHeight"
-                            Value="16" />
+                            Value="{StaticResource FilePreviewImageSize}" />
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListViewItem">
@@ -52,7 +53,7 @@
                                                 </VisualState.StateTriggers>
                                                 <VisualState.Setters>
                                                     <Setter Target="FilePresenter.Height"
-                                                            Value="16" />
+                                                            Value="{StaticResource FilePreviewImageSize}" />
                                                     <Setter Target="FilePresenter.FontSize"
                                                             Value="{ThemeResource CaptionTextBlockFontSize}" />
                                                 </VisualState.Setters>
@@ -77,8 +78,8 @@
                         </Grid.ColumnDefinitions>
 
                         <Image Grid.Column="0"
-                               Width="16"
-                               Height="16"
+                               Width="{StaticResource FilePreviewImageSize}"
+                               Height="{StaticResource FilePreviewImageSize}"
                                Margin="0,0,8,0"
                                Source="{x:Bind ImageSource}" />
 
