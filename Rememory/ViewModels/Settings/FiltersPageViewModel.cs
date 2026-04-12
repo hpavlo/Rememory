@@ -6,7 +6,7 @@ namespace Rememory.ViewModels.Settings
 {
     public partial class FiltersPageViewModel : ObservableObject
     {
-        public SettingsContext SettingsContext => SettingsContext.Instance;
+        public SettingsContext SettingsContext { get; } = App.Current.SettingsContext;
 
         public void AddOwnerAppFilter(string name, string pattern)
         {

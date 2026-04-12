@@ -29,8 +29,8 @@ namespace Rememory
         public new static App Current => (App)Application.Current;
         public ClipboardWindow ClipboardWindow { get; private set; }
         public IntPtr ClipboardWindowHandle => ClipboardWindow.Handle;
-        public IThemeService ThemeService { get; private set; }
-        public SettingsContext SettingsContext => SettingsContext.Instance;
+        public SettingsContext SettingsContext { get; init; }
+        public IThemeService ThemeService { get; init; }
 
         /// <summary>
         /// Gets the <see cref="IServiceProvider"/> instance to resolve application services.
@@ -49,6 +49,7 @@ namespace Rememory
         {
             _launchArguments = args;
             Services = ConfigureServices();
+            SettingsContext = Services.GetService<SettingsContext>()!;
             ThemeService = Services.GetService<IThemeService>()!;
             _keyboardMonitor = Services.GetService<IKeyboardMonitor>()!;
 
@@ -112,6 +113,7 @@ namespace Rememory
             var services = new ServiceCollection();
 
             services.AddSingleton<ClipboardMonitor>();
+            services.AddSingleton<SettingsContext>();
             services.AddSingleton<IKeyboardMonitor, KeyboardMonitor>();
             services.AddSingleton<IClipboardService, ClipboardService>();
             services.AddSingleton<IStorageService>(sp =>

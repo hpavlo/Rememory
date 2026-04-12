@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.WinUI.Helpers;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.Windows.Globalization;
@@ -23,10 +22,8 @@ namespace Rememory.Models
 {
     public partial class SettingsContext : ObservableObject
     {
-        public static SettingsContext Instance => field ??= new SettingsContext();
-
-        private readonly ClipboardMonitor _clipboardMonitor = App.Current.Services.GetService<ClipboardMonitor>()!;
-        private readonly ApplicationDataContainer _localSettings = ApplicationData.GetDefault().LocalSettings;
+        private readonly ApplicationDataContainer _localSettings;
+        private readonly ClipboardMonitor _clipboardMonitor;
 
         #region General
 
@@ -417,8 +414,10 @@ namespace Rememory.Models
             set => SetSettingsProperty(ref _isClipboardMonitoringEnabled, value);
         }
 
-        private SettingsContext()
+        public SettingsContext(ClipboardMonitor clipboardMonitor)
         {
+            _clipboardMonitor = clipboardMonitor;
+            _localSettings = ApplicationData.GetDefault().LocalSettings;
             _supportedLanguages = ApplicationLanguages.ManifestLanguages.ToList();
             _supportedLanguages.Insert(0, string.Empty);   // Default language
 

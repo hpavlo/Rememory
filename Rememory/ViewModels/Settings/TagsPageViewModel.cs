@@ -9,9 +9,9 @@ namespace Rememory.ViewModels.Settings
 {
     public partial class TagsPageViewModel : ObservableObject
     {
-        private readonly ITagService _tagService = App.Current.Services.GetService<ITagService>()!;
+        public SettingsContext SettingsContext { get; } = App.Current.SettingsContext;
 
-        public SettingsContext SettingsContext => SettingsContext.Instance;
+        private readonly ITagService _tagService = App.Current.Services.GetService<ITagService>()!;
 
         public ObservableCollection<TagModel> Tags;
 

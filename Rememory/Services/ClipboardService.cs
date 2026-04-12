@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Rememory.Contracts;
+﻿using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Models;
 using Rememory.Models.Metadata;
@@ -19,15 +18,11 @@ namespace Rememory.Services
 {
     public partial class ClipboardService : IClipboardService
     {
-        private readonly ClipboardMonitor _clipboardMonitor = App.Current.Services.GetService<ClipboardMonitor>()!;
-
         public event EventHandler<ClipboardEventArgs>? NewClipAdded;
         public event EventHandler<ClipboardEventArgs>? ClipMovedToTop;
         public event EventHandler<ClipboardEventArgs>? FavoriteClipChanged;
         public event EventHandler<ClipboardEventArgs>? ClipDeleted;
         public event EventHandler<ClipboardEventArgs>? ClipsCollectionChanged;
-
-        public SettingsContext SettingsContext => SettingsContext.Instance;
 
         public IList<ClipModel> Clips { get; private set; }
 
@@ -35,16 +30,24 @@ namespace Rememory.Services
         private readonly IOwnerService _ownerService;
         private readonly ITagService _tagService;
         private readonly ILinkPreviewService _linkPreviewService;
+        private readonly ClipboardMonitor _clipboardMonitor;
 
+        private readonly SettingsContext _settingsContext = App.Current.SettingsContext;
         private readonly Regex _hexColorRegex = HexColorRegex();
         private readonly Regex _hexColorRegexOptionalPrefix = HexColorRegexOptionalPrefix();
 
-        public ClipboardService(IStorageService storageService, IOwnerService ownerService, ITagService tagService, ILinkPreviewService linkPreviewService)
+        public ClipboardService(
+            IStorageService storageService,
+            IOwnerService ownerService,
+            ITagService tagService,
+            ILinkPreviewService linkPreviewService,
+            ClipboardMonitor clipboardMonitor)
         {
             _storageService = storageService;
             _ownerService = ownerService;
             _tagService = tagService;
             _linkPreviewService = linkPreviewService;
+            _clipboardMonitor = clipboardMonitor;
             _clipboardMonitor.ContentDetected += ClipboardMonitor_ContentDetected;
 
             Clips = ReadClipsFromStorage();
@@ -77,7 +80,7 @@ namespace Rememory.Services
 
             if (clip.Data.TryGetValue(ClipboardFormat.Text, out var textData))
             {
-                if ((SettingsContext.IsHexColorPrefixRequired ? _hexColorRegex : _hexColorRegexOptionalPrefix).IsMatch(textData.Data))
+                if ((_settingsContext.IsHexColorPrefixRequired ? _hexColorRegex : _hexColorRegexOptionalPrefix).IsMatch(textData.Data))
                 {
                     ColorMetadataModel colorMetadata = new();
                     textData.Metadata = colorMetadata;
@@ -89,7 +92,7 @@ namespace Rememory.Services
                     clip.IsLink = Uri.TryCreate(textData.Data, UriKind.Absolute, out var uri)
                         && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
 
-                    if (SettingsContext.IsLinkPreviewLoadingEnabled && clip.IsLink)
+                    if (_settingsContext.IsLinkPreviewLoadingEnabled && clip.IsLink)
                     {
                         _linkPreviewService.TryLoadLinkMetadata(textData);
                     }
@@ -105,9 +108,9 @@ namespace Rememory.Services
 
             OnNewClipAdded(Clips, clip);
 
-            if (SettingsContext.CleanupType == CleanupType.Quantity)
+            if (_settingsContext.CleanupType == CleanupType.Quantity)
             {
-                DeleteOldClipsByQuantity(SettingsContext.CleanupQuantity, SettingsContext.IsFavoriteClipsCleaningEnabled);
+                DeleteOldClipsByQuantity(_settingsContext.CleanupQuantity, _settingsContext.IsFavoriteClipsCleaningEnabled);
             }
         }
 
@@ -314,7 +317,7 @@ namespace Rememory.Services
                     AddClip(clip);
                 }
 
-                if (SettingsContext.IsClipCopyMessageEnabled)
+                if (_settingsContext.IsClipCopyMessageEnabled)
                 {
                     ShowToolTipMessage(clip);
                 }
@@ -326,13 +329,13 @@ namespace Rememory.Services
             var normalizedPath = ownerPath.Replace('\\', '/');
             try
             {
-                var ownerFilter = SettingsContext.OwnerAppFilters.FirstOrDefault(filter =>
+                var ownerFilter = _settingsContext.OwnerAppFilters.FirstOrDefault(filter =>
                     string.Equals(normalizedPath, filter.Pattern.Replace('\\', '/'), StringComparison.OrdinalIgnoreCase) || filter.IsMatch(normalizedPath));
 
                 if (ownerFilter is not null)
                 {
                     ownerFilter.FilteredCount++;
-                    SettingsContext.SaveOwnerAppFilters();
+                    _settingsContext.SaveOwnerAppFilters();
                     return true;
                 }
             }

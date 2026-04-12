@@ -8,8 +8,8 @@ namespace Rememory.ViewModels.Settings
 {
     public partial class PersonalizationPageViewModel : ObservableObject
     {
-        public SettingsContext SettingsContext => SettingsContext.Instance;
-        public bool IsBackgropSupported => WindowBackdropHelper.IsSystemBackdropSupported;
+        public SettingsContext SettingsContext { get; } = App.Current.SettingsContext;
+        public bool IsBackgropSupported { get; } = WindowBackdropHelper.IsSystemBackdropSupported;
         public bool IsWindowHeightEditorEnabled => SettingsContext.WindowPosition != ClipboardWindowPosition.Right;
         public bool IsWindowMarginEditorEnabled => SettingsContext.WindowPosition != ClipboardWindowPosition.ScreenCenter
             && SettingsContext.WindowPosition != ClipboardWindowPosition.LastPosition;

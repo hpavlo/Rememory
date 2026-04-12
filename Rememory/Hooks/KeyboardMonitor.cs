@@ -1,5 +1,4 @@
 ﻿using Rememory.Helper;
-using Rememory.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +6,11 @@ using Windows.System;
 
 namespace Rememory.Hooks
 {
-    public sealed class KeyboardMonitor : IKeyboardMonitor, IDisposable
+    public sealed partial class KeyboardMonitor : IKeyboardMonitor, IDisposable
     {
-        public event EventHandler<GlobalKeyboardHookEventArgs> KeyboardEvent;
+        public event EventHandler<GlobalKeyboardHookEventArgs>? KeyboardEvent;
 
-        private SettingsContext SettingsContext => SettingsContext.Instance;
-        private GlobalKeyboardHook _globalKeyboardHook;
+        private readonly GlobalKeyboardHook _globalKeyboardHook;
         private List<int> _previouslyPressedKeys = [];
         private bool _activationShortcutPressed;
 
@@ -33,7 +31,7 @@ namespace Rememory.Hooks
             _globalKeyboardHook.KeyboardHandler -= GlobalKeyboardHook_KeyboardPressed;
         }
 
-        private void GlobalKeyboardHook_KeyboardPressed(object sender, GlobalKeyboardHookEventArgs args)
+        private void GlobalKeyboardHook_KeyboardPressed(object? sender, GlobalKeyboardHookEventArgs args)
         {
             KeyboardEvent?.Invoke(this, args);
             if (args.Handled)
@@ -65,7 +63,7 @@ namespace Rememory.Hooks
 
             _previouslyPressedKeys = currentlyPressedKeys;
 
-            if (currentlyPressedKeys.SequenceEqual(SettingsContext.ActivationShortcut))
+            if (currentlyPressedKeys.SequenceEqual(App.Current.SettingsContext.ActivationShortcut))
             {
                 // avoid triggering this action multiple times as this will be called nonstop while keys are pressed
                 if (!_activationShortcutPressed)

@@ -55,7 +55,7 @@ namespace Rememory.ViewModels
         /// User settings context class.
         /// Stores all settings for the entire application
         /// </summary>
-        public SettingsContext SettingsContext => SettingsContext.Instance;
+        public SettingsContext SettingsContext { get; } = App.Current.SettingsContext;
 
         private ObservableCollection<ClipModel> _clipsCollection = [];
         /// <summary>

@@ -11,7 +11,7 @@ namespace Rememory.Services
     /// </summary>
     public class CleanupDataService(IClipboardService clipboardService) : ICleanupDataService
     {
-        private SettingsContext _settingsContext = SettingsContext.Instance;
+        private SettingsContext _settingsContext = App.Current.SettingsContext;
         private IClipboardService _clipboardService = clipboardService;
         private DateTime _lastCleanupTime = DateTime.MinValue;
 

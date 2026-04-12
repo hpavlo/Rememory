@@ -12,9 +12,9 @@ namespace Rememory.ViewModels.Settings
 {
     public partial class GeneralPageViewModel : ObservableObject
     {
-        public SettingsContext SettingsContext => SettingsContext.Instance;
+        public SettingsContext SettingsContext { get; } = App.Current.SettingsContext;
 
-        private IStartupService _startupService = App.Current.Services.GetService<IStartupService>()!;
+        private readonly IStartupService _startupService = App.Current.Services.GetService<IStartupService>()!;
 
         public bool IsAdministratorSettingsEnabled => AdministratorHelper.IsAppRunningAsAdministrator() && RunAtStartupToggle;
 

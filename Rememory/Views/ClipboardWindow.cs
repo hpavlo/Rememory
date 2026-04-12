@@ -23,7 +23,7 @@ namespace Rememory.Views
         private const uint TrayIconId = 0;
         private static readonly int WM_TASKBARCREATED = NativeHelper.RegisterWindowMessage("TaskbarCreated");
 
-        public SettingsContext SettingsContext => SettingsContext.Instance;
+        public SettingsContext SettingsContext { get; } = App.Current.SettingsContext;
         private MenuFlyout? TitleBarContextMenu => field ??= _rootPage?.Resources["TitleBarContextMenuFlyout"] as MenuFlyout;
 
         public readonly bool IsRoundedCornerSupported;
@@ -40,7 +40,8 @@ namespace Rememory.Views
         public bool Pinned
         {
             get => IsAlwaysOnTop && _pinned;
-            set {
+            set
+            {
                 int borderColor = (_pinned = value) ? NativeHelper.DWMWA_COLOR_NONE : NativeHelper.DWMWA_COLOR_DEFAULT;
                 NativeHelper.DwmSetWindowAttribute(Handle, NativeHelper.DWMWA_BORDER_COLOR, ref borderColor, sizeof(int));
             }

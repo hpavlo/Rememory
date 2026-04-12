@@ -5,6 +5,6 @@ namespace Rememory.ViewModels.Settings
 {
     public partial class ClipboardPageViewModel : ObservableObject
     {
-        public SettingsContext SettingsContext => SettingsContext.Instance;
+        public SettingsContext SettingsContext { get; } = App.Current.SettingsContext;
     }
 }

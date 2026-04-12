@@ -15,7 +15,7 @@ namespace Rememory.ViewModels.Settings
         private readonly IClipboardService _clipboardService = App.Current.Services.GetService<IClipboardService>()!;
         private readonly IClipTransferService _clipTransferService = App.Current.Services.GetService<IClipTransferService>()!;
 
-        public SettingsContext SettingsContext => SettingsContext.Instance;
+        public SettingsContext SettingsContext { get; } = App.Current.SettingsContext;
 
         private bool _isExportInProgress;
         public bool IsExportInProgress
