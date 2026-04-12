@@ -219,23 +219,8 @@
   <data name="General_StartupSection.Text" xml:space="preserve">
     <value>Startup</value>
   </data>
-  <data name="General_RestartAsAdmin.Header" xml:space="preserve">
-    <value>Restart as Administrator</value>
-  </data>
-  <data name="General_RunningAsAdmin.Header" xml:space="preserve">
-    <value>Running as Administrator</value>
-  </data>
-  <data name="General_RestartAsAdminButton.Content" xml:space="preserve">
-    <value>Restart as Administrator</value>
-  </data>
-  <data name="General_RestartAsAdmin.Description" xml:space="preserve">
-    <value>Advanced settings that require administrator privileges</value>
-  </data>
-  <data name="General_AlwaysRunAsAdmin.Header" xml:space="preserve">
+  <data name="General_AlwaysRunAsAdmin.Content" xml:space="preserve">
     <value>Always run as Administrator</value>
-  </data>
-  <data name="General_AlwaysRunAsAdmin.Description" xml:space="preserve">
-    <value>Enable this option to always run the app with administrator privileges</value>
   </data>
   <data name="General_RunAtStartup.Header" xml:space="preserve">
     <value>Run at startup</value>

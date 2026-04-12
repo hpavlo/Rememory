@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Windows.AppLifecycle;
 using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Models;
@@ -70,25 +71,16 @@ namespace Rememory.ViewModels.Settings
         #region Commands
 
         [RelayCommand]
-        private void Restart() => AdministratorHelper.TryToRestartApp(false, "-settings -silent");
-
-        private bool CanRestartAsAdministrator() => !AdministratorHelper.IsAppRunningAsAdministrator();
-
-        [RelayCommand(CanExecute = nameof(CanRestartAsAdministrator))]
-        private void RestartAsAdministrator() => AdministratorHelper.TryToRestartApp(true, "-settings -silent");
+        private void Restart() => AppInstance.Restart("-settings -silent");
 
         #endregion
 
         private void ShowAccessExceptionMessageBox()
         {
-            var res = NativeHelper.MessageBox(SettingsWindow.WindowHandle,
-                            "To do this action please restart this app as Administrator",
-                            "Access denied",
-                            0x00000031);   // MB_OKCANCEL and MB_ICONWARNING
-            if (res == 1 && RestartAsAdministratorCommand.CanExecute(null))
-            {
-                RestartAsAdministratorCommand.Execute(null);
-            }
+            _ = NativeHelper.MessageBox(SettingsWindow.WindowHandle,
+                "To do this action please restart this app as Administrator",
+                "Access denied",
+                0x00000030);   // MB_OK and MB_ICONWARNING
         }
     }
 }

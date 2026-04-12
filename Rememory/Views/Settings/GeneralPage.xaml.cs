@@ -1,7 +1,4 @@
-using CommunityToolkit.WinUI.Controls;
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Rememory.Helper;
 using Rememory.ViewModels.Settings;
 
 namespace Rememory.Views.Settings
@@ -13,15 +10,6 @@ namespace Rememory.Views.Settings
         public GeneralPage()
         {
             InitializeComponent();
-        }
-
-        private void RestartAsAdministratorSettings_Loaded(object sender, RoutedEventArgs e)
-        {
-            var settingsExpander = (SettingsExpander)sender;
-            settingsExpander.Header = (AdministratorHelper.IsAppRunningAsAdministrator() ?
-                "/Settings/General_RunningAsAdmin/Header" :
-                "/Settings/General_RestartAsAdmin/Header")
-                .GetLocalizedResource();
         }
 
         private void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
