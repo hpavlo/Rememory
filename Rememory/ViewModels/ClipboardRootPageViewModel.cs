@@ -298,6 +298,7 @@ namespace Rememory.ViewModels
             {
                 NavigationTabItemType.Home => true,
                 NavigationTabItemType.Fovorites => item.IsFavorite,
+                NavigationTabItemType.Text => item.Data.ContainsKey(ClipboardFormat.Text) || item.Data.ContainsKey(ClipboardFormat.Rtf) || item.Data.ContainsKey(ClipboardFormat.Html),
                 NavigationTabItemType.Images => item.Data.ContainsKey(ClipboardFormat.Png) || item.Data.ContainsKey(ClipboardFormat.Bitmap),
                 NavigationTabItemType.Files => item.Data.ContainsKey(ClipboardFormat.Files),
                 NavigationTabItemType.Links => item.IsLink,

@@ -10,9 +10,10 @@ namespace Rememory.Models
         public static IEnumerable<TabItemModel> GetDefaultTabs() => [
                 new(NavigationTabItemType.Home, "/Clipboard/NavigationTab_Home/Text".GetLocalizedResource(), "\uE80F", "1", "/Clipboard/NavigationTab_Home/Description".GetLocalizedResource(), "\uF0E3"),
                 new(NavigationTabItemType.Fovorites, "/Clipboard/NavigationTab_Favorites/Text".GetLocalizedResource(), "\uE734", "2", "/Clipboard/NavigationTab_Favorites/Description".GetLocalizedResource()),
-                new(NavigationTabItemType.Images, "/Clipboard/NavigationTab_Images/Text".GetLocalizedResource(), "\uE8B9", "3", "/Clipboard/NavigationTab_Images/Description".GetLocalizedResource()),
-                new(NavigationTabItemType.Files, "/Clipboard/NavigationTab_Files/Text".GetLocalizedResource(), "\uE8B7", "4", "/Clipboard/NavigationTab_Files/Description".GetLocalizedResource()),
-                new(NavigationTabItemType.Links, "/Clipboard/NavigationTab_Links/Text".GetLocalizedResource(), "\uE71B", "5", "/Clipboard/NavigationTab_Links/Description".GetLocalizedResource())
+                new(NavigationTabItemType.Text, "/Clipboard/NavigationTab_Text/Text".GetLocalizedResource(), "\uE8E9", "3", "/Clipboard/NavigationTab_Text/Description".GetLocalizedResource()),
+                new(NavigationTabItemType.Images, "/Clipboard/NavigationTab_Images/Text".GetLocalizedResource(), "\uE8B9", "4", "/Clipboard/NavigationTab_Images/Description".GetLocalizedResource()),
+                new(NavigationTabItemType.Files, "/Clipboard/NavigationTab_Files/Text".GetLocalizedResource(), "\uE8B7", "5", "/Clipboard/NavigationTab_Files/Description".GetLocalizedResource()),
+                new(NavigationTabItemType.Links, "/Clipboard/NavigationTab_Links/Text".GetLocalizedResource(), "\uE71B", "6", "/Clipboard/NavigationTab_Links/Description".GetLocalizedResource())
             ];
     }
 
@@ -91,6 +92,7 @@ namespace Rememory.Models
     {
         Home,
         Fovorites,
+        Text,
         Images,
         Files,
         Links,

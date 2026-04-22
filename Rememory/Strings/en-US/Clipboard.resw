@@ -240,6 +240,12 @@
   <data name="NavigationTab_Favorites.Description" xml:space="preserve">
     <value>Your favorite clips will show up here</value>
   </data>
+  <data name="NavigationTab_Text.Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="NavigationTab_Text.Description" xml:space="preserve">
+    <value>Your copied text will show up here</value>
+  </data>
   <data name="NavigationTab_Images.Text" xml:space="preserve">
     <value>Images</value>
   </data>
