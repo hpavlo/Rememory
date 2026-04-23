@@ -19,14 +19,31 @@ namespace Rememory.Views.Settings
             ViewModel.IsImportedSuccessfully = null;
         }
 
-        private void EraseDataButton_Click(object sender, RoutedEventArgs e)
+        private void EraseButton_Click(object sender, RoutedEventArgs e)
         {
-            if (ViewModel.EraseClipboardDataCommand.CanExecute(null))
+            if (ViewModel.SettingsContext.SkipWarningMessageOnSettingsClipsErase)
             {
-                ViewModel.EraseClipboardDataCommand.Execute(null);
+                if (ViewModel.EraseClipsCommand.CanExecute(null))
+                {
+                    ViewModel.EraseClipsCommand.Execute(null);
+                    EraseDataInfoBadge.Visibility = Visibility.Visible;
+                }
             }
+            else
+            {
+                EraseDataFlyout.ShowAt(sender as FrameworkElement);
+            }
+        }
+
+        private void EraseFlyoutButton_Click(object sender, RoutedEventArgs e)
+        {
             EraseDataFlyout.Hide();
-            EraseDataInfoBadge.Visibility = Visibility.Visible;
+
+            if (ViewModel.EraseClipsCommand.CanExecute(null))
+            {
+                ViewModel.EraseClipsCommand.Execute(null);
+                EraseDataInfoBadge.Visibility = Visibility.Visible;
+            }
         }
 
         private void TriggerImportWarningMessageVisibility()

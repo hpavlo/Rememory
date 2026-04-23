@@ -538,9 +538,6 @@ e aplicativos WebView2</value>
   <data name="Filters_Filter_ClipsCount.Text" xml:space="preserve">
     <value>Clipes filtrados: {0}</value>
   </data>
-  <data name="About_Repository.Header" xml:space="preserve">
-    <value>Repositório do GitHub</value>
-  </data>
   <data name="ShortcutDialog_Title.Text" xml:space="preserve">
     <value>Atalho de ativação</value>
   </data>

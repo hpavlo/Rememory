@@ -381,21 +381,6 @@ namespace Rememory.Services
             TryDisposeConnection(connection);
         }
 
-        public void DeleteAllClips()
-        {
-            var connection = CreateOpenedConnection();
-            using var command = connection.CreateCommand();
-            command.CommandText = @"
-            DELETE FROM Clips;
-            DELETE FROM Owners;
-
-            VACUUM;
-            ";
-            command.ExecuteNonQuery();
-
-            TryDisposeConnection(connection);
-        }
-
         #endregion
 
         #region Tags

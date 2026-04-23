@@ -71,6 +71,7 @@
 
         <NavigationView x:Name="NavigationViewPanel"
                         Grid.RowSpan="2"
+                        OpenPaneLength="260"
                         IsSettingsVisible="False"
                         IsBackEnabled="{x:Bind NavigationViewFrame.CanGoBack, Mode=OneWay}"
                         SelectedItem="{x:Bind GeneralMenuItem, Mode=OneWay}"

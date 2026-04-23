@@ -112,9 +112,8 @@ namespace Rememory.Contracts
         void DeleteOldClipsByQuantity(int quantity, bool deleteFavoriteClips);
 
         /// <summary>
-        /// Deletes all clips from the collection and persistent storage.
-        /// May also delete associated external files (e.g., images, RTF) and owner records depending on the implementation.
+        /// Deletes all filtered clips from the collection and persistent storage.
         /// </summary>
-        void DeleteAllClips();
+        void DeleteClipsByFilter(Func<ClipModel, bool> clipsFilter);
     }
 }

@@ -538,9 +538,6 @@ UWP y WebView2</value>
   <data name="Filters_Filter_ClipsCount.Text" xml:space="preserve">
     <value>Clips filtrados: {0}</value>
   </data>
-  <data name="About_Repository.Header" xml:space="preserve">
-    <value>Repositorio de GitHub</value>
-  </data>
   <data name="ShortcutDialog_Title.Text" xml:space="preserve">
     <value>Atajo de activación</value>
   </data>

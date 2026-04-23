@@ -424,16 +424,25 @@
     <value>Erase clipboard data</value>
   </data>
   <data name="Storage_EraseData.Description" xml:space="preserve">
-    <value>Remove all saved clipboard data from your computer</value>
+    <value>Remove saved clipboard items from your computer</value>
   </data>
   <data name="Storage_EraseDataButton.Content" xml:space="preserve">
-    <value>Delete all data</value>
+    <value>Erase data</value>
   </data>
-  <data name="Storage_EraseDataFlyout.Text" xml:space="preserve">
-    <value>Are you sure you want to delete all saved data?</value>
+  <data name="Storage_EraseData_FlyoutHeader.Text" xml:space="preserve">
+    <value>Erase all clipboard data</value>
   </data>
-  <data name="Storage_EraseDataFlyoutButton.Content" xml:space="preserve">
-    <value>Yes, delete all data</value>
+  <data name="Storage_EraseData_FlyoutDescription.Text" xml:space="preserve">
+    <value>It will remove all clipboard data according to your preferences</value>
+  </data>
+  <data name="Storage_EraseData_FlyoutButton.Content" xml:space="preserve">
+    <value>Erase</value>
+  </data>
+  <data name="Storage_EraseData_RemoveFavoriteClips.Content" xml:space="preserve">
+    <value>Remove favorite clips</value>
+  </data>
+  <data name="Storage_EraseData_RemoveWithProtectedTags.Content" xml:space="preserve">
+    <value>Remove clips with protected tags</value>
   </data>
   <data name="Storage_BackupSection.Text" xml:space="preserve">
     <value>Backup</value>
@@ -538,9 +547,6 @@ and WebView2 applications</value>
   <data name="Filters_Filter_ClipsCount.Text" xml:space="preserve">
     <value>Filtered clips: {0}</value>
   </data>
-  <data name="About_Repository.Header" xml:space="preserve">
-    <value>GitHub repository</value>
-  </data>
   <data name="ShortcutDialog_Title.Text" xml:space="preserve">
     <value>Activation shortcut</value>
   </data>
@@ -576,5 +582,11 @@ and WebView2 applications</value>
   </data>
   <data name="FilterDialog_TeachingTip.Title" xml:space="preserve">
     <value>Pattern examples</value>
+  </data>
+  <data name="About_DevelopedBy" xml:space="preserve">
+    <value>Developed by {0}</value>
+  </data>
+  <data name="About_WriteReviewHyperlink.Content" xml:space="preserve">
+    <value>Write a review</value>
   </data>
 </root>

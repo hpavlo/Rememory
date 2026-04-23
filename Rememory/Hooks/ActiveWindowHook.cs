@@ -9,7 +9,7 @@ namespace Rememory.Hooks
     /// <summary>
     /// Helps to get last active window when the clipboard window is pinned
     /// </summary>
-    public class ActiveWindowHook : IDisposable
+    public partial class ActiveWindowHook : IDisposable
     {
         private IntPtr _windowsEventHookHandle;
         private NativeHelper.WinEventDelegate _windowsEventDelegate;

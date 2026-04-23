@@ -14,7 +14,6 @@ namespace Rememory.Services
     {
         public event EventHandler<OwnerModel>? OwnerRegistered;
         public event EventHandler<string>? OwnerUnregistered;
-        public event EventHandler? AllOwnersUnregistered;
 
         public Dictionary<string, OwnerModel> Owners { get; private set; }
 
@@ -110,16 +109,6 @@ namespace Rememory.Services
             clip.Owner = null;
         }
 
-        public void UnregisterAllOwners()
-        {
-            Owners.Clear();
-
-            OwnerModel emptyOwner = CreateEmptyOwner();
-            Owners[emptyOwner.Path] = emptyOwner;
-
-            OnAllOwnersUnregistered();
-        }
-
         protected virtual void OnOwnerRegistered(OwnerModel owner)
         {
             OwnerRegistered?.Invoke(this, owner);
@@ -128,11 +117,6 @@ namespace Rememory.Services
         protected virtual void OnOwnerUnregistered(string ownerPath)
         {
             OwnerUnregistered?.Invoke(this, ownerPath);
-        }
-
-        protected virtual void OnAllOwnersUnregistered()
-        {
-            AllOwnersUnregistered?.Invoke(this, new());
         }
 
         private IList<OwnerModel> ReadOwnersFromStorage()

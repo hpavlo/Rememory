@@ -288,20 +288,37 @@ namespace Rememory.Models
 
         #endregion
 
-        #region Tags
-
-        //private bool? _isTagCountVisible;
-
-        //[Settings("IsTagCountVisible", DefaultValue = false)]
-        //public bool IsTagCountVisible
-        //{
-        //    get => _isTagCountVisible ??= GetSettingValue<bool>();
-        //    set => SetSettingsProperty(ref _isTagCountVisible, value);
-        //}
-
-        #endregion
-
         #region Storage
+
+        private bool? _skipWarningMessageOnSettingsClipsErase;
+
+        [Settings("SkipWarningMessageOnSettingsClipsErase", DefaultValue = false)]
+        public bool SkipWarningMessageOnSettingsClipsErase
+        {
+            get => _skipWarningMessageOnSettingsClipsErase ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _skipWarningMessageOnSettingsClipsErase, value);
+        }
+
+
+        private bool? _isFavoriteClipsErasingEnabled;
+
+        [Settings("IsFavoriteClipsErasingEnabled", DefaultValue = true)]
+        public bool IsFavoriteClipsErasingEnabled
+        {
+            get => _isFavoriteClipsErasingEnabled ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _isFavoriteClipsErasingEnabled, value);
+        }
+
+
+        private bool? _isTagProtectedClipsErasingEnabled;
+
+        [Settings("IsTagProtectedClipsErasingEnabled", DefaultValue = true)]
+        public bool IsTagProtectedClipsErasingEnabled
+        {
+            get => _isTagProtectedClipsErasingEnabled ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _isTagProtectedClipsErasingEnabled, value);
+        }
+
 
         private string? _cleanupType;
 
@@ -405,6 +422,8 @@ namespace Rememory.Models
 
         #endregion
 
+        #region Main Window
+
         private bool? _isClipboardMonitoringEnabled;
 
         [Settings("IsClipboardMonitoringEnabled", DefaultValue = true)]
@@ -413,6 +432,18 @@ namespace Rememory.Models
             get => _isClipboardMonitoringEnabled ??= GetSettingValue<bool>();
             set => SetSettingsProperty(ref _isClipboardMonitoringEnabled, value);
         }
+
+
+        private bool? _skipWarningMessageOnMainWindowClipsErase;
+
+        [Settings("SkipWarningMessageOnMainWindowClipsErase", DefaultValue = false)]
+        public bool SkipWarningMessageOnMainWindowClipsErase
+        {
+            get => _skipWarningMessageOnMainWindowClipsErase ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _skipWarningMessageOnMainWindowClipsErase, value);
+        }
+
+        #endregion
 
         public SettingsContext(ClipboardMonitor clipboardMonitor)
         {

@@ -303,4 +303,16 @@
   <data name="SelectedClipsCount.Text" xml:space="preserve">
     <value>{0, plural, one {# clip selected} other {# clips selected}}</value>
   </data>
+  <data name="EraseButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Erase</value>
+  </data>
+  <data name="EraseData_FlyoutHeader.Text" xml:space="preserve">
+    <value>Erase clipboard data</value>
+  </data>
+  <data name="EraseData_FlyoutDescription.Text" xml:space="preserve">
+    <value>Remove all resent clips, but keep favorite and clips with protected tags safe</value>
+  </data>
+  <data name="EraseData_FlyoutButton.Content" xml:space="preserve">
+    <value>Erase</value>
+  </data>
 </root>

@@ -538,9 +538,6 @@
   <data name="Filters_Filter_ClipsCount.Text" xml:space="preserve">
     <value>Відфільтровані елементи: {0}</value>
   </data>
-  <data name="About_Repository.Header" xml:space="preserve">
-    <value>GitHub репозиторій</value>
-  </data>
   <data name="ShortcutDialog_Title.Text" xml:space="preserve">
     <value>Комбінація клавіш для активації</value>
   </data>

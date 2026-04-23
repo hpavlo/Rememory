@@ -10,6 +10,41 @@
       DataContext="{x:Bind ViewModel}">
     <Page.Resources>
         <converters:EnumToIndexConverter x:Key="EnumToIndexConverter" />
+
+        <Flyout x:Key="EraseDataFlyout"
+                x:Name="EraseDataFlyout"
+                ShouldConstrainToRootBounds="False">
+            <Grid MaxWidth="260"
+                  RowSpacing="12">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock x:Uid="/Settings/Storage_EraseData_FlyoutHeader"
+                           Grid.Row="0"
+                           TextWrapping="Wrap"
+                           Style="{ThemeResource BodyLargeStrongTextBlockStyle}" />
+
+                <TextBlock x:Uid="/Settings/Storage_EraseData_FlyoutDescription"
+                           Grid.Row="1"
+                           TextWrapping="Wrap"
+                           Style="{ThemeResource BodyTextBlockStyle}" />
+
+                <CheckBox x:Uid="/Resources/DoNotShowAgainCheckbox"
+                          Grid.Row="2"
+                          HorizontalAlignment="Left"
+                          IsChecked="{x:Bind ViewModel.SettingsContext.SkipWarningMessageOnSettingsClipsErase, Mode=TwoWay}" />
+
+                <Button x:Uid="/Settings/Storage_EraseData_FlyoutButton"
+                        Grid.Row="3"
+                        HorizontalAlignment="Stretch"
+                        Style="{ThemeResource AccentButtonStyle}"
+                        Click="EraseFlyoutButton_Click" />
+            </Grid>
+        </Flyout>
     </Page.Resources>
 
     <ScrollViewer Padding="56,20,56,5">
@@ -119,9 +154,10 @@
         </VisualStateManager.VisualStateGroups>
 
         <StackPanel Padding="0,0,0,28">
-            <tkcontrols:SettingsCard x:Uid="/Settings/Storage_EraseData"
-                                     Margin="0,0,0,5"
-                                     HeaderIcon="{tk:FontIcon Glyph=&#xE75C;}">
+            <tkcontrols:SettingsExpander x:Uid="/Settings/Storage_EraseData"
+                                         Margin="0,0,0,5"
+                                         HeaderIcon="{tk:FontIcon Glyph=&#xE75C;}"
+                                         IsExpanded="True">
                 <StackPanel Orientation="Horizontal"
                             Spacing="12">
                     <InfoBadge x:Name="EraseDataInfoBadge"
@@ -129,21 +165,22 @@
                                Visibility="Collapsed"
                                Style="{ThemeResource SuccessIconInfoBadgeStyle}" />
 
-                    <Button x:Uid="/Settings/Storage_EraseDataButton">
-                        <Button.Flyout>
-                            <Flyout x:Name="EraseDataFlyout"
-                                    ShouldConstrainToRootBounds="False">
-                                <StackPanel Spacing="12">
-                                    <TextBlock x:Uid="/Settings/Storage_EraseDataFlyout"
-                                               Style="{ThemeResource BaseTextBlockStyle}" />
-                                    <Button x:Uid="/Settings/Storage_EraseDataFlyoutButton"
-                                            Click="EraseDataButton_Click" />
-                                </StackPanel>
-                            </Flyout>
-                        </Button.Flyout>
-                    </Button>
+                    <Button x:Uid="/Settings/Storage_EraseDataButton"
+                            Click="EraseButton_Click" />
                 </StackPanel>
-            </tkcontrols:SettingsCard>
+
+                <tkcontrols:SettingsExpander.Items>
+                    <tkcontrols:SettingsCard ContentAlignment="Left">
+                        <CheckBox x:Uid="/Settings/Storage_EraseData_RemoveFavoriteClips"
+                                  IsChecked="{x:Bind ViewModel.SettingsContext.IsFavoriteClipsErasingEnabled, Mode=TwoWay}" />
+                    </tkcontrols:SettingsCard>
+
+                    <tkcontrols:SettingsCard ContentAlignment="Left">
+                        <CheckBox x:Uid="/Settings/Storage_EraseData_RemoveWithProtectedTags"
+                                  IsChecked="{x:Bind ViewModel.SettingsContext.IsTagProtectedClipsErasingEnabled, Mode=TwoWay}" />
+                    </tkcontrols:SettingsCard>
+                </tkcontrols:SettingsExpander.Items>
+            </tkcontrols:SettingsExpander>
 
             <TextBlock x:Uid="/Settings/Storage_BackupSection"
                        Margin="0,28,0,8"

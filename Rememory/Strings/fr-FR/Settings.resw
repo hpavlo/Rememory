@@ -538,9 +538,6 @@ applications UWP et WebView2</value>
   <data name="Filters_Filter_ClipsCount.Text" xml:space="preserve">
     <value>Articles filtrés: {0}</value>
   </data>
-  <data name="About_Repository.Header" xml:space="preserve">
-    <value>Répertoire GitHub</value>
-  </data>
   <data name="ShortcutDialog_Title.Text" xml:space="preserve">
     <value>Raccourci d'activation</value>
   </data>

@@ -1,5 +1,6 @@
 ﻿using Rememory.Models;
 using Rememory.Models.Metadata;
+using RememoryCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -78,11 +79,6 @@ namespace Rememory.Contracts
         /// <param name="quantity">Number of clips to leave.</param>
         /// <param name="deleteFavoriteClips">If true, old favorite clips will also be deleted; otherwise, they will be kept.</param>
         void DeleteOldClipsByQuantity(int quantity, bool deleteFavoriteClips);
-
-        /// <summary>
-        /// Deletes all clip records from the storage. This might also clear related data like owners depending on the implementation.
-        /// </summary>
-        void DeleteAllClips();
 
         /// <summary>
         /// Retrieves all tags from the database.

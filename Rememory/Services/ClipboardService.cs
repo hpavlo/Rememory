@@ -222,24 +222,29 @@ namespace Rememory.Services
             }
         }
 
-        public void DeleteAllClips()
+        public void DeleteClipsByFilter(Func<ClipModel, bool> clipsFilter)
         {
-            // Delete all clips with owners and related data
-            foreach (var clip in Clips)
-            {
-                clip.Tags.Clear();
-            }
-            foreach (var tag in _tagService.Tags)
-            {
-                tag.Clips.Clear();
-                tag.TogglePropertyUpdate(nameof(tag.ClipsCount));
-            }
-            Clips.Clear();
-            _storageService.DeleteAllClips();
-            _ownerService.UnregisterAllOwners();
-            ClipboardFormatHelper.ClearAllExternalData();
+            var clipsToDelete = Clips
+                .Where(clipsFilter)
+                .ToList();
 
-            OnClipsCollectionChanged(Clips);
+            var clipIdsToDelete = clipsToDelete
+                .Select(clip => clip.Id)
+                .ToList();
+
+            foreach (var clip in clipsToDelete)
+            {
+                DeleteClip(clip, false);
+            }
+
+            // Deleting each clip one by one since we use advanced filter
+            Task.Run(() =>
+            {
+                foreach (var id in clipIdsToDelete)
+                {
+                    _storageService.DeleteClip(id);
+                }
+            });
         }
 
         protected virtual void OnNewClipAdded(IList<ClipModel> clips, ClipModel newClip)

@@ -537,9 +537,6 @@
   <data name="Filters_Filter_ClipsCount.Text" xml:space="preserve">
     <value>{0 ,plural, zero {لا توجد مقاطع مفلترة} one {مقطع واحد مفلتر} two {مقطعان مفلتران} few {# مقاطع مفلترة} many {# مقطعًا مفلترًا} other {# مقطع مفلتر}}</value>
   </data>
-  <data name="About_Repository.Header" xml:space="preserve">
-    <value>مستودع GitHub</value>
-  </data>
   <data name="ShortcutDialog_Title.Text" xml:space="preserve">
     <value>اختصار التفعيل</value>
   </data>

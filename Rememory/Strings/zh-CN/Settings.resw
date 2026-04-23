@@ -537,9 +537,6 @@
   <data name="Filters_Filter_ClipsCount.Text" xml:space="preserve">
     <value>筛选项：{0}</value>
   </data>
-  <data name="About_Repository.Header" xml:space="preserve">
-    <value>Github 仓库</value>
-  </data>
   <data name="ShortcutDialog_Title.Text" xml:space="preserve">
     <value>快捷键触发方式</value>
   </data>

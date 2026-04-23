@@ -526,8 +526,14 @@
                        TargetType="FlyoutPresenter">
                     <Setter Property="MaxHeight"
                             Value="500" />
+                    <Setter Property="Background"
+                            Value="Transparent" />
                 </Style>
             </Flyout.FlyoutPresenterStyle>
+
+            <Flyout.SystemBackdrop>
+                <DesktopAcrylicBackdrop />
+            </Flyout.SystemBackdrop>
 
             <TreeView x:Name="FilterTreeView"
                       SelectionMode="Multiple"
@@ -552,6 +558,7 @@
                                 <Image Width="20"
                                        Height="20"
                                        Source="{x:Bind Image, Mode=OneWay}" />
+                                
                                 <TextBlock Grid.Column="1"
                                            MaxWidth="200"
                                            TextTrimming="CharacterEllipsis"
@@ -561,6 +568,41 @@
                     </DataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>
+        </Flyout>
+
+        <Flyout x:Key="EraseButtonFlyout"
+                x:Name="EraseButtonFlyout"
+                ShouldConstrainToRootBounds="False">
+            <Grid MaxWidth="260"
+                  RowSpacing="12">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock x:Uid="/Clipboard/EraseData_FlyoutHeader"
+                           Grid.Row="0"
+                           TextWrapping="Wrap"
+                           Style="{ThemeResource BodyLargeStrongTextBlockStyle}" />
+
+                <TextBlock x:Uid="/Clipboard/EraseData_FlyoutDescription"
+                           Grid.Row="1"
+                           TextWrapping="Wrap"
+                           Style="{ThemeResource BodyTextBlockStyle}" />
+
+                <CheckBox x:Uid="/Resources/DoNotShowAgainCheckbox"
+                          Grid.Row="2"
+                          HorizontalAlignment="Left"
+                          IsChecked="{x:Bind ViewModel.SettingsContext.SkipWarningMessageOnMainWindowClipsErase, Mode=TwoWay}" />
+
+                <Button x:Uid="/Clipboard/EraseData_FlyoutButton"
+                        Grid.Row="3"
+                        HorizontalAlignment="Stretch"
+                        Style="{ThemeResource AccentButtonStyle}"
+                        Click="EraseFlyoutButton_Click" />
+            </Grid>
         </Flyout>
 
         <MenuFlyout x:Key="SingleClipContextMenu"
@@ -828,12 +870,13 @@
                         MenuItemsSource="{x:Bind ViewModel.NavigationTabItems, Mode=OneWay}"
                         KeyDown="NavigationTabList_KeyDown">
             <NavigationView.Resources>
+                <Thickness x:Key="NavigationViewPaneContentGridMargin">-1,2,-1,2</Thickness>
                 <Thickness x:Key="NavigationViewContentGridBorderThickness">0,0,0,0</Thickness>
                 <CornerRadius x:Key="NavigationViewContentGridCornerRadius">0,0,0,0</CornerRadius>
                 <SolidColorBrush x:Key="NavigationViewContentBackground">Transparent</SolidColorBrush>
             </NavigationView.Resources>
             
-            <Grid>
+            <Grid Margin="0,0,12,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -842,7 +885,8 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0">
+                <Grid Grid.Row="0"
+                      ColumnSpacing="8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"
                                           MinWidth="50" />
@@ -851,7 +895,7 @@
 
                     <Border x:Name="WindowCaptionBorder"
                             Grid.Column="0">
-                        <TextBlock Margin="8,10,8,10"
+                        <TextBlock Margin="8,10,0,10"
                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                                    VerticalAlignment="Center"
                                    TextWrapping="NoWrap"
@@ -860,7 +904,6 @@
                     </Border>
 
                     <StackPanel Grid.Column="1"
-                                Margin="8,0,12,0"
                                 Spacing="4"
                                 Orientation="Horizontal"
                                 VerticalAlignment="Center">
@@ -877,7 +920,7 @@
                         <Button x:Uid="/Clipboard/TitleBar_CloseButton"
                                 AutomationProperties.AutomationId="TitleBarButtons"
                                 AutomationProperties.Name="Close Window"
-                                AccessKey="E"
+                                AccessKey="C"
                                 Width="32"
                                 Height="32"
                                 Command="{x:Bind ViewModel.CloseWindowCommand}"
@@ -887,10 +930,11 @@
                 </Grid>
 
                 <Grid Grid.Row="1"
-                      ColumnSpacing="4"
-                      Margin="0,0,12,8">
+                      Margin="0,0,0,8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
@@ -914,19 +958,42 @@
                             Grid.Column="1"
                             TabIndex="3"
                             Width="32"
+                            Margin="4,0,0,0"
                             Padding="0"
                             VerticalAlignment="Stretch"
                             Content="{tk:FontIcon FontSize=14, Glyph=&#xE71C;}"
                             Flyout="{StaticResource FilterButtonFlyout}" />
+
+                    <Rectangle Grid.Column="2"
+                               Width="1"
+                               Height="16"
+                               Margin="4,0,0,0"
+                               Fill="{ThemeResource ButtonBorderThemeBrush}" />
+
+                    <Button x:Name="EraseButton"
+                            x:Uid="/Clipboard/EraseButton"
+                            AutomationProperties.AutomationId="EraseButton"
+                            AutomationProperties.Name="Erase Clips"
+                            AccessKey="E"
+                            Grid.Column="3"
+                            TabIndex="4"
+                            Width="32"
+                            Margin="4,0,0,0"
+                            Padding="0"
+                            VerticalAlignment="Stretch"
+                            Visibility="{x:Bind ViewModel.ShowEraseButton, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                            Content="{tk:FontIcon FontSize=14, Glyph=&#xE75C;}"
+                            Click="EraseButton_Click" />
 
                     <ToggleButton x:Name="MultiSelectionToggleButton"
                                   x:Uid="/Clipboard/MultiSelectionButton"
                                   AutomationProperties.AutomationId="MultiSelectionButton"
                                   AutomationProperties.Name="Enable Multiple Selection"
                                   AccessKey="S"
-                                  Grid.Column="2"
-                                  TabIndex="4"
+                                  Grid.Column="4"
+                                  TabIndex="5"
                                   Width="32"
+                                  Margin="4,0,0,0"
                                   Padding="0"
                                   VerticalAlignment="Stretch"
                                   Content="{tk:FontIcon FontSize=14, Glyph=&#xE762;}" />
@@ -934,7 +1001,7 @@
 
                 <Grid x:Name="MonitoringPausedBanner"
                       Grid.Row="2"
-                      Margin="0,0,12,8"
+                      Margin="0,0,0,8"
                       Padding="8"
                       ColumnSpacing="8"
                       CornerRadius="{ThemeResource ControlCornerRadius}"
@@ -961,7 +1028,7 @@
                             x:DefaultBindMode="OneWay"
                             Grid.Row="3"
                             MaxWidth="300"
-                            Margin="16 0 36 36"
+                            Margin="16 0 24 36"
                             Spacing="12"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
@@ -985,6 +1052,7 @@
                           AutomationProperties.AutomationId="ClipsList"
                           AutomationProperties.Name="All Clips"
                           Grid.Row="3"
+                          Margin="0,0,-12,0"
                           TabIndex="1"
                           SelectionMode="None"
                           ShowsScrollingPlaceholders="False"
@@ -1003,7 +1071,8 @@
 
                 <Grid x:Name="MultipleSelectionFooter"
                       Grid.Row="4"
-                      Height="32">
+                      Height="32"
+                      ColumnSpacing="8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
@@ -1011,7 +1080,7 @@
 
                     <TextBlock x:Name="SelectedClipsCountTextBlock"
                                Grid.Column="0"
-                               Margin="8,0,4,0"
+                               Margin="8,0,0,0"
                                Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                                VerticalAlignment="Center"
                                Style="{ThemeResource BodyTextBlockStyle}" />
@@ -1021,7 +1090,7 @@
                               Grid.Column="1"
                               MinWidth="20"
                               MinHeight="20"
-                              Margin="4,0,16,0"
+                              Margin="0,0,4,0"
                               Padding="0"
                               VerticalAlignment="Center"
                               Click="SelectAllCheckBox_Click" />

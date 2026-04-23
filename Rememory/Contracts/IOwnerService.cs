@@ -24,11 +24,6 @@ namespace Rememory.Contracts
         event EventHandler<string> OwnerUnregistered;
 
         /// <summary>
-        /// Occurs when the in-memory collection of owners is cleared via <see cref="UnregisterAllOwners"/>.
-        /// </summary>
-        event EventHandler AllOwnersUnregistered;
-
-        /// <summary>
         /// Gets the dictionary of currently active owners being tracked in memory.
         /// The key is the owner's path (e.g., application executable path), and the value is the <see cref="OwnerModel"/>.
         /// </summary>
@@ -58,14 +53,5 @@ namespace Rememory.Contracts
         /// </summary>
         /// <param name="clip">The clip whose owner should be unregistered or have its count decremented.</param>
         void UnregisterClipOwner(ClipModel clip);
-
-        /// <summary>
-        /// Clears the in-memory dictionary (<see cref="Owners"/>) of all tracked owners.
-        /// </summary>
-        /// <remarks>
-        /// Caution: Еhis only clear the in-memory collection
-        /// and not remove the corresponding owner records from persistent storage.
-        /// </remarks>
-        void UnregisterAllOwners();
     }
 }

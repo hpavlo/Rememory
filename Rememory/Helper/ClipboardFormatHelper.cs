@@ -104,31 +104,6 @@ namespace Rememory.Helper
         }
 
         /// <summary>
-        /// Attempts to delete all known external data format folders (RTF, HTML, PNG, Bitmap)
-        /// </summary>
-        public static void ClearAllExternalData()
-        {
-            var historyFolder = _clipboardMonitor.HistoryFolderPath;
-
-            try
-            {
-                DeleteFolder(Path.Combine(historyFolder, FormatManager.RtfFolderName));
-                DeleteFolder(Path.Combine(historyFolder, FormatManager.HtmlFolderName));
-                DeleteFolder(Path.Combine(historyFolder, FormatManager.PngFolderName));
-                DeleteFolder(Path.Combine(historyFolder, FormatManager.BitmapFolderName));
-            }
-            catch { }
-
-            static void DeleteFolder(string path)
-            {
-                if (Directory.Exists(path))
-                {
-                    Directory.Delete(path, true);
-                }
-            }
-        }
-
-        /// <summary>
         /// Specifies whether data is stored in a file format.
         /// </summary>
         /// <param name="data">The data we want to check.</param>

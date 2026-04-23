@@ -540,9 +540,16 @@ namespace Rememory.Views
 
         private void ClipsListView_GettingFocus(UIElement sender, GettingFocusEventArgs args)
         {
-            if (_previewTextFlyout.IsOpen || _previewRtfFlyout.IsOpen || _previewImageFlyout.IsOpen)
+            var isPeviewFlyoutOpen = _previewTextFlyout.IsOpen || _previewRtfFlyout.IsOpen || _previewImageFlyout.IsOpen;
+
+            if (!isPeviewFlyoutOpen)
             {
-                OpenPreviewFlyout((ClipModel)((ListViewItem)args.NewFocusedElement).Content);
+                return;
+            }
+
+            if (args.NewFocusedElement is ListViewItem { Content: ClipModel clipModel })
+            {
+                OpenPreviewFlyout(clipModel);
             }
         }
 
@@ -643,6 +650,31 @@ namespace Rememory.Views
             if (e.Key == VirtualKey.Right && e.OriginalSource is NavigationViewItem)
             {
                 SetFocusOnFirstClipInList();
+            }
+        }
+
+        private void EraseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.SettingsContext.SkipWarningMessageOnMainWindowClipsErase)
+            {
+                if (ViewModel.EraseClipsOnSelectedTabCommand.CanExecute(null))
+                {
+                    ViewModel.EraseClipsOnSelectedTabCommand.Execute(null);
+                }
+            }
+            else
+            {
+                EraseButtonFlyout.ShowAt(sender as FrameworkElement);
+            }
+        }
+
+        private void EraseFlyoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            EraseButtonFlyout.Hide();
+
+            if (ViewModel.EraseClipsOnSelectedTabCommand.CanExecute(null))
+            {
+                ViewModel.EraseClipsOnSelectedTabCommand.Execute(null);
             }
         }
     }

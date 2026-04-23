@@ -57,15 +57,11 @@ namespace Rememory.ViewModels
         /// </summary>
         public SettingsContext SettingsContext { get; } = App.Current.SettingsContext;
 
-        private ObservableCollection<ClipModel> _clipsCollection = [];
         /// <summary>
         /// Visible collection on the main page
         /// </summary>
-        public ObservableCollection<ClipModel> ClipsCollection
-        {
-            get => _clipsCollection;
-            set => SetProperty(ref _clipsCollection, value);
-        }
+        [ObservableProperty]
+        public partial ObservableCollection<ClipModel> ClipsCollection { get; set; } = [];
 
         /// <summary>
         /// Contains all navigation tabs
@@ -88,10 +84,18 @@ namespace Rememory.ViewModels
                     OnPropertyChanged(nameof(IsSearchEnabled));
                     OnPropertyChanged(nameof(SelectedTabHeader));
                     UpdateClipsList();
+                    TrigerEraseButtonVisibility();
                 }
             }
         }
+
         public string SelectedTabHeader => SelectedTab?.Title ?? string.Empty;
+
+        /// <summary>
+        /// Show or hide erase button on clipboard window, depends on selected tab and search mode
+        /// </summary>
+        [ObservableProperty]
+        public partial bool ShowEraseButton { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the main clipboard window is currently pinned (always on top).
@@ -174,6 +178,9 @@ namespace Rememory.ViewModels
                     _searchContext = [];
                     _searchBuffer.Clear();
                 }
+
+                // Hide erase button in search mode
+                TrigerEraseButtonVisibility();
             }
         }
 
@@ -222,10 +229,10 @@ namespace Rememory.ViewModels
 
         public ClipboardRootPageViewModel()
         {
-            NavigationTabItemsInit();
-
-            _tagService.TagRegistered += TagService_TagRegistered;
-            _tagService.TagUnregistered += TagService_TagUnregistered;
+            if (IsClipboardMonitoringEnabled)
+            {
+                _clipboardMonitor.StartMonitoring((ulong)App.Current.ClipboardWindowHandle);
+            }
 
             App.Current.ClipboardWindow.Showing += ClipboardWindow_Showing;
 
@@ -234,19 +241,17 @@ namespace Rememory.ViewModels
             _clipboardService.ClipMovedToTop += ClipboardService_ClipMovedToTop;
             _clipboardService.ClipDeleted += ClipboardService_ClipDeleted;
             _clipboardService.ClipsCollectionChanged += ClipboardService_ClipsCollectionChanged;
-            if (IsClipboardMonitoringEnabled)
-            {
-                _clipboardMonitor.StartMonitoring((ulong)App.Current.ClipboardWindowHandle);
-            }
+
+            _ownerService.OwnerRegistered += OwnerService_OwnerRegistered;
+            _ownerService.OwnerUnregistered += OwnerService_OwnerUnregistered;
+
+            _tagService.TagRegistered += TagService_TagRegistered;
+            _tagService.TagUnregistered += TagService_TagUnregistered;
 
             RootAppNode = new AppTreeViewNode { Title = "/Clipboard/FilterTreeView_Apps/Text".GetLocalizedResource(), IsExpanded = true };
             AppTreeViewNodes.Add(RootAppNode);
 
-            _ownerService.OwnerRegistered += OwnerService_OwnerRegistered;
-            _ownerService.OwnerUnregistered += OwnerService_OwnerUnregistered;
-            _ownerService.AllOwnersUnregistered += OwnerService_AllOwnersUnregistered;
-
-            UpdateClipsList();
+            NavigationTabItemsInit();
             CleanupOldData();
         }
 
@@ -255,7 +260,7 @@ namespace Rememory.ViewModels
         private void NavigationTabItemsInit()
         {
             NavigationTabItems = [..TabItemFactory.GetDefaultTabs()];
-            _selectedTab = NavigationTabItems.First();
+            SelectedTab = NavigationTabItems.First();
 
             foreach (var tag in _tagService.Tags)
             {
@@ -265,7 +270,7 @@ namespace Rememory.ViewModels
 
         private void UpdateClipsList()
         {
-            ClipsCollection?.Clear();
+            ClipsCollection.Clear();
             ClipsCollection = [.. _clipboardService.Clips.Where(ClipFilterBySelectedMenu)];
 
             HashSet<string> distinctPaths = [.. ClipsCollection
@@ -303,6 +308,22 @@ namespace Rememory.ViewModels
                 NavigationTabItemType.Links => item.IsLink,
                 NavigationTabItemType.Tag => SelectedTab.Tag is not null && item.Tags.Contains(SelectedTab.Tag),
                 _ => false
+            };
+        }
+
+        private void TrigerEraseButtonVisibility()
+        {
+            if (InSearchMode)
+            {
+                ShowEraseButton = false;
+                return;
+            }
+
+            ShowEraseButton = SelectedTab switch
+            {
+                { Type: NavigationTabItemType.Fovorites } => false,
+                { Type: NavigationTabItemType.Tag, Tag.IsCleaningEnabled: false } => false,
+                _ => true
             };
         }
 
@@ -408,11 +429,6 @@ namespace Rememory.ViewModels
             {
                 RootAppNode.Children.Remove(nodeToRemove);
             }
-        }
-
-        private void OwnerService_AllOwnersUnregistered(object? sender, EventArgs e)
-        {
-            RootAppNode.Children.Clear();
         }
 
         #endregion
@@ -630,7 +646,7 @@ namespace Rememory.ViewModels
             }
             else
             {
-                ClipsCollection?.Clear();
+                ClipsCollection.Clear();
                 ClipsCollection = [.. filteredClips];
             }
         }
@@ -656,6 +672,17 @@ namespace Rememory.ViewModels
 
         [RelayCommand]
         private void ExitApp() => App.Current.Exit();
+
+        private bool CanEraseClipsOnSelectedTab() => ShowEraseButton;
+
+        [RelayCommand(CanExecute = nameof(CanEraseClipsOnSelectedTab))]
+        private void EraseClipsOnSelectedTab()
+        {
+            _clipboardService.DeleteClipsByFilter(clip =>
+                ClipFilterBySelectedMenu(clip)
+                && !clip.IsFavorite
+                && !clip.Tags.Any(tag => !tag.IsCleaningEnabled));
+        }
 
         #region Single Clip context menu commands
 

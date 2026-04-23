@@ -6,6 +6,7 @@ using Rememory.Contracts;
 using Rememory.Models;
 using Rememory.Services;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Rememory.ViewModels.Settings
@@ -77,7 +78,14 @@ namespace Rememory.ViewModels.Settings
         #region Commands
 
         [RelayCommand]
-        private void EraseClipboardData() => _clipboardService.DeleteAllClips();
+        private void EraseClips()
+        {
+            var eraseFavorites = SettingsContext.IsFavoriteClipsErasingEnabled;
+            var eraseWithProtectedTags = SettingsContext.IsTagProtectedClipsErasingEnabled;
+
+            _clipboardService.DeleteClipsByFilter(clip => (eraseFavorites || !clip.IsFavorite)
+                && (eraseWithProtectedTags || !clip.Tags.Any(tag => !tag.IsCleaningEnabled)));
+        }
 
         [RelayCommand]
         private async Task ExportAllClips()
