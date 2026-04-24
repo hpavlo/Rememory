@@ -165,4 +165,7 @@
   <data name="Reset" xml:space="preserve">
     <value>Скинути</value>
   </data>
+  <data name="DoNotShowAgainCheckbox.Content" xml:space="preserve">
+    <value>Більше не показувати</value>
+  </data>
 </root>

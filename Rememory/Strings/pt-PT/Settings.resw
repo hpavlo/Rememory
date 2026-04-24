@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -424,16 +424,25 @@
     <value>Apagar dados da área de transferência</value>
   </data>
   <data name="Storage_EraseData.Description" xml:space="preserve">
-    <value>Remover todos os dados da área de transferência salva do seu computador</value>
+    <value>Remover itens salvos da área de transferência do computador</value>
   </data>
   <data name="Storage_EraseDataButton.Content" xml:space="preserve">
-    <value>Apagar todos os dados</value>
+    <value>Apagar dados</value>
   </data>
-  <data name="Storage_EraseDataFlyout.Text" xml:space="preserve">
-    <value>Você tem certeza que deseja excluir todos os dados salvos?</value>
+  <data name="Storage_EraseData_FlyoutHeader.Text" xml:space="preserve">
+    <value>Apagar todos os dados da área de transferência</value>
   </data>
-  <data name="Storage_EraseDataFlyoutButton.Content" xml:space="preserve">
-    <value>Sim, excluir todos os dados</value>
+  <data name="Storage_EraseData_FlyoutDescription.Text" xml:space="preserve">
+    <value>Isso removerá todos os dados da área de transferência conforme suas preferências</value>
+  </data>
+  <data name="Storage_EraseData_FlyoutButton.Content" xml:space="preserve">
+    <value>Apagar</value>
+  </data>
+  <data name="Storage_EraseData_RemoveFavoriteClips.Content" xml:space="preserve">
+    <value>Remover clipes favoritos</value>
+  </data>
+  <data name="Storage_EraseData_RemoveWithProtectedTags.Content" xml:space="preserve">
+    <value>Remover clipes com tags protegidos</value>
   </data>
   <data name="Storage_BackupSection.Text" xml:space="preserve">
     <value>Cópia</value>
@@ -573,5 +582,11 @@ e aplicativos WebView2</value>
   </data>
   <data name="FilterDialog_TeachingTip.Title" xml:space="preserve">
     <value>Exemplos de padrões</value>
+  </data>
+  <data name="About_DevelopedBy" xml:space="preserve">
+    <value>Desenvolvido por {0}</value>
+  </data>
+  <data name="About_WriteReviewHyperlink.Content" xml:space="preserve">
+    <value>Escrever uma avaliação</value>
   </data>
 </root>

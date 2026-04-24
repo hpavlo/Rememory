@@ -165,4 +165,7 @@
   <data name="Reset" xml:space="preserve">
     <value>Yeniden başlat</value>
   </data>
+  <data name="DoNotShowAgainCheckbox.Content" xml:space="preserve">
+    <value>Tekrar gösterme</value>
+  </data>
 </root>

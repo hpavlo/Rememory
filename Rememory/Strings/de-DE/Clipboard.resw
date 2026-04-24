@@ -240,6 +240,12 @@
   <data name="NavigationTab_Favorites.Description" xml:space="preserve">
     <value>Deine Lieblings-Clips werden hier angezeigt</value>
   </data>
+  <data name="NavigationTab_Text.Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="NavigationTab_Text.Description" xml:space="preserve">
+    <value>Ihr kopierter Text wird hier angezeigt</value>
+  </data>
   <data name="NavigationTab_Images.Text" xml:space="preserve">
     <value>Bilder</value>
   </data>
@@ -302,5 +308,17 @@
   </data>
   <data name="SelectedClipsCount.Text" xml:space="preserve">
     <value>{0, plural, one {# Clip ausgewählt} other {# Clips ausgewählt}}</value>
+  </data>
+  <data name="EraseButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="EraseData_FlyoutHeader.Text" xml:space="preserve">
+    <value>Zwischenablage löschen</value>
+  </data>
+  <data name="EraseData_FlyoutDescription.Text" xml:space="preserve">
+    <value>Alle letzten Clips entfernen, Favoriten und geschützte Clips behalten</value>
+  </data>
+  <data name="EraseData_FlyoutButton.Content" xml:space="preserve">
+    <value>Löschen</value>
   </data>
 </root>

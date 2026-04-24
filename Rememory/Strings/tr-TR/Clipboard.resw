@@ -240,6 +240,12 @@
   <data name="NavigationTab_Favorites.Description" xml:space="preserve">
     <value>En sevdiğiniz klipler burada görünecek</value>
   </data>
+  <data name="NavigationTab_Text.Text" xml:space="preserve">
+    <value>Metin</value>
+  </data>
+  <data name="NavigationTab_Text.Description" xml:space="preserve">
+    <value>Kopyaladığınız metin burada görünecek</value>
+  </data>
   <data name="NavigationTab_Images.Text" xml:space="preserve">
     <value>Resimler</value>
   </data>
@@ -302,5 +308,17 @@
   </data>
   <data name="SelectedClipsCount.Text" xml:space="preserve">
     <value>{0, plural, one {# klip seçildi} other {# klip seçildi}}</value>
+  </data>
+  <data name="EraseButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Sil</value>
+  </data>
+  <data name="EraseData_FlyoutHeader.Text" xml:space="preserve">
+    <value>Panodaki verileri sil</value>
+  </data>
+  <data name="EraseData_FlyoutDescription.Text" xml:space="preserve">
+    <value>Tüm son klipleri sil, favoriler ve korumalı klipler kalsın</value>
+  </data>
+  <data name="EraseData_FlyoutButton.Content" xml:space="preserve">
+    <value>Sil</value>
   </data>
 </root>

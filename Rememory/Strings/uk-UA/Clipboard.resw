@@ -240,6 +240,12 @@
   <data name="NavigationTab_Favorites.Description" xml:space="preserve">
     <value>Ваші обрані кліпи з'являться тут</value>
   </data>
+  <data name="NavigationTab_Text.Text" xml:space="preserve">
+    <value>Текст</value>
+  </data>
+  <data name="NavigationTab_Text.Description" xml:space="preserve">
+    <value>Ваш скопійований текст буде показано тут</value>
+  </data>
   <data name="NavigationTab_Images.Text" xml:space="preserve">
     <value>Зображення</value>
   </data>
@@ -302,5 +308,17 @@
   </data>
   <data name="SelectedClipsCount.Text" xml:space="preserve">
     <value>{0, plural, one {# кліп обрано} few {# кліпи обрано} many {# кліпів обрано} other {# кліпів обрано}}</value>
+  </data>
+  <data name="EraseButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Очистити</value>
+  </data>
+  <data name="EraseData_FlyoutHeader.Text" xml:space="preserve">
+    <value>Очистити буфер обміну</value>
+  </data>
+  <data name="EraseData_FlyoutDescription.Text" xml:space="preserve">
+    <value>Видалити всі останні кліпи, але зберегти обрані, та кліпи із захищеними тегами</value>
+  </data>
+  <data name="EraseData_FlyoutButton.Content" xml:space="preserve">
+    <value>Очистити</value>
   </data>
 </root>

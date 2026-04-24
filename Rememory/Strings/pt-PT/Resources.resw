@@ -165,4 +165,7 @@
   <data name="Reset" xml:space="preserve">
     <value>Redefinir</value>
   </data>
+  <data name="DoNotShowAgainCheckbox.Content" xml:space="preserve">
+    <value>Não mostrar novamente</value>
+  </data>
 </root>

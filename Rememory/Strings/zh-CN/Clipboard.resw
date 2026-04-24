@@ -240,6 +240,12 @@
   <data name="NavigationTab_Favorites.Description" xml:space="preserve">
     <value>您最喜欢的素材将显示在这里</value>
   </data>
+  <data name="NavigationTab_Text.Text" xml:space="preserve">
+    <value>文本</value>
+  </data>
+  <data name="NavigationTab_Text.Description" xml:space="preserve">
+    <value>您复制的文本会显示在这里</value>
+  </data>
   <data name="NavigationTab_Images.Text" xml:space="preserve">
     <value>图片</value>
   </data>
@@ -302,5 +308,17 @@
   </data>
   <data name="SelectedClipsCount.Text" xml:space="preserve">
     <value>{0, plural, other {# 个已选片段}}</value>
+  </data>
+  <data name="EraseButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>清除</value>
+  </data>
+  <data name="EraseData_FlyoutHeader.Text" xml:space="preserve">
+    <value>清除剪贴板数据</value>
+  </data>
+  <data name="EraseData_FlyoutDescription.Text" xml:space="preserve">
+    <value>删除所有最近的剪辑，但保留收藏和受保护的剪辑</value>
+  </data>
+  <data name="EraseData_FlyoutButton.Content" xml:space="preserve">
+    <value>清除</value>
   </data>
 </root>

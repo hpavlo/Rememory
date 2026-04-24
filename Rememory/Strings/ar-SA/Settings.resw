@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -424,16 +424,25 @@
     <value>مسح بيانات الحافظة</value>
   </data>
   <data name="Storage_EraseData.Description" xml:space="preserve">
-    <value>إزالة جميع بيانات الحافظة المحفوظة من جهازك</value>
+    <value>إزالة العناصر المحفوظة من الحافظة على جهازك</value>
   </data>
   <data name="Storage_EraseDataButton.Content" xml:space="preserve">
-    <value>حذف جميع البيانات</value>
+    <value>مسح البيانات</value>
   </data>
-  <data name="Storage_EraseDataFlyout.Text" xml:space="preserve">
-    <value>هل أنت متأكد أنك تريد حذف جميع البيانات المحفوظة؟</value>
+  <data name="Storage_EraseData_FlyoutHeader.Text" xml:space="preserve">
+    <value>مسح جميع بيانات الحافظة</value>
   </data>
-  <data name="Storage_EraseDataFlyoutButton.Content" xml:space="preserve">
-    <value>نعم، احذف جميع البيانات</value>
+  <data name="Storage_EraseData_FlyoutDescription.Text" xml:space="preserve">
+    <value>سيؤدي ذلك إلى إزالة جميع بيانات الحافظة وفقًا لتفضيلاتك</value>
+  </data>
+  <data name="Storage_EraseData_FlyoutButton.Content" xml:space="preserve">
+    <value>مسح</value>
+  </data>
+  <data name="Storage_EraseData_RemoveFavoriteClips.Content" xml:space="preserve">
+    <value>إزالة المقاطع المفضلة</value>
+  </data>
+  <data name="Storage_EraseData_RemoveWithProtectedTags.Content" xml:space="preserve">
+    <value>إزالة المقاطع ذات العلامات المحمية</value>
   </data>
   <data name="Storage_BackupSection.Text" xml:space="preserve">
     <value>النسخ الاحتياطي</value>
@@ -573,5 +582,11 @@
   </data>
   <data name="FilterDialog_TeachingTip.Title" xml:space="preserve">
     <value>أمثلة على الأنماط</value>
+  </data>
+  <data name="About_DevelopedBy" xml:space="preserve">
+    <value>مطور بواسطة {0}</value>
+  </data>
+  <data name="About_WriteReviewHyperlink.Content" xml:space="preserve">
+    <value>اكتب مراجعة</value>
   </data>
 </root>

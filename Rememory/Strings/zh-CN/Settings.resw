@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -424,16 +424,25 @@
     <value>擦除剪贴板数据</value>
   </data>
   <data name="Storage_EraseData.Description" xml:space="preserve">
-    <value>从你的计算机中移除所有保存的剪贴板数据</value>
+    <value>从电脑中删除已保存的剪贴板项目</value>
   </data>
   <data name="Storage_EraseDataButton.Content" xml:space="preserve">
-    <value>删除所有数据</value>
+    <value>清除数据</value>
   </data>
-  <data name="Storage_EraseDataFlyout.Text" xml:space="preserve">
-    <value>你确定要删除所有的数据吗？</value>
+  <data name="Storage_EraseData_FlyoutHeader.Text" xml:space="preserve">
+    <value>清除所有剪贴板数据</value>
   </data>
-  <data name="Storage_EraseDataFlyoutButton.Content" xml:space="preserve">
-    <value>确认，删除所有数据</value>
+  <data name="Storage_EraseData_FlyoutDescription.Text" xml:space="preserve">
+    <value>将根据您的偏好删除所有剪贴板数据</value>
+  </data>
+  <data name="Storage_EraseData_FlyoutButton.Content" xml:space="preserve">
+    <value>清除</value>
+  </data>
+  <data name="Storage_EraseData_RemoveFavoriteClips.Content" xml:space="preserve">
+    <value>删除收藏的剪辑</value>
+  </data>
+  <data name="Storage_EraseData_RemoveWithProtectedTags.Content" xml:space="preserve">
+    <value>删除带有保护标签的剪辑</value>
   </data>
   <data name="Storage_BackupSection.Text" xml:space="preserve">
     <value>备份</value>
@@ -514,7 +523,7 @@
     <value>设置每个片段允许的最大尺寸。超出此限制的片段将被丢弃。</value>
   </data>
   <data name="Storage_MaxClipSize.Header" xml:space="preserve">
-    <value>最大剪辑尺寸</value>
+    <value>最大剪辑尺寸Warn</value>
   </data>
   <data name="Storage_MaxClipSize.Description" xml:space="preserve">
     <value>每个片段允许的最大尺寸(MB)</value>
@@ -572,5 +581,11 @@
   </data>
   <data name="FilterDialog_TeachingTip.Title" xml:space="preserve">
     <value>筛选模板</value>
+  </data>
+  <data name="About_DevelopedBy" xml:space="preserve">
+    <value>由 {0} 开发</value>
+  </data>
+  <data name="About_WriteReviewHyperlink.Content" xml:space="preserve">
+    <value>撰写评论</value>
   </data>
 </root>

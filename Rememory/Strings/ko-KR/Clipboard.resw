@@ -121,7 +121,7 @@
     <value>클립보드 데이터 저장이 일시 중지되었습니다</value>
   </data>
   <data name="ClipFooter_CharactersCount.Text" xml:space="preserve">
-    <value>{0,plural, other{#자}}</value>
+    <value>{0, plural, other{#자}}</value>
   </data>
   <data name="ClipFooter_FilesCount.Text" xml:space="preserve">
     <value>{0, plural, other {파일 #개}}</value>
@@ -240,6 +240,12 @@
   <data name="NavigationTab_Favorites.Description" xml:space="preserve">
     <value>즐겨찾는 영상 클립이 여기에 표시됩니다</value>
   </data>
+  <data name="NavigationTab_Text.Text" xml:space="preserve">
+    <value>텍스트</value>
+  </data>
+  <data name="NavigationTab_Text.Description" xml:space="preserve">
+    <value>복사한 텍스트가 여기에 표시됩니다</value>
+  </data>
   <data name="NavigationTab_Images.Text" xml:space="preserve">
     <value>이미지</value>
   </data>
@@ -302,5 +308,17 @@
   </data>
   <data name="SelectedClipsCount.Text" xml:space="preserve">
     <value>{0, plural, other {# 개의 클립이 선택됨}}</value>
+  </data>
+  <data name="EraseButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>지우기</value>
+  </data>
+  <data name="EraseData_FlyoutHeader.Text" xml:space="preserve">
+    <value>클립보드 데이터 지우기</value>
+  </data>
+  <data name="EraseData_FlyoutDescription.Text" xml:space="preserve">
+    <value>최근 클립 모두 삭제, 즐겨찾기와 보호된 클립은 유지</value>
+  </data>
+  <data name="EraseData_FlyoutButton.Content" xml:space="preserve">
+    <value>지우기</value>
   </data>
 </root>

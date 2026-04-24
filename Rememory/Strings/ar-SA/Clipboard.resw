@@ -240,6 +240,12 @@
   <data name="NavigationTab_Favorites.Description" xml:space="preserve">
     <value>مقاطع الفيديو المفضلة لديك ستظهر هنا</value>
   </data>
+  <data name="NavigationTab_Text.Text" xml:space="preserve">
+    <value>نص</value>
+  </data>
+  <data name="NavigationTab_Text.Description" xml:space="preserve">
+    <value>سيتم عرض النص المنسوخ هنا</value>
+  </data>
   <data name="NavigationTab_Images.Text" xml:space="preserve">
     <value>الصور</value>
   </data>
@@ -302,5 +308,17 @@
   </data>
   <data name="SelectedClipsCount.Text" xml:space="preserve">
     <value>{0, plural, zero {لا توجد عناصر محددة} one {عنصر واحد محدد} two {عنصران محددان} few {# عناصر محددة} many {# عنصرًا محددًا} other {# عنصر محدد}}</value>
+  </data>
+  <data name="EraseButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>مسح</value>
+  </data>
+  <data name="EraseData_FlyoutHeader.Text" xml:space="preserve">
+    <value>مسح بيانات الحافظة</value>
+  </data>
+  <data name="EraseData_FlyoutDescription.Text" xml:space="preserve">
+    <value>إزالة جميع المقاطع الأخيرة مع الاحتفاظ بالمفضلة والمحمية</value>
+  </data>
+  <data name="EraseData_FlyoutButton.Content" xml:space="preserve">
+    <value>مسح</value>
   </data>
 </root>
