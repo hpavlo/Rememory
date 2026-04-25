@@ -8,6 +8,7 @@ using Rememory.Models;
 using Rememory.Views.Settings;
 using System;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.Graphics;
@@ -21,6 +22,7 @@ namespace Rememory.Views
     public class ClipboardWindow : WindowEx
     {
         private const uint TrayIconId = 0;
+        private const int TrayIconDoubleClickDelay = 250;
         private static readonly int WM_TASKBARCREATED = NativeHelper.RegisterWindowMessage("TaskbarCreated");
 
         public SettingsContext SettingsContext { get; } = App.Current.SettingsContext;
@@ -31,6 +33,16 @@ namespace Rememory.Views
         private readonly WindowMessageMonitor _messageMonitor;
 
         private bool _pinned = false;
+        /// <summary>
+        /// Tracks whether a double‑click has been detected during the current cycle.
+        /// If true, any pending single‑click action should be suppressed.
+        /// </summary>
+        private bool _trayIconDoubleClickDetected = false;
+        /// <summary>
+        /// Used to block multiple Selected events from scheduling duplicate single‑click actions
+        /// when the user actually performed a double‑click.
+        /// </summary>
+        private bool _trayIconSingleClickPending = false;
         private ClipboardRootPage? _rootPage;
 
         public IntPtr Handle { get; private set; }
@@ -126,11 +138,22 @@ namespace Rememory.Views
 
             _rootPage.ActualThemeChanged += ClipboardWindow_ActualThemeChanged;
             _rootPage.WindowCaptionArea.SizeChanged += WindowCaptionArea_SizeChanged;
+            _rootPage.ViewModel.PropertyChanged += ViewModel_PropertyChanged;
         }
 
         private void ClipboardWindow_ActualThemeChanged(FrameworkElement sender, object args) => App.Current.ThemeService.ApplyTheme();
 
         private void WindowCaptionArea_SizeChanged(object sender, SizeChangedEventArgs e) => UpdateCaptionRegion();
+
+        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(_rootPage.ViewModel.IsClipboardMonitoringEnabled))
+            {
+                var (iconPath, tooltip) = GetTrayIconAndTooltip();
+                TrayIcon.SetIcon(iconPath);
+                TrayIcon.Tooltip = tooltip;
+            }
+        }
 
         private void WindowMessageReceived(object? sender, WindowMessageEventArgs args)
         {
@@ -213,6 +236,8 @@ namespace Rememory.Views
             Closed -= Window_Closed;
             _messageMonitor.WindowMessageReceived -= WindowMessageReceived;
             _rootPage?.ActualThemeChanged -= ClipboardWindow_ActualThemeChanged;
+            _rootPage?.WindowCaptionArea.SizeChanged -= WindowCaptionArea_SizeChanged;
+            _rootPage?.ViewModel.PropertyChanged -= ViewModel_PropertyChanged;
         }
 
         private void InputNonClientPointerSource_ExitedMoveSize(InputNonClientPointerSource sender, ExitedMoveSizeEventArgs args)
@@ -231,30 +256,85 @@ namespace Rememory.Views
             }
         }
 
+        #region TrayIcon
+
+        private void TrayIcon_ContextMenu(TrayIcon sender, TrayIconEventArgs args)
+        {
+            if (TrayIconMenu is null)
+            {
+                TrayIconMenu = (MenuFlyout)App.Current.Resources["TrayIconContextMenu"];
+                foreach (var item in TrayIconMenu.Items)
+                {
+                    item.DataContext = _rootPage?.ViewModel;
+                }
+            }
+
+            args.Flyout = TrayIconMenu;
+        }
+
+        private async void TrayIcon_Click(TrayIcon sender, TrayIconEventArgs args)
+        {
+            // If we already have a pending single click, ignore extra Selected events
+            if (_trayIconSingleClickPending)
+            {
+                return;
+            }
+
+            _trayIconSingleClickPending = true;
+
+            await Task.Delay(TrayIconDoubleClickDelay);
+
+            if (!_trayIconDoubleClickDetected)
+            {
+                ShowWindow(ClipboardWindowPosition.RightCorner);
+            }
+
+            await Task.Delay(TrayIconDoubleClickDelay);
+
+            // Reset for next cycle
+            _trayIconDoubleClickDetected = false;
+            _trayIconSingleClickPending = false;
+        }
+
+        private void TrayIcon_LeftDoubleClick(TrayIcon sender, TrayIconEventArgs args)
+        {
+            _trayIconDoubleClickDetected = true;
+
+            if (_rootPage?.ViewModel.ToggleClipboardMonitoringEnabledCommand.CanExecute(null) ?? false)
+            {
+                _rootPage.ViewModel.ToggleClipboardMonitoringEnabledCommand.Execute(null);
+            }
+        }
+
         private TrayIcon CreateTrayIcon()
         {
-#if DEBUG
-            string toltip = $"{"AppDescription".GetLocalizedResource()} (Dev)";
-#else
-            string toltip = "AppDescription".GetLocalizedResource();
-#endif
-            var trayIcon = new TrayIcon(TrayIconId, AppContext.BaseDirectory + "Assets\\WindowIcon.ico", toltip);
-            trayIcon.ContextMenu += (s, a) =>
-            {
-                if (TrayIconMenu is null)
-                {
-                    TrayIconMenu = (MenuFlyout)App.Current.Resources["TrayIconContextMenu"];
-                    foreach (var item in TrayIconMenu.Items)
-                    {
-                        item.DataContext = _rootPage?.ViewModel;
-                    }
-                }
-
-                a.Flyout = TrayIconMenu;
-            };
-            trayIcon.Selected += (s, a) => ShowWindow(ClipboardWindowPosition.RightCorner);
+            var (iconPath, tooltip) = GetTrayIconAndTooltip();
+            var trayIcon = new TrayIcon(TrayIconId, iconPath, tooltip);
+            trayIcon.ContextMenu += TrayIcon_ContextMenu;
+            trayIcon.Selected += TrayIcon_Click;
+            trayIcon.LeftDoubleClick += TrayIcon_LeftDoubleClick;
             return trayIcon;
         }
+
+        private (string, string) GetTrayIconAndTooltip()
+        {
+            var isMonitoringEnabled = _rootPage?.ViewModel.IsClipboardMonitoringEnabled ?? SettingsContext.IsClipboardMonitoringEnabled;
+#if DEBUG
+            string tooltip = $"{"AppDescription".GetLocalizedResource()} (Dev)";
+#else
+            string tooltip = "AppDescription".GetLocalizedResource();
+#endif
+            var trayIconPath = AppContext.BaseDirectory + (isMonitoringEnabled ? "Assets\\WindowIcon.ico" : "Assets\\WindowIcon.disabled.ico");
+
+            if (!isMonitoringEnabled)
+            {
+                tooltip += Environment.NewLine + "/Clipboard/PauseMonitoringBanner/Text".GetLocalizedResource();
+            }
+
+            return (trayIconPath, tooltip);
+        }
+
+        #endregion
 
         private double GetDpiScaleFactor() => NativeHelper.GetDpiForWindow(Handle) / 96.0;
 
