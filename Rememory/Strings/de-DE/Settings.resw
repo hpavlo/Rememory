@@ -351,6 +351,12 @@
   <data name="Clipboard_DeveloperStringCaseConversions.Description" xml:space="preserve">
     <value>Erweiterte Befehle zum Konvertieren von Text in Camel Case, Pascal Case, Schlangenfall und Kebab Case aktivieren</value>
   </data>
+  <data name="Clipboard_ClipMovingToTopOnCopying.Header" xml:space="preserve">
+    <value>Kopierten Clip nach oben verschieben</value>
+  </data>
+  <data name="Clipboard_ClipMovingToTopOnCopying.Description" xml:space="preserve">
+    <value>Wenn aktiviert, wird jeder Clip, den Sie aus dem Zwischenablage-Manager kopieren, automatisch oben in der Liste angezeigt, um schneller darauf zuzugreifen</value>
+  </data>
   <data name="Clipboard_SearchBarSection.Text" xml:space="preserve">
     <value>Suchleiste</value>
   </data>

@@ -351,6 +351,12 @@
   <data name="Clipboard_DeveloperStringCaseConversions.Description" xml:space="preserve">
     <value>启用高级命令将文本转换为 Camel Case, Pascal Case, Snake Case 和 Kebab Case</value>
   </data>
+  <data name="Clipboard_ClipMovingToTopOnCopying.Header" xml:space="preserve">
+    <value>将复制的剪辑移到顶部</value>
+  </data>
+  <data name="Clipboard_ClipMovingToTopOnCopying.Description" xml:space="preserve">
+    <value>启用后，您在剪贴板管理器中复制的任何剪辑都会自动移到列表顶部以便快速访问</value>
+  </data>
   <data name="Clipboard_SearchBarSection.Text" xml:space="preserve">
     <value>搜索框</value>
   </data>

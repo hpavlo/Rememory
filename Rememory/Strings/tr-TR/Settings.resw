@@ -351,6 +351,12 @@
   <data name="Clipboard_DeveloperStringCaseConversions.Description" xml:space="preserve">
     <value>Metni Camel Case, Pascal Case, Snake Case ve Kebab Case biçimlerine dönüştürmek için gelişmiş komutları etkinleştirin</value>
   </data>
+  <data name="Clipboard_ClipMovingToTopOnCopying.Header" xml:space="preserve">
+    <value>Kopyalanan klibi üste taşı</value>
+  </data>
+  <data name="Clipboard_ClipMovingToTopOnCopying.Description" xml:space="preserve">
+    <value>Etkinleştirildiğinde, panodan kopyaladığınız klipler otomatik olarak listenin en üstüne taşınır, böylece daha hızlı erişirsiniz</value>
+  </data>
   <data name="Clipboard_SearchBarSection.Text" xml:space="preserve">
     <value>Arama çubuğu</value>
   </data>

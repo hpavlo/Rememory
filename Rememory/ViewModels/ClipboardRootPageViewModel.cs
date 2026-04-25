@@ -1080,10 +1080,15 @@ namespace Rememory.ViewModels
                 var dataDictionary = new Dictionary<ClipboardFormat, DataModel> { {format.Value, formatData} };
                 SendDataToClipboard(dataDictionary, caseType, paste);
             }
-            else {
+            else
+            {
                 SendDataToClipboard(clip.Data, caseType, paste);
             }
-            _clipboardService.MoveClipToTop(clip);
+
+            if (SettingsContext.IsClipMovingToTopOnCopyingEnabled)
+            {
+                _clipboardService.MoveClipToTop(clip);
+            }
         }
 
         private void SendDataToClipboard(Dictionary<ClipboardFormat, DataModel> data, [Optional] TextCaseType? caseType, bool paste = false)

@@ -26,6 +26,11 @@
                 <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsDeveloperStringCaseConversionsEnabled, Mode=TwoWay}" />
             </tkcontrols:SettingsCard>
 
+            <tkcontrols:SettingsCard x:Uid="/Settings/Clipboard_ClipMovingToTopOnCopying"
+                                     Margin="0,0,0,5">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsClipMovingToTopOnCopyingEnabled, Mode=TwoWay}" />
+            </tkcontrols:SettingsCard>
+
             <TextBlock x:Uid="/Settings/Clipboard_SearchBarSection"
                        Margin="0,28,0,8"
                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"

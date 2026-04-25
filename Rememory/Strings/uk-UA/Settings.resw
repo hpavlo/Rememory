@@ -351,6 +351,12 @@
   <data name="Clipboard_DeveloperStringCaseConversions.Description" xml:space="preserve">
     <value>Увімкнути розширені команди для перетворення тексту в Camel Case, Pascal Case, Snake Case і Kebab Case</value>
   </data>
+  <data name="Clipboard_ClipMovingToTopOnCopying.Header" xml:space="preserve">
+    <value>Перемістити скопійований кліп вгору</value>
+  </data>
+  <data name="Clipboard_ClipMovingToTopOnCopying.Description" xml:space="preserve">
+    <value>Якщо увімкнено, будь-які кліпи, що ви скопіюєте з менеджера буфера обміну, буде автоматично перенесено у верхній частині списку для швидкого доступу</value>
+  </data>
   <data name="Clipboard_SearchBarSection.Text" xml:space="preserve">
     <value>Рядок пошуку</value>
   </data>

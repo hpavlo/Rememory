@@ -204,6 +204,16 @@ namespace Rememory.Models
         }
 
 
+        private bool? _isClipMovingToTopOnCopyingEnabled;
+
+        [Settings("IsClipMovingToTopOnCopyingEnabled", DefaultValue = true)]
+        public bool IsClipMovingToTopOnCopyingEnabled
+        {
+            get => _isClipMovingToTopOnCopyingEnabled ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _isClipMovingToTopOnCopyingEnabled, value);
+        }
+
+
         private bool? _isDeveloperStringCaseConversionsEnabled;
 
         [Settings("IsDeveloperStringCaseConversionsEnabled", DefaultValue = false)]

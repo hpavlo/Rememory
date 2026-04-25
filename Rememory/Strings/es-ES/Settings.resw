@@ -351,6 +351,12 @@
   <data name="Clipboard_DeveloperStringCaseConversions.Description" xml:space="preserve">
     <value>Activa comandos avanzados para convertir texto a Camel Case, Pascal Case, Snake Case y Kebab Case</value>
   </data>
+  <data name="Clipboard_ClipMovingToTopOnCopying.Header" xml:space="preserve">
+    <value>Mover clip copiado arriba</value>
+  </data>
+  <data name="Clipboard_ClipMovingToTopOnCopying.Description" xml:space="preserve">
+    <value>Al habilitarlo, cualquier clip copiado desde el gestor se moverá automáticamente arriba en la lista para un acceso más rápido</value>
+  </data>
   <data name="Clipboard_SearchBarSection.Text" xml:space="preserve">
     <value>Barra de búsqueda</value>
   </data>

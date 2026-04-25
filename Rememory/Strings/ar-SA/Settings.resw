@@ -351,6 +351,12 @@
   <data name="Clipboard_DeveloperStringCaseConversions.Description" xml:space="preserve">
     <value>تمكين الأوامر المتقدمة لتحويل النص إلى Camel Case وPascal Case وSnake Case وKebab Case</value>
   </data>
+  <data name="Clipboard_ClipMovingToTopOnCopying.Header" xml:space="preserve">
+    <value>نقل المقطع المنسوخ إلى الأعلى</value>
+  </data>
+  <data name="Clipboard_ClipMovingToTopOnCopying.Description" xml:space="preserve">
+    <value>عند التفعيل، أي مقطع تنسخه من مدير الحافظة سيتم نقله تلقائيًا إلى الأعلى للوصول السريع</value>
+  </data>
   <data name="Clipboard_SearchBarSection.Text" xml:space="preserve">
     <value>شريط البحث</value>
   </data>
