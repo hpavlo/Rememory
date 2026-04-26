@@ -316,7 +316,7 @@
     <value>Erase clipboard data</value>
   </data>
   <data name="EraseData_FlyoutDescription.Text" xml:space="preserve">
-    <value>Remove all resent clips, but keep favorite and clips with protected tags safe</value>
+    <value>Remove all recent clips, but keep favorite and clips with protected tags safe</value>
   </data>
   <data name="EraseData_FlyoutButton.Content" xml:space="preserve">
     <value>Erase</value>
