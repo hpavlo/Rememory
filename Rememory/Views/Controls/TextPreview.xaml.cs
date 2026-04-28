@@ -2,6 +2,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Rememory.Models;
 using Rememory.Views.Controls.Behavior;
+using System;
 
 namespace Rememory.Views.Controls
 {
@@ -19,8 +20,17 @@ namespace Rememory.Views.Controls
             set => SetValue(SearchTextProperty, value);
         }
 
+        public string DataPreview
+        {
+            get => (string)GetValue(DataPreviewProperty);
+            set => SetValue(DataPreviewProperty, value);
+        }
+
         public static readonly DependencyProperty ClipDataProperty =
             DependencyProperty.Register(nameof(ClipData), typeof(DataModel), typeof(TextPreview), new PropertyMetadata(null, OnClipDataChanged));
+
+        public static readonly DependencyProperty DataPreviewProperty =
+            DependencyProperty.Register(nameof(DataPreview), typeof(string), typeof(TextPreview), new PropertyMetadata(string.Empty, OnSearchTextChanged));
 
         public static readonly DependencyProperty SearchTextProperty =
             DependencyProperty.Register(nameof(SearchText), typeof(string), typeof(TextPreview), new PropertyMetadata(string.Empty, OnSearchTextChanged));
@@ -34,7 +44,8 @@ namespace Rememory.Views.Controls
         {
             if (d is TextPreview control && e.NewValue is DataModel clipData)
             {
-                control.PreviewTextBlock.SearchHighlight(control.SearchText, clipData.Data);
+                control.DataPreview = clipData.Data[..Math.Min(clipData.Data.Length, 1_000)].Trim();
+                control.PreviewTextBlock.SearchHighlight(control.SearchText);
             }
         }
 

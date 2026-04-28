@@ -425,6 +425,7 @@
             </Flyout.SystemBackdrop>
             <TextBlock FontSize="{StaticResource BodyTextBlockFontSize}"
                        TextWrapping="Wrap"
+                       TextTrimming="CharacterEllipsis"
                        IsTextSelectionEnabled="True" />
         </Flyout>
 

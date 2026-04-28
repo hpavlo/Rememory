@@ -22,7 +22,7 @@
         <TextBlock x:Name="PreviewTextBlock"
                    TextWrapping="Wrap"
                    TextTrimming="CharacterEllipsis"
-                   Text="{x:Bind ClipData.Data.Trim(), Mode=OneWay}"
+                   Text="{x:Bind DataPreview, Mode=OneWay}"
                    FontSize="{StaticResource BodyTextBlockFontSize}" />
     </Grid>
 </UserControl>

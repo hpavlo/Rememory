@@ -357,7 +357,7 @@ namespace Rememory.Views
                     case ClipboardFormat.Files:
                         var textBlock = (TextBlock)_previewTextFlyout.Content;
                         textBlock.Text = dataItem.Key == ClipboardFormat.Text
-                            ? dataItem.Value.Data
+                            ? dataItem.Value.Data[..Math.Min(dataItem.Value.Data.Length, 100_000)]
                             : dataItem.Value.Data.Replace(FormatManager.FilePathsSeparator, Environment.NewLine + Environment.NewLine);
                         textBlock.SearchHighlight(ViewModel.SearchString);
                         _previewTextFlyout.ShowAt(this);
