@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Rememory.Helper;
 using Rememory.Helper.WindowBackdrop;
+using Rememory.Hooks;
 using Rememory.Models;
 using Rememory.Views.Settings;
 using System;
@@ -16,6 +17,7 @@ using Windows.System;
 using WinRT.Interop;
 using WinUIEx;
 using WinUIEx.Messaging;
+using Microsoft.UI.Dispatching;
 
 namespace Rememory.Views
 {
@@ -31,6 +33,7 @@ namespace Rememory.Views
         public readonly bool IsRoundedCornerSupported;
         private readonly InputNonClientPointerSource _inputNonClientPointerSource;
         private readonly WindowMessageMonitor _messageMonitor;
+        private readonly GlobalMouseHook _globalMouseHook = new();
 
         private bool _pinned = false;
         /// <summary>
@@ -90,6 +93,9 @@ namespace Rememory.Views
             _inputNonClientPointerSource = InputNonClientPointerSource.GetForWindowId(AppWindow.Id);
             _inputNonClientPointerSource.ExitedMoveSize += InputNonClientPointerSource_ExitedMoveSize;
 
+            // Set up mouse hook to detect clicks outside the window
+            _globalMouseHook.MouseEvent += GlobalMouseHook_MouseEvent;
+
             Activated += Window_Activated;
             AppWindow.Closing += Window_Closing;
             Closed += Window_Closed;
@@ -105,10 +111,11 @@ namespace Rememory.Views
             }
             MoveToStartPosition(position);
             Showing?.Invoke(this, EventArgs.Empty);
-            AppWindow.Show();
+            AppWindow.Show(activateWindow: false);
             IsAlwaysOnTop = true;
-            KeyboardHelper.MultiKeyAction([(VirtualKey)0x0E], KeyboardHelper.KeyAction.DownUp);   // To fix problem with foreground window
-            this.SetForegroundWindow();
+
+            _globalMouseHook.AddMouseHook();
+
             return true;
         }
 
@@ -118,6 +125,9 @@ namespace Rememory.Views
             {
                 return false;
             }
+
+            _globalMouseHook.RemoveMouseHook();
+
             Hiding?.Invoke(this, EventArgs.Empty);
             AppWindow.Hide();
             return true;
@@ -214,6 +224,32 @@ namespace Rememory.Views
             }
         }
 
+        private void GlobalMouseHook_MouseEvent(object? sender, MouseHookEventArgs e)
+        {
+            // Only handle left button down to detect clicks
+            if (e.Message != GlobalMouseHook.MouseMessage.WM_LBUTTONDOWN && e.Message != GlobalMouseHook.MouseMessage.WM_RBUTTONDOWN)
+            {
+                return;
+            }
+
+            if (!Visible || Pinned)
+            {
+                return;
+            }
+
+            var windowBounds = new RectInt32(AppWindow.Position.X, AppWindow.Position.Y, AppWindow.Size.Width, AppWindow.Size.Height);
+
+            if (!IsPointInRect(e.Position, windowBounds))
+            {
+                DispatcherQueue.TryEnqueue(() => HideWindow());
+            }
+        }
+
+        private bool IsPointInRect(PointInt32 point, RectInt32 rect)
+        {
+            return point.X >= rect.X && point.X < rect.X + rect.Width && point.Y >= rect.Y && point.Y < rect.Y + rect.Height;
+        }
+
         private void Window_Activated(object sender, WindowActivatedEventArgs args)
         {
             if (!Pinned && args.WindowActivationState == WindowActivationState.Deactivated)
@@ -231,6 +267,8 @@ namespace Rememory.Views
         private void Window_Closed(object sender, WindowEventArgs args)
         {
             SettingsWindow.CloseSettingsWindow();
+            _globalMouseHook.MouseEvent -= GlobalMouseHook_MouseEvent;
+            _globalMouseHook.Dispose();
             Activated -= Window_Activated;
             AppWindow.Closing -= Window_Closing;
             Closed -= Window_Closed;
