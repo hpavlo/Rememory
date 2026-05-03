@@ -113,6 +113,7 @@ namespace Rememory.Views
             Showing?.Invoke(this, EventArgs.Empty);
             AppWindow.Show(activateWindow: false);
             IsAlwaysOnTop = true;
+            KeyboardHelper.MultiKeyAction([(VirtualKey)0x0E], KeyboardHelper.KeyAction.DownUp);
 
             _globalMouseHook.AddMouseHook();
 
