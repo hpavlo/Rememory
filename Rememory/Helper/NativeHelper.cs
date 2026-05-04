@@ -56,6 +56,7 @@ namespace Rememory.Helper
 
 
         internal const int WH_KEYBOARD_LL = 13;
+        internal const int WH_MOUSE_LL = 14;
 
         internal delegate IntPtr HookProc(int nCode, IntPtr wParam, IntPtr lParam);
 
