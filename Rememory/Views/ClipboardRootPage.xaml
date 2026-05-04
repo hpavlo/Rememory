@@ -949,7 +949,7 @@
                                     VerticalAlignment="Center"
                                     IsEnabled="{x:Bind ViewModel.IsSearchEnabled, Mode=OneWay}"
                                     Text="{x:Bind ViewModel.SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    KeyDown="SearchBox_KeyDown" />
+                                    PreviewKeyDown="SearchBox_PreviewKeyDown" />
 
                     <Button x:Name="FilterButton"
                             x:Uid="/Clipboard/FilterButton"

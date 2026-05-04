@@ -203,6 +203,7 @@ namespace Rememory.Views
             ClipsListView.ItemTemplate = ViewModel.SettingsContext.IsCompactViewEnabled ? _compactClipLayoutTemplate : _clipLayoutTemplate;
         }
 
+        // Do not use preview key down event to avoid window hiding if key pressed on flyout
         private void RootPage_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == VirtualKey.Escape)
@@ -637,11 +638,18 @@ namespace Rememory.Views
 
         #endregion
 
-        private void SearchBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        private void SearchBox_PreviewKeyDown(object sender, KeyRoutedEventArgs e)
         {
-            if (e.Key == VirtualKey.Down)
+            switch (e.Key)
             {
-                SetFocusOnFirstClipInList();
+                case VirtualKey.Down:
+                    SetFocusOnFirstClipInList();
+                    e.Handled = true;
+                    break;
+                case VirtualKey.Escape:
+                    _window.HideWindow();
+                    e.Handled = true;
+                    break;
             }
         }
 
