@@ -80,6 +80,7 @@ namespace Rememory.Views
             AppWindow.SetTitleBarIcon(AppContext.BaseDirectory + "Assets\\WindowIcon.ico");
 
             this.SetWindowStyle(WindowStyle.Popup);
+            this.SetExtendedWindowStyle(ExtendedWindowStyle.NoActivate);
             int cornerPreference = (int)NativeHelper.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
             nint dwmResult = NativeHelper.DwmSetWindowAttribute(this.GetWindowHandle(), NativeHelper.DWMWA_WINDOW_CORNER_PREFERENCE, ref cornerPreference, sizeof(int));
             IsRoundedCornerSupported = dwmResult == 0;
