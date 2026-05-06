@@ -14,8 +14,7 @@
       xmlns:selector="using:Rememory.Views.Controls.Selector"
       x:Name="RootPage"
       DataContext="{x:Bind ViewModel}"
-      SizeChanged="ClipboardRootPage_SizeChanged"
-      KeyDown="RootPage_KeyDown">
+      SizeChanged="ClipboardRootPage_SizeChanged">
     <Page.Resources>
         <tkconverters:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"
                                                 TrueValue="Collapsed"

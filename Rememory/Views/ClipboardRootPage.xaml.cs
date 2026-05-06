@@ -203,14 +203,6 @@ namespace Rememory.Views
             ClipsListView.ItemTemplate = ViewModel.SettingsContext.IsCompactViewEnabled ? _compactClipLayoutTemplate : _clipLayoutTemplate;
         }
 
-        private void RootPage_KeyDown(object sender, KeyRoutedEventArgs e)
-        {
-            if (e.Key == VirtualKey.Escape)
-            {
-                _window.HideWindow();
-            }
-        }
-
         private void SetFocusOnFirstClipInList()
         {
             var firstClipContainer = ClipsListView.ContainerFromIndex(0) as UIElement;
@@ -503,6 +495,91 @@ namespace Rememory.Views
                     OpenPreviewFlyout((ClipModel)clipItem.Content);
                     break;
             }
+        }
+
+        public bool HandleArrowKeyNavigation(VirtualKey key)
+        {
+            var direction = key switch
+            {
+                VirtualKey.Up => Microsoft.UI.Xaml.Input.FocusNavigationDirection.Up,
+                VirtualKey.Down => Microsoft.UI.Xaml.Input.FocusNavigationDirection.Down,
+                VirtualKey.Left => Microsoft.UI.Xaml.Input.FocusNavigationDirection.Left,
+                VirtualKey.Right => Microsoft.UI.Xaml.Input.FocusNavigationDirection.Right,
+                _ => Microsoft.UI.Xaml.Input.FocusNavigationDirection.None
+            };
+
+            if (direction == Microsoft.UI.Xaml.Input.FocusNavigationDirection.None)
+            {
+                return false;
+            }
+
+            var focusedElement = Microsoft.UI.Xaml.Input.FocusManager.GetFocusedElement(XamlRoot) as UIElement;
+            if (focusedElement is ListViewItem item && ItemsControl.ItemsControlFromItemContainer(item) == ClipsListView)
+            {
+                if (key == VirtualKey.Up && item.Content == ClipsListView.Items.FirstOrDefault())
+                {
+                    SearchBox.Focus(FocusState.Programmatic);
+                    return true;
+                }
+
+                if (key == VirtualKey.Left)
+                {
+                    var selectedItemContainer = NavigationTabView.ContainerFromMenuItem(NavigationTabView.SelectedItem) as UIElement;
+                    selectedItemContainer?.Focus(FocusState.Programmatic);
+                    return true;
+                }
+            }
+
+            var options = new Microsoft.UI.Xaml.Input.FindNextElementOptions()
+            {
+                SearchRoot = this
+            };
+
+            return Microsoft.UI.Xaml.Input.FocusManager.TryMoveFocus(direction, options);
+        }
+
+        public bool HandleEnterKey()
+        {
+            var focusedElement = Microsoft.UI.Xaml.Input.FocusManager.GetFocusedElement(XamlRoot);
+
+            if (focusedElement is UIElement uiElement)
+            {
+                var peer = Microsoft.UI.Xaml.Automation.Peers.FrameworkElementAutomationPeer.FromElement(uiElement);
+
+                if (peer is not null)
+                {
+                    var selectionItemProvider = peer.GetPattern(Microsoft.UI.Xaml.Automation.Peers.PatternInterface.SelectionItem) as Microsoft.UI.Xaml.Automation.Provider.ISelectionItemProvider;
+
+                    if (selectionItemProvider is not null && !selectionItemProvider.IsSelected)
+                    {
+                        selectionItemProvider.Select();
+                        return true;
+                    }
+
+                    var invokeProvider = peer.GetPattern(Microsoft.UI.Xaml.Automation.Peers.PatternInterface.Invoke) as Microsoft.UI.Xaml.Automation.Provider.IInvokeProvider;
+
+                    if (invokeProvider is not null)
+                    {
+                        invokeProvider.Invoke();
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public bool HandleEscapeKey()
+        {
+            var openPopups = Microsoft.UI.Xaml.Media.VisualTreeHelper.GetOpenPopupsForXamlRoot(XamlRoot);
+
+            if (openPopups is not null && openPopups.Count > 0)
+            {
+                openPopups[openPopups.Count - 1].IsOpen = false;
+                return true;
+            }
+
+            return false;
         }
 
         private void ClipsListView_PreviewKeyUp(object sender, KeyRoutedEventArgs e)
