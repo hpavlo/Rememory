@@ -948,6 +948,8 @@
                                     VerticalAlignment="Center"
                                     IsEnabled="{x:Bind ViewModel.IsSearchEnabled, Mode=OneWay}"
                                     Text="{x:Bind ViewModel.SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    GotFocus="SearchBox_GotFocus"
+                                    LostFocus="SearchBox_LostFocus"
                                     KeyDown="SearchBox_KeyDown" />
 
                     <Button x:Name="FilterButton"

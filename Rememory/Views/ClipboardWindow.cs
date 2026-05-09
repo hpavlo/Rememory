@@ -595,6 +595,29 @@ namespace Rememory.Views
                 AppWindow.MoveAndResize(new(x, y, independedWidth, independedHeight));
             }
         }
+
+        public void SetAllowKeyboardInput(bool allow)
+        {
+            var exStyle = NativeHelper.GetWindowLongPtr(Handle, NativeHelper.GWL_EXSTYLE);
+
+            if (allow)
+            {
+                // Remove NoActivate to allow keyboard input
+                exStyle = new IntPtr(exStyle.ToInt64() & ~NativeHelper.WS_EX_NOACTIVATE);
+            }
+            else
+            {
+                // Restore NoActivate to prevent focus stealing
+                exStyle = new IntPtr(exStyle.ToInt64() | NativeHelper.WS_EX_NOACTIVATE);
+            }
+
+            NativeHelper.SetWindowLongPtr(Handle, NativeHelper.GWL_EXSTYLE, exStyle);
+
+            if (allow)
+            {
+                this.SetForegroundWindow();
+            }
+        }
     }
 
     public enum ClipboardWindowPosition

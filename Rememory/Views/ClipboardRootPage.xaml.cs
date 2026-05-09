@@ -754,5 +754,16 @@ namespace Rememory.Views
                 ViewModel.EraseClipsOnSelectedTabCommand.Execute(null);
             }
         }
+
+        private void SearchBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            App.Current.ClipboardWindow?.SetAllowKeyboardInput(true);
+            SearchBox.Focus(FocusState.Programmatic);
+        }
+
+        private void SearchBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            App.Current.ClipboardWindow?.SetAllowKeyboardInput(false);
+        }
     }
 }

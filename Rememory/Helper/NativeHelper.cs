@@ -205,6 +205,14 @@ namespace Rememory.Helper
         internal const uint WS_EX_NOACTIVATE = 0x08000000;
         internal const uint WS_EX_LAYERED = 0x00080000;
 
+        internal const int GWL_EXSTYLE = -20;
+
+        [DllImport("user32.dll", SetLastError = true)]
+        internal static extern IntPtr GetWindowLongPtr(IntPtr hWnd, int nIndex);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        internal static extern IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
+
         internal const uint CS_VREDRAW = 1;
         internal const uint CS_HREDRAW = 2;
         internal const uint COLOR_BACKGROUND = 1;

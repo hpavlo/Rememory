@@ -118,6 +118,14 @@ namespace Rememory.Hooks
                         };
 
                         Microsoft.UI.Xaml.Input.FocusManager.TryMoveFocus(direction, options);
+
+                        var focusedElement = Microsoft.UI.Xaml.Input.FocusManager.GetFocusedElement() as Microsoft.UI.Xaml.DependencyObject;
+                        bool acceptsTextInput = focusedElement is Microsoft.UI.Xaml.Controls.TextBox
+                            || focusedElement is Microsoft.UI.Xaml.Controls.AutoSuggestBox
+                            || focusedElement is Microsoft.UI.Xaml.Controls.PasswordBox
+                            || focusedElement is Microsoft.UI.Xaml.Controls.RichEditBox;
+
+                        clipboardWindow.SetAllowKeyboardInput(acceptsTextInput);
                     });
                     args.Handled = true;
                     return;
@@ -184,11 +192,8 @@ namespace Rememory.Hooks
                     return;
                 }
 
-                if (!clipboardWindow.Pinned && IsInputKey(pressedKey, currentlyPressedKeys))
-                {
-                    clipboardWindow.DispatcherQueue.TryEnqueue(() => clipboardWindow.HideWindow());
-                    return;
-                }
+                // Don't intercept other keys, let them pass through. This allows text input controls like SearchBox to work 
+                // The window will still hide on mouse click outside or press escape key
             }
         }
 
