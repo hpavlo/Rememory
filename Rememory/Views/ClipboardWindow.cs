@@ -19,7 +19,7 @@ using WinUIEx.Messaging;
 
 namespace Rememory.Views
 {
-    public class ClipboardWindow : WindowEx
+    public class ClipboardWindow : Window
     {
         private const uint TrayIconId = 0;
         private const int TrayIconDoubleClickDelay = 250;
@@ -28,11 +28,13 @@ namespace Rememory.Views
         public SettingsContext SettingsContext { get; } = App.Current.SettingsContext;
         private MenuFlyout? TitleBarContextMenu => field ??= _rootPage?.Resources["TitleBarContextMenuFlyout"] as MenuFlyout;
 
-        public readonly bool IsRoundedCornerSupported;
+        private readonly OverlappedPresenter _windowPresenter;
         private readonly InputNonClientPointerSource _inputNonClientPointerSource;
         private readonly WindowMessageMonitor _messageMonitor;
 
         private bool _pinned = false;
+        private bool _cloaked = false;
+        private bool _dpiChanged = false;
         /// <summary>
         /// Tracks whether a double‑click has been detected during the current cycle.
         /// If true, any pending single‑click action should be suppressed.
@@ -45,13 +47,15 @@ namespace Rememory.Views
         private bool _trayIconSingleClickPending = false;
         private ClipboardRootPage? _rootPage;
 
-        public IntPtr Handle { get; private set; }
-        public TrayIcon TrayIcon { get; private set; }
+        public IntPtr Handle { get; init; }
+        public TrayIcon TrayIcon { get; init; }
         public MenuFlyout? TrayIconMenu { get; private set; }
+        public bool IsRoundedCornerSupported { get; init; }
+        public bool IsVisibleToUser => !_cloaked && AppWindow.IsVisible;
 
         public bool Pinned
         {
-            get => IsAlwaysOnTop && _pinned;
+            get => _windowPresenter.IsAlwaysOnTop && _pinned;
             set
             {
                 int borderColor = (_pinned = value) ? NativeHelper.DWMWA_COLOR_NONE : NativeHelper.DWMWA_COLOR_DEFAULT;
@@ -64,27 +68,28 @@ namespace Rememory.Views
 
         public ClipboardWindow()
         {
-            Title = Package.Current.DisplayName;
-            IsShownInSwitchers = false;
-            IsResizable = false;
-            IsMaximizable = false;
-            IsMinimizable = false;
-            MinWidth = SettingsContext.WindowWidthLowerBound;
-            MaxWidth = SettingsContext.WindowWidthUpperBound;
-            MinHeight = SettingsContext.WindowHeightLowerBound;
-            MaxHeight = SettingsContext.WindowHeightUpperBound;
-            AppWindow.SetTaskbarIcon(AppContext.BaseDirectory + "Assets\\WindowIcon.ico");
-            AppWindow.SetTitleBarIcon(AppContext.BaseDirectory + "Assets\\WindowIcon.ico");
-
-            this.SetWindowStyle(WindowStyle.Popup);
-            int cornerPreference = (int)NativeHelper.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
-            nint dwmResult = NativeHelper.DwmSetWindowAttribute(this.GetWindowHandle(), NativeHelper.DWMWA_WINDOW_CORNER_PREFERENCE, ref cornerPreference, sizeof(int));
-            IsRoundedCornerSupported = dwmResult == 0;
-
             Handle = WindowNative.GetWindowHandle(this);
+            Title = Package.Current.DisplayName;
             TrayIcon = CreateTrayIcon();
 
-            _messageMonitor = new WindowMessageMonitor(this.GetWindowHandle());
+            var appIconPath = AppContext.BaseDirectory + "Assets\\WindowIcon.ico";
+            AppWindow.SetTaskbarIcon(appIconPath);
+            AppWindow.SetTitleBarIcon(appIconPath);
+            AppWindow.IsShownInSwitchers = false;
+
+            _windowPresenter = (OverlappedPresenter)AppWindow.Presenter;
+            _windowPresenter.IsResizable = false;
+            _windowPresenter.IsMaximizable = false;
+            _windowPresenter.IsMinimizable = false;
+            UpdateWindowMinimumSize();
+
+            this.SetWindowStyle(WindowStyle.Popup);
+            this.SetExtendedWindowStyle(ExtendedWindowStyle.ToolWindow);
+            int cornerPreference = (int)NativeHelper.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
+            nint dwmResult = NativeHelper.DwmSetWindowAttribute(Handle, NativeHelper.DWMWA_WINDOW_CORNER_PREFERENCE, ref cornerPreference, sizeof(int));
+            IsRoundedCornerSupported = dwmResult == 0;
+
+            _messageMonitor = new WindowMessageMonitor(Handle);
             _messageMonitor.WindowMessageReceived += WindowMessageReceived;
 
             _inputNonClientPointerSource = InputNonClientPointerSource.GetForWindowId(AppWindow.Id);
@@ -95,32 +100,96 @@ namespace Rememory.Views
             Closed += Window_Closed;
         }
 
-        public bool ShowWindow(ClipboardWindowPosition? position = null)
+        public void ShowWindow(ClipboardWindowPosition? position = null)
         {
-            if (Visible)
+            if (IsVisibleToUser)
             {
                 MoveToStartPosition(position);
-                this.SetForegroundWindow();
-                return false;
+                FinalizeForegroundState();
+                return;
             }
+
+            // Minimized window is different state from hidded
+            // If we show minimized window it will not be visible to user
+            if (AppWindow.Presenter is OverlappedPresenter { State: OverlappedPresenterState.Minimized } presenter)
+            {
+                // Make sure our window is cloaked before any possible window manipulations
+                Cloak();
+                presenter.Restore();
+            }
+
             MoveToStartPosition(position);
             Showing?.Invoke(this, EventArgs.Empty);
             AppWindow.Show();
-            IsAlwaysOnTop = true;
-            KeyboardHelper.MultiKeyAction([(VirtualKey)0x0E], KeyboardHelper.KeyAction.DownUp);   // To fix problem with foreground window
-            this.SetForegroundWindow();
-            return true;
+
+            // Show window to user and avoid xaml loading artefacts
+            if (_dpiChanged)
+            {
+                _dpiChanged = false;
+                Task.Delay(100).ContinueWith(_ =>
+                {
+                    DispatcherQueue.TryEnqueue(Microsoft.UI.Dispatching.DispatcherQueuePriority.Low, () =>
+                    {
+                        Uncloak();
+                        FinalizeForegroundState();
+                    });
+                });
+            }
+            else
+            {
+                Uncloak();
+                FinalizeForegroundState();
+            }
         }
 
-        public bool HideWindow()
+        public void HideWindow()
         {
-            if (!Visible)
-            {
-                return false;
-            }
+            var cloaked = Cloak();
+
             Hiding?.Invoke(this, EventArgs.Empty);
+            // Hide window to make sure that OS gives focus back to another app
             AppWindow.Hide();
-            return true;
+
+            if (cloaked)
+            {
+                // Show window againt to avoid flickers coused by WinUI3 when window is beeng show
+                AppWindow.Show(false);
+            }
+        }
+
+        private void FinalizeForegroundState()
+        {
+            _windowPresenter.IsAlwaysOnTop = true;
+            // Emulating a keypress to "push" focus
+            KeyboardHelper.MultiKeyAction([(VirtualKey)0x0E], KeyboardHelper.KeyAction.DownUp);
+            this.SetForegroundWindow();
+        }
+
+        /// <summary>
+        /// Make window unvisible for user
+        /// </summary>
+        /// <returns>True if window is cloaked successfully</returns>
+        private bool Cloak()
+        {
+            int value = 1;
+            nint dwmResult = NativeHelper.DwmSetWindowAttribute(Handle, NativeHelper.DWMWA_CLOAK, ref value, sizeof(int));
+
+            if (dwmResult == 0)
+            {
+                return _cloaked = true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Makes window visible to user
+        /// </summary>
+        private void Uncloak()
+        {
+            int value = 0;
+            NativeHelper.DwmSetWindowAttribute(Handle, NativeHelper.DWMWA_CLOAK, ref value, sizeof(int));
+            _cloaked = false;
         }
 
         public void InitWindowContent()
@@ -163,11 +232,15 @@ namespace Rememory.Views
                 case NativeHelper.WM_SETTINGCHANGE when args.Message.WParam == NativeHelper.SPI_SETLOGICALDPIOVERRIDE:
                     MoveToStartPosition();
                     break;
+
                 case NativeHelper.WM_DPICHANGED:
+                    _dpiChanged = true;
+                    UpdateWindowMinimumSize();   // Call it before region updates
                     var rect = Marshal.PtrToStructure<NativeHelper.Rect>(args.Message.LParam);
                     UpdateResizeRegions(new(rect.right - rect.left, rect.bottom - rect.top));
                     UpdateCaptionRegion();
                     break;
+
                 // Prevent window moving if it displays in "Right" position
                 case NativeHelper.WM_SYSCOMMAND:
                     if ((args.Message.WParam & 0xFFF0) == 0xF010   // SC_MOVE
@@ -176,6 +249,7 @@ namespace Rememory.Views
                         args.Handled = true;
                     }
                     break;
+
                 // Double click on caption area
                 case NativeHelper.WM_NCLBUTTONDBLCLK when args.Message.WParam == 2:   // HTCAPTION
                     if (_rootPage?.ViewModel.ToggleWindowPinnedCommand.CanExecute(null) ?? false)
@@ -184,6 +258,7 @@ namespace Rememory.Views
                     }
                     args.Handled = true;
                     break;
+
                 case NativeHelper.WM_NCRBUTTONUP when args.Message.WParam == 2:   // HTCAPTION
                     int x = (short)(args.Message.LParam.ToInt32() & 0xFFFF);
                     int y = (short)((args.Message.LParam.ToInt32() >> 16) & 0xFFFF);
@@ -192,6 +267,7 @@ namespace Rememory.Views
                     float scale = (float)GetDpiScaleFactor();
                     TitleBarContextMenu?.ShowAt(_rootPage, new(point.X / scale, point.Y / scale));
                     break;
+
                 case NativeHelper.WM_QUERYENDSESSION:
                     if (args.Message.LParam == 1)   // ENDSESSION_CLOSEAPP
                     {
@@ -204,6 +280,7 @@ namespace Rememory.Views
                 case NativeHelper.WM_ENDSESSION when args.Message.WParam != 0:   // wParam = 1 means the session is ending
                     App.Current.Exit();
                     break;
+
                 default:
                     if (args.Message.MessageId == WM_TASKBARCREATED)
                     {
@@ -250,8 +327,9 @@ namespace Rememory.Views
             }
             else
             {
-                SettingsContext.WindowWidth = (int)Width;
-                SettingsContext.WindowHeight = (int)Height;
+                var dpi = GetDpiScaleFactor();
+                SettingsContext.WindowWidth = (int)(AppWindow.Size.Width / dpi);
+                SettingsContext.WindowHeight = (int)(AppWindow.Size.Height / dpi);
                 UpdateResizeRegions();
             }
         }
@@ -395,6 +473,13 @@ namespace Rememory.Views
             double scale = GetDpiScaleFactor();
             var captionPoint = _rootPage.WindowCaptionArea.TransformToVisual(_rootPage).TransformPoint(new(0, 0));
             SetBorderRegion(NonClientRegionKind.Caption, captionPoint.X, captionPoint.Y, _rootPage.WindowCaptionArea.ActualWidth, _rootPage.WindowCaptionArea.ActualHeight, scale);
+        }
+
+        private void UpdateWindowMinimumSize()
+        {
+            var dpi = GetDpiScaleFactor();
+            _windowPresenter.PreferredMinimumWidth = (int)(SettingsContext.WindowWidthLowerBound * dpi);
+            _windowPresenter.PreferredMinimumHeight = (int)(SettingsContext.WindowHeightLowerBound * dpi);
         }
 
         private void MoveToStartPosition(ClipboardWindowPosition? position = null)

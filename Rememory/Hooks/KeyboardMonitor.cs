@@ -70,7 +70,7 @@ namespace Rememory.Hooks
                 {
                     _activationShortcutPressed = true;
                     var window = App.Current.ClipboardWindow;
-                    if (window.Visible)
+                    if (window.IsVisibleToUser)
                     {
                         window.HideWindow();
                     }

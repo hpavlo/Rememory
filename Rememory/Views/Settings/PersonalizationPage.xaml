@@ -167,7 +167,6 @@
                                    SmallChange="10"
                                    LargeChange="100"
                                    Minimum="{x:Bind models:SettingsContext.WindowWidthLowerBound}"
-                                   Maximum="{x:Bind models:SettingsContext.WindowWidthUpperBound}"
                                    Value="{x:Bind ViewModel.SettingsContext.WindowWidth, Mode=TwoWay}" />
                     </tkcontrols:SettingsCard>
                     
@@ -176,7 +175,6 @@
                                    SmallChange="10"
                                    LargeChange="100"
                                    Minimum="{x:Bind models:SettingsContext.WindowHeightLowerBound}"
-                                   Maximum="{x:Bind models:SettingsContext.WindowHeightUpperBound}"
                                    Value="{x:Bind ViewModel.SettingsContext.WindowHeight, Mode=TwoWay}"
                                    IsEnabled="{x:Bind ViewModel.IsWindowHeightEditorEnabled, Mode=OneWay}" />
                     </tkcontrols:SettingsCard>
@@ -184,7 +182,6 @@
                     <tkcontrols:SettingsCard x:Uid="/Settings/Personalization_WindowMargin">
                         <NumberBox SpinButtonPlacementMode="Inline"
                                    Minimum="{x:Bind models:SettingsContext.WindowMarginLowerBound}"
-                                   Maximum="{x:Bind models:SettingsContext.WindowMarginUpperBound}"
                                    Value="{x:Bind ViewModel.SettingsContext.WindowMargin, Mode=TwoWay}"
                                    IsEnabled="{x:Bind ViewModel.IsWindowMarginEditorEnabled, Mode=OneWay}" />
                     </tkcontrols:SettingsCard>

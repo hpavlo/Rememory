@@ -170,7 +170,6 @@ namespace Rememory.Helper.WindowBackdrop
                     case ElementTheme.Default: _configurationSource.Theme = SystemBackdropTheme.Default; break;
                 }
             }
-            
         }
     }
 

@@ -137,10 +137,9 @@ namespace Rememory.Models
 
 
         private int? _windowWidth;
-        private static bool WindowWidthValidate(int value) => value >= WindowWidthLowerBound && value <= WindowWidthUpperBound;
+        private static bool WindowWidthValidate(int value) => value >= WindowWidthLowerBound;
 
         public static readonly int WindowWidthLowerBound = 320;
-        public static readonly int WindowWidthUpperBound = 1200;
 
         [Settings("WindowWidth", DefaultValue = 380, Validator = nameof(WindowWidthValidate))]
         public int WindowWidth
@@ -151,10 +150,9 @@ namespace Rememory.Models
 
 
         private int? _windowHeight;
-        private static bool WindowHeightValidate(int value) => value >= WindowHeightLowerBound && value <= WindowHeightUpperBound;
+        private static bool WindowHeightValidate(int value) => value >= WindowHeightLowerBound;
 
         public static readonly int WindowHeightLowerBound = 320;
-        public static readonly int WindowHeightUpperBound = 1200;
 
         [Settings("WindowHeight", DefaultValue = 400, Validator = nameof(WindowHeightValidate))]
         public int WindowHeight
@@ -165,10 +163,9 @@ namespace Rememory.Models
 
 
         private int? _windowMargin;
-        private static bool WindowMarginValidate(int value) => value >= WindowMarginLowerBound && value <= WindowMarginUpperBound;
+        private static bool WindowMarginValidate(int value) => value >= WindowMarginLowerBound;
 
         public static readonly int WindowMarginLowerBound = 0;
-        public static readonly int WindowMarginUpperBound = 50;
 
         [Settings("WindowMargin", DefaultValue = 10, Validator = nameof(WindowMarginValidate))]
         public int WindowMargin

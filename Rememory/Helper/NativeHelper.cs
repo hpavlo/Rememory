@@ -178,6 +178,7 @@ namespace Rememory.Helper
             uint wFlags);
 
 
+        internal const int DWMWA_CLOAK = 13;
         internal const int DWMWA_WINDOW_CORNER_PREFERENCE = 33;
         internal const int DWMWA_BORDER_COLOR = 34;
         internal const int DWMWA_COLOR_NONE = unchecked((int)0xFFFFFFFE);   // No border
