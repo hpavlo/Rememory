@@ -19,7 +19,7 @@ using WinUIEx.Messaging;
 
 namespace Rememory.Views
 {
-    public class ClipboardWindow : Window
+    public class ClipboardWindow : WindowEx
     {
         private const uint TrayIconId = 0;
         private const int TrayIconDoubleClickDelay = 250;
@@ -34,7 +34,7 @@ namespace Rememory.Views
 
         private bool _pinned = false;
         private bool _cloaked = false;
-        private bool _dpiChanged = false;
+        private bool _requireDelayOnShow = false;
         /// <summary>
         /// Tracks whether a double‑click has been detected during the current cycle.
         /// If true, any pending single‑click action should be suppressed.
@@ -81,7 +81,13 @@ namespace Rememory.Views
             _windowPresenter.IsResizable = false;
             _windowPresenter.IsMaximizable = false;
             _windowPresenter.IsMinimizable = false;
-            UpdateWindowMinimumSize();
+
+            /// Presenter preferred minimum/maximum size doesn't scale after dpi changes
+            /// See https://github.com/microsoft/microsoft-ui-xaml/issues/10452
+            MinWidth = SettingsContext.WindowWidthLowerBound;
+            MinHeight = SettingsContext.WindowHeightLowerBound;
+            // Set window initial size
+            MoveAndResize(AppWindow.Position.X, AppWindow.Position.Y, SettingsContext.WindowWidth, SettingsContext.WindowHeight);
 
             this.SetWindowStyle(WindowStyle.Popup);
             this.SetExtendedWindowStyle(ExtendedWindowStyle.ToolWindow);
@@ -98,6 +104,7 @@ namespace Rememory.Views
             Activated += Window_Activated;
             AppWindow.Closing += Window_Closing;
             Closed += Window_Closed;
+            SettingsContext.PropertyChanged += SettingsContext_PropertyChanged;
         }
 
         public void ShowWindow(ClipboardWindowPosition? position = null)
@@ -109,8 +116,8 @@ namespace Rememory.Views
                 return;
             }
 
-            // Minimized window is different state from hidded
-            // If we show minimized window it will not be visible to user
+            /// Minimized window is different state from hidded
+            /// If we show minimized window it will not be visible to user
             if (AppWindow.Presenter is OverlappedPresenter { State: OverlappedPresenterState.Minimized } presenter)
             {
                 // Make sure our window is cloaked before any possible window manipulations
@@ -123,10 +130,10 @@ namespace Rememory.Views
             AppWindow.Show();
 
             // Show window to user and avoid xaml loading artefacts
-            if (_dpiChanged)
+            if (_requireDelayOnShow)
             {
-                _dpiChanged = false;
-                Task.Delay(100).ContinueWith(_ =>
+                _requireDelayOnShow = false;
+                Task.Delay(120).ContinueWith(_ =>
                 {
                     DispatcherQueue.TryEnqueue(Microsoft.UI.Dispatching.DispatcherQueuePriority.Low, () =>
                     {
@@ -234,8 +241,10 @@ namespace Rememory.Views
                     break;
 
                 case NativeHelper.WM_DPICHANGED:
-                    _dpiChanged = true;
-                    UpdateWindowMinimumSize();   // Call it before region updates
+                    if (!IsVisibleToUser)
+                    {
+                        _requireDelayOnShow = true;
+                    }
                     var rect = Marshal.PtrToStructure<NativeHelper.Rect>(args.Message.LParam);
                     UpdateResizeRegions(new(rect.right - rect.left, rect.bottom - rect.top));
                     UpdateCaptionRegion();
@@ -308,13 +317,38 @@ namespace Rememory.Views
         private void Window_Closed(object sender, WindowEventArgs args)
         {
             SettingsWindow.CloseSettingsWindow();
+            SettingsContext.PropertyChanged -= SettingsContext_PropertyChanged;
+
             Activated -= Window_Activated;
             AppWindow.Closing -= Window_Closing;
             Closed -= Window_Closed;
+
+            TrayIcon.ContextMenu -= TrayIcon_ContextMenu;
+            TrayIcon.Selected -= TrayIcon_Click;
+            TrayIcon.LeftDoubleClick -= TrayIcon_LeftDoubleClick;
+
             _messageMonitor.WindowMessageReceived -= WindowMessageReceived;
+            _inputNonClientPointerSource.ExitedMoveSize -= InputNonClientPointerSource_ExitedMoveSize;
+
             _rootPage?.ActualThemeChanged -= ClipboardWindow_ActualThemeChanged;
             _rootPage?.WindowCaptionArea.SizeChanged -= WindowCaptionArea_SizeChanged;
             _rootPage?.ViewModel.PropertyChanged -= ViewModel_PropertyChanged;
+        }
+
+        private void SettingsContext_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                /// Resize hided window if user changing window size from settings.
+                /// This will help to avoid xaml resizing artefacts on window showing
+                case nameof(SettingsContext.WindowWidth):
+                case nameof(SettingsContext.WindowHeight):
+                    if (!IsVisibleToUser)
+                    {
+                        MoveAndResize(AppWindow.Position.X, AppWindow.Position.Y, SettingsContext.WindowWidth, SettingsContext.WindowHeight);
+                    }
+                    break;
+            }
         }
 
         private void InputNonClientPointerSource_ExitedMoveSize(InputNonClientPointerSource sender, ExitedMoveSizeEventArgs args)
@@ -473,13 +507,6 @@ namespace Rememory.Views
             double scale = GetDpiScaleFactor();
             var captionPoint = _rootPage.WindowCaptionArea.TransformToVisual(_rootPage).TransformPoint(new(0, 0));
             SetBorderRegion(NonClientRegionKind.Caption, captionPoint.X, captionPoint.Y, _rootPage.WindowCaptionArea.ActualWidth, _rootPage.WindowCaptionArea.ActualHeight, scale);
-        }
-
-        private void UpdateWindowMinimumSize()
-        {
-            var dpi = GetDpiScaleFactor();
-            _windowPresenter.PreferredMinimumWidth = (int)(SettingsContext.WindowWidthLowerBound * dpi);
-            _windowPresenter.PreferredMinimumHeight = (int)(SettingsContext.WindowHeightLowerBound * dpi);
         }
 
         private void MoveToStartPosition(ClipboardWindowPosition? position = null)
