@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
+using Rememory.Core;
 using Rememory.Helper;
-using RememoryCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

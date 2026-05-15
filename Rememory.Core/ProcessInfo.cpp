@@ -3,7 +3,7 @@
 #include "ProcessInfo.g.cpp"
 #pragma comment(lib, "shell32.lib")
 
-namespace winrt::RememoryCore::implementation
+namespace winrt::Rememory::Core::implementation
 {
     winrt::hstring ProcessInfo::GetProcessPath(UINT_PTR windowHandle) {
         HWND hWnd = reinterpret_cast<HWND>(windowHandle);

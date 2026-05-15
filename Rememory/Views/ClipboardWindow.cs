@@ -302,7 +302,7 @@ namespace Rememory.Views
 
         private void Window_Activated(object sender, WindowActivatedEventArgs args)
         {
-            if (!Pinned && args.WindowActivationState == WindowActivationState.Deactivated)
+            if (IsVisibleToUser && !Pinned && args.WindowActivationState == WindowActivationState.Deactivated)
             {
                 HideWindow();
             }

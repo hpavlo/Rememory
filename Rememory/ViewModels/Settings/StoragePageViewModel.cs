@@ -17,45 +17,40 @@ namespace Rememory.ViewModels.Settings
         private readonly IClipTransferService _clipTransferService = App.Current.Services.GetService<IClipTransferService>()!;
 
         public SettingsContext SettingsContext { get; } = App.Current.SettingsContext;
-
-        private bool _isExportInProgress;
         public bool IsExportInProgress
         {
-            get => _isExportInProgress;
+            get;
             set
             {
-                if (SetProperty(ref _isExportInProgress, value) && value)
+                if (SetProperty(ref field, value) && value)
                 {
                     IsExportedSuccessfully = null;
                 }
             }
         }
 
-        private bool _isImportInProgress;
         public bool IsImportInProgress
         {
-            get => _isImportInProgress;
+            get;
             set
             {
-                if (SetProperty(ref _isImportInProgress, value) && value)
+                if (SetProperty(ref field, value) && value)
                 {
                     IsImportedSuccessfully = null;
                 }
             }
         }
 
-        private bool? _isExportedSuccessfully;
         public bool? IsExportedSuccessfully
         {
-            get => _isExportedSuccessfully;
-            set => SetProperty(ref _isExportedSuccessfully, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
-        private bool? _isImportedSuccessfully;
         public bool? IsImportedSuccessfully
         {
-            get => _isImportedSuccessfully;
-            set => SetProperty(ref _isImportedSuccessfully, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public bool IsRetentionPeriodParametersEnabled => SettingsContext.CleanupType == CleanupType.RetentionPeriod;
@@ -66,7 +61,8 @@ namespace Rememory.ViewModels.Settings
             get => SettingsContext.CleanupType;
             set
             {
-                if (SettingsContext.CleanupType != value) {
+                if (SettingsContext.CleanupType != value)
+                {
                     SettingsContext.CleanupType = value;
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(IsRetentionPeriodParametersEnabled));

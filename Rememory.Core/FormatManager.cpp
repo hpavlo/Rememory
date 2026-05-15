@@ -10,7 +10,7 @@
 
 #define CF_PREFERREDDROPEFFECT RegisterClipboardFormat(CFSTR_PREFERREDDROPEFFECT)
 
-namespace winrt::RememoryCore::implementation
+namespace winrt::Rememory::Core::implementation
 {
     winrt::hstring FormatManager::FormatToName(ClipboardFormat format)
     {

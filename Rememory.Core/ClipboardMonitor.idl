@@ -1,6 +1,6 @@
 import "ClipboardSnapshot.idl";
 
-namespace RememoryCore
+namespace Rememory.Core
 {
     [default_interface]
     runtimeclass ClipboardMonitor
@@ -13,10 +13,10 @@ namespace RememoryCore
         void StopMonitoring();
 
 
-        //[interface_name("RememoryCore.IClipboardWriter")]
+        //[interface_name("Rememory.Core.IClipboardWriter")]
         Boolean SetClipboardData(Windows.Foundation.Collections.IMapView<ClipboardFormat, String> dataMap);
 
-        //[interface_name("RememoryCore.IClipboardEvents")]
-        event Windows.Foundation.TypedEventHandler<ClipboardMonitor, RememoryCore.ClipboardSnapshot> ContentDetected;
+        //[interface_name("Rememory.Core.IClipboardEvents")]
+        event Windows.Foundation.TypedEventHandler<ClipboardMonitor, Rememory.Core.ClipboardSnapshot> ContentDetected;
     }
 }

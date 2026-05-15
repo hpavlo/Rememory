@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "ProcessInfo.g.h"
 
-namespace winrt::RememoryCore::implementation
+namespace winrt::Rememory::Core::implementation
 {
 	struct ProcessInfo : ProcessInfoT<ProcessInfo>
 	{
@@ -11,7 +11,7 @@ namespace winrt::RememoryCore::implementation
 	};
 }
 
-namespace winrt::RememoryCore::factory_implementation
+namespace winrt::Rememory::Core::factory_implementation
 {
 	struct ProcessInfo : ProcessInfoT<ProcessInfo, implementation::ProcessInfo> {};
 }

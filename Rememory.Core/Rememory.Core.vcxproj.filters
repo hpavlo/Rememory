@@ -27,7 +27,7 @@
     <ClInclude Include="ProcessInfo.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="RememoryCore.def" />
+    <None Include="Rememory.Core.def" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

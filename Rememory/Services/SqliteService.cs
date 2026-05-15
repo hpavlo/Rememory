@@ -1,11 +1,10 @@
-﻿using CommunityToolkit.WinUI.Helpers;
-using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
 using Rememory.Contracts;
+using Rememory.Core;
 using Rememory.Helper;
 using Rememory.Models;
 using Rememory.Models.Metadata;
 using Rememory.Services.Migrations;
-using RememoryCore;
 using System;
 using System.Collections.Generic;
 using System.IO;

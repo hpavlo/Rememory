@@ -10,5 +10,5 @@
     <Platform Solution="*|x86" Project="x86" />
     <Deploy />
   </Project>
-  <Project Path="RememoryCore/RememoryCore.vcxproj" Id="581b3ba8-437b-4ff0-a6a2-ef94bbb1747b" />
+  <Project Path="Rememory.Core/Rememory.Core.vcxproj" Id="581b3ba8-437b-4ff0-a6a2-ef94bbb1747b" />
 </Solution>

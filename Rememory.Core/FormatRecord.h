@@ -3,7 +3,7 @@
 #include "FormatRecord.g.h"
 #include "FormatManager.h"
 
-namespace winrt::RememoryCore::implementation
+namespace winrt::Rememory::Core::implementation
 {
     struct FormatRecord : FormatRecordT<FormatRecord>
     {
@@ -25,7 +25,7 @@ namespace winrt::RememoryCore::implementation
     };
 }
 
-namespace winrt::RememoryCore::factory_implementation
+namespace winrt::Rememory::Core::factory_implementation
 {
     struct FormatRecord : FormatRecordT<FormatRecord, implementation::FormatRecord> {};
 }

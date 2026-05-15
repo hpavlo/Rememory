@@ -1,6 +1,6 @@
 import "FormatManager.idl";
 
-namespace RememoryCore
+namespace Rememory.Core
 {
     [default_interface]
     runtimeclass FormatRecord

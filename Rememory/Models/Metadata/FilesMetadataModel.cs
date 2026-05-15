@@ -1,4 +1,4 @@
-﻿using RememoryCore;
+﻿using Rememory.Core;
 using System.IO;
 
 namespace Rememory.Models.Metadata

@@ -3,7 +3,7 @@
 #include "ClipboardMonitor.g.h"
 #include "WindowMessageHook.h"
 
-namespace winrt::RememoryCore::implementation
+namespace winrt::Rememory::Core::implementation
 {
     struct ClipboardData
     {
@@ -61,7 +61,7 @@ namespace winrt::RememoryCore::implementation
         void OnWindowDestroy();
         winrt::Windows::Foundation::IAsyncAction HandleClipboardData();
 
-        winrt::event_token ContentDetected(winrt::Windows::Foundation::TypedEventHandler<RememoryCore::ClipboardMonitor, RememoryCore::ClipboardSnapshot> const& handler)
+        winrt::event_token ContentDetected(winrt::Windows::Foundation::TypedEventHandler<Rememory::Core::ClipboardMonitor, Rememory::Core::ClipboardSnapshot> const& handler)
         {
             return m_contentDetectedEvent.add(handler);
         }
@@ -82,7 +82,7 @@ namespace winrt::RememoryCore::implementation
         winrt::hstring m_lastOwnerPath{};
         winrt::hstring m_historyFolderPath{};
         size_t m_maxDataSize = (size_t)-1;
-        winrt::event<winrt::Windows::Foundation::TypedEventHandler<RememoryCore::ClipboardMonitor, RememoryCore::ClipboardSnapshot>> m_contentDetectedEvent;
+        winrt::event<winrt::Windows::Foundation::TypedEventHandler<Rememory::Core::ClipboardMonitor, Rememory::Core::ClipboardSnapshot>> m_contentDetectedEvent;
 
         static void CALLBACK MonitorTimerProc(HWND hWnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime);
         static bool CompareClipboardHashes(const std::unordered_map<ClipboardFormat, std::unique_ptr<ClipboardData>>& copiedDataMap, const std::unordered_map<ClipboardFormat, std::vector<BYTE>>& previousHashesMap);
@@ -90,14 +90,14 @@ namespace winrt::RememoryCore::implementation
         std::vector<BYTE> ComputeSha256Hash(LPVOID data, size_t dataLength);
         bool TryOpenClipboard();
 
-        void RaiseContentDetected(RememoryCore::ClipboardSnapshot const& snapshot)
+        void RaiseContentDetected(Rememory::Core::ClipboardSnapshot const& snapshot)
         {
             m_contentDetectedEvent(*this, snapshot);
         }
     };
 }
 
-namespace winrt::RememoryCore::factory_implementation
+namespace winrt::Rememory::Core::factory_implementation
 {
     struct ClipboardMonitor : ClipboardMonitorT<ClipboardMonitor, implementation::ClipboardMonitor> {};
 }

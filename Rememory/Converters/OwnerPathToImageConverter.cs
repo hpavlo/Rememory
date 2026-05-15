@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml.Data;
 using Rememory.Contracts;
+using Rememory.Core;
 using Rememory.Helper;
-using RememoryCore;
 using System;
 using System.IO;
 using System.Runtime.InteropServices.WindowsRuntime;

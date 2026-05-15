@@ -2,7 +2,7 @@
 #include "ClipboardSnapshot.h"
 #include "ClipboardSnapshot.g.cpp"
 
-namespace winrt::RememoryCore::implementation
+namespace winrt::Rememory::Core::implementation
 {
 
 }

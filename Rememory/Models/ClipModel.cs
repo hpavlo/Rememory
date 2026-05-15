@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using RememoryCore;
+using Rememory.Core;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

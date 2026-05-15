@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Rememory.Core;
 using Rememory.Models;
-using RememoryCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;

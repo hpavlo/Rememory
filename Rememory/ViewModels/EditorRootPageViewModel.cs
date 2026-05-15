@@ -2,9 +2,9 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using Rememory.Contracts;
+using Rememory.Core;
 using Rememory.Models;
 using Rememory.Views.Editor;
-using RememoryCore;
 using System;
 using System.Security.Cryptography;
 using System.Text;
@@ -13,8 +13,8 @@ namespace Rememory.ViewModels
 {
     public partial class EditorRootPageViewModel : ObservableObject
     {
-        private IClipboardService _clipboardService = App.Current.Services.GetService<IClipboardService>()!;
-        private IOwnerService _ownerService = App.Current.Services.GetService<IOwnerService>()!;
+        private readonly IClipboardService _clipboardService = App.Current.Services.GetService<IClipboardService>()!;
+        private readonly IOwnerService _ownerService = App.Current.Services.GetService<IOwnerService>()!;
 
         private readonly ClipModel _context;
 

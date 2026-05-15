@@ -1,6 +1,6 @@
 ﻿using Rememory.Contracts;
+using Rememory.Core;
 using Rememory.Models;
-using RememoryCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "ClipboardSnapshot.g.h"
 
-namespace winrt::RememoryCore::implementation
+namespace winrt::Rememory::Core::implementation
 {
     struct ClipboardSnapshot : ClipboardSnapshotT<ClipboardSnapshot>
     {
@@ -14,17 +14,17 @@ namespace winrt::RememoryCore::implementation
         winrt::Windows::Storage::Streams::IBuffer OwnerIcon() const { return m_ownerIcon; }
         void OwnerIcon(winrt::Windows::Storage::Streams::IBuffer const& value) { m_ownerIcon = value; }
 
-        winrt::Windows::Foundation::Collections::IVector<RememoryCore::FormatRecord> Records() const { return m_records; }
-        void Records(winrt::Windows::Foundation::Collections::IVector<RememoryCore::FormatRecord> const& value) { m_records = value; }
+        winrt::Windows::Foundation::Collections::IVector<Rememory::Core::FormatRecord> Records() const { return m_records; }
+        void Records(winrt::Windows::Foundation::Collections::IVector<Rememory::Core::FormatRecord> const& value) { m_records = value; }
 
     private:
         winrt::hstring m_ownerPath{};
         winrt::Windows::Storage::Streams::IBuffer m_ownerIcon{ nullptr };
-        winrt::Windows::Foundation::Collections::IVector<RememoryCore::FormatRecord> m_records{ nullptr };
+        winrt::Windows::Foundation::Collections::IVector<Rememory::Core::FormatRecord> m_records{ nullptr };
     };
 }
 
-namespace winrt::RememoryCore::factory_implementation
+namespace winrt::Rememory::Core::factory_implementation
 {
     struct ClipboardSnapshot : ClipboardSnapshotT<ClipboardSnapshot, implementation::ClipboardSnapshot> {};
 }

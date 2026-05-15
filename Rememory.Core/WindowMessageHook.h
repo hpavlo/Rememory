@@ -2,12 +2,12 @@
 #include <map>
 
 // Forward declaration of the C++/WinRT implementation class
-namespace winrt::RememoryCore::implementation
+namespace winrt::Rememory::Core::implementation
 {
     struct ClipboardMonitor;
 }
 
-using ParentMonitor = winrt::RememoryCore::implementation::ClipboardMonitor;
+using ParentMonitor = winrt::Rememory::Core::implementation::ClipboardMonitor;
 
 class WindowMessageHook
 {

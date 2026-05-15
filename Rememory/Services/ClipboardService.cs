@@ -1,9 +1,9 @@
 ﻿using Rememory.Contracts;
+using Rememory.Core;
 using Rememory.Helper;
 using Rememory.Models;
 using Rememory.Models.Metadata;
 using Rememory.Views.BriefMessage;
-using RememoryCore;
 using System;
 using System.Collections.Generic;
 using System.Data;

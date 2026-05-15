@@ -10,7 +10,7 @@
 #define CF_PNG RegisterClipboardFormat(L"PNG")
 #define CF_IMAGEPNG RegisterClipboardFormat(L"image/png")
 
-namespace winrt::RememoryCore::implementation
+namespace winrt::Rememory::Core::implementation
 {
     struct FormatManager : FormatManagerT<FormatManager>
     {
@@ -111,7 +111,7 @@ namespace winrt::RememoryCore::implementation
     };
 }
 
-namespace winrt::RememoryCore::factory_implementation
+namespace winrt::Rememory::Core::factory_implementation
 {
     struct FormatManager : FormatManagerT<FormatManager, implementation::FormatManager> {};
 }

@@ -1,6 +1,6 @@
-﻿using Rememory.Helper;
+﻿using Rememory.Core;
+using Rememory.Helper;
 using Rememory.Models;
-using RememoryCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

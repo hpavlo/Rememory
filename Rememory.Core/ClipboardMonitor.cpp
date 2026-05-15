@@ -16,7 +16,7 @@ namespace {
     const UINT OPEN_CLIPBOARD_DELAY = 50;   // 50ms wait between attempts
 }
 
-namespace winrt::RememoryCore::implementation
+namespace winrt::Rememory::Core::implementation
 {
     ClipboardMonitor::ClipboardMonitor()
     {
@@ -209,7 +209,7 @@ namespace winrt::RememoryCore::implementation
         }
 
         auto historyFolderPath = std::filesystem::path{ HistoryFolderPath().c_str() };
-        auto records = winrt::single_threaded_vector<RememoryCore::FormatRecord>();
+        auto records = winrt::single_threaded_vector<Rememory::Core::FormatRecord>();
 
         m_previousClipboardDataHashes.clear();
 

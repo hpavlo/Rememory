@@ -4,13 +4,13 @@ using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
 using Microsoft.Windows.Globalization;
 using Rememory.Contracts;
+using Rememory.Core;
 using Rememory.Helper;
 using Rememory.Hooks;
 using Rememory.Models;
 using Rememory.Services;
 using Rememory.Views;
 using Rememory.Views.Settings;
-using RememoryCore;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -112,15 +112,20 @@ namespace Rememory
         {
             var services = new ServiceCollection();
 
-            services.AddSingleton<ClipboardMonitor>();
+            // Settings
             services.AddSingleton<SettingsContext>();
+
+            // Monitors
+            services.AddSingleton<ClipboardMonitor>();
             services.AddSingleton<IKeyboardMonitor, KeyboardMonitor>();
-            services.AddSingleton<IClipboardService, ClipboardService>();
+
+            // Services
             services.AddSingleton<IStorageService>(sp =>
             {
                 var monitor = sp.GetRequiredService<ClipboardMonitor>();
                 return SqliteService.CreateMain(monitor.HistoryFolderPath);
             });
+            services.AddSingleton<IClipboardService, ClipboardService>();
             services.AddSingleton<ISearchService, SearchService>();
             services.AddSingleton<ILinkPreviewService, LinkPreviewService>();
             services.AddSingleton<ICleanupDataService, CleanupDataService>();

@@ -1,4 +1,4 @@
-namespace RememoryCore
+namespace Rememory.Core
 {
     enum ClipboardFormat
     {

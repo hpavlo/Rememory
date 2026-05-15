@@ -28,7 +28,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<CSWinRTIncludes>RememoryCore</CSWinRTIncludes>
+		<CSWinRTIncludes>Rememory.Core</CSWinRTIncludes>
 		<CsWinRTGeneratedFilesDir>$(OutDir)</CsWinRTGeneratedFilesDir>
 		<!-- Workaround for MSB3271 error on processor architecture mismatch -->
 		<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
@@ -78,18 +78,24 @@
 		<PackageReference Include="CommunityToolkit.WinUI.Triggers" Version="8.2.251219" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
 		<PackageReference Include="MessageFormat" Version="8.0.0" />
-		<PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.7" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.7" />
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.8" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.8" />
 		<PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.2.0" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="2.0.1" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.1839" />
 		<PackageReference Include="TaskScheduler" Version="2.12.2" />
 		<PackageReference Include="WinUIEx" Version="2.9.0" />
+		
+		<!-- Excluded packages -->
+		<PackageReference Include="Microsoft.WindowsAppSDK.AI" Version="2.0.185" ExcludeAssets="all" />
+		<PackageReference Include="Microsoft.WindowsAppSDK.ML" Version="2.0.300" ExcludeAssets="all" />
+		<PackageReference Include="Microsoft.Windows.AI.MachineLearning" Version="2.0.300" ExcludeAssets="all" />
+		
 		<Manifest Include="$(ApplicationManifest)" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\RememoryCore\RememoryCore.vcxproj" />
+	  <ProjectReference Include="..\Rememory.Core\Rememory.Core.vcxproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
