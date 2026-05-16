@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Navigation;
 using Rememory.ViewModels.Settings;
 using System.Collections.Generic;
 using Windows.UI;
@@ -60,6 +61,13 @@ namespace Rememory.Views.Settings
             {
                 ViewModel.SettingsContext.WindowBackgroundBrush = (SolidColorBrush)sender.SelectedItem;
             }
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            Bindings.StopTracking();
+            ViewModel.Dispose();
         }
     }
 }

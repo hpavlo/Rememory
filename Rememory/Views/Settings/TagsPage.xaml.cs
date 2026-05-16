@@ -1,6 +1,7 @@
 using CommunityToolkit.WinUI.Helpers;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 using Rememory.Helper;
 using Rememory.Models;
 using Rememory.ViewModels.Settings;
@@ -64,6 +65,12 @@ namespace Rememory.Views.Settings
             {
                 ViewModel.EditTag(tag, dialogContent.TagName, dialogContent.SelectedColor.Color.ToHex(), dialogContent.IsCleaningEnabled);
             }
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            Bindings.StopTracking();
         }
     }
 }

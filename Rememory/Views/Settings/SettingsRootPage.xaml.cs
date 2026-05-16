@@ -61,6 +61,7 @@ namespace Rememory.Views.Settings
 
         private void SettingsWindow_Closed(object sender, WindowEventArgs args)
         {
+            NavigationViewFrame.Navigate(typeof(Page));
             _window.Activated -= SettingsWindow_Activated;
             _window.Closed -= SettingsWindow_Closed;
             ThemeService.ThemeChanged -= ThemeService_ThemeChanged;

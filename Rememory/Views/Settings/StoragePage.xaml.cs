@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 using Rememory.ViewModels.Settings;
 
 namespace Rememory.Views.Settings
@@ -54,5 +55,11 @@ namespace Rememory.Views.Settings
 
         private void CleanupTypeComboBox_SelectionChanged(object _, SelectionChangedEventArgs __) => TriggerImportWarningMessageVisibility();
         private void RetentionPeriodComboBox_SelectionChanged(object _, SelectionChangedEventArgs __) => TriggerImportWarningMessageVisibility();
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            Bindings.StopTracking();
+        }
     }
 }

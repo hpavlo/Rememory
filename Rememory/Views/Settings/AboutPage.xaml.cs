@@ -1,6 +1,7 @@
 using CommunityToolkit.WinUI.Helpers;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 using Rememory.Helper;
 using System;
 using Windows.ApplicationModel;
@@ -35,6 +36,12 @@ namespace Rememory.Views.Settings
         private async void ReviewButton_Click(object sender, RoutedEventArgs e)
         {
             await Launcher.LaunchUriAsync(new(MicrosoftStoreReviewLink));
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            Bindings.StopTracking();
         }
     }
 }

@@ -1,4 +1,5 @@
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 using Rememory.ViewModels.Settings;
 
 namespace Rememory.Views.Settings
@@ -18,6 +19,12 @@ namespace Rememory.Views.Settings
             {
                 LanguageTeachingTip.IsOpen = true;
             }
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            Bindings.StopTracking();
         }
     }
 }

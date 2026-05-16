@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 using Rememory.Helper;
 using Rememory.Models;
 using Rememory.ViewModels.Settings;
@@ -62,6 +63,12 @@ namespace Rememory.Views.Settings
             {
                 ViewModel.EditOwnerAppFilter(filter, dialogContent.FilterName, dialogContent.FilterPattern);
             }
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            Bindings.StopTracking();
         }
     }
 }
