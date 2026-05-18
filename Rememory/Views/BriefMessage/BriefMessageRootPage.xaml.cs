@@ -38,16 +38,10 @@ namespace Rememory.Views.BriefMessage
             _appWindow.Show(false);
             _xamlSource.SiteBridge.Show();
 
-            if (string.IsNullOrEmpty(iconGlyph))
-            {
-                ToolTipIcon.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                ToolTipIcon.Glyph = iconGlyph;
-            }
-
+            ToolTipIcon.Visibility = string.IsNullOrEmpty(iconGlyph) ? Visibility.Collapsed : Visibility.Visible;
+            ToolTipIcon.Glyph = iconGlyph;
             ToolTipMessage.IsOpen = true;
+
             _timer.Start();
         }
 
