@@ -17,6 +17,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
+using Windows.ApplicationModel;
 
 namespace Rememory.Models
 {
@@ -24,6 +25,8 @@ namespace Rememory.Models
     {
         private readonly ApplicationDataContainer _localSettings;
         private readonly ClipboardMonitor _clipboardMonitor;
+
+        #region Settings Window
 
         #region General
 
@@ -429,6 +432,8 @@ namespace Rememory.Models
 
         #endregion
 
+        #endregion
+
         #region Main Window
 
         private bool? _isClipboardMonitoringEnabled;
@@ -452,12 +457,17 @@ namespace Rememory.Models
 
         #endregion
 
+        public bool IsAppFirstRun { get; init; }
+
         public SettingsContext(ClipboardMonitor clipboardMonitor)
         {
             _clipboardMonitor = clipboardMonitor;
             _localSettings = ApplicationData.GetDefault().LocalSettings;
             _supportedLanguages = ApplicationLanguages.ManifestLanguages.ToList();
             _supportedLanguages.Insert(0, string.Empty);   // Default language
+
+            IsAppFirstRun = !_localSettings.Values.ContainsKey("AppVersion");
+            _localSettings.Values["AppVersion"] = Package.Current.Id.Version.ToFormattedString();
 
             SetMaxDataSize(MaxClipSize);
         }

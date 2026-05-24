@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
 using Rememory.Helper;
+using Rememory.Services;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -46,6 +47,16 @@ namespace Rememory
 
         private static bool DecideRedirection(AppActivationArguments args)
         {
+            if (args.Kind == ExtendedActivationKind.StartupTask && StartupManager.IsElevatedTaskEnabled(out var elevatedTask))
+            {
+                try
+                {
+                    var runningTask = elevatedTask!.Run();
+                    return runningTask.State is Microsoft.Win32.TaskScheduler.TaskState.Queued or Microsoft.Win32.TaskScheduler.TaskState.Running;
+                }
+                catch { }
+            }
+
             bool isRedirect = false;
             AppInstance keyInstance = AppInstance.FindOrRegisterForKey(Windows.ApplicationModel.Package.Current.DisplayName);
             if (!keyInstance.IsCurrent)

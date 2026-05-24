@@ -60,6 +60,7 @@ namespace Rememory.Views.Settings
         {
             base.OnNavigatedFrom(e);
             Bindings.StopTracking();
+            DataContext = null;
         }
     }
 }

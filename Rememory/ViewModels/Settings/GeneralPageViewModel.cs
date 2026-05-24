@@ -1,12 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Windows.AppLifecycle;
-using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Models;
+using Rememory.Services;
 using Rememory.Views.Settings;
-using System;
+using System.Threading.Tasks;
 
 namespace Rememory.ViewModels.Settings
 {
@@ -14,11 +13,14 @@ namespace Rememory.ViewModels.Settings
     {
         public SettingsContext SettingsContext { get; } = App.Current.SettingsContext;
 
-        private readonly IStartupService _startupService = App.Current.Services.GetService<IStartupService>()!;
+        private StartupManager? _startupManager;
+        private bool _isInitialized = false;
 
-        public bool IsAdministratorSettingsEnabled => AdministratorHelper.IsAppRunningAsAdministrator() && RunAtStartupToggle;
+        public bool IsAdministratorSettingsEnabled => RunAtStartupToggle && AdministratorHelper.IsAppRunningAsAdministrator();
 
-        private bool _runAtStartupToggle;
+        public bool IsStartupOptionAvailable => !(_startupManager?.IsDisabledByUser ?? false);
+
+        private bool _runAtStartupToggle = false;
         public bool RunAtStartupToggle
         {
             get => _runAtStartupToggle;
@@ -26,34 +28,39 @@ namespace Rememory.ViewModels.Settings
             {
                 if (SetProperty(ref _runAtStartupToggle, value))
                 {
-                    try
+                    if (value)
                     {
-                        _startupService.IsStartupEnabled = value;
+                        _ = _startupManager?.StartupTask.RequestEnableAsync();
                     }
-                    catch (UnauthorizedAccessException)
+                    else
                     {
-                        ShowAccessExceptionMessageBox();
-                        SetProperty(ref _runAtStartupToggle, !value);
+                        _startupManager?.StartupTask.Disable();
                     }
-
                     OnPropertyChanged(nameof(IsAdministratorSettingsEnabled));
                 }
             }
         }
 
-        private bool _runAsAdministratorToggle;
+        private bool? _runAsAdministratorToggle;
         public bool RunAsAdministratorToggle
         {
-            get => _runAsAdministratorToggle;
+            get => _runAsAdministratorToggle ??= StartupManager.IsElevatedTaskEnabled(out _);
             set
             {
                 if (SetProperty(ref _runAsAdministratorToggle, value))
                 {
                     try
                     {
-                        _startupService.IsStartupAsAdministratorEnabled = value;
+                        if (value)
+                        {
+                            StartupManager.EnableElevatedStartup();
+                        }
+                        else
+                        {
+                            StartupManager.DisableElevatedStartup();
+                        }
                     }
-                    catch (UnauthorizedAccessException)
+                    catch
                     {
                         ShowAccessExceptionMessageBox();
                         SetProperty(ref _runAsAdministratorToggle, !value);
@@ -62,10 +69,22 @@ namespace Rememory.ViewModels.Settings
             }
         }
 
-        public GeneralPageViewModel()
+        public async Task InitializeAsync()
         {
-            _runAtStartupToggle = _startupService.IsStartupEnabled;
-            _runAsAdministratorToggle = _startupService.IsStartupAsAdministratorEnabled;
+            if (_isInitialized)
+            {
+                return;
+            }
+
+            _startupManager = await StartupManager.CreateAsync();
+
+            // Trigger properties, that depend on _startupManager
+            _runAtStartupToggle = _startupManager.IsStartupEnabled;
+            OnPropertyChanged(nameof(RunAtStartupToggle));
+            OnPropertyChanged(nameof(IsAdministratorSettingsEnabled));
+            OnPropertyChanged(nameof(IsStartupOptionAvailable));
+
+            _isInitialized = true;
         }
 
         #region Commands

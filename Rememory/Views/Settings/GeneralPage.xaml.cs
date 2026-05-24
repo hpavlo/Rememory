@@ -1,6 +1,7 @@
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Rememory.ViewModels.Settings;
+using System;
 
 namespace Rememory.Views.Settings
 {
@@ -21,10 +22,23 @@ namespace Rememory.Views.Settings
             }
         }
 
+        private async void OpenSettingsStartupButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        {
+            var uri = new Uri("ms-settings:startupapps");
+            await Windows.System.Launcher.LaunchUriAsync(uri);
+        }
+
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            await ViewModel.InitializeAsync();
+        }
+
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
             Bindings.StopTracking();
+            DataContext = null;
         }
     }
 }

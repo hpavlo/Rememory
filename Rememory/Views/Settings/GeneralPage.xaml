@@ -9,6 +9,21 @@
       DataContext="{x:Bind ViewModel}">
     
     <ScrollViewer Padding="56,20,56,5">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="StartupWarningMessage">
+                <VisualState x:Name="WarningIsVisible">
+                    <VisualState.StateTriggers>
+                        <tk:IsEqualStateTrigger Value="{x:Bind StartupWarningInfoBar.IsOpen, Mode=OneWay}"
+                                                To="True" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="StartupSettingsCard.CornerRadius"
+                                Value="4,4,0,0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        
         <StackPanel Padding="0,0,0,28">
             <tkcontrols:SettingsCard x:Uid="/Settings/General_AppLanguage"
                                      Margin="0,0,0,5"
@@ -59,23 +74,36 @@
                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                        Style="{ThemeResource BodyStrongTextBlockStyle}" />
 
-            <tkcontrols:SettingsExpander x:Uid="/Settings/General_RunAtStartup"
-                                         Margin="0,0,0,5"
+            <tkcontrols:SettingsExpander x:Name="StartupSettingsCard"
+                                         x:Uid="/Settings/General_RunAtStartup"
                                          HeaderIcon="{tk:FontIcon Glyph=&#xF103;}"
-                                         IsExpanded="{x:Bind ViewModel.IsAdministratorSettingsEnabled, Mode=OneWay}">
+                                         IsExpanded="{x:Bind ViewModel.IsAdministratorSettingsEnabled, Mode=OneWay}"
+                                         IsEnabled="{x:Bind ViewModel.IsStartupOptionAvailable, Mode=OneWay}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.RunAtStartupToggle, Mode=TwoWay}" />
 
                 <tkcontrols:SettingsExpander.Items>
                     <tkcontrols:SettingsCard ContentAlignment="Left"
-                                             IsEnabled="{x:Bind ViewModel.IsAdministratorSettingsEnabled, Mode=OneTime}">
+                                             IsEnabled="{x:Bind ViewModel.IsAdministratorSettingsEnabled, Mode=OneWay}">
                         <CheckBox x:Uid="/Settings/General_AlwaysRunAsAdmin"
                                   IsChecked="{x:Bind ViewModel.RunAsAdministratorToggle, Mode=TwoWay}" />
                     </tkcontrols:SettingsCard>
                 </tkcontrols:SettingsExpander.Items>
             </tkcontrols:SettingsExpander>
 
+            <InfoBar x:Name="StartupWarningInfoBar"
+                     x:Uid="/Settings/General_StartupWarning"
+                     BorderThickness="1,0,1,1"
+                     CornerRadius="0,0,4,4"
+                     IsOpen="{x:Bind ViewModel.IsStartupOptionAvailable, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}">
+                <InfoBar.ActionButton>
+                    <Button x:Uid="/Settings/General_SettingsStartupButton"
+                            Click="OpenSettingsStartupButton_Click"
+                            Style="{ThemeResource AccentButtonStyle}" />
+                </InfoBar.ActionButton>
+            </InfoBar>
+
             <tkcontrols:SettingsCard x:Uid="/Settings/General_NotificationOnStartup"
-                                     Margin="0,0,0,5"
+                                     Margin="0,5,0,5"
                                      HeaderIcon="{tk:FontIcon Glyph=&#xE91C;}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsNotificationOnStartEnabled, Mode=TwoWay}" />
             </tkcontrols:SettingsCard>

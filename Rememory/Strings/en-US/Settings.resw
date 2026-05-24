@@ -228,6 +228,15 @@
   <data name="General_RunAtStartup.Description" xml:space="preserve">
     <value>Enable this option to automatically launch Rememory when your computer starts</value>
   </data>
+  <data name="General_StartupWarning.Title" xml:space="preserve">
+    <value>Startup is disabled by Windows</value>
+  </data>
+  <data name="General_StartupWarning.Message" xml:space="preserve">
+    <value>To let this app run at startup, please enable it in the Windows Task Manager or Windows Settings</value>
+  </data>
+  <data name="General_SettingsStartupButton.Content" xml:space="preserve">
+    <value>Open in Windows Settings</value>
+  </data>
   <data name="General_NotificationOnStartup.Header" xml:space="preserve">
     <value>Notification on startup</value>
   </data>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
+using Microsoft.Windows.AppLifecycle;
 using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
 using Microsoft.Windows.Globalization;
@@ -27,6 +28,7 @@ namespace Rememory
         /// Gets the current <see cref="App"/> instance in use
         /// </summary>
         public new static App Current => (App)Application.Current;
+        public ExtendedActivationKind ActivationKind { get; init; }
         public ClipboardWindow ClipboardWindow { get; private set; }
         public IntPtr ClipboardWindowHandle => ClipboardWindow.Handle;
         public SettingsContext SettingsContext { get; init; }
@@ -47,6 +49,7 @@ namespace Rememory
         /// </summary>
         public App(string[] args)
         {
+            ActivationKind = AppInstance.GetCurrent().GetActivatedEventArgs().Kind;
             _launchArguments = args;
             Services = ConfigureServices();
             SettingsContext = Services.GetService<SettingsContext>()!;
@@ -64,6 +67,13 @@ namespace Rememory
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
+            if (SettingsContext.IsAppFirstRun)
+            {
+                MigrateStartupTask();
+
+                // Show quick setup window
+            }
+
             ClipboardWindow = new ClipboardWindow();
             ClipboardWindow.InitWindowContent();
             ClipboardWindow.Closed += ClipboardWindow_Closed;
@@ -75,7 +85,9 @@ namespace Rememory
                 SettingsWindow.ShowSettingsWindow();
             }
 
-            if (!_launchArguments.Contains("-silent") && SettingsContext.IsNotificationOnStartEnabled)
+            if (!_launchArguments.Contains("-silent")
+                && ActivationKind != ExtendedActivationKind.StartupTask
+                && SettingsContext.IsNotificationOnStartEnabled)
             {
                 //AppNotificationManager.Default.Register();   // for unpackaged
                 AppNotificationManager.Default.Show(new AppNotificationBuilder()
@@ -91,6 +103,17 @@ namespace Rememory
             ClipboardWindow.Closed -= ClipboardWindow_Closed;
             _keyboardMonitor.StopMonitor();
             Exit();
+        }
+
+        private static void MigrateStartupTask()
+        {
+            var createElevatedStartupTask = LegacyTaskSchedulerManager.IsHighestRunLevelEnabled() && AdministratorHelper.IsAppRunningAsAdministrator();
+            LegacyTaskSchedulerManager.DeleteStartupTask();
+
+            if (createElevatedStartupTask)
+            {
+                StartupManager.EnableElevatedStartup();
+            }
         }
 
         private static void SetCulture(string culture)
@@ -133,7 +156,6 @@ namespace Rememory
             services.AddSingleton<IOwnerService, OwnerService>();
             services.AddSingleton<ITagService, TagService>();
             services.AddSingleton<IClipTransferService, ClipTransferService>();
-            services.AddTransient<IStartupService, TaskSchedulerStartupService>();
 
             return services.BuildServiceProvider();
         }
