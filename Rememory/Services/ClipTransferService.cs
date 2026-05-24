@@ -163,7 +163,14 @@ namespace Rememory.Services
 
             await Task.Run(() =>
             {
-                var owners = sqliteService.GetOwners();
+                var owners = sqliteService.GetOwners().ToList();
+
+                if (!owners.Any(owner => owner.Id == 0))
+                {
+                    // Adding empty owner, since it is not saved to backup db
+                    owners.Add(new(string.Empty) { Id = 0 });
+                }
+
                 tagsToImport = [.. sqliteService.GetTags()];
                 clipsToImport = [.. sqliteService.GetClips(owners, tagsToImport).Where(clip => !clipsTimeHashSet.Contains(clip.ClipTime))];
             });
