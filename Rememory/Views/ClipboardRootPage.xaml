@@ -199,7 +199,7 @@
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center"
                            FontSize="{ThemeResource CaptionTextBlockFontSize}"
-                           Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                            DataContext="{x:Bind Data, Converter={StaticResource DataFooterInfoConverter}}"
                            Text="{Binding Result}"
                            TextTrimming="CharacterEllipsis" />
@@ -210,9 +210,9 @@
                            TextWrapping="Wrap"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Center"
-                           Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                            Text="{x:Bind ClipTime, Converter={StaticResource DateTimeToHumanReadableConverter}}"
-                           Style="{ThemeResource CaptionTextBlockStyle}" />
+                           Style="{StaticResource CaptionTextBlockStyle}" />
 
                 <Image x:Name="ClipIconBitmap"
                        x:Load="{x:Bind Owner.IconBitmap, Converter={StaticResource EmptyObjectToBoolConverter}}"
@@ -334,7 +334,7 @@
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center"
                            FontSize="{ThemeResource CaptionTextBlockFontSize}"
-                           Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                            DataContext="{x:Bind Data, Converter={StaticResource DataFooterInfoConverter}}"
                            Text="{Binding Result}"
                            TextTrimming="CharacterEllipsis" />
@@ -345,9 +345,9 @@
                            TextWrapping="Wrap"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Center"
-                           Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                            Text="{x:Bind ClipTime, Converter={StaticResource DateTimeToHumanReadableConverter}}"
-                           Style="{ThemeResource CaptionTextBlockStyle}" />
+                           Style="{StaticResource CaptionTextBlockStyle}" />
 
                 <Image x:Name="ClipIconBitmap"
                        x:Load="{x:Bind Owner.IconBitmap, Converter={StaticResource EmptyObjectToBoolConverter}}"
@@ -542,6 +542,7 @@
                       CanReorderItems="False"
                       ItemsSource="{x:Bind ViewModel.AppTreeViewNodes, Mode=OneWay}"
                       Loaded="FilterTreeView_Loaded"
+                      Unloaded="FilterTreeView_Unloaded"
                       SelectionChanged="FilterTreeView_SelectionChanged">
                 <TreeView.ItemTemplate>
                     <DataTemplate x:DataType="models:AppTreeViewNode">
@@ -586,12 +587,12 @@
                 <TextBlock x:Uid="/Clipboard/EraseData_FlyoutHeader"
                            Grid.Row="0"
                            TextWrapping="Wrap"
-                           Style="{ThemeResource BodyLargeStrongTextBlockStyle}" />
+                           Style="{StaticResource BodyLargeStrongTextBlockStyle}" />
 
                 <TextBlock x:Uid="/Clipboard/EraseData_FlyoutDescription"
                            Grid.Row="1"
                            TextWrapping="Wrap"
-                           Style="{ThemeResource BodyTextBlockStyle}" />
+                           Style="{StaticResource BodyTextBlockStyle}" />
 
                 <CheckBox x:Uid="/Resources/DoNotShowAgainCheckbox"
                           Grid.Row="2"
@@ -601,7 +602,7 @@
                 <Button x:Uid="/Clipboard/EraseData_FlyoutButton"
                         Grid.Row="3"
                         HorizontalAlignment="Stretch"
-                        Style="{ThemeResource AccentButtonStyle}"
+                        Style="{StaticResource AccentButtonStyle}"
                         Click="EraseFlyoutButton_Click" />
             </Grid>
         </Flyout>
@@ -901,7 +902,7 @@
                                    VerticalAlignment="Center"
                                    TextWrapping="NoWrap"
                                    Text="{x:Bind ViewModel.SelectedTab.Title, Mode=OneWay}"
-                                   Style="{ThemeResource SubtitleTextBlockStyle}" />
+                                   Style="{StaticResource SubtitleTextBlockStyle}" />
                     </Border>
 
                     <StackPanel Grid.Column="1"
@@ -915,7 +916,7 @@
                                 Width="32"
                                 Height="32"
                                 Content="{tk:FontIcon FontSize=14, Glyph=&#xE712;}"
-                                Style="{ThemeResource AlternateButtonStyle}"
+                                Style="{StaticResource AlternateButtonStyle}"
                                 Flyout="{StaticResource TitleBarContextMenuFlyout}" />
 
                         <Button x:Uid="/Clipboard/TitleBar_CloseButton"
@@ -926,7 +927,7 @@
                                 Height="32"
                                 Command="{x:Bind ViewModel.CloseWindowCommand}"
                                 Content="{tk:FontIcon FontSize=14, Glyph=&#xE711;}"
-                                Style="{ThemeResource AlternateButtonStyle}" />
+                                Style="{StaticResource AlternateButtonStyle}" />
                     </StackPanel>
                 </Grid>
 
@@ -951,19 +952,27 @@
                                     Text="{x:Bind ViewModel.SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     PreviewKeyDown="SearchBox_PreviewKeyDown" />
 
-                    <Button x:Name="FilterButton"
-                            x:Uid="/Clipboard/FilterButton"
-                            AutomationProperties.AutomationId="FilterButton"
-                            AutomationProperties.Name="Filter Clips"
-                            AccessKey="F"
-                            Grid.Column="1"
-                            TabIndex="3"
-                            Width="32"
-                            Margin="4,0,0,0"
-                            Padding="0"
-                            VerticalAlignment="Stretch"
-                            Content="{tk:FontIcon FontSize=14, Glyph=&#xE71C;}"
-                            Flyout="{StaticResource FilterButtonFlyout}" />
+                    <Grid Grid.Column="1"
+                          Width="32"
+                          Margin="4,0,0,0"
+                          VerticalAlignment="Stretch">
+                        <Button x:Name="FilterButton"
+                                x:Uid="/Clipboard/FilterButton"
+                                AutomationProperties.AutomationId="FilterButton"
+                                AutomationProperties.Name="Filter Clips"
+                                AccessKey="F"
+                                TabIndex="3"
+                                Padding="0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Content="{tk:FontIcon FontSize=14, Glyph=&#xE71C;}"
+                                Flyout="{StaticResource FilterButtonFlyout}" />
+                        <InfoBadge x:Name="FilterButtonBadge"
+                                   x:Load="{x:Bind ViewModel.IsFilterApplied, Mode=OneWay}"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Top"
+                                   Style="{StaticResource AttentionDotInfoBadgeStyle}" />
+                    </Grid>
 
                     <Rectangle Grid.Column="2"
                                Width="1"
@@ -1082,9 +1091,9 @@
                     <TextBlock x:Name="SelectedClipsCountTextBlock"
                                Grid.Column="0"
                                Margin="8,0,0,0"
-                               Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                VerticalAlignment="Center"
-                               Style="{ThemeResource BodyTextBlockStyle}" />
+                               Style="{StaticResource BodyTextBlockStyle}" />
 
                     <CheckBox x:Name="SelectAllCheckBox"
                               x:Uid="/Clipboard/SelectAllClips"

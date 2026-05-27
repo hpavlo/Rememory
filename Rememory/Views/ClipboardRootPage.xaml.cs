@@ -381,6 +381,11 @@ namespace Rememory.Views
             }
         }
 
+        private void FilterTreeView_Unloaded(object sender, RoutedEventArgs e)
+        {
+            FilterTreeView.SelectedItems.Clear();
+        }
+
         private void FilterTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
         {
             // IsSelected property binding doesn't working for now

@@ -61,7 +61,7 @@ namespace Rememory.ViewModels
         /// Visible collection on the main page
         /// </summary>
         [ObservableProperty]
-        public partial ObservableCollection<ClipModel> ClipsCollection { get; set; } = [];
+        public partial ObservableCollection<ClipModel> ClipsCollection { get; private set; } = [];
 
         /// <summary>
         /// Contains all navigation tabs
@@ -227,6 +227,9 @@ namespace Rememory.ViewModels
         /// </summary>
         public AppTreeViewNode RootAppNode { get; private set; }
 
+        [ObservableProperty]
+        public partial bool IsFilterApplied { get; private set; }
+
         public ClipboardRootPageViewModel()
         {
             if (IsClipboardMonitoringEnabled)
@@ -278,7 +281,9 @@ namespace Rememory.ViewModels
                 .Where(path => path is not null)
                 .Distinct()
                 .Cast<string>()];
+
             // Update app filter tree view
+            IsFilterApplied = false;
             RootAppNode.Children.Clear();
             RootAppNode.Children = [.._ownerService.Owners.Values
                 .Where(owner => distinctPaths.Contains(owner.Path))
@@ -429,6 +434,7 @@ namespace Rememory.ViewModels
             if (RootAppNode.Children.FirstOrDefault(app => string.Equals(app.OwnerPath, a)) is AppTreeViewNode nodeToRemove)
             {
                 RootAppNode.Children.Remove(nodeToRemove);
+                IsFilterApplied = RootAppNode.Children.Any(node => !node.IsSelected);
             }
         }
 
@@ -633,6 +639,8 @@ namespace Rememory.ViewModels
             HashSet<string> selectedOwnerPaths = [.. RootAppNode.Children
                 .Where(app => app.IsSelected)
                 .Select(app => app.OwnerPath)];
+
+            IsFilterApplied = selectedOwnerPaths.Count < RootAppNode.Children.Count;
 
             // Apply the filters
             var filteredClips = _clipboardService.Clips
