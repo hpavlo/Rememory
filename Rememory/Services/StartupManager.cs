@@ -13,7 +13,11 @@ namespace Rememory.Services
     {
         #region Startup task
 
+#if DEBUG
+        private const string StartupTaskId_ = "RememoryDevStartupTask";
+#else
         private const string StartupTaskId_ = "RememoryStartupTask";
+#endif
         public StartupTask StartupTask { get; private set; }
         public bool IsStartupEnabled => StartupTask.State is StartupTaskState.Enabled or StartupTaskState.EnabledByPolicy;
         public bool IsDisabledByUser => StartupTask.State == StartupTaskState.DisabledByUser;
