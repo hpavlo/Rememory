@@ -6,6 +6,7 @@
       xmlns:tk="using:CommunityToolkit.WinUI"
       xmlns:tkcontrols="using:CommunityToolkit.WinUI.Controls"
       xmlns:controls="using:Rememory.Views.Settings.Controls"
+      xmlns:shortcut="using:Rememory.Views.Settings.Controls.Shortcut"
       DataContext="{x:Bind ViewModel}">
     
     <ScrollViewer Padding="56,20,56,5">
@@ -59,20 +60,19 @@
             <TextBlock x:Uid="/Settings/General_ShortcutsSection"
                        Margin="0,28,0,8"
                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                       Style="{StaticResource BodyStrongTextBlockStyle}" />
 
             <tkcontrols:SettingsCard x:Uid="/Settings/General_ActivationShortcut"
                                      Margin="0,0,0,5"
                                      HeaderIcon="{tk:FontIcon Glyph=&#xEDA7;}">
-                <controls:ShortcutButton x:Uid="/Settings/General_ActivationShortcutButton"
-                                         ActivationShortcut="{x:Bind ViewModel.SettingsContext.ActivationShortcut, Mode=TwoWay}"
+                <shortcut:ShortcutButton ActivationShortcut="{x:Bind ViewModel.SettingsContext.ActivationShortcut, Mode=TwoWay}"
                                          ActivationShortcutDefault="{x:Bind ViewModel.SettingsContext.ActivationShortcutDefault, Mode=OneWay}" />
             </tkcontrols:SettingsCard>
 
             <TextBlock x:Uid="/Settings/General_StartupSection"
                        Margin="0,28,0,8"
                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                       Style="{StaticResource BodyStrongTextBlockStyle}" />
 
             <tkcontrols:SettingsExpander x:Name="StartupSettingsCard"
                                          x:Uid="/Settings/General_RunAtStartup"
@@ -98,7 +98,7 @@
                 <InfoBar.ActionButton>
                     <Button x:Uid="/Settings/General_SettingsStartupButton"
                             Click="OpenSettingsStartupButton_Click"
-                            Style="{ThemeResource AccentButtonStyle}" />
+                            Style="{StaticResource AccentButtonStyle}" />
                 </InfoBar.ActionButton>
             </InfoBar>
 

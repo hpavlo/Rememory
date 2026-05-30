@@ -1,13 +1,13 @@
 ﻿using Microsoft.UI.Xaml;
 using Rememory.Helper.WindowBackdrop;
-using System;
+using Windows.Foundation;
 
 namespace Rememory.Contracts
 {
     public interface IThemeService
     {
-        event EventHandler<ElementTheme> ThemeChanged;
-        event EventHandler<WindowBackdropType> WindowBackdropChanged;
+        event TypedEventHandler<IThemeService, ElementTheme> ThemeChanged;
+        event TypedEventHandler<IThemeService, WindowBackdropType> WindowBackdropChanged;
         ElementTheme Theme { get; }
         WindowBackdropType WindowBackdrop { get; }
         void ApplyTheme();

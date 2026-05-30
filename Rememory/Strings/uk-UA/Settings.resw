@@ -213,9 +213,6 @@
   <data name="General_ActivationShortcut.Description" xml:space="preserve">
     <value>Встановити комбінацію клавіш для відкриття менеджера буфера обміну</value>
   </data>
-  <data name="General_ActivationShortcutButton.Text" xml:space="preserve">
-    <value>Змінити комбінацію клавіш</value>
-  </data>
   <data name="General_StartupSection.Text" xml:space="preserve">
     <value>Автозавантаження</value>
   </data>
@@ -226,7 +223,16 @@
     <value>Автозапуск</value>
   </data>
   <data name="General_RunAtStartup.Description" xml:space="preserve">
-    <value>Увімкніть цю опцію, щоб Rememory запускався автоматично під час увімкнення комп'ютера</value>
+    <value>Автоматично запускати Rememory під час входу в Windows</value>
+  </data>
+  <data name="General_StartupWarning.Title" xml:space="preserve">
+    <value>Автозапуск вимкнено Windows</value>
+  </data>
+  <data name="General_StartupWarning.Message" xml:space="preserve">
+    <value>Щоб дозволити запуск цієї програми при старті, увімкніть її в Диспетчері завдань або Параметрах Windows</value>
+  </data>
+  <data name="General_SettingsStartupButton.Content" xml:space="preserve">
+    <value>Відкрити в Параметрах Windows</value>
   </data>
   <data name="General_NotificationOnStartup.Header" xml:space="preserve">
     <value>Повідомлення про запуск</value>
@@ -594,5 +600,23 @@
   </data>
   <data name="About_WriteReviewHyperlink.Content" xml:space="preserve">
     <value>Написати відгук</value>
+  </data>
+  <data name="Onboarding_Title.Text" xml:space="preserve">
+    <value>Вітаємо в Rememory</value>
+  </data>
+  <data name="Onboarding_Subtitle.Text" xml:space="preserve">
+    <value>Ваш новий менеджер буфера обміну</value>
+  </data>
+  <data name="Onboarding_SettingsHeader.Text" xml:space="preserve">
+    <value>Давайте швидко налаштуємо кілька параметрів, щоб усе було готово</value>
+  </data>
+  <data name="Onboarding_QuickTipInfo.Title" xml:space="preserve">
+    <value>Швидка підказка</value>
+  </data>
+  <data name="Onboarding_QuickTipInfo.Message" xml:space="preserve">
+    <value>Rememory тихо працює в системному треї. Натисніть комбінацію клавіш у будь-який момент, щоб відкрити історію буфера обміну.</value>
+  </data>
+  <data name="Onboarding_GetStartedButton.Content" xml:space="preserve">
+    <value>Почати</value>
   </data>
 </root>

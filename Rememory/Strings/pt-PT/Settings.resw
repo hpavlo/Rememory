@@ -213,9 +213,6 @@
   <data name="General_ActivationShortcut.Description" xml:space="preserve">
     <value>Definir a combinação de atalho para abrir a área de transferência</value>
   </data>
-  <data name="General_ActivationShortcutButton.Text" xml:space="preserve">
-    <value>Alterar atalho</value>
-  </data>
   <data name="General_StartupSection.Text" xml:space="preserve">
     <value>Inicialização</value>
   </data>
@@ -226,7 +223,16 @@
     <value>Executar na inicialização</value>
   </data>
   <data name="General_RunAtStartup.Description" xml:space="preserve">
-    <value>Habilite esta opção para iniciar automaticamente o Rememory quando o computador iniciar</value>
+    <value>Iniciar Rememory automaticamente ao entrar no Windows</value>
+  </data>
+  <data name="General_StartupWarning.Title" xml:space="preserve">
+    <value>Inicialização desativada pelo Windows</value>
+  </data>
+  <data name="General_StartupWarning.Message" xml:space="preserve">
+    <value>Para permitir que este app seja executado na inicialização, habilite-o no Gerenciador de Tarefas ou Configurações do Windows</value>
+  </data>
+  <data name="General_SettingsStartupButton.Content" xml:space="preserve">
+    <value>Abrir nas Configurações do Windows</value>
   </data>
   <data name="General_NotificationOnStartup.Header" xml:space="preserve">
     <value>Notificação na inicialização</value>
@@ -594,5 +600,23 @@ e aplicativos WebView2</value>
   </data>
   <data name="About_WriteReviewHyperlink.Content" xml:space="preserve">
     <value>Escrever uma avaliação</value>
+  </data>
+  <data name="Onboarding_Title.Text" xml:space="preserve">
+    <value>Bem-vindo ao Rememory</value>
+  </data>
+  <data name="Onboarding_Subtitle.Text" xml:space="preserve">
+    <value>Seu novo gerenciador de área de transferência</value>
+  </data>
+  <data name="Onboarding_SettingsHeader.Text" xml:space="preserve">
+    <value>Vamos personalizar rapidamente algumas configurações para preparar tudo</value>
+  </data>
+  <data name="Onboarding_QuickTipInfo.Title" xml:space="preserve">
+    <value>Dica rápida</value>
+  </data>
+  <data name="Onboarding_QuickTipInfo.Message" xml:space="preserve">
+    <value>O Rememory é executado silenciosamente na bandeja do sistema. Pressione o atalho a qualquer momento para abrir o histórico da área de transferência.</value>
+  </data>
+  <data name="Onboarding_GetStartedButton.Content" xml:space="preserve">
+    <value>Começar</value>
   </data>
 </root>

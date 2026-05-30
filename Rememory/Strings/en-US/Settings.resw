@@ -213,9 +213,6 @@
   <data name="General_ActivationShortcut.Description" xml:space="preserve">
     <value>Set the shortcut combination to open clipboard manager</value>
   </data>
-  <data name="General_ActivationShortcutButton.Text" xml:space="preserve">
-    <value>Change shortcut</value>
-  </data>
   <data name="General_StartupSection.Text" xml:space="preserve">
     <value>Startup</value>
   </data>
@@ -226,7 +223,7 @@
     <value>Run at startup</value>
   </data>
   <data name="General_RunAtStartup.Description" xml:space="preserve">
-    <value>Enable this option to automatically launch Rememory when your computer starts</value>
+    <value>Start Rememory automatically when you sign in to Windows</value>
   </data>
   <data name="General_StartupWarning.Title" xml:space="preserve">
     <value>Startup is disabled by Windows</value>
@@ -603,5 +600,23 @@ and WebView2 applications</value>
   </data>
   <data name="About_WriteReviewHyperlink.Content" xml:space="preserve">
     <value>Write a review</value>
+  </data>
+  <data name="Onboarding_Title.Text" xml:space="preserve">
+    <value>Welcome to Rememory</value>
+  </data>
+  <data name="Onboarding_Subtitle.Text" xml:space="preserve">
+    <value>Your new clipboard manager</value>
+  </data>
+  <data name="Onboarding_SettingsHeader.Text" xml:space="preserve">
+    <value>Let's quickly customize a few settings to get things ready</value>
+  </data>
+  <data name="Onboarding_QuickTipInfo.Title" xml:space="preserve">
+    <value>Quick tip</value>
+  </data>
+  <data name="Onboarding_QuickTipInfo.Message" xml:space="preserve">
+    <value>Rememory runs quietly in your system tray. Press shortcut anytime to open your clipboard history.</value>
+  </data>
+  <data name="Onboarding_GetStartedButton.Content" xml:space="preserve">
+    <value>Get Started</value>
   </data>
 </root>

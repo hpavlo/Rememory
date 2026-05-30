@@ -213,9 +213,6 @@
   <data name="General_ActivationShortcut.Description" xml:space="preserve">
     <value>عيّن تركيبة الاختصار لفتح مدير الحافظة</value>
   </data>
-  <data name="General_ActivationShortcutButton.Text" xml:space="preserve">
-    <value>تغيير الاختصار</value>
-  </data>
   <data name="General_StartupSection.Text" xml:space="preserve">
     <value>بدء التشغيل</value>
   </data>
@@ -226,7 +223,16 @@
     <value>تشغيل عند بدء التشغيل</value>
   </data>
   <data name="General_RunAtStartup.Description" xml:space="preserve">
-    <value>فعّل هذا الخيار لتشغيل Rememory تلقائيًا عند بدء تشغيل الكمبيوتر</value>
+    <value>تشغيل Rememory تلقائيًا عند تسجيل الدخول إلى Windows</value>
+  </data>
+  <data name="General_StartupWarning.Title" xml:space="preserve">
+    <value>بدء التشغيل معطل بواسطة Windows</value>
+  </data>
+  <data name="General_StartupWarning.Message" xml:space="preserve">
+    <value>للسماح للتطبيق بالتشغيل عند بدء التشغيل، يرجى تمكينه في إدارة المهام أو إعدادات Windows</value>
+  </data>
+  <data name="General_SettingsStartupButton.Content" xml:space="preserve">
+    <value>فتح في إعدادات Windows</value>
   </data>
   <data name="General_NotificationOnStartup.Header" xml:space="preserve">
     <value>إشعار عند بدء التشغيل</value>
@@ -594,5 +600,23 @@
   </data>
   <data name="About_WriteReviewHyperlink.Content" xml:space="preserve">
     <value>اكتب مراجعة</value>
+  </data>
+  <data name="Onboarding_Title.Text" xml:space="preserve">
+    <value>مرحبًا بك في Rememory</value>
+  </data>
+  <data name="Onboarding_Subtitle.Text" xml:space="preserve">
+    <value>مدير الحافظة الجديد الخاص بك</value>
+  </data>
+  <data name="Onboarding_SettingsHeader.Text" xml:space="preserve">
+    <value>لنقم بسرعة بتخصيص بعض الإعدادات للبدء</value>
+  </data>
+  <data name="Onboarding_QuickTipInfo.Title" xml:space="preserve">
+    <value>نصيحة سريعة</value>
+  </data>
+  <data name="Onboarding_QuickTipInfo.Message" xml:space="preserve">
+    <value>يعمل Rememory بهدوء في علبة النظام. اضغط الاختصار في أي وقت لفتح سجل الحافظة.</value>
+  </data>
+  <data name="Onboarding_GetStartedButton.Content" xml:space="preserve">
+    <value>البدء</value>
   </data>
 </root>

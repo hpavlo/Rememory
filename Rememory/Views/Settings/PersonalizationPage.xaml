@@ -27,7 +27,7 @@
             <TextBlock x:Uid="/Settings/Personalization_BackgroundSection"
                        Margin="0,28,0,8"
                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                       Style="{StaticResource BodyStrongTextBlockStyle}" />
 
             <tkcontrols:SettingsCard x:Uid="/Settings/Personalization_Backdrop"
                                      Margin="0,0,0,5"
@@ -140,7 +140,7 @@
             <TextBlock x:Uid="/Settings/Personalization_ClipboardWindowSection"
                        Margin="0,28,0,8"
                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                       Style="{StaticResource BodyStrongTextBlockStyle}" />
 
             <tkcontrols:SettingsCard x:Uid="/Settings/Personalization_CompactView"
                                      Margin="0,0,0,5"

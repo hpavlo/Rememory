@@ -37,9 +37,9 @@ namespace Rememory.Views
         /// </summary>
         public List<ClipModel> OrderedSelectedClips { get; private set; } = [];
 
+        private readonly IThemeService _themeService = App.Current.ThemeService;
         private readonly ClipboardWindow _window = App.Current.ClipboardWindow;
         private readonly BoolNegationConverter _boolNegationConverter = new();
-        private IThemeService ThemeService => App.Current.ThemeService;
 
         private readonly Flyout _previewTextFlyout;
         private readonly Flyout _previewRtfFlyout;
@@ -70,10 +70,10 @@ namespace Rememory.Views
             _window.Hiding += Window_Hiding;
             _window.AppWindow.Closing += Window_Closing;
 
-            RequestedTheme = ThemeService.Theme;
+            RequestedTheme = _themeService.Theme;
             TriggerThemeBackgroundColor();
-            ThemeService.ThemeChanged += ThemeService_ThemeChanged;
-            ThemeService.WindowBackdropChanged += ThemeService_WindowBackdropChanged;
+            _themeService.ThemeChanged += ThemeService_ThemeChanged;
+            _themeService.WindowBackdropChanged += ThemeService_WindowBackdropChanged;
 
             ViewModel.SettingsContext.PropertyChanged += SettingsContext_PropertyChanged;
             ClipsListView.Items.VectorChanged += ClipsListView_Items_VectorChanged;
@@ -121,26 +121,26 @@ namespace Rememory.Views
             _window.Showing -= Window_Showing;
             _window.Hiding -= Window_Hiding;
             _window.AppWindow.Closing -= Window_Closing;
-            ThemeService.ThemeChanged -= ThemeService_ThemeChanged;
-            ThemeService.WindowBackdropChanged -= ThemeService_WindowBackdropChanged;
+            _themeService.ThemeChanged -= ThemeService_ThemeChanged;
+            _themeService.WindowBackdropChanged -= ThemeService_WindowBackdropChanged;
             ViewModel.SettingsContext.PropertyChanged -= SettingsContext_PropertyChanged;
             ClipsListView.Items.VectorChanged -= ClipsListView_Items_VectorChanged;
         }
 
-        private void ThemeService_ThemeChanged(object? sender, ElementTheme theme)
+        private void ThemeService_ThemeChanged(IThemeService sender, ElementTheme theme)
         {
             RequestedTheme = theme;
             TriggerThemeBackgroundColor();
         }
 
-        private void ThemeService_WindowBackdropChanged(object? sender, WindowBackdropType e) => TriggerThemeBackgroundColor();
+        private void ThemeService_WindowBackdropChanged(IThemeService sender, WindowBackdropType e) => TriggerThemeBackgroundColor();
 
         private void TriggerThemeBackgroundColor()
         {
             SolidColorBrush newBackgroundBrush = new();
-            if (ThemeService.WindowBackdrop == WindowBackdropType.None)
+            if (_themeService.WindowBackdrop == WindowBackdropType.None)
             {
-                newBackgroundBrush.Color = ThemeService.Theme switch
+                newBackgroundBrush.Color = _themeService.Theme switch
                 {
                     ElementTheme.Light => Colors.White,
                     ElementTheme.Dark => Colors.Black,

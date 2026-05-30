@@ -16,9 +16,10 @@ namespace Rememory.Services
     /// <summary>
     /// SQlite implementation of <see cref="IStorageService"/>
     /// </summary>
-    public class SqliteService : IStorageService, IDisposable
+    public partial class SqliteService : IStorageService, IDisposable
     {
         private readonly string _connectionString;
+        private string _historyFolderPath = string.Empty;
         private int _currentVersion;
         /// <summary>
         /// Optionally updates the model ID with the new DB primary key
@@ -29,10 +30,9 @@ namespace Rememory.Services
         /// </summary>
         private SqliteConnection? _cachedConnection;
 
-        private SqliteService(string connectionString, bool updateModelIds, bool cacheConnections)
+        private SqliteService(string connectionString, bool cacheConnections)
         {
             _connectionString = connectionString;
-            _updateModelIds = updateModelIds;
 
             if (cacheConnections)
             {
@@ -51,14 +51,22 @@ namespace Rememory.Services
         {
             Directory.CreateDirectory(historyFolder);
             var path = Path.Combine(historyFolder, "ClipboardManager.db");
-            var service = new SqliteService($"Data Source={path}", true, false);
+            var service = new SqliteService($"Data Source={path}", false)
+            {
+                _updateModelIds = true,
+                _historyFolderPath = historyFolder
+            };
             service.InitializeDatabase();
             return service;
         }
 
-        public static SqliteService CreateForBackup(string tempFilePath)
+        public static SqliteService CreateForBackup(string historyFolder, string tempFilePath)
         {
-            var service = new SqliteService($"Data Source={tempFilePath};Pooling=false", false, true);
+            var service = new SqliteService($"Data Source={tempFilePath};Pooling=false", true)
+            {
+                _updateModelIds = false,
+                _historyFolderPath = historyFolder
+            };
             service.InitializeDatabase();
             return service;
         }
@@ -706,7 +714,7 @@ namespace Rememory.Services
 
                 if (ClipboardFormatHelper.CanFormatBeFile(format))
                 {
-                    data = ClipboardFormatHelper.ConvertFileNameToFullPath(data, format);
+                    data = ClipboardFormatHelper.ConvertFileNameToFullPath(data, format, _historyFolderPath);
                 }
 
                 yield return new DataModel(format, data, hash) { Id = id, Metadata = metadataModel };

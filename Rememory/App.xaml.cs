@@ -11,6 +11,7 @@ using Rememory.Hooks;
 using Rememory.Models;
 using Rememory.Services;
 using Rememory.Views;
+using Rememory.Views.Onboarding;
 using Rememory.Views.Settings;
 using System;
 using System.Globalization;
@@ -43,6 +44,7 @@ namespace Rememory
 
         private readonly string[] _launchArguments;
         private readonly IKeyboardMonitor _keyboardMonitor;
+        private OnboardingWindow _onboardingWindow;
 
         /// <summary>
         /// Initializes the singleton application object.
@@ -71,7 +73,10 @@ namespace Rememory
             {
                 MigrateStartupTask();
 
-                // Show quick setup window
+                // Show First Setup window only when user opens the app first time
+                _onboardingWindow = new OnboardingWindow();
+                _onboardingWindow.Closed += (s, a) =>  _onboardingWindow = null!;
+                _onboardingWindow.ShowOnScreenCenter();
             }
 
             ClipboardWindow = new ClipboardWindow();
@@ -85,9 +90,12 @@ namespace Rememory
                 SettingsWindow.ShowSettingsWindow();
             }
 
-            if (!_launchArguments.Contains("-silent")
+            var showStartNotification = !_launchArguments.Contains("-silent")
                 && ActivationKind != ExtendedActivationKind.StartupTask
-                && SettingsContext.IsNotificationOnStartEnabled)
+                && !SettingsContext.IsAppFirstRun
+                && SettingsContext.IsNotificationOnStartEnabled;
+
+            if (showStartNotification)
             {
                 //AppNotificationManager.Default.Register();   // for unpackaged
                 AppNotificationManager.Default.Show(new AppNotificationBuilder()

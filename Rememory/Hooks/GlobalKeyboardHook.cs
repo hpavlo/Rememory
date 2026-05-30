@@ -6,13 +6,13 @@ using System.Runtime.InteropServices;
 
 namespace Rememory.Hooks
 {
-    public class GlobalKeyboardHook : IDisposable
+    public partial class GlobalKeyboardHook : IDisposable
     {
         private IntPtr _user32LibraryHandle;
         private IntPtr _windowsKeyboardHookHandle;
         private NativeHelper.HookProc _keyboardHookProc;
 
-        internal event EventHandler<GlobalKeyboardHookEventArgs> KeyboardHandler;
+        internal event EventHandler<GlobalKeyboardHookEventArgs>? KeyboardHandler;
 
         public GlobalKeyboardHook()
         {
@@ -101,14 +101,10 @@ namespace Rememory.Hooks
             var wparamTyped = wParam.ToInt32();
             if (Enum.IsDefined(typeof(KeyboardState), wparamTyped))
             {
-                object o = Marshal.PtrToStructure(lParam, typeof(KeyboardHelper.LowLevelKeyboardInputEvent));
-                KeyboardHelper.LowLevelKeyboardInputEvent p = (KeyboardHelper.LowLevelKeyboardInputEvent)o;
-
+                KeyboardHelper.LowLevelKeyboardInputEvent p = Marshal.PtrToStructure<KeyboardHelper.LowLevelKeyboardInputEvent>(lParam);
                 var eventArguments = new GlobalKeyboardHookEventArgs(p, (KeyboardState)wparamTyped);
 
-                EventHandler<GlobalKeyboardHookEventArgs> handler = KeyboardHandler;
-                handler?.Invoke(this, eventArguments);
-
+                KeyboardHandler?.Invoke(this, eventArguments);
                 isHandled = eventArguments.Handled;
             }
 

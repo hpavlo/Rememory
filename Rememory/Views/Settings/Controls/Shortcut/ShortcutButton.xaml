@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl x:Class="Rememory.Views.Settings.Controls.Shortcut.ShortcutButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:Rememory.Views.Settings.Controls.Shortcut"
+             Unloaded="ShortcutButton_Unloaded">
+    <Button Padding="8,6,8,6"
+            Click="ShortcutButton_Click">
+        <StackPanel Orientation="Horizontal">
+            <ItemsControl ItemsSource="{x:Bind ActivationShortcut, Mode=OneWay}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="2" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="x:Int32">
+                        <local:KeyVisual FontSize="12"
+                                         CornerRadius="3"
+                                         Content="{x:Bind Mode=OneWay}"
+                                         Style="{StaticResource AccentKeyVisualStyle}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <FontIcon x:Name="EditIcon"
+                      x:Load="{x:Bind IsEnabled, Mode=OneWay}"
+                      Margin="8,0,0,0"
+                      FontSize="12"
+                      Glyph="&#xE70F;" />
+        </StackPanel>
+    </Button>
+</UserControl>

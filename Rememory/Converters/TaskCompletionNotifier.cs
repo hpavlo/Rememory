@@ -4,15 +4,15 @@ using System.Threading.Tasks;
 
 namespace Rememory.Converters
 {
-    public class TaskCompletionNotifier<TResult> : INotifyPropertyChanged
+    public partial class TaskCompletionNotifier<TResult> : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         public Task<TResult> Task { get; private set; }
-        public TResult Result => Task.Status == TaskStatus.RanToCompletion ? Task.Result : default;
+        public TResult? Result => Task.Status == TaskStatus.RanToCompletion ? Task.Result : default;
         public TaskStatus Status => Task.Status;
         public bool IsCompleted => Task.IsCompleted;
         public bool IsNotCompleted => !Task.IsCompleted;
-        public AggregateException Exception => Task.Exception;
+        public AggregateException? Exception => Task.Exception;
 
         public TaskCompletionNotifier(Task<TResult> task)
         {

@@ -213,9 +213,6 @@
   <data name="General_ActivationShortcut.Description" xml:space="preserve">
     <value>Pano yöneticisini açmak için kısayol kombinasyonunu ayarlayın</value>
   </data>
-  <data name="General_ActivationShortcutButton.Text" xml:space="preserve">
-    <value>Kısayolu değiştir</value>
-  </data>
   <data name="General_StartupSection.Text" xml:space="preserve">
     <value>Başlangıç</value>
   </data>
@@ -226,7 +223,16 @@
     <value>Başlangıçta çalıştır</value>
   </data>
   <data name="General_RunAtStartup.Description" xml:space="preserve">
-    <value>Bilgisayarınız başlatıldığında Rememory’nin otomatik olarak başlatılması için bu seçeneği etkinleştirin</value>
+    <value>Windows’a giriş yaptığınızda Rememory’i otomatik başlat</value>
+  </data>
+  <data name="General_StartupWarning.Title" xml:space="preserve">
+    <value>Başlangıç Windows tarafından devre dışı bırakıldı</value>
+  </data>
+  <data name="General_StartupWarning.Message" xml:space="preserve">
+    <value>Bu uygulamanın başlangıçta çalışması için Windows Görev Yöneticisi veya Ayarlar’dan etkinleştirin</value>
+  </data>
+  <data name="General_SettingsStartupButton.Content" xml:space="preserve">
+    <value>Windows Ayarlarında aç</value>
   </data>
   <data name="General_NotificationOnStartup.Header" xml:space="preserve">
     <value>Başlangıçta bildirim</value>
@@ -593,5 +599,23 @@
   </data>
   <data name="About_WriteReviewHyperlink.Content" xml:space="preserve">
     <value>Yorum yaz</value>
+  </data>
+  <data name="Onboarding_Title.Text" xml:space="preserve">
+    <value>Rememory’ye hoş geldiniz</value>
+  </data>
+  <data name="Onboarding_Subtitle.Text" xml:space="preserve">
+    <value>Yeni pano yöneticiniz</value>
+  </data>
+  <data name="Onboarding_SettingsHeader.Text" xml:space="preserve">
+    <value>Hadi birkaç ayarı hızlıca özelleştirip hazırlayalım</value>
+  </data>
+  <data name="Onboarding_QuickTipInfo.Title" xml:space="preserve">
+    <value>Hızlı ipucu</value>
+  </data>
+  <data name="Onboarding_QuickTipInfo.Message" xml:space="preserve">
+    <value>Rememory sistem tepsisinde sessizce çalışır. Kısayola basarak pano geçmişinizi istediğiniz zaman açabilirsiniz.</value>
+  </data>
+  <data name="Onboarding_GetStartedButton.Content" xml:space="preserve">
+    <value>Başla</value>
   </data>
 </root>

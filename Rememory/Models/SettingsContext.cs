@@ -53,12 +53,12 @@ namespace Rememory.Models
 
 
         private List<int>? _activationShortcut;
-        public List<int> ActivationShortcutDefault { get; private set; } = [0x10, 0x56, 0x5B];   // Win + Shift + V
+        public List<int> ActivationShortcutDefault { get; private set; } = [0x5B, 0x10, 0x56];   // Win + Shift + V
 
         [Settings("ActivationShortcut")]
         public List<int> ActivationShortcut
         {
-            get => _activationShortcut ??= GetSettingValue<List<int>>(ActivationShortcutDefault);
+            get => _activationShortcut ??= [.. KeyboardHelper.SortShortcut(GetSettingValue<List<int>>(ActivationShortcutDefault))];
             set => SetSettingsProperty(ref _activationShortcut, value);
         }
 

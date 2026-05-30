@@ -4,7 +4,7 @@ using Microsoft.Windows.AppLifecycle;
 using Rememory.Helper;
 using Rememory.Models;
 using Rememory.Services;
-using Rememory.Views.Settings;
+using System;
 using System.Threading.Tasks;
 
 namespace Rememory.ViewModels.Settings
@@ -94,9 +94,9 @@ namespace Rememory.ViewModels.Settings
 
         #endregion
 
-        private void ShowAccessExceptionMessageBox()
+        private static void ShowAccessExceptionMessageBox()
         {
-            _ = NativeHelper.MessageBox(SettingsWindow.WindowHandle,
+            _ = NativeHelper.MessageBox(IntPtr.Zero,
                 "To do this action please restart this app as Administrator",
                 "Access denied",
                 0x00000030);   // MB_OK and MB_ICONWARNING

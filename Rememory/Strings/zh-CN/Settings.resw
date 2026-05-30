@@ -213,9 +213,6 @@
   <data name="General_ActivationShortcut.Description" xml:space="preserve">
     <value>设置打开剪贴板管理器的快捷键组合</value>
   </data>
-  <data name="General_ActivationShortcutButton.Text" xml:space="preserve">
-    <value>更改快捷键</value>
-  </data>
   <data name="General_StartupSection.Text" xml:space="preserve">
     <value>启动</value>
   </data>
@@ -226,7 +223,16 @@
     <value>开机启动</value>
   </data>
   <data name="General_RunAtStartup.Description" xml:space="preserve">
-    <value>开启这个选项使 Rememory 在开机时自动启动</value>
+    <value>登录 Windows 时自动启动 Rememory</value>
+  </data>
+  <data name="General_StartupWarning.Title" xml:space="preserve">
+    <value>启动已被 Windows 禁用</value>
+  </data>
+  <data name="General_StartupWarning.Message" xml:space="preserve">
+    <value>要让此应用在启动时运行，请在 Windows 任务管理器或设置中启用</value>
+  </data>
+  <data name="General_SettingsStartupButton.Content" xml:space="preserve">
+    <value>在 Windows 设置中打开</value>
   </data>
   <data name="General_NotificationOnStartup.Header" xml:space="preserve">
     <value>在启动时通知</value>
@@ -593,5 +599,23 @@
   </data>
   <data name="About_WriteReviewHyperlink.Content" xml:space="preserve">
     <value>撰写评论</value>
+  </data>
+  <data name="Onboarding_Title.Text" xml:space="preserve">
+    <value>欢迎使用 Rememory</value>
+  </data>
+  <data name="Onboarding_Subtitle.Text" xml:space="preserve">
+    <value>您的新剪贴板管理器</value>
+  </data>
+  <data name="Onboarding_SettingsHeader.Text" xml:space="preserve">
+    <value>让我们快速自定义一些设置以准备就绪</value>
+  </data>
+  <data name="Onboarding_QuickTipInfo.Title" xml:space="preserve">
+    <value>快速提示</value>
+  </data>
+  <data name="Onboarding_QuickTipInfo.Message" xml:space="preserve">
+    <value>Rememory 在系统托盘中静默运行。随时按快捷键打开剪贴板历史。</value>
+  </data>
+  <data name="Onboarding_GetStartedButton.Content" xml:space="preserve">
+    <value>开始使用</value>
   </data>
 </root>

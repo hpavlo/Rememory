@@ -20,7 +20,7 @@
                                          HeaderIcon="{tk:FontIcon Glyph=&#xE8EC;}"
                                          IsExpanded="True">
                 <Button x:Uid="/Settings/Tags_TagsButton"
-                        Style="{ThemeResource AccentButtonStyle}"
+                        Style="{StaticResource AccentButtonStyle}"
                         Click="AddTagButton_Click" />
                 <tkcontrols:SettingsExpander.Items>
                     <tkcontrols:SettingsCard MinHeight="0">
@@ -75,7 +75,7 @@
                                                 <TextBlock TextWrapping="Wrap"
                                                            Text="{x:Bind Name}" />
                                                 <TextBlock FontSize="{ThemeResource CaptionTextBlockFontSize}"
-                                                           Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                                            Text="{x:Bind ClipsCount, Converter={StaticResource StringFormatResourceConverter}, ConverterParameter=Settings/Tags_Tag_ClipsCount/Text}" />
                                             </StackPanel>
 

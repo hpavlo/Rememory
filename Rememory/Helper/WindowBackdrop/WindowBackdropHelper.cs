@@ -22,11 +22,11 @@ namespace Rememory.Helper.WindowBackdrop
         public static bool IsSystemBackdropSupported => DesktopAcrylicController.IsSupported() && MicaController.IsSupported();
 
         private readonly ClipboardWindow _window = window;
+        private readonly IThemeService _themeService = App.Current.ThemeService;
         private WindowsSystemDispatcherQueueHelper? _wsdqHelper;
         private DesktopAcrylicController? _acrylicController;
         private MicaController? _micaController;
         private SystemBackdropConfiguration? _configurationSource;
-        private IThemeService ThemeService => App.Current.ThemeService;
 
         /// <summary>
         /// Initializes the backdrop system for the window if supported.
@@ -48,8 +48,8 @@ namespace Rememory.Helper.WindowBackdrop
                 _configurationSource.IsInputActive = true;
                 SetConfigurationSourceTheme();
 
-                SetWindowBackdrop(ThemeService.WindowBackdrop);
-                ThemeService.WindowBackdropChanged += ThemeService_WindowBackdropChanged;
+                SetWindowBackdrop(_themeService.WindowBackdrop);
+                _themeService.WindowBackdropChanged += ThemeService_WindowBackdropChanged;
 
                 return true;
             }
@@ -150,7 +150,7 @@ namespace Rememory.Helper.WindowBackdrop
             _window.Hiding -= Window_Hiding;
             _window.Closed -= Window_Closed;
             ((FrameworkElement)_window.Content).ActualThemeChanged -= Window_ThemeChanged;
-            ThemeService.WindowBackdropChanged -= ThemeService_WindowBackdropChanged;
+            _themeService.WindowBackdropChanged -= ThemeService_WindowBackdropChanged;
             _configurationSource = null;
         }
 

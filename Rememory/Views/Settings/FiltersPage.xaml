@@ -26,9 +26,9 @@
                     <FontIcon x:Uid="/Settings/Filters_OwnerFiltersWarning"
                               Glyph="&#xE946;"
                               VerticalAlignment="Center"
-                              Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+                              Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                     <Button x:Uid="/Settings/Filters_OwnerFiltersButton"
-                            Style="{ThemeResource AccentButtonStyle}"
+                            Style="{StaticResource AccentButtonStyle}"
                             Click="AddOwnerAppFilterButton_Click" />
                 </StackPanel>
 
@@ -85,10 +85,10 @@
                                                            Visibility="{Binding Text, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource StringVisibilityConverter}}" />
                                                 <TextBlock FontSize="12"
                                                            TextWrapping="Wrap"
-                                                           Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                                            Text="{x:Bind Pattern, Mode=OneWay}" />
                                                 <TextBlock FontSize="12"
-                                                           Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                                            Text="{x:Bind FilteredCount, Mode=OneWay, Converter={StaticResource StringFormatResourceConverter}, ConverterParameter=Settings/Filters_Filter_ClipsCount/Text}" />
                                             </StackPanel>
 

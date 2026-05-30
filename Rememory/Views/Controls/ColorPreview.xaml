@@ -113,7 +113,7 @@
                    VerticalAlignment="Top"
                    TextWrapping="Wrap"
                    TextTrimming="CharacterEllipsis"
-                   Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                    FontSize="{ThemeResource CaptionTextBlockFontSize}" />
     </Grid>
 </UserControl>

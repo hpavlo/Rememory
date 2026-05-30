@@ -4,7 +4,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="using:Rememory.Views.Editor"
       xmlns:tk="using:CommunityToolkit.WinUI"
-      DataContext="{x:Bind ViewModel}">
+      DataContext="{x:Bind ViewModel}"
+      Unloaded="Page_Unloaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -40,7 +41,7 @@
             <StackPanel Spacing="8"
                         Orientation="Horizontal">
                 <Button x:Uid="/Editor/SaveButton"
-                        Style="{ThemeResource AccentButtonStyle}"
+                        Style="{StaticResource AccentButtonStyle}"
                         Command="{Binding SaveTextCommand}"
                         IsEnabled="{x:Bind ViewModel.IsTextChanged, Mode=OneWay}">
                     <StackPanel Orientation="Horizontal"
@@ -60,7 +61,7 @@
                         BorderBrush="Transparent"
                         VerticalAlignment="Stretch"
                         Content="{tk:FontIcon FontSize=14, Glyph=&#xE7A7;}"
-                        Style="{ThemeResource AlternateButtonStyle}"
+                        Style="{StaticResource AlternateButtonStyle}"
                         Click="{x:Bind EditorTextBox.Undo}" />
                 
                 <Button x:Name="CanRedoButton"
@@ -71,7 +72,7 @@
                         BorderBrush="Transparent"
                         VerticalAlignment="Stretch"
                         Content="{tk:FontIcon FontSize=14, Glyph=&#xE7A6;}"
-                        Style="{ThemeResource AlternateButtonStyle}"
+                        Style="{StaticResource AlternateButtonStyle}"
                         Click="{x:Bind EditorTextBox.Redo}" />
             </StackPanel>
 
@@ -177,7 +178,7 @@
                        FontSize="12"
                        TextWrapping="Wrap"
                        VerticalAlignment="Center"
-                       Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
 
             <RepeatButton x:Name="ScaleDownButton"
                           x:Uid="/Editor/ZoomOutButton"
@@ -198,7 +199,7 @@
                        VerticalAlignment="Center"
                        HorizontalTextAlignment="Center"
                        Text="100%"
-                       Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
             
             <RepeatButton x:Name="ScaleUpButton"
                           x:Uid="/Editor/ZoomInButton"

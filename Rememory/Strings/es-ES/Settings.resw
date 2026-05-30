@@ -213,9 +213,6 @@
   <data name="General_ActivationShortcut.Description" xml:space="preserve">
     <value>Configurar el atajo de teclado para abrir el portapapeles</value>
   </data>
-  <data name="General_ActivationShortcutButton.Text" xml:space="preserve">
-    <value>Cambiar atajo</value>
-  </data>
   <data name="General_StartupSection.Text" xml:space="preserve">
     <value>Inicio</value>
   </data>
@@ -226,7 +223,16 @@
     <value>Ejecutar en el arranque</value>
   </data>
   <data name="General_RunAtStartup.Description" xml:space="preserve">
-    <value>Activa esta opción para ejecutar automáticamente Rememory cuando tu computadora se prenda</value>
+    <value>Iniciar Rememory automáticamente al iniciar sesión en Windows</value>
+  </data>
+  <data name="General_StartupWarning.Title" xml:space="preserve">
+    <value>El inicio está deshabilitado por Windows</value>
+  </data>
+  <data name="General_StartupWarning.Message" xml:space="preserve">
+    <value>Para que esta aplicación se ejecute al inicio, actívala en el Administrador de tareas o Configuración de Windows</value>
+  </data>
+  <data name="General_SettingsStartupButton.Content" xml:space="preserve">
+    <value>Abrir en Configuración de Windows</value>
   </data>
   <data name="General_NotificationOnStartup.Header" xml:space="preserve">
     <value>Notificación al iniciar</value>
@@ -594,5 +600,23 @@ UWP y WebView2</value>
   </data>
   <data name="About_WriteReviewHyperlink.Content" xml:space="preserve">
     <value>Escribir una reseña</value>
+  </data>
+  <data name="Onboarding_Title.Text" xml:space="preserve">
+    <value>Bienvenido a Rememory</value>
+  </data>
+  <data name="Onboarding_Subtitle.Text" xml:space="preserve">
+    <value>Tu nuevo administrador de portapapeles</value>
+  </data>
+  <data name="Onboarding_SettingsHeader.Text" xml:space="preserve">
+    <value>Personalicemos rápidamente algunos ajustes para empezar</value>
+  </data>
+  <data name="Onboarding_QuickTipInfo.Title" xml:space="preserve">
+    <value>Consejo rápido</value>
+  </data>
+  <data name="Onboarding_QuickTipInfo.Message" xml:space="preserve">
+    <value>Rememory se ejecuta en segundo plano en la bandeja del sistema. Pulsa el acceso directo en cualquier momento para abrir el historial del portapapeles.</value>
+  </data>
+  <data name="Onboarding_GetStartedButton.Content" xml:space="preserve">
+    <value>Empezar</value>
   </data>
 </root>

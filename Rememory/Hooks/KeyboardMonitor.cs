@@ -1,4 +1,5 @@
 ﻿using Rememory.Helper;
+using Rememory.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,10 @@ namespace Rememory.Hooks
     {
         public event EventHandler<GlobalKeyboardHookEventArgs>? KeyboardEvent;
 
+        private readonly SettingsContext _settingsContext = App.Current.SettingsContext;
         private readonly GlobalKeyboardHook _globalKeyboardHook;
         private List<int> _previouslyPressedKeys = [];
+        private List<int> _activationShortcut = [];
         private bool _activationShortcutPressed;
 
         public KeyboardMonitor()
@@ -23,12 +26,23 @@ namespace Rememory.Hooks
         {
             _globalKeyboardHook.AddKeyboardHook();
             _globalKeyboardHook.KeyboardHandler += GlobalKeyboardHook_KeyboardPressed;
+            _settingsContext.PropertyChanged += SettingsContext_PropertyChanged;
+            _activationShortcut = [.. _settingsContext.ActivationShortcut.Order()];
         }
 
         public void StopMonitor()
         {
             _globalKeyboardHook.RemoveKeyboardHook();
             _globalKeyboardHook.KeyboardHandler -= GlobalKeyboardHook_KeyboardPressed;
+            _settingsContext.PropertyChanged -= SettingsContext_PropertyChanged;
+        }
+
+        private void SettingsContext_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(_settingsContext.ActivationShortcut))
+            {
+                _activationShortcut = [.. _settingsContext.ActivationShortcut.Order()];
+            }
         }
 
         private void GlobalKeyboardHook_KeyboardPressed(object? sender, GlobalKeyboardHookEventArgs args)
@@ -53,8 +67,6 @@ namespace Rememory.Hooks
                 currentlyPressedKeys.Add(pressedKey);
             }
 
-            currentlyPressedKeys.Sort();
-
             if (currentlyPressedKeys.Count == 0 && _previouslyPressedKeys.Count != 0)
             {
                 // no keys pressed, we can enable activation shortcut again
@@ -63,7 +75,14 @@ namespace Rememory.Hooks
 
             _previouslyPressedKeys = currentlyPressedKeys;
 
-            if (currentlyPressedKeys.SequenceEqual(App.Current.SettingsContext.ActivationShortcut))
+            if (currentlyPressedKeys.Count != _activationShortcut.Count)
+            {
+                return;
+            }
+
+            currentlyPressedKeys.Sort();
+
+            if (currentlyPressedKeys.SequenceEqual(_activationShortcut))
             {
                 // avoid triggering this action multiple times as this will be called nonstop while keys are pressed
                 if (!_activationShortcutPressed)
@@ -83,7 +102,7 @@ namespace Rememory.Hooks
             }
         }
 
-        private void AddModifierKeys(List<int> currentlyPressedKeys)
+        private static void AddModifierKeys(List<int> currentlyPressedKeys)
         {
             if ((NativeHelper.GetAsyncKeyState((int)VirtualKey.Shift) & 0x8000) != 0)
             {

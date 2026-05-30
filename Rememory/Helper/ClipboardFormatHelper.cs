@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Rememory.Core;
+﻿using Rememory.Core;
 using Rememory.Models;
 using System;
 using System.Collections;
@@ -15,8 +14,6 @@ namespace Rememory.Helper
     /// </summary>
     public static class ClipboardFormatHelper
     {
-        private static readonly ClipboardMonitor _clipboardMonitor = App.Current.Services.GetService<ClipboardMonitor>()!;
-
         /// <summary>
         /// The base date/time format string used for generating unique filenames for stored clipboard data files.
         /// Format: YearMonthDay_HourMinuteSecondMillisecond (e.g., 20231027_153005123).
@@ -141,9 +138,10 @@ namespace Rememory.Helper
         /// </summary>
         /// <param name="fileName">The base file name (e.g., "clip.rtf") or potentially a full path.</param>
         /// <param name="format">The <see cref="ClipboardFormat"/> determining the target subfolder (Rtf, Html, Png).</param>
+        /// <param name="historyFolder">Path to the root folder with all saved clipboard data</param>
         /// <returns>The full, absolute path within the application's history folder structure.</returns>
         /// <exception cref="NotImplementedException">Thrown if the <paramref name="format"/> is not handled (e.g., Text).</exception>
-        public static string ConvertFileNameToFullPath(string fileName, ClipboardFormat format)
+        public static string ConvertFileNameToFullPath(string fileName, ClipboardFormat format, string historyFolder)
         {
             // If the input is already a full path, extract just the filename part.
             if (Path.IsPathRooted(fileName))
@@ -162,7 +160,7 @@ namespace Rememory.Helper
                 _ => throw new NotImplementedException($"Folder mapping not implemented for format: {format}")
             };
 
-            return Path.Combine(_clipboardMonitor.HistoryFolderPath, formatFolderName, fileName);
+            return Path.Combine(historyFolder, formatFolderName, fileName);
         }
     }
 }

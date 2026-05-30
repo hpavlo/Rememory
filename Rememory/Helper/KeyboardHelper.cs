@@ -53,13 +53,18 @@ namespace Rememory.Helper
                 throw new Exception("SendInput failed");
         }
 
-        public static string ShortcutToString(IEnumerable<int> keys, string separator)
+        public static IEnumerable<int> SortShortcut(IEnumerable<int> keys)
         {
-            return string.Join(separator, keys.OrderBy(key =>
+            return keys.OrderBy(key =>
             {
                 int index = ModifierKeys.IndexOf((VirtualKey)key);
                 return index == -1 ? ModifierKeys.Count : index;
-            }).Select(VirtualKeyToString));
+            });
+        }
+
+        public static string ShortcutToString(IEnumerable<int> keys, string separator)
+        {
+            return string.Join(separator, SortShortcut(keys).Select(VirtualKeyToString));
         }
 
         public static string VirtualKeyToString(int key)
@@ -68,6 +73,7 @@ namespace Rememory.Helper
             {
                 0x11 or 0xA2 or 0xA3 => "Ctrl",
                 0x12 or 0xA4 or 0xA5 => "Alt",
+                0x14 => "CapsLock",
                 >= 0x30 and <= 0x39 => $"{key % 0x10}",                 // VK_NUMBER...
                 >= 0x60 and <= 0x69 => $"NumPad {key % 0x10}",          // VK_NUMPAD...
                 0x6E => ".",                                            // VK_DECIMAL

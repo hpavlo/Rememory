@@ -2,7 +2,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.Generic;
 
-namespace Rememory.Views.Settings.Controls
+namespace Rememory.Views.Settings.Controls.Shortcut
 {
     public sealed partial class ShortcutDialog : UserControl
     {
@@ -28,7 +28,7 @@ namespace Rememory.Views.Settings.Controls
 
         public ShortcutDialog()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private static void OnIsErrorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

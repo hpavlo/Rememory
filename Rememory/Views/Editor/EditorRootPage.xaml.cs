@@ -14,33 +14,28 @@ namespace Rememory.Views.Editor
     {
         public readonly EditorRootPageViewModel ViewModel;
 
-        private IThemeService ThemeService => App.Current.ThemeService;
-        private readonly Window _window;
+        private readonly IThemeService _themeService = App.Current.ThemeService;
+        private Window? _window;
 
-        // If youser press button to close window
+        // If user press button to close window
         private bool _requestToClose;
 
         public EditorRootPage(Window window, ClipModel context)
         {
             _window = window;
             ViewModel = new EditorRootPageViewModel(context);
+
             InitializeComponent();
 
             _window.SetTitleBar(WindowTitleBar);
             _window.AppWindow.Closing += EditorWindow_Closing;
             _window.Closed += EditorWindow_Closed;
 
-            ApplyTheme();
-            ThemeService.ThemeChanged += ThemeService_ThemeChanged;
+            RequestedTheme = _themeService.Theme;
+            _themeService.ThemeChanged += ThemeService_ThemeChanged;
         }
 
-        private void ApplyTheme()
-        {
-            RequestedTheme = ThemeService.Theme;
-            _window.AppWindow.TitleBar.PreferredTheme = (TitleBarTheme)(ThemeService.Theme + 1);
-        }
-
-        private void ThemeService_ThemeChanged(object? sender, ElementTheme e) => ApplyTheme();
+        private void ThemeService_ThemeChanged(IThemeService sender, ElementTheme e) => RequestedTheme = _themeService.Theme;
 
         private async void EditorWindow_Closing(AppWindow sender, AppWindowClosingEventArgs args)
         {
@@ -52,13 +47,13 @@ namespace Rememory.Views.Editor
                     _requestToClose = true;
                     var dialog = new ContentDialog
                     {
-                        Title = _window.AppWindow.Title,
+                        Title = sender.Title,
                         Content = "/Editor/SaveChangesDialog/Content".GetLocalizedResource(),
                         PrimaryButtonText = "Save".GetLocalizedResource(),
                         SecondaryButtonText = "DoNotSave".GetLocalizedResource(),
                         CloseButtonText = "Cancel".GetLocalizedResource(),
                         DefaultButton = ContentDialogButton.Primary,
-                        RequestedTheme = ThemeService.Theme,
+                        RequestedTheme = _themeService.Theme,
                         XamlRoot = XamlRoot
                     };
                     var result = await dialog.ShowAsync();
@@ -66,9 +61,9 @@ namespace Rememory.Views.Editor
                     {
                         ViewModel.SaveTextCommand.Execute(null);
                     }
-                    if (result != ContentDialogResult.None)
+                    if (result == ContentDialogResult.Secondary)
                     {
-                        _window.Close();
+                        _window?.Close();
                     }
                     _requestToClose = false;
                 }
@@ -77,9 +72,16 @@ namespace Rememory.Views.Editor
 
         private void EditorWindow_Closed(object sender, WindowEventArgs args)
         {
+            _themeService.ThemeChanged -= ThemeService_ThemeChanged;
+
+            if (_window is null)
+            {
+                return;
+            }
+
             _window.AppWindow.Closing -= EditorWindow_Closing;
             _window.Closed -= EditorWindow_Closed;
-            ThemeService.ThemeChanged -= ThemeService_ThemeChanged;
+            _window = null;
         }
 
         private void EditorTextBox_Loaded(object sender, RoutedEventArgs e)
@@ -105,7 +107,7 @@ namespace Rememory.Views.Editor
         {
             var button = (Button)sender;
 
-            if (_window.AppWindow.Presenter is CompactOverlayPresenter)
+            if (_window?.AppWindow.Presenter is CompactOverlayPresenter)
             {
                 _window.AppWindow.SetPresenter(AppWindowPresenterKind.Default);
                 ((FontIcon)button.Content).Glyph = "\uE73F";
@@ -113,7 +115,7 @@ namespace Rememory.Views.Editor
             }
             else
             {
-                _window.AppWindow.SetPresenter(AppWindowPresenterKind.CompactOverlay);
+                _window?.AppWindow.SetPresenter(AppWindowPresenterKind.CompactOverlay);
                 ((FontIcon)button.Content).Glyph = "\uE740";
                 ToolTipService.SetToolTip(button, "/Editor/ExtendButton/ToolTipService/ToolTip".GetLocalizedResource());
             }
@@ -157,6 +159,12 @@ namespace Rememory.Views.Editor
         {
             var menuItem = (ToggleMenuFlyoutItem)sender;
             EditorTextBox.TextWrapping = menuItem.IsChecked ? TextWrapping.Wrap : TextWrapping.NoWrap;
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            Bindings.StopTracking();
+            DataContext = null;
         }
     }
 }

@@ -4,7 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:Rememory.Views.Controls"
              x:Name="ParentControl"
-             Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+             Foreground="{ThemeResource TextFillColorSecondaryBrush}"
              Loaded="ParentControl_Loaded">
     <StackPanel Orientation="Horizontal"
                 HorizontalAlignment="Center"
@@ -30,6 +30,6 @@
 
         <TextBlock x:Name="EmptyPreviewText"
                    x:Uid="/Clipboard/Clip_NoPreview"
-                   Style="{ThemeResource BodyTextBlockStyle}" />
+                   Style="{StaticResource BodyTextBlockStyle}" />
     </StackPanel>
 </UserControl>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
+using Rememory.Contracts;
 using Rememory.Helper;
 using Rememory.Models;
 using Windows.ApplicationModel;
@@ -39,7 +40,10 @@ namespace Rememory.Views.Editor
 
         private static void InitializeWindow()
         {
-            if (_clipContext is null) return;
+            if (_clipContext is null)
+            {
+                return;
+            }
 
             _window = new WindowEx()
             {
@@ -49,27 +53,29 @@ namespace Rememory.Views.Editor
                 SystemBackdrop = new MicaBackdrop(),
             };
             _window.Content = new EditorRootPage(_window, _clipContext);
-            _window.Closed += EditorWindow_Closed;
 
             _window.AppWindow.Title = "/Editor/WindowTitle/Text".GetLocalizedFormatResource(AppInfo.Current.DisplayInfo.DisplayName);
             _window.AppWindow.SetIcon("Assets\\WindowIcon.ico");
             _window.AppWindow.SetPresenter(AppWindowPresenterKind.CompactOverlay);
             _window.CenterOnScreen();
+
+            _window.Closed += EditorWindow_Closed;
+            App.Current.ThemeService.ThemeChanged += ThemeService_ThemeChanged;
         }
 
         private static void EditorWindow_Closed(object sender, WindowEventArgs args)
         {
-            if (_window is not null)
-            {
-                _window.Closed -= EditorWindow_Closed;
-                _window = null;
-            }
+            App.Current.ThemeService.ThemeChanged -= ThemeService_ThemeChanged;
 
-            if (_clipContext is not null)
-            {
-                _clipContext.IsOpenInEditor = false;
-                _clipContext = null;
-            }
+            _window?.Closed -= EditorWindow_Closed;
+            _window?.Content = null;
+            _window = null;
+
+            _clipContext?.IsOpenInEditor = false;
+            _clipContext = null;
+
         }
+
+        private static void ThemeService_ThemeChanged(IThemeService sender, ElementTheme e) => _window?.AppWindow.TitleBar.PreferredTheme = (TitleBarTheme)(sender.Theme + 1);
     }
 }

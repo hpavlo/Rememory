@@ -34,7 +34,7 @@ namespace Rememory.Services
             }
 
             var backupDatabaseTempFilePath = GetTempDbFilePath();
-            using SqliteService sqliteService = SqliteService.CreateForBackup(backupDatabaseTempFilePath);
+            using SqliteService sqliteService = SqliteService.CreateForBackup(_clipboardMonitor.HistoryFolderPath, backupDatabaseTempFilePath);
 
             var dbExportResult = await Task.Run(() =>
             {
@@ -155,7 +155,7 @@ namespace Rememory.Services
             var extractedDbPath = GetTempDbFilePath();
             dbEntry.ExtractToFile(extractedDbPath);
 
-            using SqliteService sqliteService = SqliteService.CreateForBackup(extractedDbPath);
+            using SqliteService sqliteService = SqliteService.CreateForBackup(_clipboardMonitor.HistoryFolderPath, extractedDbPath);
             var clipsTimeHashSet = _clipboardService.Clips.Select(c => c.ClipTime).ToHashSet();   // To check if we already have this clip by cliptime
 
             IList<TagModel> tagsToImport = [];

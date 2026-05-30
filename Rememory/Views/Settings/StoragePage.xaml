@@ -26,12 +26,12 @@
                 <TextBlock x:Uid="/Settings/Storage_EraseData_FlyoutHeader"
                            Grid.Row="0"
                            TextWrapping="Wrap"
-                           Style="{ThemeResource BodyLargeStrongTextBlockStyle}" />
+                           Style="{StaticResource BodyLargeStrongTextBlockStyle}" />
 
                 <TextBlock x:Uid="/Settings/Storage_EraseData_FlyoutDescription"
                            Grid.Row="1"
                            TextWrapping="Wrap"
-                           Style="{ThemeResource BodyTextBlockStyle}" />
+                           Style="{StaticResource BodyTextBlockStyle}" />
 
                 <CheckBox x:Uid="/Resources/DoNotShowAgainCheckbox"
                           Grid.Row="2"
@@ -41,7 +41,7 @@
                 <Button x:Uid="/Settings/Storage_EraseData_FlyoutButton"
                         Grid.Row="3"
                         HorizontalAlignment="Stretch"
-                        Style="{ThemeResource AccentButtonStyle}"
+                        Style="{StaticResource AccentButtonStyle}"
                         Click="EraseFlyoutButton_Click" />
             </Grid>
         </Flyout>
@@ -163,7 +163,7 @@
                     <InfoBadge x:Name="EraseDataInfoBadge"
                                VerticalAlignment="Center"
                                Visibility="Collapsed"
-                               Style="{ThemeResource SuccessIconInfoBadgeStyle}" />
+                               Style="{StaticResource SuccessIconInfoBadgeStyle}" />
 
                     <Button x:Uid="/Settings/Storage_EraseDataButton"
                             Click="EraseButton_Click" />
@@ -185,7 +185,7 @@
             <TextBlock x:Uid="/Settings/Storage_BackupSection"
                        Margin="0,28,0,8"
                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                       Style="{StaticResource BodyStrongTextBlockStyle}" />
 
             <tkcontrols:SettingsCard x:Uid="/Settings/Storage_ExportClips"
                                      Margin="0,0,0,5"
@@ -244,7 +244,7 @@
             <TextBlock x:Uid="/Settings/Storage_CleanupSection"
                        Margin="0,28,0,8"
                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                       Style="{StaticResource BodyStrongTextBlockStyle}" />
 
             <tkcontrols:SettingsExpander x:Uid="/Settings/Storage_CleanupType"
                                          Margin="0,0,0,5"
@@ -289,7 +289,7 @@
             <TextBlock x:Uid="/Settings/Storage_ClipLimitsSection"
                        Margin="0,28,0,8"
                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                       Style="{StaticResource BodyStrongTextBlockStyle}" />
 
             <tkcontrols:SettingsExpander x:Uid="/Settings/Storage_SizeLimit"
                                          HeaderIcon="{tk:FontIcon Glyph=&#xE898;}"

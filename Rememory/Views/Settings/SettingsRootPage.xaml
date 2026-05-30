@@ -3,7 +3,8 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="using:Rememory.Views.Settings"
-      xmlns:tk="using:CommunityToolkit.WinUI">
+      xmlns:tk="using:CommunityToolkit.WinUI"
+      Unloaded="Page_Unloaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -66,7 +67,7 @@
             <TextBlock x:Name="AppTitle"
                        VerticalAlignment="Center"
                        Style="{StaticResource CaptionTextBlockStyle}"
-                       Text="{x:Bind _window.AppWindow.Title}" />
+                       Text="{x:Bind Title}" />
         </StackPanel>
 
         <NavigationView x:Name="NavigationViewPanel"

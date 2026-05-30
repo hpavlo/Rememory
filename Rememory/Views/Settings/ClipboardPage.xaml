@@ -12,7 +12,7 @@
             <TextBlock x:Uid="/Settings/Clipboard_ClipsSection"
                        Margin="0,8,0,8"
                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                       Style="{StaticResource BodyStrongTextBlockStyle}" />
 
             <tkcontrols:SettingsCard x:Uid="/Settings/Clipboard_DragAndDrop"
                                      Margin="0,0,0,5"
@@ -34,7 +34,7 @@
             <TextBlock x:Uid="/Settings/Clipboard_SearchBarSection"
                        Margin="0,28,0,8"
                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                       Style="{StaticResource BodyStrongTextBlockStyle}" />
 
             <tkcontrols:SettingsCard x:Uid="/Settings/Clipboard_SearchBoxFocus"
                                      Margin="0,0,0,5"
@@ -50,7 +50,7 @@
             <TextBlock x:Uid="/Settings/Clipboard_TabsSection"
                        Margin="0,28,0,8"
                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                       Style="{StaticResource BodyStrongTextBlockStyle}" />
 
             <tkcontrols:SettingsCard x:Uid="/Settings/Clipboard_SetInitialTabOnOpen"
                                      Margin="0,0,0,5">
@@ -60,7 +60,7 @@
             <TextBlock x:Uid="/Settings/Clipboard_OtherSection"
                        Margin="0,28,0,8"
                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                       Style="{StaticResource BodyStrongTextBlockStyle}" />
 
             <tkcontrols:SettingsCard x:Uid="/Settings/Clipboard_RememberPinState"
                                      Margin="0,0,0,5"

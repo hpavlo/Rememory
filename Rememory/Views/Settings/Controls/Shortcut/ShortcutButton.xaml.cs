@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Windows.System;
 
-namespace Rememory.Views.Settings.Controls
+namespace Rememory.Views.Settings.Controls.Shortcut
 {
     public sealed partial class ShortcutButton : UserControl
     {
@@ -17,16 +17,6 @@ namespace Rememory.Views.Settings.Controls
         private readonly ContentDialog _dialogBox;
         private readonly ShortcutDialog _dialogContent;
         private readonly List<int> _currentPressedKeys = [];
-
-        public string Text
-        {
-            get => (string)GetValue(TextProperty);
-            set => SetValue(TextProperty, value);
-        }
-
-        public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register("Text", typeof(string), typeof(ShortcutButton),
-                new PropertyMetadata(default(string)));
 
         public IList<int> ActivationShortcut
         {
@@ -51,7 +41,6 @@ namespace Rememory.Views.Settings.Controls
         public ShortcutButton()
         {
             InitializeComponent();
-            Unloaded += ShortcutButton_Unloaded;
 
             _dialogContent = new ShortcutDialog();
             _dialogBox = new()
@@ -64,49 +53,45 @@ namespace Rememory.Views.Settings.Controls
                 Content = _dialogContent
             };
 
-            _dialogBox.Opened += DialogBox_Opened;
-            _dialogBox.Closing += DialogBox_Closing;
+            _dialogBox.Loading += DialogBox_Loading;
+        }
+
+        private void DialogBox_Loading(FrameworkElement sender, object args)
+        {
+            /// Dialog can invoke Loading few times
+            /// Always unsubscribe first to clear any previous registrations
+            _dialogContent.GotFocus -= DialogContent_GotFocus;
+            _dialogContent.LostFocus -= DialogContent_LostFocus;
+
+            _dialogContent.GotFocus += DialogContent_GotFocus;
+            _dialogContent.LostFocus += DialogContent_LostFocus;
         }
 
         private void ShortcutButton_Unloaded(object sender, RoutedEventArgs e)
         {
-            _dialogBox.Opened -= DialogBox_Opened;
-            _dialogBox.Closing -= DialogBox_Closing;
+            _dialogBox.Loading -= DialogBox_Loading;
+            _dialogContent.GotFocus -= DialogContent_GotFocus;
+            _dialogContent.LostFocus -= DialogContent_LostFocus;
+            _keyboardMonitor.KeyboardEvent -= KeyboardMonitor_KeyboardEvent;
+
+            Bindings.StopTracking();
         }
 
-        private void DialogBox_Opened(ContentDialog sender, ContentDialogOpenedEventArgs args)
+        private void DialogContent_GotFocus(object sender, RoutedEventArgs e)
         {
-            SettingsWindow.WindowActivated += SettingsWindow_WindowActivated;
+            _keyboardMonitor.KeyboardEvent -= KeyboardMonitor_KeyboardEvent;   // Clean up just in case
             _keyboardMonitor.KeyboardEvent += KeyboardMonitor_KeyboardEvent;
         }
 
-        private void DialogBox_Closing(ContentDialog sender, ContentDialogClosingEventArgs args)
+        private void DialogContent_LostFocus(object sender, RoutedEventArgs e)
         {
-            SettingsWindow.WindowActivated -= SettingsWindow_WindowActivated;
             _keyboardMonitor.KeyboardEvent -= KeyboardMonitor_KeyboardEvent;
-        }
-
-        private void SettingsWindow_WindowActivated(object? sender, WindowActivatedEventArgs e)
-        {
-            if (e.WindowActivationState != WindowActivationState.Deactivated)
-            {
-                _keyboardMonitor.KeyboardEvent += KeyboardMonitor_KeyboardEvent;
-            }
-            else
-            {
-                _keyboardMonitor.KeyboardEvent -= KeyboardMonitor_KeyboardEvent;
-            }
         }
 
         private async void ShortcutButton_Click(object sender, RoutedEventArgs e)
         {
             _dialogContent.IsError = false;
-            _dialogContent.ShortcutKeys = ActivationShortcut
-                .OrderBy(key =>
-                {
-                    int index = KeyboardHelper.ModifierKeys.IndexOf((VirtualKey)key);
-                    return index == -1 ? KeyboardHelper.ModifierKeys.Count : index;
-                }).ToList();
+            _dialogContent.ShortcutKeys = [.. KeyboardHelper.SortShortcut(ActivationShortcut)];
 
             _dialogBox.XamlRoot = XamlRoot;
             _dialogBox.RequestedTheme = App.Current.ThemeService.Theme;
@@ -116,7 +101,7 @@ namespace Rememory.Views.Settings.Controls
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                        ActivationShortcut = [.. _dialogContent.ShortcutKeys.Order()];
+                        ActivationShortcut = [.. KeyboardHelper.SortShortcut(_dialogContent.ShortcutKeys)];
                         break;
                 case ContentDialogResult.Secondary:
                         ActivationShortcut = ActivationShortcutDefault;
@@ -126,6 +111,13 @@ namespace Rememory.Views.Settings.Controls
 
         private void KeyboardMonitor_KeyboardEvent(object? sender, GlobalKeyboardHookEventArgs e)
         {
+            // If the button is unloaded, this control should be 'dead' to the monitor
+            if (XamlRoot is null)
+            {
+                _keyboardMonitor.KeyboardEvent -= KeyboardMonitor_KeyboardEvent;
+                return;
+            }
+
             var key = FilterModifierKeys(e.KeyboardData.VirtualCode);
 
             if (key == (int)VirtualKey.Tab ||
@@ -162,7 +154,7 @@ namespace Rememory.Views.Settings.Controls
             e.Handled = true;
         }
 
-        private int FilterModifierKeys(int key)
+        private static int FilterModifierKeys(int key)
         {
             return (VirtualKey)key switch
             {
@@ -174,7 +166,7 @@ namespace Rememory.Views.Settings.Controls
             };
         }
 
-        private bool IsShortcutValid(IList<int> shortcut)
+        private static bool IsShortcutValid(IList<int> shortcut)
         {
             return shortcut.Count > 1 &&
                 KeyboardHelper.ModifierKeys.Contains((VirtualKey)shortcut.First()) &&

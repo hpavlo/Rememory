@@ -2,14 +2,14 @@
 using Rememory.Contracts;
 using Rememory.Helper.WindowBackdrop;
 using Rememory.Models;
-using System;
+using Windows.Foundation;
 
 namespace Rememory.Services
 {
     public class ThemeService : IThemeService
     {
-        public event EventHandler<ElementTheme>? ThemeChanged;
-        public event EventHandler<WindowBackdropType>? WindowBackdropChanged;
+        public event TypedEventHandler<IThemeService, ElementTheme>? ThemeChanged;
+        public event TypedEventHandler<IThemeService, WindowBackdropType>? WindowBackdropChanged;
 
         public ElementTheme Theme { get; private set; }
         public WindowBackdropType WindowBackdrop { get; private set; }
@@ -18,30 +18,20 @@ namespace Rememory.Services
 
         public ThemeService()
         {
-            Theme = GetTheme();
-            WindowBackdrop = GetWindowBackdrop();
+            Theme = _settingsContext.Theme;
+            WindowBackdrop = _settingsContext.WindowBackdrop;
         }
 
         public void ApplyTheme()
         {
-            Theme = GetTheme();
+            Theme = _settingsContext.Theme;
             ThemeChanged?.Invoke(this, Theme);
         }
 
         public void ApplyWindowBackdrop()
         {
-            WindowBackdrop = GetWindowBackdrop();
+            WindowBackdrop = _settingsContext.WindowBackdrop;
             WindowBackdropChanged?.Invoke(this, WindowBackdrop);
-        }
-
-        private ElementTheme GetTheme()
-        {
-            return _settingsContext.Theme;
-        }
-
-        private WindowBackdropType GetWindowBackdrop()
-        {
-            return _settingsContext.WindowBackdrop;
         }
     }
 }

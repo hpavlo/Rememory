@@ -12,7 +12,7 @@
             <TextBlock x:Uid="/Settings/Metadata_LinkPreviewSection"
                        Margin="0,8,0,8"
                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                       Style="{StaticResource BodyStrongTextBlockStyle}" />
 
             <tkcontrols:SettingsCard x:Uid="/Settings/Metadata_LinkPreview"
                                      Margin="0,0,0,5"
@@ -24,7 +24,7 @@
                        Margin="0,28,0,8"
                        Text="Color preview"
                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                       Style="{StaticResource BodyStrongTextBlockStyle}" />
 
             <tkcontrols:SettingsCard x:Uid="/Settings/Metadata_HexColorPrefix"
                                      Margin="0,0,0,5"

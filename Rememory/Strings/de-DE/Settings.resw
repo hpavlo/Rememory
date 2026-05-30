@@ -213,9 +213,6 @@
   <data name="General_ActivationShortcut.Description" xml:space="preserve">
     <value>Verknüpfungskombination zum Öffnen der Zwischenablage festlegen</value>
   </data>
-  <data name="General_ActivationShortcutButton.Text" xml:space="preserve">
-    <value>Tastenkombination ändern</value>
-  </data>
   <data name="General_StartupSection.Text" xml:space="preserve">
     <value>Start</value>
   </data>
@@ -226,7 +223,16 @@
     <value>Beim Systemstart ausführen</value>
   </data>
   <data name="General_RunAtStartup.Description" xml:space="preserve">
-    <value>Aktivieren Sie diese Option, um Rememory beim Start Ihres Computers automatisch zu starten</value>
+    <value>Rememory automatisch starten, wenn Sie sich bei Windows anmelden</value>
+  </data>
+  <data name="General_StartupWarning.Title" xml:space="preserve">
+    <value>Autostart wurde von Windows deaktiviert</value>
+  </data>
+  <data name="General_StartupWarning.Message" xml:space="preserve">
+    <value>Damit diese App beim Start ausgeführt wird, aktivieren Sie sie im Task-Manager oder in den Windows-Einstellungen</value>
+  </data>
+  <data name="General_SettingsStartupButton.Content" xml:space="preserve">
+    <value>In Windows-Einstellungen öffnen</value>
   </data>
   <data name="General_NotificationOnStartup.Header" xml:space="preserve">
     <value>Benachrichtigung beim Start</value>
@@ -594,5 +600,23 @@ und WebView2-Anwendungen</value>
   </data>
   <data name="About_WriteReviewHyperlink.Content" xml:space="preserve">
     <value>Bewertung schreiben</value>
+  </data>
+  <data name="Onboarding_Title.Text" xml:space="preserve">
+    <value>Willkommen bei Rememory</value>
+  </data>
+  <data name="Onboarding_Subtitle.Text" xml:space="preserve">
+    <value>Ihr neuer Zwischenablage-Manager</value>
+  </data>
+  <data name="Onboarding_SettingsHeader.Text" xml:space="preserve">
+    <value>Passen wir schnell ein paar Einstellungen an, um loszulegen</value>
+  </data>
+  <data name="Onboarding_QuickTipInfo.Title" xml:space="preserve">
+    <value>Kurztipp</value>
+  </data>
+  <data name="Onboarding_QuickTipInfo.Message" xml:space="preserve">
+    <value>Rememory läuft unauffällig im Infobereich. Drücken Sie jederzeit die Tastenkombination, um die Zwischenablage-Historie zu öffnen.</value>
+  </data>
+  <data name="Onboarding_GetStartedButton.Content" xml:space="preserve">
+    <value>Erste Schritte</value>
   </data>
 </root>

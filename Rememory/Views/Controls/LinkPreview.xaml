@@ -82,7 +82,7 @@
                        MaxLines="2"
                        TextWrapping="Wrap"
                        TextTrimming="CharacterEllipsis"
-                       Style="{ThemeResource BodyStrongTextBlockStyle}"
+                       Style="{StaticResource BodyStrongTextBlockStyle}"
                        Text="{x:Bind LinkMetadata.Title, Mode=OneWay}" />
             
             <TextBlock x:Name="PreviewDescription"
@@ -92,7 +92,7 @@
                        TextWrapping="Wrap"
                        TextTrimming="CharacterEllipsis"
                        VerticalAlignment="Top"
-                       Style="{ThemeResource BodyTextBlockStyle}"
+                       Style="{StaticResource BodyTextBlockStyle}"
                        Text="{x:Bind LinkMetadata.Description, Mode=OneWay}"
                        Visibility="{x:Bind PreviewDescription.Text, Mode=OneWay, Converter={StaticResource StringVisibilityConverter}}" />
         </Grid>

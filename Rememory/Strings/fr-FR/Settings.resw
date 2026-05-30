@@ -213,9 +213,6 @@
   <data name="General_ActivationShortcut.Description" xml:space="preserve">
     <value>Définir la combinaison de touches pour ouvrir le gestionnaire de presse-papiers</value>
   </data>
-  <data name="General_ActivationShortcutButton.Text" xml:space="preserve">
-    <value>Changer le raccourci</value>
-  </data>
   <data name="General_StartupSection.Text" xml:space="preserve">
     <value>Démarrage</value>
   </data>
@@ -226,7 +223,16 @@
     <value>Démarrage automatique</value>
   </data>
   <data name="General_RunAtStartup.Description" xml:space="preserve">
-    <value>Activer cette option pour lancer automatiquement Rememory au démarrage de l'ordinateur</value>
+    <value>Démarrer Rememory automatiquement à la connexion à Windows</value>
+  </data>
+  <data name="General_StartupWarning.Title" xml:space="preserve">
+    <value>Le démarrage est désactivé par Windows</value>
+  </data>
+  <data name="General_StartupWarning.Message" xml:space="preserve">
+    <value>Pour exécuter cette application au démarrage, activez-la dans le Gestionnaire des tâches ou les Paramètres Windows</value>
+  </data>
+  <data name="General_SettingsStartupButton.Content" xml:space="preserve">
+    <value>Ouvrir dans Paramètres Windows</value>
   </data>
   <data name="General_NotificationOnStartup.Header" xml:space="preserve">
     <value>Notification au démarrage</value>
@@ -594,5 +600,23 @@ applications UWP et WebView2</value>
   </data>
   <data name="About_WriteReviewHyperlink.Content" xml:space="preserve">
     <value>Écrire un avis</value>
+  </data>
+  <data name="Onboarding_Title.Text" xml:space="preserve">
+    <value>Bienvenue dans Rememory</value>
+  </data>
+  <data name="Onboarding_Subtitle.Text" xml:space="preserve">
+    <value>Votre nouveau gestionnaire de presse-papiers</value>
+  </data>
+  <data name="Onboarding_SettingsHeader.Text" xml:space="preserve">
+    <value>Personnalisons rapidement quelques paramètres pour commencer</value>
+  </data>
+  <data name="Onboarding_QuickTipInfo.Title" xml:space="preserve">
+    <value>Astuce rapide</value>
+  </data>
+  <data name="Onboarding_QuickTipInfo.Message" xml:space="preserve">
+    <value>Rememory s’exécute discrètement dans la barre système. Appuyez sur le raccourci à tout moment pour ouvrir l’historique du presse-papiers.</value>
+  </data>
+  <data name="Onboarding_GetStartedButton.Content" xml:space="preserve">
+    <value>Commencer</value>
   </data>
 </root>

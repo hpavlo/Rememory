@@ -9,7 +9,7 @@
         <StackPanel Padding="0,0,0,28">
             <tkcontrols:SettingsExpander Header="{x:Bind AppName}"
                                          Description="{x:Bind AppDeveloper}"
-                                         HeaderIcon="{tk:BitmapIcon Source=ms-appx:///Assets/AppList.targetsize-20.png}"
+                                         HeaderIcon="{tk:BitmapIcon Source=ms-appx:///Assets/AppList.png}"
                                          IsExpanded="True">
                 <TextBlock Text="{x:Bind AppVersion}"
                            IsTextSelectionEnabled="True"

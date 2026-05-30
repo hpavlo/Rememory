@@ -1,5 +1,4 @@
 using Microsoft.UI.Input;
-using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
@@ -15,23 +14,20 @@ namespace Rememory.Views.Settings
 {
     public sealed partial class SettingsRootPage : Page
     {
-        private IThemeService ThemeService => App.Current.ThemeService;
-        private readonly Window _window;
+        private readonly IThemeService _themeService = App.Current.ThemeService;
         private NavigationViewItemBase? _lastSelectedMenuItem;
         private readonly Dictionary<NavigationViewItemBase, (Type PageType, string Header)> _navigationMap;
+        private readonly InputNonClientPointerSource? _inputNonClientPointerSource;
+
+        public string Title { get; set; } = string.Empty;
 
         public SettingsRootPage(Window window)
         {
             InitializeComponent();
-            _window = window;
 
-            _window.SetTitleBar(WindowTitleBar);
-            _window.Activated += SettingsWindow_Activated;
-            _window.Closed += SettingsWindow_Closed;
-
-            ApplyTheme();
-            ThemeService.ThemeChanged += ThemeService_ThemeChanged;
-
+            window.SetTitleBar(WindowTitleBar);
+            RequestedTheme = _themeService.Theme;
+            _inputNonClientPointerSource = InputNonClientPointerSource.GetForWindowId(window.AppWindow.Id);
             _navigationMap = new()
             {
                 { GeneralMenuItem, (typeof(GeneralPage), "/Settings/PageTitle_General/Content".GetLocalizedResource()) },
@@ -43,48 +39,34 @@ namespace Rememory.Views.Settings
                 { FiltersMenuItem, (typeof(FiltersPage), "/Settings/PageTitle_Filters/Content".GetLocalizedResource()) },
                 { AboutMenuItem, (typeof(AboutPage), "/Settings/PageTitle_About/Content".GetLocalizedResource()) }
             };
+
+            SettingsWindow.WindowActivated += SettingsWindow_Activated;
+            _themeService.ThemeChanged += ThemeService_ThemeChanged;
         }
 
-        private void ApplyTheme()
-        {
-            RequestedTheme = ThemeService.Theme;
-            // TitleBarTheme has first Legacy value, we use + 1 to ignore it
-            _window.AppWindow.TitleBar.PreferredTheme = (TitleBarTheme)(ThemeService.Theme + 1);
-        }
-
-        private void ThemeService_ThemeChanged(object? sender, ElementTheme e) => ApplyTheme();
+        private void ThemeService_ThemeChanged(IThemeService sender, ElementTheme e) => RequestedTheme = sender.Theme;
 
         private void SettingsWindow_Activated(object sender, WindowActivatedEventArgs args)
         {
             VisualStateManager.GoToState(this, args.WindowActivationState == WindowActivationState.Deactivated ? "Deactivated" : "Activated", true);
         }
 
-        private void SettingsWindow_Closed(object sender, WindowEventArgs args)
-        {
-            NavigationViewFrame.Navigate(typeof(Page));
-            _window.Activated -= SettingsWindow_Activated;
-            _window.Closed -= SettingsWindow_Closed;
-            ThemeService.ThemeChanged -= ThemeService_ThemeChanged;
-        }
-
         private void NavigationViewPanel_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
         {
-            var inputNonClient = InputNonClientPointerSource.GetForWindowId(_window.AppWindow.Id);
-
             if (sender.PaneDisplayMode == NavigationViewPaneDisplayMode.Top)
             {
                 VisualStateManager.GoToState(this, "Top", true);
-                inputNonClient.SetRegionRects(NonClientRegionKind.Passthrough, []);
+                _inputNonClientPointerSource?.SetRegionRects(NonClientRegionKind.Passthrough, []);
             }
             else if (args.DisplayMode == NavigationViewDisplayMode.Minimal)
             {
                 VisualStateManager.GoToState(this, "Compact", true);
-                inputNonClient.SetRegionRects(NonClientRegionKind.Passthrough, [new(0, 0, 96, 48)]);
+                _inputNonClientPointerSource?.SetRegionRects(NonClientRegionKind.Passthrough, [new(0, 0, 96, 48)]);
             }
             else
             {
                 VisualStateManager.GoToState(this, "Default", true);
-                inputNonClient.SetRegionRects(NonClientRegionKind.Passthrough, [new(0, 0, 48, 48)]);
+                _inputNonClientPointerSource?.SetRegionRects(NonClientRegionKind.Passthrough, [new(0, 0, 48, 48)]);
             }
         }
 
@@ -129,6 +111,14 @@ namespace Rememory.Views.Settings
 
                 _lastSelectedMenuItem = navigationViewItem;
             }
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            NavigationViewFrame.Navigate(typeof(Page));
+            SettingsWindow.WindowActivated -= SettingsWindow_Activated;
+            _themeService.ThemeChanged -= ThemeService_ThemeChanged;
+            Bindings.StopTracking();
         }
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.Windows.Storage.Pickers;
 using Rememory.Contracts;
 using Rememory.Models;
 using Rememory.Services;
+using Rememory.Views.Settings;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -86,7 +87,7 @@ namespace Rememory.ViewModels.Settings
         [RelayCommand]
         private async Task ExportAllClips()
         {
-            var picker = new FileSavePicker(App.Current.ClipboardWindow.AppWindow.OwnerWindowId);
+            var picker = new FileSavePicker(SettingsWindow.WindowId);
             picker.SuggestedFileName = string.Format(ClipTransferService.BackupFileNameFormat_, DateTime.Now);
             picker.FileTypeChoices.Add(ClipTransferService.BackupFileType_);
 
@@ -111,7 +112,7 @@ namespace Rememory.ViewModels.Settings
         [RelayCommand]
         private async Task ImportClips()
         {
-            var picker = new FileOpenPicker(App.Current.ClipboardWindow.AppWindow.OwnerWindowId);
+            var picker = new FileOpenPicker(SettingsWindow.WindowId);
             foreach (var fileType in ClipTransferService.BackupFileType_.Value)
             {
                 picker.FileTypeFilter.Add(fileType);
