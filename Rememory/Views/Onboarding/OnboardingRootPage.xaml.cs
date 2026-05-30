@@ -36,6 +36,7 @@ namespace Rememory.Views.Onboarding
         {
             Bindings.StopTracking();
             DataContext = null;
+            _parentWindow = null;
         }
     }
 }
