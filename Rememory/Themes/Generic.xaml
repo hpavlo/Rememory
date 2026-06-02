@@ -71,25 +71,37 @@
         <MenuFlyoutItem x:Uid="TrayIconMenu_Open"
                         Icon="{tk:FontIcon Glyph=&#xE8A7;}"
                         Command="{Binding OpenWindowCommand}"
-                        KeyboardAcceleratorTextOverride="{Binding SettingsContext.ActivationShortcut, Converter={StaticResource ShortcutToTextConverter}}" />
+                        KeyboardAcceleratorTextOverride="{Binding SettingsContext.ActivationShortcut, Converter={StaticResource ShortcutToTextConverter}}"
+                        Style="{StaticResource TrayIconMenuItemStyle}" />
         <MenuFlyoutItem x:Uid="TrayIconMenu_PauseMonitoring"
                         Icon="{tk:FontIcon Glyph=&#xF0E3;}"
                         Command="{Binding ToggleClipboardMonitoringEnabledCommand}"
                         IsEnabled="{Binding IsClipboardMonitoringEnabled}"
-                        Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
+                        Style="{StaticResource TrayIconMenuItemStyle}" />
         <MenuFlyoutItem x:Uid="TrayIconMenu_ResumeMonitoring"
                         Icon="{tk:FontIcon Glyph=&#xF0E3;}"
                         Command="{Binding ToggleClipboardMonitoringEnabledCommand}"
                         IsEnabled="{Binding IsClipboardMonitoringEnabled, Converter={StaticResource BoolNegationConverter}}"
-                        Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BoolToVisibilityConverter}}"
+                        Style="{StaticResource TrayIconMenuItemStyle}" />
         <MenuFlyoutSeparator />
         <MenuFlyoutItem x:Uid="TrayIconMenu_Settings"
                         Icon="{tk:FontIcon Glyph=&#xE713;}"
-                        Command="{Binding OpenSettingsWindowCommand}" />
+                        Command="{Binding OpenSettingsWindowCommand}"
+                        Style="{StaticResource TrayIconMenuItemStyle}" />
         <MenuFlyoutItem x:Uid="TrayIconMenu_Exit"
                         Icon="{tk:FontIcon Glyph=&#xEA39;}"
-                        Command="{Binding ExitAppCommand}" />
+                        Command="{Binding ExitAppCommand}"
+                        Style="{StaticResource TrayIconMenuItemStyle}" />
     </MenuFlyout>
+
+    <Style x:Key="TrayIconMenuItemStyle"
+           TargetType="MenuFlyoutItem"
+           BasedOn="{StaticResource DefaultMenuFlyoutItemStyle}">
+        <Setter Property="Padding"
+                Value="{StaticResource MenuFlyoutItemThemePaddingNarrow}" />
+    </Style>
 
     <Thickness x:Key="AlternateButtonBorderThickness">0</Thickness>
     <Thickness x:Key="AlternateButtonPadding">0</Thickness>
