@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Rememory.Helper.WindowBackdrop;
 using Rememory.Models;
-using Rememory.Views;
+using Rememory.Views.Clipboard;
 using System;
 using System.ComponentModel;
 

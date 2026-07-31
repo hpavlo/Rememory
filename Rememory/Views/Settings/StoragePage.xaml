@@ -83,7 +83,7 @@
                         <Setter Target="ExportStatusInfoBadge.Visibility"
                                 Value="Visible" />
                         <Setter Target="ExportStatusInfoBadge.Style"
-                                Value="{ThemeResource SuccessIconInfoBadgeStyle}" />
+                                Value="{StaticResource SuccessIconInfoBadgeStyle}" />
                     </VisualState.Setters>
                 </VisualState>
 
@@ -96,7 +96,7 @@
                         <Setter Target="ExportStatusInfoBadge.Visibility"
                                 Value="Visible" />
                         <Setter Target="ExportStatusInfoBadge.Style"
-                                Value="{ThemeResource CriticalIconInfoBadgeStyle}" />
+                                Value="{StaticResource CriticalIconInfoBadgeStyle}" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -121,7 +121,7 @@
                         <Setter Target="ImportStatusInfoBadge.Visibility"
                                 Value="Visible" />
                         <Setter Target="ImportStatusInfoBadge.Style"
-                                Value="{ThemeResource SuccessIconInfoBadgeStyle}" />
+                                Value="{StaticResource SuccessIconInfoBadgeStyle}" />
                     </VisualState.Setters>
                 </VisualState>
 
@@ -134,7 +134,7 @@
                         <Setter Target="ImportStatusInfoBadge.Visibility"
                                 Value="Visible" />
                         <Setter Target="ImportStatusInfoBadge.Style"
-                                Value="{ThemeResource CriticalIconInfoBadgeStyle}" />
+                                Value="{StaticResource CriticalIconInfoBadgeStyle}" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

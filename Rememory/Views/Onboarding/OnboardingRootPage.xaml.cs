@@ -2,6 +2,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Rememory.Contracts;
 using Rememory.ViewModels;
+using Rememory.Views.Clipboard;
 
 namespace Rememory.Views.Onboarding
 {

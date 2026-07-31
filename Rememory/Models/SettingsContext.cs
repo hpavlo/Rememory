@@ -4,11 +4,12 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.Windows.Globalization;
 using Microsoft.Windows.Storage;
+using Rememory.Converters;
 using Rememory.Core;
 using Rememory.Helper;
 using Rememory.Helper.WindowBackdrop;
 using Rememory.Services;
-using Rememory.Views;
+using Rememory.Views.Clipboard;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -33,7 +34,7 @@ namespace Rememory.Models
         private readonly List<string> _supportedLanguages;
         private string? _languageCode;
 
-        [Settings("LanguageCode", DefaultValue = "")]
+        [Settings(nameof(LanguageCode), DefaultValue = "")]
         public string LanguageCode
         {
             get => _languageCode ??= GetSettingValue<string>();
@@ -55,7 +56,7 @@ namespace Rememory.Models
         private List<int>? _activationShortcut;
         public List<int> ActivationShortcutDefault { get; private set; } = [0x5B, 0x10, 0x56];   // Win + Shift + V
 
-        [Settings("ActivationShortcut")]
+        [Settings(nameof(ActivationShortcut))]
         public List<int> ActivationShortcut
         {
             get => _activationShortcut ??= [.. KeyboardHelper.SortShortcut(GetSettingValue<List<int>>(ActivationShortcutDefault))];
@@ -65,7 +66,7 @@ namespace Rememory.Models
 
         private bool? _isNotificationOnStartEnabled;
 
-        [Settings("IsNotificationOnStartEnabled", DefaultValue = true)]
+        [Settings(nameof(IsNotificationOnStartEnabled), DefaultValue = true)]
         public bool IsNotificationOnStartEnabled
         {
             get => _isNotificationOnStartEnabled ??= GetSettingValue<bool>();
@@ -78,7 +79,7 @@ namespace Rememory.Models
 
         private string? _theme;
 
-        [Settings("Theme")]
+        [Settings(nameof(Theme))]
         public ElementTheme Theme
         {
             get => EnumExtensions.FromDescription<ElementTheme>(_theme ??= GetSettingValue<string>(ElementTheme.Default.GetDescription()));
@@ -94,7 +95,7 @@ namespace Rememory.Models
         private string? _windowBackdrop;
         private readonly WindowBackdropType _windowBackdropDefault = WindowBackdropHelper.IsSystemBackdropSupported ? WindowBackdropType.Acrylic : WindowBackdropType.None;
 
-        [Settings("WindowBackdrop")]
+        [Settings(nameof(WindowBackdrop))]
         public WindowBackdropType WindowBackdrop
         {
             get => EnumExtensions.FromDescription<WindowBackdropType>(_windowBackdrop ??= GetSettingValue<string>(_windowBackdropDefault.GetDescription()));
@@ -121,7 +122,7 @@ namespace Rememory.Models
 
         private bool? _isCompactViewEnabled;
 
-        [Settings("IsCompactViewEnabled", DefaultValue = false)]
+        [Settings(nameof(IsCompactViewEnabled), DefaultValue = false)]
         public bool IsCompactViewEnabled
         {
             get => _isCompactViewEnabled ??= GetSettingValue<bool>();
@@ -129,9 +130,29 @@ namespace Rememory.Models
         }
 
 
+        private bool? _isClipHoverPreviewInCompactViewEnabled;
+
+        [Settings(nameof(IsClipHoverPreviewInCompactViewEnabled), DefaultValue = false)]
+        public bool IsClipHoverPreviewInCompactViewEnabled
+        {
+            get => _isClipHoverPreviewInCompactViewEnabled ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _isClipHoverPreviewInCompactViewEnabled, value);
+        }
+
+
+        private string? _timestampFormat;
+
+        [Settings(nameof(TimestampFormat))]
+        public TimestampFormat TimestampFormat
+        {
+            get => EnumExtensions.FromDescription<TimestampFormat>(_timestampFormat ??= GetSettingValue<string>(TimestampFormat.Absolute.GetDescription()));
+            set => SetSettingsProperty(ref _timestampFormat, value.GetDescription());
+        }
+
+
         private string? _windowPosition;
 
-        [Settings("WindowPosition")]
+        [Settings(nameof(WindowPosition))]
         public ClipboardWindowPosition WindowPosition
         {
             get => EnumExtensions.FromDescription<ClipboardWindowPosition>(_windowPosition ??= GetSettingValue<string>(ClipboardWindowPosition.Caret.GetDescription()));
@@ -144,7 +165,7 @@ namespace Rememory.Models
 
         public static readonly int WindowWidthLowerBound = 320;
 
-        [Settings("WindowWidth", DefaultValue = 380, Validator = nameof(WindowWidthValidate))]
+        [Settings(nameof(WindowWidth), DefaultValue = 380, Validator = nameof(WindowWidthValidate))]
         public int WindowWidth
         {
             get => _windowWidth ??= GetSettingValue<int>();
@@ -157,7 +178,7 @@ namespace Rememory.Models
 
         public static readonly int WindowHeightLowerBound = 320;
 
-        [Settings("WindowHeight", DefaultValue = 400, Validator = nameof(WindowHeightValidate))]
+        [Settings(nameof(WindowHeight), DefaultValue = 400, Validator = nameof(WindowHeightValidate))]
         public int WindowHeight
         {
             get => _windowHeight ??= GetSettingValue<int>();
@@ -170,7 +191,7 @@ namespace Rememory.Models
 
         public static readonly int WindowMarginLowerBound = 0;
 
-        [Settings("WindowMargin", DefaultValue = 10, Validator = nameof(WindowMarginValidate))]
+        [Settings(nameof(WindowMargin), DefaultValue = 10, Validator = nameof(WindowMarginValidate))]
         public int WindowMargin
         {
             get => _windowMargin ??= GetSettingValue<int>();
@@ -180,7 +201,7 @@ namespace Rememory.Models
 
         private bool? _isWindowResizeByMouseEnabled;
 
-        [Settings("IsWindowResizeByMouseEnabled", DefaultValue = false)]
+        [Settings(nameof(IsWindowResizeByMouseEnabled), DefaultValue = false)]
         public bool IsWindowResizeByMouseEnabled
         {
             get => _isWindowResizeByMouseEnabled ??= GetSettingValue<bool>();
@@ -193,7 +214,7 @@ namespace Rememory.Models
 
         private bool? _isClipsDragAndDropEnabled;
 
-        [Settings("IsClipsDragAndDropEnabled", DefaultValue = true)]
+        [Settings(nameof(IsClipsDragAndDropEnabled), DefaultValue = true)]
         public bool IsClipsDragAndDropEnabled
         {
             // TODO
@@ -206,7 +227,7 @@ namespace Rememory.Models
 
         private bool? _isClipMovingToTopOnCopyingEnabled;
 
-        [Settings("IsClipMovingToTopOnCopyingEnabled", DefaultValue = true)]
+        [Settings(nameof(IsClipMovingToTopOnCopyingEnabled), DefaultValue = true)]
         public bool IsClipMovingToTopOnCopyingEnabled
         {
             get => _isClipMovingToTopOnCopyingEnabled ??= GetSettingValue<bool>();
@@ -216,7 +237,7 @@ namespace Rememory.Models
 
         private bool? _isDeveloperStringCaseConversionsEnabled;
 
-        [Settings("IsDeveloperStringCaseConversionsEnabled", DefaultValue = false)]
+        [Settings(nameof(IsDeveloperStringCaseConversionsEnabled), DefaultValue = false)]
         public bool IsDeveloperStringCaseConversionsEnabled
         {
             get => _isDeveloperStringCaseConversionsEnabled ??= GetSettingValue<bool>();
@@ -226,7 +247,7 @@ namespace Rememory.Models
 
         private bool? _isSearchFocusOnStartEnabled;
 
-        [Settings("IsSearchFocusOnStartEnabled", DefaultValue = false)]
+        [Settings(nameof(IsSearchFocusOnStartEnabled), DefaultValue = false)]
         public bool IsSearchFocusOnStartEnabled
         {
             get => _isSearchFocusOnStartEnabled ??= GetSettingValue<bool>();
@@ -236,7 +257,7 @@ namespace Rememory.Models
 
         private bool? _isClearSearchOnOpenEnabled;
 
-        [Settings("IsClearSearchOnOpenEnabled", DefaultValue = true)]
+        [Settings(nameof(IsClearSearchOnOpenEnabled), DefaultValue = true)]
         public bool IsClearSearchOnOpenEnabled
         {
             get => _isClearSearchOnOpenEnabled ??= GetSettingValue<bool>();
@@ -246,7 +267,7 @@ namespace Rememory.Models
 
         private bool? _isSetInitialTabOnOpenEnabled;
 
-        [Settings("IsSetInitialTabOnOpenEnabled", DefaultValue = true)]
+        [Settings(nameof(IsSetInitialTabOnOpenEnabled), DefaultValue = true)]
         public bool IsSetInitialTabOnOpenEnabled
         {
             get => _isSetInitialTabOnOpenEnabled ??= GetSettingValue<bool>();
@@ -256,7 +277,7 @@ namespace Rememory.Models
 
         private bool? _isRememberWindowPinStateEnabled;
 
-        [Settings("IsRememberWindowPinStateEnabled", DefaultValue = false)]
+        [Settings(nameof(IsRememberWindowPinStateEnabled), DefaultValue = false)]
         public bool IsRememberWindowPinStateEnabled
         {
             get => _isRememberWindowPinStateEnabled ??= GetSettingValue<bool>();
@@ -266,7 +287,7 @@ namespace Rememory.Models
 
         private bool? _isClipCopyMessageEnabled;
 
-        [Settings("IsClipCopyMessageEnabled", DefaultValue = true)]
+        [Settings(nameof(IsClipCopyMessageEnabled), DefaultValue = true)]
         public bool IsClipCopyMessageEnabled
         {
             get => _isClipCopyMessageEnabled ??= GetSettingValue<bool>();
@@ -279,7 +300,7 @@ namespace Rememory.Models
 
         private bool? _isLinkPreviewLoadingEnabled;
 
-        [Settings("IsLinkPreviewLoadingEnabled", DefaultValue = true)]
+        [Settings(nameof(IsLinkPreviewLoadingEnabled), DefaultValue = true)]
         public bool IsLinkPreviewLoadingEnabled
         {
             get => _isLinkPreviewLoadingEnabled ??= GetSettingValue<bool>();
@@ -289,7 +310,7 @@ namespace Rememory.Models
 
         private bool? _isHexColorPrefixRequired;
 
-        [Settings("IsHexColorPrefixRequired", DefaultValue = true)]
+        [Settings(nameof(IsHexColorPrefixRequired), DefaultValue = true)]
         public bool IsHexColorPrefixRequired
         {
             get => _isHexColorPrefixRequired ??= GetSettingValue<bool>();
@@ -302,7 +323,7 @@ namespace Rememory.Models
 
         private bool? _skipWarningMessageOnSettingsClipsErase;
 
-        [Settings("SkipWarningMessageOnSettingsClipsErase", DefaultValue = false)]
+        [Settings(nameof(SkipWarningMessageOnSettingsClipsErase), DefaultValue = false)]
         public bool SkipWarningMessageOnSettingsClipsErase
         {
             get => _skipWarningMessageOnSettingsClipsErase ??= GetSettingValue<bool>();
@@ -312,7 +333,7 @@ namespace Rememory.Models
 
         private bool? _isFavoriteClipsErasingEnabled;
 
-        [Settings("IsFavoriteClipsErasingEnabled", DefaultValue = true)]
+        [Settings(nameof(IsFavoriteClipsErasingEnabled), DefaultValue = true)]
         public bool IsFavoriteClipsErasingEnabled
         {
             get => _isFavoriteClipsErasingEnabled ??= GetSettingValue<bool>();
@@ -322,7 +343,7 @@ namespace Rememory.Models
 
         private bool? _isTagProtectedClipsErasingEnabled;
 
-        [Settings("IsTagProtectedClipsErasingEnabled", DefaultValue = true)]
+        [Settings(nameof(IsTagProtectedClipsErasingEnabled), DefaultValue = true)]
         public bool IsTagProtectedClipsErasingEnabled
         {
             get => _isTagProtectedClipsErasingEnabled ??= GetSettingValue<bool>();
@@ -332,7 +353,7 @@ namespace Rememory.Models
 
         private string? _cleanupType;
 
-        [Settings("CleanupType")]
+        [Settings(nameof(CleanupType))]
         public CleanupType CleanupType
         {
             get => EnumExtensions.FromDescription<CleanupType>(_cleanupType ??= GetSettingValue<string>(CleanupType.RetentionPeriod.GetDescription()));
@@ -342,7 +363,7 @@ namespace Rememory.Models
 
         private string? _cleanupTimeSpan;
 
-        [Settings("CleanupTimeSpan")]
+        [Settings(nameof(CleanupTimeSpan))]
         public CleanupTimeSpan CleanupTimeSpan
         {
             get => EnumExtensions.FromDescription<CleanupTimeSpan>(_cleanupTimeSpan ??= GetSettingValue<string>(CleanupTimeSpan.Month.GetDescription()));
@@ -356,7 +377,7 @@ namespace Rememory.Models
         public static readonly int CleanupQuantityLowerBound = 10;
         public static readonly int CleanupQuantityUpperBound = 10_000;
 
-        [Settings("CleanupQuantity", DefaultValue = 50, Validator = nameof(CleanupQuantityValidate))]
+        [Settings(nameof(CleanupQuantity), DefaultValue = 50, Validator = nameof(CleanupQuantityValidate))]
         public int CleanupQuantity
         {
             get => _cleanupQuantity ??= GetSettingValue<int>();
@@ -366,7 +387,7 @@ namespace Rememory.Models
 
         private bool? _isFavoriteClipsCleaningEnabled;
 
-        [Settings("IsFavoriteClipsCleaningEnabled", DefaultValue = false)]
+        [Settings(nameof(IsFavoriteClipsCleaningEnabled), DefaultValue = false)]
         public bool IsFavoriteClipsCleaningEnabled
         {
             get => _isFavoriteClipsCleaningEnabled ??= GetSettingValue<bool>();
@@ -376,7 +397,7 @@ namespace Rememory.Models
 
         private bool? _isClipSizeValidationEnabled;
 
-        [Settings("IsClipSizeValidationEnabled", DefaultValue = true)]
+        [Settings(nameof(IsClipSizeValidationEnabled), DefaultValue = true)]
         public bool IsClipSizeValidationEnabled
         {
             get => _isClipSizeValidationEnabled ??= GetSettingValue<bool>();
@@ -397,7 +418,7 @@ namespace Rememory.Models
         public static readonly int ClipSizeLowerBound = 1;
         public static readonly int ClipSizeUpperBound = 64;
 
-        [Settings("MaxClipSize", DefaultValue = 8, Validator = nameof(MaxClipSizeValidate))]
+        [Settings(nameof(MaxClipSize), DefaultValue = 8, Validator = nameof(MaxClipSizeValidate))]
         public int MaxClipSize
         {
             get
@@ -426,7 +447,7 @@ namespace Rememory.Models
         /// <summary>
         /// Use <see cref="SaveOwnerAppFilters"/> to save changes
         /// </summary>
-        [Settings("OwnerAppFilters")]
+        [Settings(nameof(OwnerAppFilters))]
         public ObservableCollection<OwnerAppFilter> OwnerAppFilters => _ownerAppFilters ??= GetSettingValue<ObservableCollection<OwnerAppFilter>>(new ObservableCollection<OwnerAppFilter>());
         public void SaveOwnerAppFilters() => _localSettings.Values["OwnerAppFilters"] = JsonSerializer.Serialize(OwnerAppFilters);
 
@@ -438,7 +459,7 @@ namespace Rememory.Models
 
         private bool? _isClipboardMonitoringEnabled;
 
-        [Settings("IsClipboardMonitoringEnabled", DefaultValue = true)]
+        [Settings(nameof(IsClipboardMonitoringEnabled), DefaultValue = true)]
         public bool IsClipboardMonitoringEnabled
         {
             get => _isClipboardMonitoringEnabled ??= GetSettingValue<bool>();
@@ -448,7 +469,7 @@ namespace Rememory.Models
 
         private bool? _skipWarningMessageOnMainWindowClipsErase;
 
-        [Settings("SkipWarningMessageOnMainWindowClipsErase", DefaultValue = false)]
+        [Settings(nameof(SkipWarningMessageOnMainWindowClipsErase), DefaultValue = false)]
         public bool SkipWarningMessageOnMainWindowClipsErase
         {
             get => _skipWarningMessageOnMainWindowClipsErase ??= GetSettingValue<bool>();

@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<UserControl x:Class="Rememory.Views.Controls.FilesPreview"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="using:Rememory.Views.Controls"
-             xmlns:tk="using:CommunityToolkit.WinUI"
-             xmlns:tkconverters="using:CommunityToolkit.WinUI.Converters"
-             x:Name="ParentControl"
-             Loaded="ParentControl_Loaded">
-    <UserControl.Resources>
+<local:DataPreviewBase x:Class="Rememory.Views.Clipboard.Controls.FilesPreview"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:local="using:Rememory.Views.Clipboard.Controls"
+                       xmlns:tk="using:CommunityToolkit.WinUI"
+                       xmlns:tkconverters="using:CommunityToolkit.WinUI.Converters"
+                       x:Name="ParentControl"
+                       Loaded="ParentControl_Loaded">
+    <local:DataPreviewBase.Resources>
         <tkconverters:EmptyObjectToObjectConverter x:Key="EmptyObjectToBoolConverter"
                                                    NotEmptyValue="True"
                                                    EmptyValue="False" />
         <x:Double x:Key="FilePreviewImageSize">16</x:Double>
-    </UserControl.Resources>
-    
+    </local:DataPreviewBase.Resources>
+
     <Grid>
         <ListView x:Name="FilesListView"
+                  SelectionMode="None"
+                  IsHitTestVisible="{x:Bind IsTextSelectionEnabled, Mode=OneWay}"
                   ItemsSource="{x:Bind Files, Mode=OneWay}"
-                  IsHitTestVisible="False">
+                  ScrollViewer.HorizontalScrollMode="Disabled"
+                  ScrollViewer.VerticalScrollMode="Disabled"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  ScrollViewer.VerticalScrollBarVisibility="Disabled">
             <ListView.ItemContainerTransitions>
                 <TransitionCollection />
             </ListView.ItemContainerTransitions>
@@ -26,12 +31,15 @@
                        BasedOn="{StaticResource DefaultListViewItemStyle}">
                     <Setter Property="MinHeight"
                             Value="{StaticResource FilePreviewImageSize}" />
+                    <Setter Property="IsTabStop"
+                            Value="False" />
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListViewItem">
                                 <ContentPresenter x:Name="FilePresenter"
-                                                  Height="20"
-                                                  FontSize="{ThemeResource BodyTextBlockFontSize}">
+                                                  MinHeight="{StaticResource FilePreviewImageSize}"
+                                                  Padding="{Binding FilePresenterPadding, ElementName=ParentControl}"
+                                                  FontSize="{StaticResource StandardViewTextFontSize}">
                                     <VisualStateManager.VisualStateGroups>
                                         <VisualStateGroup>
                                             <VisualState x:Name="InvalidFilePath">
@@ -52,10 +60,10 @@
                                                     <StateTrigger IsActive="{Binding ShowInCompactMode}" />
                                                 </VisualState.StateTriggers>
                                                 <VisualState.Setters>
-                                                    <Setter Target="FilePresenter.Height"
-                                                            Value="{StaticResource FilePreviewImageSize}" />
+                                                    <Setter Target="FilePresenter.Padding"
+                                                            Value="0,1,0,1" />
                                                     <Setter Target="FilePresenter.FontSize"
-                                                            Value="{ThemeResource CaptionTextBlockFontSize}" />
+                                                            Value="{StaticResource CompactViewTextFontSize}" />
                                                 </VisualState.Setters>
                                             </VisualState>
                                         </VisualStateGroup>
@@ -77,25 +85,29 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <Image Grid.Column="0"
+                        <Image x:Name="FileImage"
+                               x:Load="{x:Bind ImageSource, Converter={StaticResource EmptyObjectToBoolConverter}}"
+                               Grid.Column="0"
                                Width="{StaticResource FilePreviewImageSize}"
                                Height="{StaticResource FilePreviewImageSize}"
                                Margin="0,0,8,0"
                                Source="{x:Bind ImageSource}" />
 
                         <TextBlock Grid.Column="1"
-                                   Text="{x:Bind Name}"
-                                   TextTrimming="CharacterEllipsis" />
+                                   TextTrimming="CharacterEllipsis"
+                                   TextWrapping="{Binding TextWrapping, ElementName=ParentControl}"
+                                   IsTextSelectionEnabled="{Binding IsTextSelectionEnabled, ElementName=ParentControl}"
+                                   Text="{x:Bind DisplayText, Mode=OneTime}" />
 
                         <TextBlock x:Name="RightSizeText"
                                    x:Load="{x:Bind RightSideInfo, Converter={StaticResource EmptyObjectToBoolConverter}}"
                                    Grid.Column="2"
                                    Margin="8,0,0,0"
-                                   Text="{x:Bind RightSideInfo}"
-                                   Opacity="0.5" />
+                                   Opacity="0.5"
+                                   Text="{x:Bind RightSideInfo}" />
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
     </Grid>
-</UserControl>
+</local:DataPreviewBase>

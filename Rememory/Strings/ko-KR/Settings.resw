@@ -285,14 +285,32 @@
   <data name="Personalization_BackgroundColor.Description" xml:space="preserve">
     <value>창에서 배경색 변경</value>
   </data>
-  <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
-    <value>클립보드 창</value>
+  <data name="Personalization_ClipPreviewLayoutSection.Text" xml:space="preserve">
+    <value>클립 미리보기 레이아웃</value>
   </data>
   <data name="Personalization_CompactView.Header" xml:space="preserve">
     <value>간단 보기</value>
   </data>
   <data name="Personalization_CompactView.Description" xml:space="preserve">
     <value>공간 절약을 위해 클립을 간단한 단일 줄 형식으로 표시합니다</value>
+  </data>
+  <data name="Personalization_CompactView_HoverPreview.Content" xml:space="preserve">
+    <value>마우스를 올리면 클립 미리보기 표시</value>
+  </data>
+  <data name="Personalization_TimestampFormat.Header" xml:space="preserve">
+    <value>타임스탬프 형식</value>
+  </data>
+  <data name="Personalization_TimestampFormat.Description" xml:space="preserve">
+    <value>정확한 타임스탬프 또는 경과 시간으로 클립 표시 여부 선택</value>
+  </data>
+  <data name="Personalization_TimestampFormat_Absolute.Content" xml:space="preserve">
+    <value>절대</value>
+  </data>
+  <data name="Personalization_TimestampFormat_Relative.Content" xml:space="preserve">
+    <value>상대</value>
+  </data>
+  <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
+    <value>클립보드 창</value>
   </data>
   <data name="Personalization_WindowPosition.Header" xml:space="preserve">
     <value>클립보드 창 위치</value>

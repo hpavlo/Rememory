@@ -1,15 +1,35 @@
 ﻿using Microsoft.UI.Xaml.Data;
 using Rememory.Helper;
+using Rememory.Models;
 using System;
 
 namespace Rememory.Converters
 {
     public partial class DateTimeToHumanReadableConverter : IValueConverter
     {
-        // https://www.unicode.org/cldr/charts/46/supplemental/language_plural_rules.html
+        private readonly SettingsContext _settingsContext = App.Current.SettingsContext;
+
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var elapsed = DateTime.Now - ((DateTime)value);
+            var currentTime = DateTime.Now;
+            var clipTime = (DateTime)value;
+
+            if (_settingsContext.TimestampFormat == TimestampFormat.Absolute)
+            {
+                int days = (currentTime.Date - clipTime.Date).Days;
+                if (days > 0)
+                {
+                    return clipTime.ToShortDateString();
+                }
+                else
+                {
+                    return clipTime.ToShortTimeString();
+                }
+            }
+
+            var elapsed = currentTime - clipTime;
+
+            // See https://www.unicode.org/cldr/charts/46/supplemental/language_plural_rules.html
             return elapsed switch
             {
                 { Days: > 0 } => "/Clipboard/ClipFooter_Time_DaysAgo/Text".GetLocalizedFormatResource(elapsed.Days),
@@ -24,5 +44,11 @@ namespace Rememory.Converters
         {
             throw new NotImplementedException();
         }
+    }
+
+    public enum TimestampFormat
+    {
+        Absolute,
+        Relative
     }
 }

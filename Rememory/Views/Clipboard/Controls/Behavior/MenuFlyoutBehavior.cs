@@ -2,7 +2,7 @@
 using Microsoft.UI.Xaml.Controls;
 using System.Linq;
 
-namespace Rememory.Views.Controls.Behavior
+namespace Rememory.Views.Clipboard.Controls.Behavior
 {
     public static class MenuFlyoutBehavior
     {

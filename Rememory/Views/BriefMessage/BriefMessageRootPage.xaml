@@ -21,12 +21,12 @@
                     <FontIcon x:Name="ToolTipIcon"
                               Grid.Column="0"
                               Margin="0,0,8,0"
-                              FontSize="{ThemeResource BodyTextBlockFontSize}" />
+                              FontSize="{StaticResource BodyTextBlockFontSize}" />
 
                     <TextBlock x:Uid="/Resources/BriefMessage_ClipCopied"
                                x:Name="ToolTipText"
                                Grid.Column="1"
-                               FontSize="{ThemeResource BodyTextBlockFontSize}"
+                               FontSize="{StaticResource BodyTextBlockFontSize}"
                                TextTrimming="CharacterEllipsis" />
                 </Grid>
             </ToolTip>

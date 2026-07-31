@@ -2,7 +2,7 @@
 using Microsoft.UI.Xaml.Controls;
 using Rememory.Models;
 
-namespace Rememory.Views.Controls.Selector
+namespace Rememory.Views.Clipboard.Controls.Selector
 {
     public partial class NavigationTabTemplateSelector : DataTemplateSelector
     {

@@ -285,14 +285,32 @@
   <data name="Personalization_BackgroundColor.Description" xml:space="preserve">
     <value>Cambiar color de fondo en la ventana</value>
   </data>
-  <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
-    <value>Ventana del portapapeles</value>
+  <data name="Personalization_ClipPreviewLayoutSection.Text" xml:space="preserve">
+    <value>Diseño de vista previa de clip</value>
   </data>
   <data name="Personalization_CompactView.Header" xml:space="preserve">
     <value>Vista compacta</value>
   </data>
   <data name="Personalization_CompactView.Description" xml:space="preserve">
     <value>Muestra los clips en un formato compacto de una sola línea para guardar espacio</value>
+  </data>
+  <data name="Personalization_CompactView_HoverPreview.Content" xml:space="preserve">
+    <value>Mostrar vista previa de clip al pasar el cursor</value>
+  </data>
+  <data name="Personalization_TimestampFormat.Header" xml:space="preserve">
+    <value>Formato de marca de tiempo</value>
+  </data>
+  <data name="Personalization_TimestampFormat.Description" xml:space="preserve">
+    <value>Elige si mostrar clips con marca de tiempo exacta o tiempo relativo transcurrido</value>
+  </data>
+  <data name="Personalization_TimestampFormat_Absolute.Content" xml:space="preserve">
+    <value>Absoluto</value>
+  </data>
+  <data name="Personalization_TimestampFormat_Relative.Content" xml:space="preserve">
+    <value>Relativo</value>
+  </data>
+  <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
+    <value>Ventana del portapapeles</value>
   </data>
   <data name="Personalization_WindowPosition.Header" xml:space="preserve">
     <value>Posición de la ventana del portapapeles</value>

@@ -321,4 +321,19 @@
   <data name="EraseData_FlyoutButton.Content" xml:space="preserve">
     <value>Effacer</value>
   </data>
+  <data name="ClipFlyout_ImageSelector.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="ClipFlyout_FilesSelector.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Fichiers</value>
+  </data>
+  <data name="ClipFlyout_TextSelector.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Texte brut</value>
+  </data>
+  <data name="ClipFlyout_FormattedTextSelector.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Texte formaté</value>
+  </data>
+  <data name="ClipFlyout_HtmlSelector.ToolTipService.ToolTip" xml:space="preserve">
+    <value>HTML</value>
+  </data>
 </root>

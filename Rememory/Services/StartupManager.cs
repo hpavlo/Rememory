@@ -14,15 +14,15 @@ namespace Rememory.Services
         #region Startup task
 
 #if DEBUG
-        private const string StartupTaskId_ = "RememoryDevStartupTask";
+        private const string StartupTaskId = "RememoryDevStartupTask";
 #else
-        private const string StartupTaskId_ = "RememoryStartupTask";
+        private const string StartupTaskId = "RememoryStartupTask";
 #endif
         public StartupTask StartupTask { get; private set; }
         public bool IsStartupEnabled => StartupTask.State is StartupTaskState.Enabled or StartupTaskState.EnabledByPolicy;
         public bool IsDisabledByUser => StartupTask.State == StartupTaskState.DisabledByUser;
 
-        public static async System.Threading.Tasks.Task<StartupManager> CreateAsync() => new() { StartupTask = await StartupTask.GetAsync(StartupTaskId_) };
+        public static async System.Threading.Tasks.Task<StartupManager> CreateAsync() => new() { StartupTask = await StartupTask.GetAsync(StartupTaskId) };
 
         #endregion
 

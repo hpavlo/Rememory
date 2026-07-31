@@ -12,8 +12,8 @@ namespace Rememory.Views.Onboarding
 {
     public sealed class OnboardingWindow : Window
     {
-        private const int WindowWidth_ = 650;
-        private const int WindowHeight_ = 740;
+        private const int WindowWidth = 650;
+        private const int WindowHeight = 740;
 
         public OnboardingWindow()
         {
@@ -40,8 +40,8 @@ namespace Rememory.Views.Onboarding
         {
             var handle = WindowNative.GetWindowHandle(this);
             var dpi = NativeHelper.GetDpiForWindow(handle) / 96.0;
-            int scaledWidth = (int)(WindowWidth_ * dpi);
-            int scaledHeight = (int)(WindowHeight_ * dpi);
+            int scaledWidth = (int)(WindowWidth * dpi);
+            int scaledHeight = (int)(WindowHeight * dpi);
 
             var displayArea = DisplayArea.GetFromWindowId(AppWindow.Id, DisplayAreaFallback.Nearest);
             var x = (displayArea.WorkArea.Width - scaledWidth) / 2;

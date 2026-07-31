@@ -9,7 +9,7 @@ using Rememory.Hooks;
 using Rememory.Models;
 using Rememory.Models.Metadata;
 using Rememory.Services;
-using Rememory.Views;
+using Rememory.Views.Clipboard;
 using Rememory.Views.Editor;
 using Rememory.Views.Settings;
 using System;
@@ -262,7 +262,7 @@ namespace Rememory.ViewModels
 
         private void NavigationTabItemsInit()
         {
-            NavigationTabItems = [..TabItemFactory.GetDefaultTabs()];
+            NavigationTabItems = TabItemFactory.GetDefaultTabs();
             SelectedTab = NavigationTabItems.First();
 
             foreach (var tag in _tagService.Tags)

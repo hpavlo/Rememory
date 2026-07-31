@@ -321,4 +321,19 @@
   <data name="EraseData_FlyoutButton.Content" xml:space="preserve">
     <value>지우기</value>
   </data>
+  <data name="ClipFlyout_ImageSelector.ToolTipService.ToolTip" xml:space="preserve">
+    <value>이미지</value>
+  </data>
+  <data name="ClipFlyout_FilesSelector.ToolTipService.ToolTip" xml:space="preserve">
+    <value>파일</value>
+  </data>
+  <data name="ClipFlyout_TextSelector.ToolTipService.ToolTip" xml:space="preserve">
+    <value>일반 텍스트</value>
+  </data>
+  <data name="ClipFlyout_FormattedTextSelector.ToolTipService.ToolTip" xml:space="preserve">
+    <value>서식 있는 텍스트</value>
+  </data>
+  <data name="ClipFlyout_HtmlSelector.ToolTipService.ToolTip" xml:space="preserve">
+    <value>HTML</value>
+  </data>
 </root>

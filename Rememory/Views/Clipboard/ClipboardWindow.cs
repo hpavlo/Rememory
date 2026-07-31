@@ -17,7 +17,7 @@ using WinRT.Interop;
 using WinUIEx;
 using WinUIEx.Messaging;
 
-namespace Rememory.Views
+namespace Rememory.Views.Clipboard
 {
     public class ClipboardWindow : WindowEx
     {

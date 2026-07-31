@@ -10,10 +10,10 @@ namespace Rememory.Views.BriefMessage
 {
     public static class BriefMessageWindow
     {
-        private const string WINDOW_CLASS_NAME = "Rememory_BriefMessage";
-        private const int WIDTH = 120;
-        private const int HEIGHT = 14;
-        private static readonly NativeHelper.WndProc delegateWindowProc = WindowProc;
+        private const string WindowClassName = "Rememory_BriefMessage";
+        private const int Width = 120;
+        private const int Height = 14;
+        private static readonly NativeHelper.WndProc _delegateWindowProc = WindowProc;
         private static NativeHelper.WNDCLASSEX _windowClass;
         private static ushort _regResult;
 
@@ -31,7 +31,7 @@ namespace Rememory.Views.BriefMessage
             else
             {
                 CalculateWindowPosition(out int x, out int y, out _, out _);
-                _appWindow.MoveAndResize(new(x, y, WIDTH, HEIGHT));
+                _appWindow.MoveAndResize(new(x, y, Width, Height));
             }
 
             _rootPage?.OpenToolTip(iconGlyph);
@@ -81,8 +81,8 @@ namespace Rememory.Views.BriefMessage
                 hIcon = IntPtr.Zero,
                 hCursor = IntPtr.Zero,
                 lpszMenuName = string.Empty,
-                lpszClassName = WINDOW_CLASS_NAME,
-                lpfnWndProc = Marshal.GetFunctionPointerForDelegate(delegateWindowProc),
+                lpszClassName = WindowClassName,
+                lpfnWndProc = Marshal.GetFunctionPointerForDelegate(_delegateWindowProc),
                 hIconSm = IntPtr.Zero
             };
             return NativeHelper.RegisterClassEx(ref _windowClass);
@@ -114,8 +114,8 @@ namespace Rememory.Views.BriefMessage
             double dpiScaleX = dpiX / 96.0;   // 96 is a default DPI (scale 100%)
             double dpiScaleY = dpiY / 96.0;
 
-            scaledWidth = (int)(WIDTH * dpiScaleX);
-            scaledHeight = (int)(HEIGHT * dpiScaleY);
+            scaledWidth = (int)(Width * dpiScaleX);
+            scaledHeight = (int)(Height * dpiScaleY);
 
             x = workArea.X + (workArea.Width - scaledWidth) / 2;
             y = workArea.Y + workArea.Height - scaledHeight;

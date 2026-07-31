@@ -137,16 +137,39 @@
                 </tkcontrols:SettingsExpander.Items>
             </tkcontrols:SettingsExpander>
 
-            <TextBlock x:Uid="/Settings/Personalization_ClipboardWindowSection"
+            <TextBlock x:Uid="/Settings/Personalization_ClipPreviewLayoutSection"
                        Margin="0,28,0,8"
                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                        Style="{StaticResource BodyStrongTextBlockStyle}" />
 
-            <tkcontrols:SettingsCard x:Uid="/Settings/Personalization_CompactView"
-                                     Margin="0,0,0,5"
-                                     HeaderIcon="{tk:FontIcon Glyph=&#xF168;}">
+            <tkcontrols:SettingsExpander x:Uid="/Settings/Personalization_CompactView"
+                                         Margin="0,0,0,5"
+                                         HeaderIcon="{tk:FontIcon Glyph=&#xF168;}"
+                                         IsExpanded="{x:Bind ViewModel.SettingsContext.IsCompactViewEnabled, Mode=OneWay}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsCompactViewEnabled, Mode=TwoWay}" />
+
+                <tkcontrols:SettingsExpander.Items>
+                    <tkcontrols:SettingsCard ContentAlignment="Left"
+                                             IsEnabled="{x:Bind ViewModel.SettingsContext.IsCompactViewEnabled, Mode=OneWay}">
+                        <CheckBox x:Uid="/Settings/Personalization_CompactView_HoverPreview"
+                                  IsChecked="{x:Bind ViewModel.SettingsContext.IsClipHoverPreviewInCompactViewEnabled, Mode=TwoWay}" />
+                    </tkcontrols:SettingsCard>
+                </tkcontrols:SettingsExpander.Items>
+            </tkcontrols:SettingsExpander>
+
+            <tkcontrols:SettingsCard x:Uid="/Settings/Personalization_TimestampFormat"
+                                     Margin="0,0,0,5"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xEC92;}">
+                <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsContext.TimestampFormat, Mode=TwoWay, Converter={StaticResource EnumToIndexConverter}}">
+                    <ComboBoxItem x:Uid="/Settings/Personalization_TimestampFormat_Absolute" />
+                    <ComboBoxItem x:Uid="/Settings/Personalization_TimestampFormat_Relative" />
+                </ComboBox>
             </tkcontrols:SettingsCard>
+
+            <TextBlock x:Uid="/Settings/Personalization_ClipboardWindowSection"
+                       Margin="0,28,0,8"
+                       Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                       Style="{StaticResource BodyStrongTextBlockStyle}" />
 
             <tkcontrols:SettingsExpander x:Uid="/Settings/Personalization_WindowPosition"
                                          Margin="0,0,0,5"

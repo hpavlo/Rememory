@@ -285,14 +285,32 @@
   <data name="Personalization_BackgroundColor.Description" xml:space="preserve">
     <value>更改窗口背景颜色</value>
   </data>
-  <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
-    <value>剪贴板窗口</value>
+  <data name="Personalization_ClipPreviewLayoutSection.Text" xml:space="preserve">
+    <value>剪辑预览布局</value>
   </data>
   <data name="Personalization_CompactView.Header" xml:space="preserve">
     <value>紧凑视图</value>
   </data>
   <data name="Personalization_CompactView.Description" xml:space="preserve">
     <value>以紧凑的单行格式显示剪辑，以节省空间</value>
+  </data>
+  <data name="Personalization_CompactView_HoverPreview.Content" xml:space="preserve">
+    <value>悬停时显示剪辑预览</value>
+  </data>
+  <data name="Personalization_TimestampFormat.Header" xml:space="preserve">
+    <value>时间戳格式</value>
+  </data>
+  <data name="Personalization_TimestampFormat.Description" xml:space="preserve">
+    <value>选择显示剪辑的精确时间戳或相对时间</value>
+  </data>
+  <data name="Personalization_TimestampFormat_Absolute.Content" xml:space="preserve">
+    <value>绝对</value>
+  </data>
+  <data name="Personalization_TimestampFormat_Relative.Content" xml:space="preserve">
+    <value>相对</value>
+  </data>
+  <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
+    <value>剪贴板窗口</value>
   </data>
   <data name="Personalization_WindowPosition.Header" xml:space="preserve">
     <value>剪贴板窗口位置</value>

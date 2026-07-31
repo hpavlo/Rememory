@@ -2,7 +2,7 @@
 using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Xaml;
 using Rememory.Contracts;
-using Rememory.Views;
+using Rememory.Views.Clipboard;
 using System;
 using WinRT;
 

@@ -10,7 +10,6 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Storage;
 
@@ -33,8 +32,6 @@ namespace Rememory.Services
         private readonly ClipboardMonitor _clipboardMonitor;
 
         private readonly SettingsContext _settingsContext = App.Current.SettingsContext;
-        private readonly Regex _hexColorRegex = HexColorRegex();
-        private readonly Regex _hexColorRegexOptionalPrefix = HexColorRegexOptionalPrefix();
 
         public ClipboardService(
             IStorageService storageService,
@@ -80,7 +77,7 @@ namespace Rememory.Services
 
             if (clip.Data.TryGetValue(ClipboardFormat.Text, out var textData))
             {
-                if ((_settingsContext.IsHexColorPrefixRequired ? _hexColorRegex : _hexColorRegexOptionalPrefix).IsMatch(textData.Data))
+                if (textData.Data.IsValidColor(_settingsContext.IsHexColorPrefixRequired))
                 {
                     ColorMetadataModel colorMetadata = new();
                     textData.Metadata = colorMetadata;
@@ -403,11 +400,5 @@ namespace Rememory.Services
         }
 
         private static int? GetNonEmptyOwnerId(ClipModel clip) => clip.Owner?.Id != 0 ? clip.Owner?.Id : null;
-
-        [GeneratedRegex(@"^#([a-fA-F0-9]{8}|[a-fA-F0-9]{6}|[a-fA-F0-9]{4}|[a-fA-F0-9]{3})$")]
-        private static partial Regex HexColorRegex();
-
-        [GeneratedRegex(@"^#?([a-fA-F0-9]{8}|[a-fA-F0-9]{6}|[a-fA-F0-9]{4}|[a-fA-F0-9]{3})$")]
-        private static partial Regex HexColorRegexOptionalPrefix();
     }
 }

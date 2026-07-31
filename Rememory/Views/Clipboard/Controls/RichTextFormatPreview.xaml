@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<local:DataPreviewBase x:Class="Rememory.Views.Clipboard.Controls.RichTextFormatPreview"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:local="using:Rememory.Views.Clipboard.Controls">
+    <Grid>
+        <RichEditBox x:Name="PreviewFormatedTextBox"
+                     BorderThickness="0"
+                     TextWrapping="Wrap"
+                     FontSize="{StaticResource BodyTextBlockFontSize}">
+            <RichEditBox.Resources>
+                <SolidColorBrush x:Key="TextControlBackground"
+                                 Color="White" />
+                <SolidColorBrush x:Key="TextControlBackgroundDisabled"
+                                 Color="White" />
+                <SolidColorBrush x:Key="TextControlBackgroundPointerOver"
+                                 Color="White" />
+                <SolidColorBrush x:Key="TextControlBackgroundFocused"
+                                 Color="White" />
+            </RichEditBox.Resources>
+        </RichEditBox>
+    </Grid>
+</local:DataPreviewBase>

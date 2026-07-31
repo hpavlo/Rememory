@@ -285,14 +285,32 @@
   <data name="Personalization_BackgroundColor.Description" xml:space="preserve">
     <value>Alterar a cor de fundo na janela</value>
   </data>
-  <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
-    <value>Janela de área de transferência</value>
+  <data name="Personalization_ClipPreviewLayoutSection.Text" xml:space="preserve">
+    <value>Layout de pré-visualização de clipe</value>
   </data>
   <data name="Personalization_CompactView.Header" xml:space="preserve">
     <value>Visualização compacta</value>
   </data>
   <data name="Personalization_CompactView.Description" xml:space="preserve">
     <value>Exibe clipes em formato compacto e unica para economizar espaço</value>
+  </data>
+  <data name="Personalization_CompactView_HoverPreview.Content" xml:space="preserve">
+    <value>Mostrar pré-visualização de clipe ao passar o mouse</value>
+  </data>
+  <data name="Personalization_TimestampFormat.Header" xml:space="preserve">
+    <value>Formato de carimbo de data/hora</value>
+  </data>
+  <data name="Personalization_TimestampFormat.Description" xml:space="preserve">
+    <value>Escolha se deseja exibir clipes com carimbo de data/hora exato ou tempo relativo decorrido</value>
+  </data>
+  <data name="Personalization_TimestampFormat_Absolute.Content" xml:space="preserve">
+    <value>Absoluto</value>
+  </data>
+  <data name="Personalization_TimestampFormat_Relative.Content" xml:space="preserve">
+    <value>Relativo</value>
+  </data>
+  <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
+    <value>Janela de área de transferência</value>
   </data>
   <data name="Personalization_WindowPosition.Header" xml:space="preserve">
     <value>Posição da janela da área de transferência</value>

@@ -74,7 +74,7 @@
                                             <StackPanel Grid.Column="1">
                                                 <TextBlock TextWrapping="Wrap"
                                                            Text="{x:Bind Name}" />
-                                                <TextBlock FontSize="{ThemeResource CaptionTextBlockFontSize}"
+                                                <TextBlock FontSize="{StaticResource CaptionTextBlockFontSize}"
                                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                                            Text="{x:Bind ClipsCount, Converter={StaticResource StringFormatResourceConverter}, ConverterParameter=Settings/Tags_Tag_ClipsCount/Text}" />
                                             </StackPanel>

@@ -285,14 +285,32 @@
   <data name="Personalization_BackgroundColor.Description" xml:space="preserve">
     <value>Penceredeki arka plan rengini değiştir</value>
   </data>
-  <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
-    <value>Pano penceresi</value>
+  <data name="Personalization_ClipPreviewLayoutSection.Text" xml:space="preserve">
+    <value>Klip önizleme düzeni</value>
   </data>
   <data name="Personalization_CompactView.Header" xml:space="preserve">
     <value>Kompakt görünüm</value>
   </data>
   <data name="Personalization_CompactView.Description" xml:space="preserve">
     <value>Alan kazanmak için klipleri kompakt, tek satırlı biçimde gösterir</value>
+  </data>
+  <data name="Personalization_CompactView_HoverPreview.Content" xml:space="preserve">
+    <value>İmleç üzerine gelindiğinde klip önizlemesini göster</value>
+  </data>
+  <data name="Personalization_TimestampFormat.Header" xml:space="preserve">
+    <value>Zaman damgası biçimi</value>
+  </data>
+  <data name="Personalization_TimestampFormat.Description" xml:space="preserve">
+    <value>Klipleri kesin zaman damgası veya geçen süreyle görüntülemeyi seçin</value>
+  </data>
+  <data name="Personalization_TimestampFormat_Absolute.Content" xml:space="preserve">
+    <value>Mutlak</value>
+  </data>
+  <data name="Personalization_TimestampFormat_Relative.Content" xml:space="preserve">
+    <value>Göreceli</value>
+  </data>
+  <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
+    <value>Pano penceresi</value>
   </data>
   <data name="Personalization_WindowPosition.Header" xml:space="preserve">
     <value>Pano penceresi konumu</value>

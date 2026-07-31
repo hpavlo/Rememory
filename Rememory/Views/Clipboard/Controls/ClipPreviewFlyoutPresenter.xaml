@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FlyoutPresenter x:Class="Rememory.Views.Clipboard.Controls.ClipPreviewFlyoutPresenter"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:local="using:Rememory.Views.Clipboard.Controls"
+                 xmlns:tk="using:CommunityToolkit.WinUI"
+                 xmlns:tkcontrols="using:CommunityToolkit.WinUI.Controls"
+                 Background="Transparent"
+                 Loaded="FlyoutPresenter_Loaded"
+                 Unloaded="FlyoutPresenter_Unloaded">
+    <FlyoutPresenter.Style>
+        <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}"
+               TargetType="FlyoutPresenter">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="FlyoutPresenter">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding CornerRadius}"
+                                BackgroundSizing="InnerBorderEdge"
+                                HorizontalAlignment="Stretch">
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              ContentTransitions="{TemplateBinding ContentTransitions}"
+                                              Margin="{TemplateBinding Padding}"
+                                              HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Stretch"
+                                              HorizontalContentAlignment="Stretch"
+                                              VerticalContentAlignment="Stretch" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </FlyoutPresenter.Style>
+
+    <Grid x:Name="RootGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <tkcontrols:Segmented x:Name="FormatSegmentedSelector"
+                              Grid.Row="0"
+                              SelectionMode="Single"
+                              HorizontalAlignment="Center"
+                              SelectionChanged="FormatSegmentedSelector_SelectionChanged">
+            <tkcontrols:SegmentedItem x:Name="ImageSegmentedItem"
+                                      x:Uid="/Clipboard/ClipFlyout_ImageSelector"
+                                      AccessKey="P1"
+                                      Icon="{tk:FontIcon Glyph=&#xE91B;}" />
+            <tkcontrols:SegmentedItem x:Name="FilesSegmentedItem"
+                                      x:Uid="/Clipboard/ClipFlyout_FilesSelector"
+                                      AccessKey="P2"
+                                      Icon="{tk:FontIcon Glyph=&#xE8B7;}" />
+            <tkcontrols:SegmentedItem x:Name="TextSegmentedItem"
+                                      x:Uid="/Clipboard/ClipFlyout_TextSelector"
+                                      AccessKey="P3"
+                                      Icon="{tk:FontIcon Glyph=&#xE8E9;}" />
+            <tkcontrols:SegmentedItem x:Name="RtfSegmentedItem"
+                                      x:Uid="/Clipboard/ClipFlyout_FormattedTextSelector"
+                                      AccessKey="P4"
+                                      Icon="{tk:FontIcon Glyph=&#xEC34;}" />
+            <tkcontrols:SegmentedItem x:Name="HtmlSegmentedItem"
+                                      x:Uid="/Clipboard/ClipFlyout_HtmlSelector"
+                                      AccessKey="P5"
+                                      Icon="{tk:FontIcon Glyph=&#xEB41;}" />
+        </tkcontrols:Segmented>
+
+        <Grid x:Name="DataGrid"
+              Grid.Row="1">
+            <!-- Always keep booth scroll bars hidden to avoid layout cycle error -->
+            <ScrollView x:Name="DataPreviewScrollView"
+                        ZoomMode="Enabled"
+                        HorizontalScrollBarVisibility="Hidden"
+                        VerticalScrollBarVisibility="Hidden"
+                        HorizontalScrollMode="Auto"
+                        VerticalScrollMode="Auto">
+                <Grid>
+                    <local:ImagePreview x:Name="ImagePreview"
+                                        PreviewVisualState="Expanded"
+                                        SearchText="{x:Bind SearchText, Mode=OneWay}" />
+
+                    <local:FilesPreview x:Name="FilesPreview"
+                                        FilePresenterPadding="0,4,0,4"
+                                        TextWrapping="Wrap"
+                                        ShowFullPath="True"
+                                        IsTextSelectionEnabled="True"
+                                        PreviewVisualState="Expanded"
+                                        SearchText="{x:Bind SearchText, Mode=OneWay}" />
+
+                    <local:TextPreview x:Name="TextPreview"
+                                       IsTextSelectionEnabled="True"
+                                       PreviewVisualState="Expanded"
+                                       SearchText="{x:Bind SearchText, Mode=OneWay}" />
+                    
+                    <local:LinkPreview x:Name="LinkPreview"
+                                       IsTextSelectionEnabled="True"
+                                       PreviewVisualState="Expanded"
+                                       SearchText="{x:Bind SearchText, Mode=OneWay}" />
+                    
+                    <local:ColorPreview x:Name="ColorPreview"
+                                        IsTextSelectionEnabled="True"
+                                        PreviewVisualState="Expanded"
+                                        SearchText="{x:Bind SearchText, Mode=OneWay}" />
+
+                    <local:RichTextFormatPreview x:Name="RichTextFormatPreview"
+                                                 IsTextSelectionEnabled="True"
+                                                 PreviewVisualState="Expanded"
+                                                 SearchText="{x:Bind SearchText, Mode=OneWay}" />
+                </Grid>
+            </ScrollView>
+
+            <!-- Keep HTML preview in separate grid to avoid conflicts between WebView2 scroll and DataPreviewScrollView -->
+            <local:HtmlPreview x:Name="HtmlPreview"
+                               PreviewVisualState="Expanded"
+                               SearchText="{x:Bind SearchText, Mode=OneWay}" />
+        </Grid>
+
+        <Grid Grid.Row="2"
+              Margin="-16,16,-16,-17"
+              Background="{ThemeResource SubtleFillColorSecondaryBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Rectangle Grid.Row="0"
+                       Height="1"
+                       Fill="{ThemeResource CardStrokeColorDefault}" />
+
+            <TextBlock Grid.Row="1"
+                       Padding="16,12,16,12"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       TextWrapping="Wrap"
+                       IsTextSelectionEnabled="True"
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                       Text="{x:Bind ClipModel.ClipTime, Mode=OneWay}"
+                       Style="{StaticResource CaptionTextBlockStyle}" />
+        </Grid>
+    </Grid>
+</FlyoutPresenter>

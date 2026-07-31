@@ -4,7 +4,7 @@ using Rememory.Core;
 using Rememory.Models;
 using Rememory.Models.Metadata;
 
-namespace Rememory.Views.Controls.Selector
+namespace Rememory.Views.Clipboard.Controls.Selector
 {
     public partial class ClipPreviewTemplateSelector : DataTemplateSelector
     {

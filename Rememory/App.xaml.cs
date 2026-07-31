@@ -10,7 +10,7 @@ using Rememory.Helper;
 using Rememory.Hooks;
 using Rememory.Models;
 using Rememory.Services;
-using Rememory.Views;
+using Rememory.Views.Clipboard;
 using Rememory.Views.Onboarding;
 using Rememory.Views.Settings;
 using System;
@@ -61,7 +61,11 @@ namespace Rememory
             InitializeComponent();
             SetCulture(SettingsContext.LanguageCode.Equals(string.Empty) ?
                 CultureInfo.CurrentCulture.TwoLetterISOLanguageName : SettingsContext.LanguageCode);
+
+            UnhandledException += (s, a) => AppInstance.Restart("-silent");
         }
+
+        public App() : this(Environment.GetCommandLineArgs()) { }
 
         /// <summary>
         /// Invoked when the application is launched.

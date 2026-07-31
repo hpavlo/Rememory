@@ -60,6 +60,14 @@
                             ResourceKey="SystemControlDisabledTransparentBrush" />
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
+    
+    <!-- Clips preview text size -->
+    <StaticResource x:Key="CompactViewTextFontSize"
+                    ResourceKey="CaptionTextBlockFontSize" />
+    <StaticResource x:Key="StandardViewTextFontSize"
+                    ResourceKey="BodyTextBlockFontSize" />
+    <StaticResource x:Key="ExpandedViewTextFontSize"
+                    ResourceKey="BodyTextBlockFontSize" />
 
     <!-- General Converters -->
     <tkconverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />

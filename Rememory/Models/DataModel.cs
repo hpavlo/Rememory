@@ -10,14 +10,17 @@ namespace Rememory.Models
 
         public ClipboardFormat Format { get; set; } = format;
 
+        /// <summary>
+        /// Contains only string text or absolute path to the file
+        /// </summary>
         public string Data { get; set; } = data;
 
+        /// <summary>
+        /// Hash of the <see cref="Data"/> content
+        /// </summary>
         public byte[] Hash { get; set; } = hash;
 
-        public IMetadata? Metadata
-        {
-            get;
-            set => SetProperty(ref field, value);
-        }
+        [ObservableProperty]
+        public partial IMetadata? Metadata { get; set; }
     }
 }

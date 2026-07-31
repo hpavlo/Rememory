@@ -285,14 +285,32 @@
   <data name="Personalization_BackgroundColor.Description" xml:space="preserve">
     <value>تغيير لون الخلفية داخل النافذة</value>
   </data>
-  <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
-    <value>نافذة الحافظة</value>
+  <data name="Personalization_ClipPreviewLayoutSection.Text" xml:space="preserve">
+    <value>تخطيط معاينة المقطع</value>
   </data>
   <data name="Personalization_CompactView.Header" xml:space="preserve">
     <value>العرض المضغوط</value>
   </data>
   <data name="Personalization_CompactView.Description" xml:space="preserve">
     <value>يعرض المقاطع بتنسيق مضغوط وسطر واحد لتوفير المساحة</value>
+  </data>
+  <data name="Personalization_CompactView_HoverPreview.Content" xml:space="preserve">
+    <value>عرض معاينة المقطع عند التمرير</value>
+  </data>
+  <data name="Personalization_TimestampFormat.Header" xml:space="preserve">
+    <value>تنسيق الطابع الزمني</value>
+  </data>
+  <data name="Personalization_TimestampFormat.Description" xml:space="preserve">
+    <value>اختر ما إذا كنت تريد عرض المقاطع بطابع زمني دقيق أو وقت نسبي منقضي</value>
+  </data>
+  <data name="Personalization_TimestampFormat_Absolute.Content" xml:space="preserve">
+    <value>مطلق</value>
+  </data>
+  <data name="Personalization_TimestampFormat_Relative.Content" xml:space="preserve">
+    <value>نسبي</value>
+  </data>
+  <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
+    <value>نافذة الحافظة</value>
   </data>
   <data name="Personalization_WindowPosition.Header" xml:space="preserve">
     <value>موضع نافذة الحافظة</value>

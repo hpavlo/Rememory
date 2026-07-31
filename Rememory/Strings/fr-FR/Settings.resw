@@ -285,14 +285,32 @@
   <data name="Personalization_BackgroundColor.Description" xml:space="preserve">
     <value>Changer la couleur d'arrière-plan dans la fenêtre</value>
   </data>
-  <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
-    <value>Fenêtre du presse-papier</value>
+  <data name="Personalization_ClipPreviewLayoutSection.Text" xml:space="preserve">
+    <value>Disposition de l’aperçu du clip</value>
   </data>
   <data name="Personalization_CompactView.Header" xml:space="preserve">
     <value>Vue compacte</value>
   </data>
   <data name="Personalization_CompactView.Description" xml:space="preserve">
     <value>Affiche les clips dans un format compact sur une seule ligne pour économiser de l’espace</value>
+  </data>
+  <data name="Personalization_CompactView_HoverPreview.Content" xml:space="preserve">
+    <value>Afficher l’aperçu du clip au survol</value>
+  </data>
+  <data name="Personalization_TimestampFormat.Header" xml:space="preserve">
+    <value>Format d’horodatage</value>
+  </data>
+  <data name="Personalization_TimestampFormat.Description" xml:space="preserve">
+    <value>Choisissez d’afficher les clips avec un horodatage exact ou un temps écoulé relatif</value>
+  </data>
+  <data name="Personalization_TimestampFormat_Absolute.Content" xml:space="preserve">
+    <value>Absolu</value>
+  </data>
+  <data name="Personalization_TimestampFormat_Relative.Content" xml:space="preserve">
+    <value>Relatif</value>
+  </data>
+  <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
+    <value>Fenêtre du presse-papier</value>
   </data>
   <data name="Personalization_WindowPosition.Header" xml:space="preserve">
     <value>Position de la fenêtre du presse-papiers</value>

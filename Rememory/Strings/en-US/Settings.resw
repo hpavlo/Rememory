@@ -285,14 +285,32 @@
   <data name="Personalization_BackgroundColor.Description" xml:space="preserve">
     <value>Change background color in the window</value>
   </data>
-  <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
-    <value>Clipboard window</value>
+  <data name="Personalization_ClipPreviewLayoutSection.Text" xml:space="preserve">
+    <value>Clip preview layout</value>
   </data>
   <data name="Personalization_CompactView.Header" xml:space="preserve">
     <value>Compact view</value>
   </data>
   <data name="Personalization_CompactView.Description" xml:space="preserve">
     <value>Displays clips in a compact, single-line format to save space</value>
+  </data>
+  <data name="Personalization_CompactView_HoverPreview.Content" xml:space="preserve">
+    <value>Show clip preview on hover</value>
+  </data>
+  <data name="Personalization_TimestampFormat.Header" xml:space="preserve">
+    <value>Timestamp format</value>
+  </data>
+  <data name="Personalization_TimestampFormat.Description" xml:space="preserve">
+    <value>Choose whether to display clips with an exact timestamp or relative time elapsed</value>
+  </data>
+  <data name="Personalization_TimestampFormat_Absolute.Content" xml:space="preserve">
+    <value>Absolute</value>
+  </data>
+  <data name="Personalization_TimestampFormat_Relative.Content" xml:space="preserve">
+    <value>Relative</value>
+  </data>
+  <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
+    <value>Clipboard window</value>
   </data>
   <data name="Personalization_WindowPosition.Header" xml:space="preserve">
     <value>Clipboard window position</value>

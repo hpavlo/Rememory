@@ -321,4 +321,19 @@
   <data name="EraseData_FlyoutButton.Content" xml:space="preserve">
     <value>Очистити</value>
   </data>
+  <data name="ClipFlyout_ImageSelector.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Зображення</value>
+  </data>
+  <data name="ClipFlyout_FilesSelector.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Файли</value>
+  </data>
+  <data name="ClipFlyout_TextSelector.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Простий текст</value>
+  </data>
+  <data name="ClipFlyout_FormattedTextSelector.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Форматований текст</value>
+  </data>
+  <data name="ClipFlyout_HtmlSelector.ToolTipService.ToolTip" xml:space="preserve">
+    <value>HTML</value>
+  </data>
 </root>

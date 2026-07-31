@@ -1,13 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Rememory.Helper;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace Rememory.Models
 {
     public static class TabItemFactory
     {
-        public static IEnumerable<TabItemModel> GetDefaultTabs() => [
+        public static ObservableCollection<TabItemModel> GetDefaultTabs() => [
                 new(NavigationTabItemType.Home, "/Clipboard/NavigationTab_Home/Text".GetLocalizedResource(), "\uE80F", "1", "/Clipboard/NavigationTab_Home/Description".GetLocalizedResource(), "\uF0E3"),
                 new(NavigationTabItemType.Fovorites, "/Clipboard/NavigationTab_Favorites/Text".GetLocalizedResource(), "\uE734", "2", "/Clipboard/NavigationTab_Favorites/Description".GetLocalizedResource()),
                 new(NavigationTabItemType.Text, "/Clipboard/NavigationTab_Text/Text".GetLocalizedResource(), "\uE8E9", "3", "/Clipboard/NavigationTab_Text/Description".GetLocalizedResource()),
@@ -19,7 +19,7 @@ namespace Rememory.Models
 
     public partial class TabItemModel : ObservableObject
     {
-        private const string TAG_GLYPH = "\uEA3B";
+        private const string TagGlyph = "\uEA3B";
 
         public string Title
         {
@@ -72,8 +72,8 @@ namespace Rememory.Models
             Type = NavigationTabItemType.Tag;
             Tag = tag;
             Title = tag.Name;
-            Glyph = TAG_GLYPH;
-            BigGlyph = TAG_GLYPH;
+            Glyph = TagGlyph;
+            BigGlyph = TagGlyph;
             AccessKey = string.Empty;
             EmptyListMessage = "Clipboard/NavigationTab_Tag/Description".GetLocalizedResource();
             tag.PropertyChanged += Tag_PropertyChanged;
