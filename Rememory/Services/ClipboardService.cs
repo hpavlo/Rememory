@@ -148,7 +148,7 @@ namespace Rememory.Services
             try
             {
                 var folderDestination = await StorageFolder.GetFolderFromPathAsync(Path.GetDirectoryName(newFilePath));
-                var newFile = await StorageFile.GetFileFromPathAsync(newFilePath);
+                var newFile = await folderDestination.CreateFileAsync(Path.GetFileName(newFilePath), CreationCollisionOption.ReplaceExisting);
                 if (dataModel.IsFile() && File.Exists(dataModel.Data))
                 {
                     var originFile = await StorageFile.GetFileFromPathAsync(dataModel.Data);
@@ -160,8 +160,7 @@ namespace Rememory.Services
                 }
                 else if (dataModel.Format == ClipboardFormat.Text)
                 {
-                    var textFile = await StorageFile.GetFileFromPathAsync(newFilePath);
-                    await FileIO.WriteTextAsync(textFile, dataModel.Data);
+                    await FileIO.WriteTextAsync(newFile, dataModel.Data);
                 }
             }
             catch { }

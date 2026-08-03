@@ -845,7 +845,7 @@ namespace Rememory.ViewModels
         private async Task ExportClip(ClipModel? clip)
         {
             if (clip is null) return;
-            await ExportClips([clip]);
+            await ExportClips(new List<ClipModel>() { clip });
         }
 
         [RelayCommand(CanExecute = nameof(CanEditClip))]
