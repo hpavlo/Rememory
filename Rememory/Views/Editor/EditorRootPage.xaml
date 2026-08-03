@@ -55,24 +55,22 @@
 
                 <Button x:Name="CanUndoButton"
                         x:Uid="/Editor/UndoButton"
-                        Padding="8,4,8,4"
                         IsEnabled="False"
                         Background="Transparent"
                         BorderBrush="Transparent"
                         VerticalAlignment="Stretch"
                         Content="{tk:FontIcon FontSize=14, Glyph=&#xE7A7;}"
-                        Style="{StaticResource AlternateButtonStyle}"
+                        Style="{StaticResource SubtleButtonStyle}"
                         Click="{x:Bind EditorTextBox.Undo}" />
                 
                 <Button x:Name="CanRedoButton"
                         x:Uid="/Editor/RedoButton"
-                        Padding="8,4,8,4"
                         IsEnabled="False"
                         Background="Transparent"
                         BorderBrush="Transparent"
                         VerticalAlignment="Stretch"
                         Content="{tk:FontIcon FontSize=14, Glyph=&#xE7A6;}"
-                        Style="{StaticResource AlternateButtonStyle}"
+                        Style="{StaticResource SubtleButtonStyle}"
                         Click="{x:Bind EditorTextBox.Redo}" />
             </StackPanel>
 

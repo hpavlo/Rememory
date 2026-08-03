@@ -869,8 +869,9 @@
                                 AccessKey="M"
                                 Width="32"
                                 Height="32"
+                                Padding="0"
                                 Content="{tk:FontIcon FontSize=14, Glyph=&#xE712;}"
-                                Style="{StaticResource AlternateButtonStyle}"
+                                Style="{StaticResource SubtleButtonStyle}"
                                 Flyout="{StaticResource TitleBarContextMenuFlyout}" />
 
                         <Button x:Uid="/Clipboard/TitleBar_CloseButton"
@@ -879,9 +880,10 @@
                                 AccessKey="C"
                                 Width="32"
                                 Height="32"
+                                Padding="0"
                                 Command="{x:Bind ViewModel.CloseWindowCommand}"
                                 Content="{tk:FontIcon FontSize=14, Glyph=&#xE711;}"
-                                Style="{StaticResource AlternateButtonStyle}" />
+                                Style="{StaticResource SubtleButtonStyle}" />
                     </StackPanel>
                 </Grid>
 
