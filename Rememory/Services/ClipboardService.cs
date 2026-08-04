@@ -19,7 +19,6 @@ namespace Rememory.Services
     {
         public event EventHandler<ClipboardEventArgs>? NewClipAdded;
         public event EventHandler<ClipboardEventArgs>? ClipMovedToTop;
-        public event EventHandler<ClipboardEventArgs>? FavoriteClipChanged;
         public event EventHandler<ClipboardEventArgs>? ClipDeleted;
         public event EventHandler<ClipboardEventArgs>? ClipsCollectionChanged;
 
@@ -140,7 +139,6 @@ namespace Rememory.Services
         {
             clip.IsFavorite = !clip.IsFavorite;
             _storageService.UpdateClip(clip, GetNonEmptyOwnerId(clip));
-            OnFavoriteClipChanged(Clips, clip);
         }
 
         public async Task SaveClipToFileAsync(DataModel dataModel, string newFilePath)
@@ -250,10 +248,6 @@ namespace Rememory.Services
         protected virtual void OnClipMovedToTop(IList<ClipModel> clips, ClipModel newClip)
         {
             ClipMovedToTop?.Invoke(this, new(clips, newClip));
-        }
-        protected virtual void OnFavoriteClipChanged(IList<ClipModel> clips, ClipModel newClip)
-        {
-            FavoriteClipChanged?.Invoke(this, new(clips, newClip));
         }
         protected virtual void OnClipDeleted(IList<ClipModel> clips, ClipModel newClip)
         {

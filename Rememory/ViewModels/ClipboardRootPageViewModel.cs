@@ -240,7 +240,6 @@ namespace Rememory.ViewModels
             App.Current.ClipboardWindow.Showing += ClipboardWindow_Showing;
 
             _clipboardService.NewClipAdded += ClipboardService_NewClipAdded;
-            _clipboardService.FavoriteClipChanged += ClipboardService_FavoriteClipChanged;
             _clipboardService.ClipMovedToTop += ClipboardService_ClipMovedToTop;
             _clipboardService.ClipDeleted += ClipboardService_ClipDeleted;
             _clipboardService.ClipsCollectionChanged += ClipboardService_ClipsCollectionChanged;
@@ -343,7 +342,7 @@ namespace Rememory.ViewModels
             _lastActiveWindowHandleBeforeShowing = NativeHelper.GetForegroundWindow();
         }
 
-        #region TabService events
+        #region TagService events
 
         private void TagService_TagRegistered(object? sender, TagModel tagModel)
         {
@@ -378,15 +377,6 @@ namespace Rememory.ViewModels
                 {
                     ClipsCollection.Insert(0, a.ChangedClip);
                 }
-            }
-        }
-
-        private void ClipboardService_FavoriteClipChanged(object? sender, ClipboardEventArgs a)
-        {
-            // If the user is currently viewing the Favorites list and the item is no longer a favorite, remove it
-            if (SelectedTab?.Type == NavigationTabItemType.Fovorites && !a.ChangedClip.IsFavorite)
-            {
-                ClipsCollection.Remove(a.ChangedClip);
             }
         }
 
@@ -699,7 +689,13 @@ namespace Rememory.ViewModels
         private void ToggleClipFavorite(ClipModel? clip)
         {
             if (clip is null) return;
+
             _clipboardService.ToggleClipFavorite(clip);
+
+            if (SelectedTab?.Type == NavigationTabItemType.Fovorites && !clip.IsFavorite)
+            {
+                ClipsCollection.Remove(clip);
+            }
         }
 
         private bool CanOpenInBrowser(ClipModel? clip) => clip is not null && clip.IsLink;
@@ -720,6 +716,7 @@ namespace Rememory.ViewModels
         private void PasteClip(ClipModel? clip)
         {
             if (clip is null) return;
+
             SendClipToClipboard(clip, paste: true);
         }
 
@@ -729,6 +726,7 @@ namespace Rememory.ViewModels
         private void PasteClipAsPlainText(ClipModel? clip)
         {
             if (clip is null) return;
+
             SendClipToClipboard(clip, ClipboardFormat.Text, paste: true);
         }
 
@@ -736,6 +734,7 @@ namespace Rememory.ViewModels
         private void PasteClipWithUpperCase(ClipModel? clip)
         {
             if (clip is null) return;
+
             SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.UpperCase, true);
         }
 
@@ -743,6 +742,7 @@ namespace Rememory.ViewModels
         private void PasteClipWithLowerCase(ClipModel? clip)
         {
             if (clip is null) return;
+
             SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.LowerCase, true);
         }
 
@@ -750,6 +750,7 @@ namespace Rememory.ViewModels
         private void PasteClipWithCapitalizedCase(ClipModel? clip)
         {
             if (clip is null) return;
+
             SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.CapitalizedCase, true);
         }
 
@@ -757,6 +758,7 @@ namespace Rememory.ViewModels
         public void PasteClipWithSentenceCase(ClipModel? clip)
         {
             if (clip is null) return;
+
             SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.SentenceCase, true);
         }
 
@@ -764,6 +766,7 @@ namespace Rememory.ViewModels
         private void PasteClipWithInvertCase(ClipModel? clip)
         {
             if (clip is null) return;
+
             SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.InvertCase, true);
         }
 
@@ -771,6 +774,7 @@ namespace Rememory.ViewModels
         private void PasteClipWithTrimWhitespace(ClipModel? clip)
         {
             if (clip is null) return;
+
             SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.TrimWhitespace, true);
         }
 
@@ -780,6 +784,7 @@ namespace Rememory.ViewModels
         private void PasteClipWithCamelCase(ClipModel? clip)
         {
             if (clip is null) return;
+
             SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.CamelCase, true);
         }
 
@@ -787,6 +792,7 @@ namespace Rememory.ViewModels
         private void PasteClipWithPascalCase(ClipModel? clip)
         {
             if (clip is null) return;
+
             SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.PascalCase, true);
         }
 
@@ -794,6 +800,7 @@ namespace Rememory.ViewModels
         private void PasteClipWithSnakeCase(ClipModel? clip)
         {
             if (clip is null) return;
+
             SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.SnakeCase, true);
         }
 
@@ -801,6 +808,7 @@ namespace Rememory.ViewModels
         private void PasteClipWithKebabCase(ClipModel? clip)
         {
             if (clip is null) return;
+
             SendClipToClipboard(clip, ClipboardFormat.Text, TextCaseType.KebabCase, true);
         }
 
@@ -808,6 +816,7 @@ namespace Rememory.ViewModels
         private void CopyClip(ClipModel? clip)
         {
             if (clip is null) return;
+
             SendClipToClipboard(clip);
         }
 
@@ -845,6 +854,7 @@ namespace Rememory.ViewModels
         private async Task ExportClip(ClipModel? clip)
         {
             if (clip is null) return;
+
             await ExportClips(new List<ClipModel>() { clip });
         }
 
@@ -852,6 +862,7 @@ namespace Rememory.ViewModels
         private void EditClip(ClipModel? clip)
         {
             if (clip is null) return;
+
             EditorWindow.ShowEditorWindow(clip);
         }
         private bool CanEditClip(ClipModel? clip) => clip is not null
@@ -862,6 +873,7 @@ namespace Rememory.ViewModels
         private void DeleteClip(ClipModel? clip)
         {
             if (clip is null) return;
+
             _clipboardService.DeleteClip(clip);
         }
 
@@ -897,6 +909,11 @@ namespace Rememory.ViewModels
             if (isChecked)
             {
                 _tagService.RemoveClipFromTag(tag, clip);
+
+                if (SelectedTab?.Tag == tag)
+                {
+                    ClipsCollection.Remove(clip);
+                }
             }
             else
             {
@@ -912,6 +929,7 @@ namespace Rememory.ViewModels
         private void AddClipsToFavorites(IEnumerable<ClipModel>? clips)
         {
             if (clips is null) return;
+
             var filteredClips = clips.Where(clip => !clip.IsFavorite).ToArray();
             foreach (var clip in filteredClips)
             {
@@ -923,10 +941,18 @@ namespace Rememory.ViewModels
         private void RemoveClipsFromFavorites(IEnumerable<ClipModel>? clips)
         {
             if (clips is null) return;
+
             var filteredClips = clips.Where(clip => clip.IsFavorite).ToArray();
+            var removeFromCollection = SelectedTab?.Type == NavigationTabItemType.Fovorites;
+
             foreach (var clip in filteredClips)
             {
                 _clipboardService.ToggleClipFavorite(clip);
+
+                if (removeFromCollection)
+                {
+                    ClipsCollection.Remove(clip);
+                }
             }
         }
 
@@ -936,6 +962,7 @@ namespace Rememory.ViewModels
         private void PasteClips(IEnumerable<ClipModel>? clips)
         {
             if (clips is null) return;
+
             PasteClipsAsCombinedText(clips);
         }
 
@@ -943,6 +970,7 @@ namespace Rememory.ViewModels
         private void PasteClipsWithUpperCase(IEnumerable<ClipModel>? clips)
         {
             if (clips is null) return;
+
             PasteClipsAsCombinedText(clips, TextCaseType.UpperCase);
         }
 
@@ -950,6 +978,7 @@ namespace Rememory.ViewModels
         private void PasteClipsWithLowerCase(IEnumerable<ClipModel>? clips)
         {
             if (clips is null) return;
+
             PasteClipsAsCombinedText(clips, TextCaseType.LowerCase);
         }
 
@@ -957,6 +986,7 @@ namespace Rememory.ViewModels
         private void PasteClipsWithCapitalizedCase(IEnumerable<ClipModel>? clips)
         {
             if (clips is null) return;
+
             PasteClipsAsCombinedText(clips, TextCaseType.CapitalizedCase);
         }
 
@@ -964,6 +994,7 @@ namespace Rememory.ViewModels
         public void PasteClipsWithSentenceCase(IEnumerable<ClipModel>? clips)
         {
             if (clips is null) return;
+
             PasteClipsAsCombinedText(clips, TextCaseType.SentenceCase);
         }
 
@@ -971,6 +1002,7 @@ namespace Rememory.ViewModels
         private void PasteClipsWithInvertCase(IEnumerable<ClipModel>? clips)
         {
             if (clips is null) return;
+
             PasteClipsAsCombinedText(clips, TextCaseType.InvertCase);
         }
 
@@ -978,6 +1010,7 @@ namespace Rememory.ViewModels
         private void PasteClipsWithTrimWhitespace(IEnumerable<ClipModel>? clips)
         {
             if (clips is null) return;
+
             PasteClipsAsCombinedText(clips, TextCaseType.TrimWhitespace);
         }
 
@@ -987,6 +1020,7 @@ namespace Rememory.ViewModels
         private void CopyClips(IEnumerable<ClipModel>? clips)
         {
             if (clips is null) return;
+
             var filteredClips = clips.Where(clip => clip.Data.ContainsKey(ClipboardFormat.Text)).ToArray();
             var dataModel = GenerateCombinedTextDataModel(filteredClips);
             SendDataToClipboard(new Dictionary<ClipboardFormat, DataModel> { { ClipboardFormat.Text, dataModel } });
@@ -996,6 +1030,7 @@ namespace Rememory.ViewModels
         private async Task ExportClips(IEnumerable<ClipModel>? clips)
         {
             if (clips is null) return;
+
             var clipsCopy = clips.ToArray();
 
             var picker = new FileSavePicker(App.Current.ClipboardWindow.AppWindow.OwnerWindowId);
@@ -1014,6 +1049,7 @@ namespace Rememory.ViewModels
         private void DeleteClips(IEnumerable<ClipModel>? clips)
         {
             if (clips is null) return;
+
             var clipsCopy = clips.ToArray();
             foreach (var clip in clipsCopy)
             {
@@ -1029,6 +1065,7 @@ namespace Rememory.ViewModels
         private void AddOwnersToFilters(IEnumerable<ClipModel>? clips)
         {
             if (clips is null) return;
+
             var filteredClips = clips.Where(clip => CanAddOwnerToFilters(clip.Owner)).ToArray();
             foreach (var clip in filteredClips)
             {
@@ -1041,15 +1078,21 @@ namespace Rememory.ViewModels
         {
             if (clipsTagData is null) return;
 
-            var clips = clipsTagData.Item1;
+            var clips = clipsTagData.Item1.ToArray();
             var tag = clipsTagData.Item2;
             var isChecked = clipsTagData.Item3;
+            var isTagSelected = SelectedTab?.Tag == tag;
 
             foreach (var clip in clips)
             {
                 if (isChecked)
                 {
                     _tagService.RemoveClipFromTag(tag, clip);
+
+                    if (isTagSelected)
+                    {
+                        ClipsCollection.Remove(clip);
+                    }
                 }
                 else
                 {

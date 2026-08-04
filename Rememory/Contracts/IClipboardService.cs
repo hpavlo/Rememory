@@ -26,11 +26,6 @@ namespace Rememory.Contracts
         event EventHandler<ClipboardEventArgs> ClipMovedToTop;
 
         /// <summary>
-        /// Occurs when the <see cref="ClipModel.IsFavorite"/> status of a clip has been changed.
-        /// </summary>
-        event EventHandler<ClipboardEventArgs> FavoriteClipChanged;
-
-        /// <summary>
         /// Occurs when a clip has been deleted from the collection.
         /// </summary>
         event EventHandler<ClipboardEventArgs> ClipDeleted;
