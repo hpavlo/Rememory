@@ -42,10 +42,13 @@ namespace Rememory.Views.Clipboard.Controls
                         if (_webViewBlock is null)
                         {
                             _webViewBlock = new WebView2();
-                            _webViewBlock.NavigationStarting += WebView_NavigationStarting;
                             RootGrid.Children.Add(_webViewBlock);
+
                             await _webViewBlock.EnsureCoreWebView2Async();
                             WebViewSettingsConfigure(_webViewBlock.CoreWebView2.Settings);
+
+                            _webViewBlock.NavigationStarting += WebView_NavigationStarting;
+                            _webViewBlock.CoreWebView2.NewWindowRequested += WebView_CoreWebView2_NewWindowRequested;
                         }
 
                         NavigateTo(clipData.Data);
@@ -88,8 +91,10 @@ namespace Rememory.Views.Clipboard.Controls
             _webViewBlock ??= RootGrid.Children.OfType<WebView2>().FirstOrDefault();
             if (_webViewBlock is not null)
             {
-                _webViewBlock.Close();
                 _webViewBlock.NavigationStarting -= WebView_NavigationStarting;
+                _webViewBlock.CoreWebView2.NewWindowRequested -= WebView_CoreWebView2_NewWindowRequested;
+                _webViewBlock.Close();
+
                 RootGrid.Children.Remove(_webViewBlock);
 
                 // We should create new WebView2 component each time after Close the old one
@@ -107,6 +112,11 @@ namespace Rememory.Views.Clipboard.Controls
             {
                 args.Cancel = true;
             }
+        }
+
+        private void WebView_CoreWebView2_NewWindowRequested(CoreWebView2 sender, CoreWebView2NewWindowRequestedEventArgs args)
+        {
+            args.Handled = true;
         }
 
         private static void WebViewSettingsConfigure(CoreWebView2Settings settings)
