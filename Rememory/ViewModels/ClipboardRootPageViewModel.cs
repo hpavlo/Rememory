@@ -354,6 +354,11 @@ namespace Rememory.ViewModels
             TabItemModel? tabItemToRemove = NavigationTabItems.FirstOrDefault(tab => tab.IsTag && tab.Tag?.Id == tagId);
             if (tabItemToRemove is not null)
             {
+                if (SelectedTab == tabItemToRemove)
+                {
+                    SelectedTab = NavigationTabItems.FirstOrDefault(tab => tab != tabItemToRemove);
+                }
+
                 NavigationTabItems.Remove(tabItemToRemove);
             }
         }
