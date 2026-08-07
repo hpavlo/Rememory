@@ -1,6 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Media.Imaging;
 using System;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
@@ -8,7 +7,7 @@ using Windows.Graphics.Imaging;
 
 namespace Rememory.Helper
 {
-    public static class FileIconHelper
+    public static partial class FileIconHelper
     {
         public static async Task<SoftwareBitmapSource?> GetFileIconAsync(string path, int size = 16)
         {
@@ -20,7 +19,8 @@ namespace Rememory.Helper
             IntPtr hIcon = IntPtr.Zero;
             try
             {
-                hIcon = GetShellHIcon(path, size);
+                var iconIndex = GetIconIndex(path);
+                hIcon = GetSmallIcon(iconIndex);
                 if (hIcon == IntPtr.Zero)
                 {
                     return null;
@@ -48,33 +48,32 @@ namespace Rememory.Helper
             }
         }
 
-        // Get the HICON for file/folder using SHGetFileInfo
-        private static IntPtr GetShellHIcon(string path, int size)
+        private static int GetIconIndex(string pszFile)
         {
-            uint flags = SHGFI_ICON;
-
-            if (!Path.Exists(path))
-            {
-                return IntPtr.Zero;
-            }
-
-            // Ask for small or large icon via SHGFI_SMALLICON.
-            // For "16x16", SMALLICON is appropriate; for other sizes, DrawIconEx scales.
-            if (size <= 16)
-            {
-                flags |= SHGFI_SMALLICON;
-            }
-
-            var result = SHGetFileInfo(path, 0, out SHFILEINFO shinfo, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), flags);
-            if (result == IntPtr.Zero || shinfo.hIcon == IntPtr.Zero)
-            {
-                return IntPtr.Zero;
-            }
-
-            return shinfo.hIcon;
+            SHFILEINFO sfi = new();
+            SHGetFileInfo(pszFile, 0, ref sfi, (uint)Marshal.SizeOf<SHFILEINFO>(), SHGFI_SYSICONINDEX | SHGFI_SMALLICON);
+            return sfi.iIcon;
         }
 
-        // Draw the icon into a top-down 32bpp DIB using GDI, then read back pixels
+        private static IntPtr GetSmallIcon(int iImage)
+        {
+            IImageList? spiml = null;
+            var guid = new Guid(IID_IImageList);
+
+            SHGetImageList(SHIL_SMALL, ref guid, ref spiml);
+            IntPtr hIcon = IntPtr.Zero;
+            spiml.GetIcon(iImage, ILD_TRANSPARENT | ILD_IMAGE, ref hIcon);
+
+            var info = new IMAGEINFO();
+            spiml.GetImageInfo(iImage, ref info);
+
+            return hIcon;
+        }
+
+        /// <summary>
+        /// Draw the icon into a top-down 32bpp DIB using GDI, then read back pixels
+        /// </summary>
+        /// <exception cref="InvalidOperationException"></exception>
         private static byte[] RenderIconToBgra32(IntPtr hIcon, int width, int height)
         {
             // Create a 32bpp top-down DIB
@@ -146,14 +145,69 @@ namespace Rememory.Helper
             }
         }
 
-        // ---- WinAPI interop ----
+        #region COM Interface
 
-        private const uint SHGFI_ICON = 0x000000100;
+        private const string IID_IImageList = "46EB5926-582E-4017-9FDF-E8998DAA0950";
+
+        [ComImportAttribute()]
+        [GuidAttribute(IID_IImageList)]
+        [InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)]
+        private interface IImageList
+        {
+            [PreserveSig]
+            int Add(IntPtr hbmImage, IntPtr hbmMask, ref int pi);
+
+            [PreserveSig]
+            int ReplaceIcon(int i, IntPtr hicon, ref int pi);
+
+            [PreserveSig]
+            int SetOverlayImage(int iImage, int iOverlay);
+
+            [PreserveSig]
+            int Replace(int i, IntPtr hbmImage, IntPtr hbmMask);
+
+            [PreserveSig]
+            int AddMasked(IntPtr hbmImage, int crMask, ref int pi);
+
+            [PreserveSig]
+            int Draw(ref IntPtr pimldp);
+
+            [PreserveSig]
+            int Remove(int i);
+
+            [PreserveSig]
+            int GetIcon(int i, int flags, ref IntPtr picon);
+
+            [PreserveSig]
+            int GetImageInfo(int i, ref IMAGEINFO pImageInfo);
+
+            // Other methods
+        }
+
+        #endregion        
+
+        #region WinAPI
+
+        private const uint SHGFI_SYSICONINDEX = 0x000004000;
         private const uint SHGFI_SMALLICON = 0x000000001;
+
+        private const int SHIL_SMALL = 0x1;
+        private const int ILD_TRANSPARENT = 0x00000001;
+        private const int ILD_IMAGE = 0x00000020;
 
         private const uint BI_RGB = 0;
         private const uint DIB_RGB_COLORS = 0;
         private const uint DI_NORMAL = 0x0003;
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct IMAGEINFO
+        {
+            public IntPtr hbmImage;
+            public IntPtr hbmMask;
+            public int Unused1;
+            public int Unused2;
+            public NativeHelper.Rect rcImage;
+        }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         private struct SHFILEINFO
@@ -166,17 +220,6 @@ namespace Rememory.Helper
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
             public string szTypeName;
         }
-
-        [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-        private static extern IntPtr SHGetFileInfo(
-            string pszPath,
-            uint dwFileAttributes,
-            out SHFILEINFO psfi,
-            uint cbFileInfo,
-            uint uFlags);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern bool DestroyIcon(IntPtr hIcon);
 
         [StructLayout(LayoutKind.Sequential)]
         private struct BITMAPINFO
@@ -201,6 +244,20 @@ namespace Rememory.Helper
             public uint biClrUsed;
             public uint biClrImportant;
         }
+
+        [DllImport("shell32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        private static extern IntPtr SHGetFileInfo(
+            string pszPath,
+            uint dwFileAttributes,
+            ref SHFILEINFO psfi,
+            uint cbFileInfo,
+            uint uFlags);
+
+        [DllImport("shell32.dll", EntryPoint = "#727", SetLastError = true, CharSet = CharSet.Unicode)]
+        private static extern int SHGetImageList(int iImageList, ref Guid riid, ref IImageList ppv);
+
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        private static extern bool DestroyIcon(IntPtr hIcon);
 
         [DllImport("gdi32.dll", SetLastError = true)]
         private static extern IntPtr CreateDIBSection(
@@ -234,5 +291,7 @@ namespace Rememory.Helper
             uint istepIfAniCur,
             IntPtr hbrFlickerFreeDraw,
             uint diFlags);
+
+        #endregion
     }
 }
