@@ -145,8 +145,30 @@ namespace Rememory.Services
         {
             try
             {
-                var folderDestination = await StorageFolder.GetFolderFromPathAsync(Path.GetDirectoryName(newFilePath));
-                var newFile = await folderDestination.CreateFileAsync(Path.GetFileName(newFilePath), CreationCollisionOption.ReplaceExisting);
+                StorageFile newFile;
+
+                if (File.Exists(newFilePath))
+                {
+                    newFile = await StorageFile.GetFileFromPathAsync(newFilePath);
+                }
+                else
+                {
+                    var directory = Path.GetDirectoryName(newFilePath);
+
+                    if (string.IsNullOrEmpty(directory))
+                    {
+                        return;
+                    }
+
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+
+                    var folderDestination = await StorageFolder.GetFolderFromPathAsync(directory);
+                    newFile = await folderDestination.CreateFileAsync(Path.GetFileName(newFilePath), CreationCollisionOption.ReplaceExisting);
+                }
+
                 if (dataModel.IsFile() && File.Exists(dataModel.Data))
                 {
                     var originFile = await StorageFile.GetFileFromPathAsync(dataModel.Data);
