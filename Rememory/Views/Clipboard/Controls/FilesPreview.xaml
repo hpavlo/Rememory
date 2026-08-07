@@ -4,13 +4,9 @@
                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                        xmlns:local="using:Rememory.Views.Clipboard.Controls"
                        xmlns:tk="using:CommunityToolkit.WinUI"
-                       xmlns:tkconverters="using:CommunityToolkit.WinUI.Converters"
                        x:Name="ParentControl"
                        Loaded="ParentControl_Loaded">
     <local:DataPreviewBase.Resources>
-        <tkconverters:EmptyObjectToObjectConverter x:Key="EmptyObjectToBoolConverter"
-                                                   NotEmptyValue="True"
-                                                   EmptyValue="False" />
         <x:Double x:Key="FilePreviewImageSize">16</x:Double>
     </local:DataPreviewBase.Resources>
 

@@ -20,9 +20,6 @@
         <tkconverters:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"
                                                 TrueValue="Collapsed"
                                                 FalseValue="Visible" />
-        <tkconverters:EmptyObjectToObjectConverter x:Key="EmptyObjectToBoolConverter"
-                                                   NotEmptyValue="True"
-                                                   EmptyValue="False" />
         <converters:ClipDataDictionaryToDataConverter x:Key="ClipDataDictionaryToDataConverter" />
         <converters:DateTimeToHumanReadableConverter x:Key="DateTimeToHumanReadableConverter" />
         <converters:DataFooterInfoConverter x:Key="DataFooterInfoConverter" />
@@ -41,28 +38,6 @@
         <selector:NavigationTabTemplateSelector x:Key="NavigationTabTemplateSelector"
                                                 TabItemTemplate="{StaticResource TabItemTemplate}"
                                                 TagTabItemTemplate="{StaticResource TagTabItemTemplate}" />
-
-        <DataTemplate x:Key="TabItemTemplate"
-                      x:DataType="models:TabItemModel"
-                      x:DefaultBindMode="OneWay">
-            <NavigationViewItem AccessKey="{x:Bind AccessKey}"
-                                Content="{x:Bind Title}">
-                <NavigationViewItem.Icon>
-                    <FontIcon Glyph="{x:Bind Glyph}" />
-                </NavigationViewItem.Icon>
-            </NavigationViewItem>
-        </DataTemplate>
-
-        <DataTemplate x:Key="TagTabItemTemplate"
-                      x:DataType="models:TabItemModel"
-                      x:DefaultBindMode="OneWay">
-            <NavigationViewItem Content="{x:Bind Tag.Name}">
-                <NavigationViewItem.Icon>
-                    <FontIcon Glyph="{x:Bind Glyph}"
-                              Foreground="{x:Bind Tag.ColorBrush}" />
-                </NavigationViewItem.Icon>
-            </NavigationViewItem>
-        </DataTemplate>
 
         <selector:ClipPreviewTemplateSelector x:Key="ClipPreviewTemplateSelector">
             <selector:ClipPreviewTemplateSelector.TextTemplate>
@@ -495,35 +470,10 @@
                       CanDragItems="False"
                       CanReorderItems="False"
                       ItemsSource="{x:Bind ViewModel.AppTreeViewNodes, Mode=OneWay}"
+                      ItemTemplate="{StaticResource AppTreeViewNodeTemplate}"
                       Loaded="FilterTreeView_Loaded"
                       Unloaded="FilterTreeView_Unloaded"
-                      SelectionChanged="FilterTreeView_SelectionChanged">
-                <TreeView.ItemTemplate>
-                    <DataTemplate x:DataType="models:AppTreeViewNode">
-                        <TreeViewItem CanDrag="False"
-                                      ItemsSource="{x:Bind Children, Mode=OneWay}"
-                                      IsExpanded="{x:Bind IsExpanded, Mode=TwoWay}"
-                                      ToolTipService.ToolTip="{x:Bind OwnerPath, Mode=OneWay}">
-                            <Grid Margin="-28,0,8,0"
-                                  ColumnSpacing="8">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-
-                                <Image Width="20"
-                                       Height="20"
-                                       Source="{x:Bind Image, Mode=OneWay}" />
-                                
-                                <TextBlock Grid.Column="1"
-                                           MaxWidth="200"
-                                           TextTrimming="CharacterEllipsis"
-                                           Text="{x:Bind Title, Mode=OneWay}" />
-                            </Grid>
-                        </TreeViewItem>
-                    </DataTemplate>
-                </TreeView.ItemTemplate>
-            </TreeView>
+                      SelectionChanged="FilterTreeView_SelectionChanged" />
         </Flyout>
 
         <Flyout x:Key="EraseButtonFlyout"
@@ -1007,7 +957,7 @@
                     <ContentControl x:Name="EmptyListTagPreview"
                                     x:Load="{x:Bind ViewModel.SelectedTab.IsTag}"
                                     HorizontalAlignment="Center"
-                                    DataContext="{x:Bind ViewModel.SelectedTab.Tag}"
+                                    Content="{x:Bind ViewModel.SelectedTab.Tag}"
                                     ContentTemplate="{StaticResource TagPreviewTemplate}" />
 
                     <TextBlock TextAlignment="Center"

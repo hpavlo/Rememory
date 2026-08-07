@@ -15,6 +15,9 @@
     <!-- General Converters -->
     <tkconverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     <tkconverters:BoolNegationConverter x:Key="BoolNegationConverter" />
+    <tkconverters:EmptyObjectToObjectConverter x:Key="EmptyObjectToBoolConverter"
+                                               NotEmptyValue="True"
+                                               EmptyValue="False" />
     <converters:ShortcutToTextConverter x:Key="ShortcutToTextConverter" />
 
     <!-- Components -->
@@ -364,16 +367,4 @@
         </Setter>
     </Style>
 
-    <DataTemplate x:Key="TagPreviewTemplate">
-        <Grid Padding="8,2,8,4"
-              CornerRadius="10"
-              Background="{Binding ColorBrush}">
-            <TextBlock FontSize="12"
-                       TextTrimming="CharacterEllipsis"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"
-                       Text="{Binding Name}" />
-        </Grid>
-    </DataTemplate>
-    
 </ResourceDictionary>
