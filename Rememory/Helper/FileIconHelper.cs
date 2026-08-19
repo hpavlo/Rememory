@@ -57,10 +57,9 @@ namespace Rememory.Helper
 
         private static IntPtr GetSmallIcon(int iImage)
         {
-            IImageList? spiml = null;
             var guid = new Guid(IID_IImageList);
 
-            SHGetImageList(SHIL_SMALL, ref guid, ref spiml);
+            SHGetImageList(SHIL_SMALL, in guid, out IImageList spiml);
             IntPtr hIcon = IntPtr.Zero;
             spiml.GetIcon(iImage, ILD_TRANSPARENT | ILD_IMAGE, ref hIcon);
 
@@ -254,7 +253,7 @@ namespace Rememory.Helper
             uint uFlags);
 
         [DllImport("shell32.dll", EntryPoint = "#727", SetLastError = true, CharSet = CharSet.Unicode)]
-        private static extern int SHGetImageList(int iImageList, ref Guid riid, ref IImageList ppv);
+        private static extern int SHGetImageList(int iImageList, in Guid riid, out IImageList ppv);
 
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         private static extern bool DestroyIcon(IntPtr hIcon);
