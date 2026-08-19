@@ -80,10 +80,10 @@
 		<PackageReference Include="CommunityToolkit.WinUI.Triggers" Version="8.2.251219" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
 		<PackageReference Include="MessageFormat" Version="8.0.0" />
-		<PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.10" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.10" />
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.11" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.11" />
 		<PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.3.1" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="2.3.1" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="2.4.0" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2526" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools.MSIX" Version="1.7.260610101">
 		  <PrivateAssets>all</PrivateAssets>
@@ -91,10 +91,10 @@
 		</PackageReference>
 		<PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="3.53.3" />
 		<PackageReference Include="TaskScheduler" Version="2.12.2" />
-		<PackageReference Include="WinUIEx" Version="2.9.2" />
+		<PackageReference Include="WinUIEx" Version="2.9.3" />
 		
 		<!-- Excluded packages -->
-		<PackageReference Include="Microsoft.WindowsAppSDK.AI" Version="2.3.4" ExcludeAssets="all" />
+		<PackageReference Include="Microsoft.WindowsAppSDK.AI" Version="2.4.4" ExcludeAssets="all" />
 		<PackageReference Include="Microsoft.WindowsAppSDK.ML" Version="2.1.74" ExcludeAssets="all" />
 		<PackageReference Include="Microsoft.Windows.AI.MachineLearning" Version="2.2.12" ExcludeAssets="all" />
 		
