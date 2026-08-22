@@ -1,0 +1,643 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="WindowTitle.Text" xml:space="preserve">
+    <value>{0} - Cài đặt</value>
+  </data>
+  <data name="PageTitle_General.Content" xml:space="preserve">
+    <value>Chung</value>
+  </data>
+  <data name="PageTitle_Personalization.Content" xml:space="preserve">
+    <value>Cá nhân hóa</value>
+  </data>
+  <data name="PageTitle_Clipboard.Content" xml:space="preserve">
+    <value>Clipboard</value>
+  </data>
+  <data name="PageTitle_Metadata.Content" xml:space="preserve">
+    <value>Siêu dữ liệu</value>
+  </data>
+  <data name="PageTitle_Tags.Content" xml:space="preserve">
+    <value>Thẻ</value>
+  </data>
+  <data name="PageTitle_Storage.Content" xml:space="preserve">
+    <value>Lưu trữ</value>
+  </data>
+  <data name="PageTitle_Filters.Content" xml:space="preserve">
+    <value>Bộ lọc</value>
+  </data>
+  <data name="PageTitle_About.Content" xml:space="preserve">
+    <value>Giới thiệu</value>
+  </data>
+  <data name="General_AppLanguage.Header" xml:space="preserve">
+    <value>Ngôn ngữ ứng dụng</value>
+  </data>
+  <data name="General_AppLanguage.Description" xml:space="preserve">
+    <value>Chọn ngôn ngữ ứng dụng hoặc sử dụng mặc định của hệ thống</value>
+  </data>
+  <data name="General_AppLanguage_Default.Content" xml:space="preserve">
+    <value>Mặc định</value>
+  </data>
+  <data name="General_AppLanguage_Arabic.Content" xml:space="preserve">
+    <value>Tiếng Ả Rập</value>
+  </data>
+  <data name="General_AppLanguage_ChineseSimplified.Content" xml:space="preserve">
+    <value>Tiếng Trung (Giản thể)</value>
+  </data>
+  <data name="General_AppLanguage_English.Content" xml:space="preserve">
+    <value>Tiếng Anh</value>
+  </data>
+  <data name="General_AppLanguage_French.Content" xml:space="preserve">
+    <value>Tiếng Pháp</value>
+  </data>
+  <data name="General_AppLanguage_German.Content" xml:space="preserve">
+    <value>Tiếng Đức</value>
+  </data>
+  <data name="General_AppLanguage_Greek.Content" xml:space="preserve">
+    <value>Tiếng Hy Lạp</value>
+  </data>
+  <data name="General_AppLanguage_Italian.Content" xml:space="preserve">
+    <value>Tiếng Ý</value>
+  </data>
+  <data name="General_AppLanguage_Japanese.Content" xml:space="preserve">
+    <value>Tiếng Nhật</value>
+  </data>
+  <data name="General_AppLanguage_Korean.Content" xml:space="preserve">
+    <value>Tiếng Hàn</value>
+  </data>
+  <data name="General_AppLanguage_Polish.Content" xml:space="preserve">
+    <value>Tiếng Ba Lan</value>
+  </data>
+  <data name="General_AppLanguage_Portuguese.Content" xml:space="preserve">
+    <value>Tiếng Bồ Đào Nha</value>
+  </data>
+  <data name="General_AppLanguage_Spanish.Content" xml:space="preserve">
+    <value>Tiếng Tây Ban Nha</value>
+  </data>
+  <data name="General_AppLanguage_Turkish.Content" xml:space="preserve">
+    <value>Tiếng Thổ Nhĩ Kỳ</value>
+  </data>
+  <data name="General_AppLanguage_Ukrainian.Content" xml:space="preserve">
+    <value>Tiếng Ukraina</value>
+  </data>
+  <data name="General_AppLanguage_Vietnamese.Content" xml:space="preserve">
+    <value>Tiếng Việt</value>
+  </data>
+  <data name="General_AppLanguageFlyout.Title" xml:space="preserve">
+    <value>Yêu cầu khởi động lại</value>
+  </data>
+  <data name="General_AppLanguageFlyout.Subtitle" xml:space="preserve">
+    <value>Để thay đổi ngôn ngữ ứng dụng, bạn cần khởi động lại chương trình</value>
+  </data>
+  <data name="General_AppLanguageFlyoutButton.Content" xml:space="preserve">
+    <value>Khởi động lại ứng dụng</value>
+  </data>
+  <data name="General_ShortcutsSection.Text" xml:space="preserve">
+    <value>Phím tắt</value>
+  </data>
+  <data name="General_ActivationShortcut.Header" xml:space="preserve">
+    <value>Phím tắt kích hoạt</value>
+  </data>
+  <data name="General_ActivationShortcut.Description" xml:space="preserve">
+    <value>Đặt tổ hợp phím tắt để mở trình quản lý Clipboard</value>
+  </data>
+  <data name="General_StartupSection.Text" xml:space="preserve">
+    <value>Khởi động</value>
+  </data>
+  <data name="General_AlwaysRunAsAdmin.Content" xml:space="preserve">
+    <value>Luôn chạy với tư cách Quản trị viên</value>
+  </data>
+  <data name="General_RunAtStartup.Header" xml:space="preserve">
+    <value>Chạy khi khởi động</value>
+  </data>
+  <data name="General_RunAtStartup.Description" xml:space="preserve">
+    <value>Tự khởi động Rememory khi bạn đăng nhập vào Windows</value>
+  </data>
+  <data name="General_StartupWarning.Title" xml:space="preserve">
+    <value>Tính năng khởi động cùng Windows đang bị tắt</value>
+  </data>
+  <data name="General_StartupWarning.Message" xml:space="preserve">
+    <value>Để cho phép ứng dụng này chạy khi khởi động, vui lòng bật nó trong Trình quản lý tác vụ hoặc Cài đặt Windows</value>
+  </data>
+  <data name="General_SettingsStartupButton.Content" xml:space="preserve">
+    <value>Mở trong Cài đặt Windows</value>
+  </data>
+  <data name="General_NotificationOnStartup.Header" xml:space="preserve">
+    <value>Thông báo khi khởi động</value>
+  </data>
+  <data name="General_NotificationOnStartup.Description" xml:space="preserve">
+    <value>Hiển thị thông báo sau khi mở ứng dụng</value>
+  </data>
+  <data name="Personalization_AppTheme.Header" xml:space="preserve">
+    <value>Giao diện ứng dụng</value>
+  </data>
+  <data name="Personalization_AppTheme.Description" xml:space="preserve">
+    <value>Chọn giao diện ưa thích của bạn cho giao diện ứng dụng</value>
+  </data>
+  <data name="Personalization_AppTheme_Default.Content" xml:space="preserve">
+    <value>Mặc định</value>
+  </data>
+  <data name="Personalization_AppTheme_Light.Content" xml:space="preserve">
+    <value>Sáng</value>
+  </data>
+  <data name="Personalization_AppTheme_Dark.Content" xml:space="preserve">
+    <value>Tối</value>
+  </data>
+  <data name="Personalization_BackgroundSection.Text" xml:space="preserve">
+    <value>Hình nền</value>
+  </data>
+  <data name="Personalization_Backdrop.Header" xml:space="preserve">
+    <value>Hiệu ứng nền</value>
+  </data>
+  <data name="Personalization_Backdrop.Description" xml:space="preserve">
+    <value>Thay đổi hiệu ứng nền trong cửa sổ</value>
+  </data>
+  <data name="Personalization_Backdrop_None.Content" xml:space="preserve">
+    <value>Không có</value>
+  </data>
+  <data name="Personalization_Backdrop_Acrylic.Content" xml:space="preserve">
+    <value>Acrylic</value>
+  </data>
+  <data name="Personalization_Backdrop_ThinAcrylic.Content" xml:space="preserve">
+    <value>Acrylic mỏng</value>
+  </data>
+  <data name="Personalization_Backdrop_Mica.Content" xml:space="preserve">
+    <value>Mica</value>
+  </data>
+  <data name="Personalization_Backdrop_MicaAlt.Content" xml:space="preserve">
+    <value>Mica Alt</value>
+  </data>
+  <data name="Personalization_BackgroundColor.Header" xml:space="preserve">
+    <value>Màu nền</value>
+  </data>
+  <data name="Personalization_BackgroundColor.Description" xml:space="preserve">
+    <value>Thay đổi màu nền trong cửa sổ</value>
+  </data>
+  <data name="Personalization_ClipPreviewLayoutSection.Text" xml:space="preserve">
+    <value>Bố cục xem trước mục sao chép</value>
+  </data>
+  <data name="Personalization_CompactView.Header" xml:space="preserve">
+    <value>Chế độ xem thu gọn</value>
+  </data>
+  <data name="Personalization_CompactView.Description" xml:space="preserve">
+    <value>Hiển thị các mục sao chép ở định dạng một dòng, thu gọn để tiết kiệm không gian</value>
+  </data>
+  <data name="Personalization_CompactView_HoverPreview.Content" xml:space="preserve">
+    <value>Hiển thị xem trước khi di chuột qua</value>
+  </data>
+  <data name="Personalization_TimestampFormat.Header" xml:space="preserve">
+    <value>Định dạng dấu thời gian</value>
+  </data>
+  <data name="Personalization_TimestampFormat.Description" xml:space="preserve">
+    <value>Chọn hiển thị mục sao chép theo dấu thời gian chính xác hoặc thời gian tương đối đã trôi qua</value>
+  </data>
+  <data name="Personalization_TimestampFormat_Absolute.Content" xml:space="preserve">
+    <value>Tuyệt đối</value>
+  </data>
+  <data name="Personalization_TimestampFormat_Relative.Content" xml:space="preserve">
+    <value>Tương đối</value>
+  </data>
+  <data name="Personalization_ClipboardWindowSection.Text" xml:space="preserve">
+    <value>Cửa sổ Clipboard</value>
+  </data>
+  <data name="Personalization_WindowPosition.Header" xml:space="preserve">
+    <value>Vị trí cửa sổ Clipboard</value>
+  </data>
+  <data name="Personalization_WindowPosition.Description" xml:space="preserve">
+    <value>Tùy chỉnh vị trí của cửa sổ trên màn hình của bạn</value>
+  </data>
+  <data name="Personalization_WindowPosition_Caret.Content" xml:space="preserve">
+    <value>Theo con trỏ văn bản</value>
+  </data>
+  <data name="Personalization_WindowPosition_Cursor.Content" xml:space="preserve">
+    <value>Theo con trỏ chuột</value>
+  </data>
+  <data name="Personalization_WindowPosition_ScreenCenter.Content" xml:space="preserve">
+    <value>Giữa màn hình</value>
+  </data>
+  <data name="Personalization_WindowPosition_LastPosition.Content" xml:space="preserve">
+    <value>Vị trí cuối cùng</value>
+  </data>
+  <data name="Personalization_WindowPosition_Right.Content" xml:space="preserve">
+    <value>Bên phải</value>
+  </data>
+  <data name="Personalization_WindowPosition_RightCorner.Content" xml:space="preserve">
+    <value>Góc bên phải</value>
+  </data>
+  <data name="Personalization_WindowWidth.Header" xml:space="preserve">
+    <value>Chiều rộng</value>
+  </data>
+  <data name="Personalization_WindowWidth.Description" xml:space="preserve">
+    <value>Đặt chiều rộng của cửa sổ (tính bằng pixel)</value>
+  </data>
+  <data name="Personalization_WindowHeight.Header" xml:space="preserve">
+    <value>Chiều cao</value>
+  </data>
+  <data name="Personalization_WindowHeight.Description" xml:space="preserve">
+    <value>Đặt chiều cao của cửa sổ (tính bằng pixel)</value>
+  </data>
+  <data name="Personalization_WindowMargin.Header" xml:space="preserve">
+    <value>Lề</value>
+  </data>
+  <data name="Personalization_WindowMargin.Description" xml:space="preserve">
+    <value>Đặt khoảng lề xung quanh cửa sổ (tính bằng pixel)</value>
+  </data>
+  <data name="Personalization_WindowMouseResize.Header" xml:space="preserve">
+    <value>Thay đổi kích thước bằng chuột</value>
+  </data>
+  <data name="Personalization_WindowMouseResize.Description" xml:space="preserve">
+    <value>Cho phép thay đổi kích thước cửa sổ bằng cách kéo các viền bằng con trỏ chuột</value>
+  </data>
+  <data name="Clipboard_ClipsSection.Text" xml:space="preserve">
+    <value>Các mục sao chép</value>
+  </data>
+  <data name="Clipboard_DragAndDrop.Header" xml:space="preserve">
+    <value>Kéo và Thả</value>
+  </data>
+  <data name="Clipboard_DragAndDrop.Description" xml:space="preserve">
+    <value>Bật tính năng kéo và thả cho các mục sao chép</value>
+  </data>
+  <data name="Clipboard_DeveloperStringCaseConversions.Header" xml:space="preserve">
+    <value>Chuyển đổi kiểu chữ cho Lập trình viên</value>
+  </data>
+  <data name="Clipboard_DeveloperStringCaseConversions.Description" xml:space="preserve">
+    <value>Bật các lệnh nâng cao để chuyển đổi văn bản sang kiểu Camel Case, Pascal Case, Snake Case và Kebab Case</value>
+  </data>
+  <data name="Clipboard_ClipMovingToTopOnCopying.Header" xml:space="preserve">
+    <value>Di chuyển mục đã sao chép lên trên cùng</value>
+  </data>
+  <data name="Clipboard_ClipMovingToTopOnCopying.Description" xml:space="preserve">
+    <value>Khi bật, bất kỳ mục nào bạn sao chép từ trình quản lý Clipboard sẽ tự động được chuyển lên đầu danh sách để truy cập nhanh hơn</value>
+  </data>
+  <data name="Clipboard_SearchBarSection.Text" xml:space="preserve">
+    <value>Thanh tìm kiếm</value>
+  </data>
+  <data name="Clipboard_SearchBoxFocus.Header" xml:space="preserve">
+    <value>Tự động chọn ô tìm kiếm</value>
+  </data>
+  <data name="Clipboard_SearchBoxFocus.Description" xml:space="preserve">
+    <value>Ô tìm kiếm sẽ tự động được trỏ tới khi mở cửa sổ</value>
+  </data>
+  <data name="Clipboard_ClearSearchOnOpen.Header" xml:space="preserve">
+    <value>Xóa tìm kiếm khi mở</value>
+  </data>
+  <data name="Clipboard_ClearSearchOnOpen.Description" xml:space="preserve">
+    <value>Xóa văn bản tìm kiếm khi cửa sổ mở lên</value>
+  </data>
+  <data name="Clipboard_TabsSection.Text" xml:space="preserve">
+    <value>Các thẻ</value>
+  </data>
+  <data name="Clipboard_SetInitialTabOnOpen.Header" xml:space="preserve">
+    <value>Đặt thẻ mặc định khi mở</value>
+  </data>
+  <data name="Clipboard_SetInitialTabOnOpen.Description" xml:space="preserve">
+    <value>Bắt đầu với thẻ Trang chủ khi cửa sổ mở lên</value>
+  </data>
+  <data name="Clipboard_OtherSection.Text" xml:space="preserve">
+    <value>Khác</value>
+  </data>
+  <data name="Clipboard_RememberPinState.Header" xml:space="preserve">
+    <value>Ghi nhớ trạng thái ghim cửa sổ</value>
+  </data>
+  <data name="Clipboard_RememberPinState.Description" xml:space="preserve">
+    <value>Theo dõi xem bạn đã ghim cửa sổ chưa, để cửa sổ mở ra theo cách tương tự vào lần sau</value>
+  </data>
+  <data name="Clipboard_ClipCopyMessage.Header" xml:space="preserve">
+    <value>Thông báo xác nhận sao chép</value>
+  </data>
+  <data name="Clipboard_ClipCopyMessage.Description" xml:space="preserve">
+    <value>Hiển thị một thông báo ngắn khi nội dung được sao chép vào Clipboard</value>
+  </data>
+  <data name="Metadata_LinkPreviewSection.Text" xml:space="preserve">
+    <value>Xem trước liên kết</value>
+  </data>
+  <data name="Metadata_LinkPreview.Header" xml:space="preserve">
+    <value>Xem trước liên kết</value>
+  </data>
+  <data name="Metadata_LinkPreview.Description" xml:space="preserve">
+    <value>Tải thông tin xem trước liên kết. Dữ liệu đã tải trước đó sẽ không thay đổi</value>
+  </data>
+  <data name="Metadata_ColorPreviewSection.Text" xml:space="preserve">
+    <value>Xem trước màu sắc</value>
+  </data>
+  <data name="Metadata_HexColorPrefix.Header" xml:space="preserve">
+    <value>Yêu cầu tiền tố mã màu Hex</value>
+  </data>
+  <data name="Metadata_HexColorPrefix.Description" xml:space="preserve">
+    <value>Nếu bật, chỉ các mã màu hệ thập lục phân bắt đầu bằng dấu '#' mới được nhận dạng là màu hợp lệ</value>
+  </data>
+  <data name="Tags_Tags.Header" xml:space="preserve">
+    <value>Thẻ</value>
+  </data>
+  <data name="Tags_Tags.Description" xml:space="preserve">
+    <value>Tạo các thẻ tùy chỉnh và gán chúng cho các mục sao chép của bạn</value>
+  </data>
+  <data name="Tags_TagsButton.Content" xml:space="preserve">
+    <value>Thêm thẻ</value>
+  </data>
+  <data name="Tags_Tag_ClipsCount.Text" xml:space="preserve">
+    <value>Số lượng mục: {0}</value>
+  </data>
+  <data name="Storage_EraseData.Header" xml:space="preserve">
+    <value>Xóa dữ liệu Clipboard</value>
+  </data>
+  <data name="Storage_EraseData.Description" xml:space="preserve">
+    <value>Xóa các mục Clipboard đã lưu khỏi máy tính của bạn</value>
+  </data>
+  <data name="Storage_EraseDataButton.Content" xml:space="preserve">
+    <value>Xóa dữ liệu</value>
+  </data>
+  <data name="Storage_EraseData_FlyoutHeader.Text" xml:space="preserve">
+    <value>Xóa tất cả dữ liệu Clipboard</value>
+  </data>
+  <data name="Storage_EraseData_FlyoutDescription.Text" xml:space="preserve">
+    <value>Thao tác này sẽ xóa tất cả dữ liệu Clipboard theo tùy chọn của bạn</value>
+  </data>
+  <data name="Storage_EraseData_FlyoutButton.Content" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="Storage_EraseData_RemoveFavoriteClips.Content" xml:space="preserve">
+    <value>Xóa các mục yêu thích</value>
+  </data>
+  <data name="Storage_EraseData_RemoveWithProtectedTags.Content" xml:space="preserve">
+    <value>Xóa các mục có gắn thẻ được bảo vệ</value>
+  </data>
+  <data name="Storage_BackupSection.Text" xml:space="preserve">
+    <value>Sao lưu</value>
+  </data>
+  <data name="Storage_ExportClips.Header" xml:space="preserve">
+    <value>Xuất lịch sử Clipboard</value>
+  </data>
+  <data name="Storage_ExportClips.Description" xml:space="preserve">
+    <value>Lưu tất cả các mục vào tệp sao lưu. Quá trình này có thể mất vài phút</value>
+  </data>
+  <data name="Storage_ExportButton.Content" xml:space="preserve">
+    <value>Xuất</value>
+  </data>
+  <data name="Storage_ImportClips.Header" xml:space="preserve">
+    <value>Nhập các mục từ tệp sao lưu</value>
+  </data>
+  <data name="Storage_ImportClips.Description" xml:space="preserve">
+    <value>Khôi phục các mục từ tệp sao lưu. Tùy thuộc vào kích thước tệp, quá trình này có thể mất một chút thời gian</value>
+  </data>
+  <data name="Storage_ImportButton.Content" xml:space="preserve">
+    <value>Nhập</value>
+  </data>
+  <data name="Storage_ImportWarning.Message" xml:space="preserve">
+    <value>Nhập dữ liệu cũ hơn có thể khiến một số mục bị xóa nếu chúng nằm ngoài thời gian lưu giữ hoặc vượt quá giới hạn số lượng mục tối đa</value>
+  </data>
+  <data name="Storage_CleanupSection.Text" xml:space="preserve">
+    <value>Dọn dẹp</value>
+  </data>
+  <data name="Storage_CleanupType.Header" xml:space="preserve">
+    <value>Loại dọn dẹp</value>
+  </data>
+  <data name="Storage_CleanupType.Description" xml:space="preserve">
+    <value>Chỉ định cách xóa các mục cũ</value>
+  </data>
+  <data name="Storage_CleanupType_RetentionPeriod.Content" xml:space="preserve">
+    <value>Thời gian lưu giữ</value>
+  </data>
+  <data name="Storage_CleanupType_Quantity.Content" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="Storage_CleanupQuantity.Header" xml:space="preserve">
+    <value>Số lượng mục tối đa</value>
+  </data>
+  <data name="Storage_CleanupQuantity.Description" xml:space="preserve">
+    <value>Xác định số lượng mục tối đa có thể được lưu trữ trên đĩa của bạn</value>
+  </data>
+  <data name="Storage_RetentionPeriod.Header" xml:space="preserve">
+    <value>Thời gian lưu giữ dữ liệu</value>
+  </data>
+  <data name="Storage_RetentionPeriod.Description" xml:space="preserve">
+    <value>Chỉ định thời gian dữ liệu Clipboard nên được giữ lại trên đĩa của bạn</value>
+  </data>
+  <data name="Storage_RetentionPeriod_Daily.Content" xml:space="preserve">
+    <value>Hàng ngày</value>
+  </data>
+  <data name="Storage_RetentionPeriod_Weekly.Content" xml:space="preserve">
+    <value>Hàng tuần</value>
+  </data>
+  <data name="Storage_RetentionPeriod_Monthly.Content" xml:space="preserve">
+    <value>Hàng tháng</value>
+  </data>
+  <data name="Storage_RetentionPeriod_Always.Content" xml:space="preserve">
+    <value>Luôn luôn</value>
+  </data>
+  <data name="Storage_FavoriteClipsCleaning.Header" xml:space="preserve">
+    <value>Dọn dẹp mục yêu thích</value>
+  </data>
+  <data name="Storage_FavoriteClipsCleaning.Description" xml:space="preserve">
+    <value>Xóa các mục yêu thích vượt quá thời gian lưu giữ</value>
+  </data>
+  <data name="Storage_ClipLimitsSection.Text" xml:space="preserve">
+    <value>Giới hạn mục sao chép</value>
+  </data>
+  <data name="Storage_SizeLimit.Header" xml:space="preserve">
+    <value>Giới hạn kích thước mục</value>
+  </data>
+  <data name="Storage_SizeLimit.Description" xml:space="preserve">
+    <value>Đặt kích thước tối đa cho phép cho mỗi mục. Các mục vượt quá giới hạn này sẽ bị loại bỏ</value>
+  </data>
+  <data name="Storage_MaxClipSize.Header" xml:space="preserve">
+    <value>Kích thước mục tối đa</value>
+  </data>
+  <data name="Storage_MaxClipSize.Description" xml:space="preserve">
+    <value>Kích thước tối đa cho phép cho mỗi mục (tính bằng MB)</value>
+  </data>
+  <data name="Storage_ClipSizeWarning.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Có thể làm tăng dung lượng sử dụng đĩa</value>
+  </data>
+  <data name="Filters_OwnerFilters.Header" xml:space="preserve">
+    <value>Bộ lọc ứng dụng nguồn</value>
+  </data>
+  <data name="Filters_OwnerFilters.Description" xml:space="preserve">
+    <value>Trình quản lý Clipboard sẽ không lưu bất kỳ dữ liệu nào từ các chương trình này</value>
+  </data>
+  <data name="Filters_OwnerFiltersButton.Content" xml:space="preserve">
+    <value>Thêm bộ lọc</value>
+  </data>
+  <data name="Filters_OwnerFiltersWarning.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Việc lọc có thể không hoạt động chính xác với các ứng dụng UWP
+và WebView2</value>
+  </data>
+  <data name="Filters_Filter_ClipsCount.Text" xml:space="preserve">
+    <value>Các mục đã lọc: {0}</value>
+  </data>
+  <data name="ShortcutDialog_Title.Text" xml:space="preserve">
+    <value>Phím tắt kích hoạt</value>
+  </data>
+  <data name="ShortcutDialog_Subtitle.Text" xml:space="preserve">
+    <value>Nhấn một tổ hợp phím để thay đổi phím tắt này</value>
+  </data>
+  <data name="ShortcutDialog_ErrorInfo.Title" xml:space="preserve">
+    <value>Phím tắt không hợp lệ</value>
+  </data>
+  <data name="ShortcutDialog_ErrorInfo.Message" xml:space="preserve">
+    <value>Phím tắt phải bắt đầu bằng phím Windows, Ctrl, Alt hoặc Shift</value>
+  </data>
+  <data name="TagDialog_Title.Text" xml:space="preserve">
+    <value>Chỉnh sửa thẻ</value>
+  </data>
+  <data name="TagDialog_Name.PlaceholderText" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="TagDialog_CleanupCheckBox.Content" xml:space="preserve">
+    <value>Cho phép dọn dẹp các mục có thẻ này</value>
+  </data>
+  <data name="FilterDialog_Title.Text" xml:space="preserve">
+    <value>Chỉnh sửa bộ lọc</value>
+  </data>
+  <data name="FilterDialog_Name.PlaceholderText" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="FilterDialog_Pattern.PlaceholderText" xml:space="preserve">
+    <value>Mẫu</value>
+  </data>
+  <data name="FilterDialog_ExampleButton.Content" xml:space="preserve">
+    <value>Ví dụ về mẫu</value>
+  </data>
+  <data name="FilterDialog_TeachingTip.Title" xml:space="preserve">
+    <value>Ví dụ về mẫu</value>
+  </data>
+  <data name="About_DevelopedBy" xml:space="preserve">
+    <value>Phát triển bởi {0}</value>
+  </data>
+  <data name="About_WriteReviewHyperlink.Content" xml:space="preserve">
+    <value>Viết đánh giá</value>
+  </data>
+  <data name="Onboarding_Title.Text" xml:space="preserve">
+    <value>Chào mừng bạn đến với Rememory</value>
+  </data>
+  <data name="Onboarding_Subtitle.Text" xml:space="preserve">
+    <value>Trình quản lý Clipboard mới của bạn</value>
+  </data>
+  <data name="Onboarding_SettingsHeader.Text" xml:space="preserve">
+    <value>Hãy nhanh chóng tùy chỉnh một số cài đặt để sẵn sàng sử dụng</value>
+  </data>
+  <data name="Onboarding_QuickTipInfo.Title" xml:space="preserve">
+    <value>Mẹo nhanh</value>
+  </data>
+  <data name="Onboarding_QuickTipInfo.Message" xml:space="preserve">
+    <value>Rememory chạy ẩn ở khay hệ thống. Nhấn phím tắt bất kỳ lúc nào để mở lịch sử Clipboard của bạn.</value>
+  </data>
+  <data name="Onboarding_GetStartedButton.Content" xml:space="preserve">
+    <value>Bắt đầu</value>
+  </data>
+</root>
