@@ -121,13 +121,13 @@
     <value>Đã tạm dừng lưu dữ liệu Clipboard</value>
   </data>
   <data name="ClipFooter_CharactersCount.Text" xml:space="preserve">
-    <value>{0, plural, one {# ký tự} other {# ký tự}}</value>
+    <value>{0} ký tự</value>
   </data>
   <data name="ClipFooter_FilesCount.Text" xml:space="preserve">
-    <value>{0, plural, one {# tệp} other {# tệp}}</value>
+    <value>{0} tệp</value>
   </data>
   <data name="ClipFooter_FoldersCount.Text" xml:space="preserve">
-    <value>{0, plural, one {# thư mục} other {# thư mục}}</value>
+    <value>{0} thư mục</value>
   </data>
   <data name="ClipFooter_FilesAndFoldersCountDivider.Text" xml:space="preserve">
     <value>, </value>
@@ -136,16 +136,16 @@
     <value>Kích thước: {0} x {1}</value>
   </data>
   <data name="ClipFooter_Time_DaysAgo.Text" xml:space="preserve">
-    <value>{0, plural, one {# ngày trước} other {# ngày trước}}</value>
+    <value>{0} ngày trước</value>
   </data>
   <data name="ClipFooter_Time_HoursAgo.Text" xml:space="preserve">
-    <value>{0, plural, one {# giờ trước} other {# giờ trước}}</value>
+    <value>{0} giờ trước</value>
   </data>
   <data name="ClipFooter_Time_MinutesAgo.Text" xml:space="preserve">
-    <value>{0, plural, one {# phút trước} other {# phút trước}}</value>
+    <value>{0} phút trước</value>
   </data>
   <data name="ClipFooter_Time_SecondsAgo.Text" xml:space="preserve">
-    <value>{0, plural, one {# giây trước} other {# giây trước}}</value>
+    <value>{0} giây trước</value>
   </data>
   <data name="ClipFooter_Time_Now.Text" xml:space="preserve">
     <value>Bây giờ</value>
@@ -307,7 +307,7 @@
     <value>Chọn tất cả</value>
   </data>
   <data name="SelectedClipsCount.Text" xml:space="preserve">
-    <value>{0, plural, one {Đã chọn # mục} other {Đã chọn # mục}}</value>
+    <value>Đã chọn {0} mục</value>
   </data>
   <data name="EraseButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>Xóa sạch</value>
