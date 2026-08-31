@@ -148,10 +148,10 @@
     <value>Thu gọn cửa sổ</value>
   </data>
   <data name="CharactersCount.Text" xml:space="preserve">
-    <value>{0, plural, one {# ký tự} other {# ký tự}}</value>
+    <value>{0} ký tự</value>
   </data>
   <data name="SelectedCharactersCount.Text" xml:space="preserve">
-    <value>{0} trên tổng số {1, plural, one {# ký tự} other {# ký tự}}</value>
+    <value>{0} trên tổng số {1} ký tự</value>
   </data>
   <data name="ZoomInButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>Phóng to</value>
