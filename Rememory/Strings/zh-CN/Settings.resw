@@ -396,6 +396,12 @@
   <data name="Clipboard_ClearSearchOnOpen.Description" xml:space="preserve">
     <value>当窗口打开时清除搜索文本</value>
   </data>
+  <data name="Clipboard_FuzzySearch.Header" xml:space="preserve">
+    <value>模糊搜索</value>
+  </data>
+  <data name="Clipboard_FuzzySearch.Description" xml:space="preserve">
+    <value>匹配搜索字符按顺序出现的剪贴板条目（不必相邻）</value>
+  </data>
   <data name="Clipboard_TabsSection.Text" xml:space="preserve">
     <value>标签页</value>
   </data>

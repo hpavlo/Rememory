@@ -396,6 +396,12 @@
   <data name="Clipboard_ClearSearchOnOpen.Description" xml:space="preserve">
     <value>Pencere açıldığında arama metnini temizle</value>
   </data>
+  <data name="Clipboard_FuzzySearch.Header" xml:space="preserve">
+    <value>Bulanık arama</value>
+  </data>
+  <data name="Clipboard_FuzzySearch.Description" xml:space="preserve">
+    <value>Arama karakterlerinin sırayla geçtiği kopyaları bulur, bitişik olmak zorunda değildir</value>
+  </data>
   <data name="Clipboard_TabsSection.Text" xml:space="preserve">
     <value>Sekmeler</value>
   </data>

@@ -6,7 +6,14 @@ namespace Rememory.Contracts
 {
     public interface ISearchService
     {
-        void StartSearch(IEnumerable<ClipModel> items, string searchString, ObservableCollection<ClipModel> foundItems);
+        void StartSearch(
+            IEnumerable<ClipModel> items,
+            string searchString,
+            ObservableCollection<ClipModel> foundItems,
+            bool matchCase = false,
+            bool matchWholeWord = false,
+            bool useRegex = false,
+            bool fuzzy = false);
         void StopSearch();
     }
 }

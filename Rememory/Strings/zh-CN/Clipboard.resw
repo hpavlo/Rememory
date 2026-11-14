@@ -294,6 +294,18 @@
   <data name="TitleBarMenu_Exit.Text" xml:space="preserve">
     <value>退出</value>
   </data>
+  <data name="FuzzySearchButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>模糊搜索</value>
+  </data>
+  <data name="MatchCaseButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>区分大小写 (Alt+C)</value>
+  </data>
+  <data name="MatchWholeWordButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>全字匹配 (Alt+W)</value>
+  </data>
+  <data name="UseRegexButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>使用正则表达式 (Alt+X)</value>
+  </data>
   <data name="FilterButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>筛选项</value>
   </data>

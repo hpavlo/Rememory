@@ -294,6 +294,18 @@
   <data name="TitleBarMenu_Exit.Text" xml:space="preserve">
     <value>Çıkış</value>
   </data>
+  <data name="FuzzySearchButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Bulanık arama</value>
+  </data>
+  <data name="MatchCaseButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Büyük/küçük harf eşleştir (Alt+C)</value>
+  </data>
+  <data name="MatchWholeWordButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Tam sözcükleri eşleştir (Alt+W)</value>
+  </data>
+  <data name="UseRegexButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Normal ifade kullan (Alt+X)</value>
+  </data>
   <data name="FilterButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>Filtre</value>
   </data>

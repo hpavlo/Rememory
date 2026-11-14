@@ -396,6 +396,12 @@
   <data name="Clipboard_ClearSearchOnOpen.Description" xml:space="preserve">
     <value>Lösche den Suchtext, wenn das Fenster geöffnet wird</value>
   </data>
+  <data name="Clipboard_FuzzySearch.Header" xml:space="preserve">
+    <value>Fuzzy-Suche</value>
+  </data>
+  <data name="Clipboard_FuzzySearch.Description" xml:space="preserve">
+    <value>Findet Einträge, in denen die Suchzeichen der Reihe nach vorkommen, auch wenn sie nicht direkt aufeinanderfolgen</value>
+  </data>
   <data name="Clipboard_TabsSection.Text" xml:space="preserve">
     <value>Tabs</value>
   </data>

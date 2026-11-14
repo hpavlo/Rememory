@@ -206,6 +206,12 @@ namespace Rememory.Views.Clipboard
             SearchBox.Focus(FocusState.Programmatic);
         }
 
+        private void ClearSearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.SearchString = string.Empty;
+            SearchBox.Focus(FocusState.Programmatic);
+        }
+
         private void ClipsListView_RequestNavigationTabViewFocus(object sender, EventArgs e)
         {
             var selectedItemContainer = NavigationTabView.ContainerFromMenuItem(NavigationTabView.SelectedItem) as UIElement;

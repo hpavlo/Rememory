@@ -47,6 +47,12 @@
                 <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsClearSearchOnOpenEnabled, Mode=TwoWay}" />
             </tkcontrols:SettingsCard>
 
+            <tkcontrols:SettingsCard x:Uid="/Settings/Clipboard_FuzzySearch"
+                                     Margin="0,0,0,5"
+                                     HeaderIcon="{tk:FontIcon Glyph=&#xF6FA;}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.SettingsContext.IsFuzzySearchEnabled, Mode=TwoWay}" />
+            </tkcontrols:SettingsCard>
+
             <TextBlock x:Uid="/Settings/Clipboard_TabsSection"
                        Margin="0,28,0,8"
                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
