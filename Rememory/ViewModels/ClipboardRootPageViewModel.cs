@@ -212,7 +212,14 @@ namespace Rememory.ViewModels
                 else
                 {
                     InSearchMode = true;
-                    _searchService?.StartSearch(_searchContext, _searchString, ClipsCollection);
+                    _searchService?.StartSearch(
+                        _searchContext,
+                        _searchString,
+                        ClipsCollection,
+                        SettingsContext.IsMatchCaseEnabled,
+                        SettingsContext.IsMatchWholeWordEnabled,
+                        SettingsContext.IsUseRegexEnabled,
+                        SettingsContext.IsFuzzySearchEnabled);
                 }
             }
         }
@@ -255,6 +262,29 @@ namespace Rememory.ViewModels
 
             NavigationTabItemsInit();
             CleanupOldData();
+
+            SettingsContext.PropertyChanged += SettingsContext_PropertyChanged;
+        }
+
+        private void SettingsContext_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(SettingsContext.IsFuzzySearchEnabled) ||
+                e.PropertyName == nameof(SettingsContext.IsMatchCaseEnabled) ||
+                e.PropertyName == nameof(SettingsContext.IsMatchWholeWordEnabled) ||
+                e.PropertyName == nameof(SettingsContext.IsUseRegexEnabled))
+            {
+                if (InSearchMode && !string.IsNullOrWhiteSpace(SearchString))
+                {
+                    _searchService?.StartSearch(
+                        _searchContext,
+                        _searchString,
+                        ClipsCollection,
+                        SettingsContext.IsMatchCaseEnabled,
+                        SettingsContext.IsMatchWholeWordEnabled,
+                        SettingsContext.IsUseRegexEnabled,
+                        SettingsContext.IsFuzzySearchEnabled);
+                }
+            }
         }
 
         public IList<TagModel> GetTags() => _tagService.Tags;
@@ -646,7 +676,14 @@ namespace Rememory.ViewModels
             {
                 _searchContext.Clear();
                 _searchContext = [.. filteredClips];
-                _searchService?.StartSearch(_searchContext, _searchString, ClipsCollection);
+                _searchService?.StartSearch(
+                    _searchContext,
+                    _searchString,
+                    ClipsCollection,
+                    SettingsContext.IsMatchCaseEnabled,
+                    SettingsContext.IsMatchWholeWordEnabled,
+                    SettingsContext.IsUseRegexEnabled,
+                    SettingsContext.IsFuzzySearchEnabled);
             }
             else
             {

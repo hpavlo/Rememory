@@ -294,6 +294,18 @@
   <data name="TitleBarMenu_Exit.Text" xml:space="preserve">
     <value>Salir</value>
   </data>
+  <data name="FuzzySearchButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Búsqueda aproximada</value>
+  </data>
+  <data name="MatchCaseButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Coincidir mayúsculas y minúsculas (Alt+C)</value>
+  </data>
+  <data name="MatchWholeWordButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Coincidir palabra completa (Alt+W)</value>
+  </data>
+  <data name="UseRegexButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Usar expresión regular (Alt+X)</value>
+  </data>
   <data name="FilterButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>Filtro</value>
   </data>

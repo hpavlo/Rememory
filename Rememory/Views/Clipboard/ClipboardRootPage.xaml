@@ -16,10 +16,18 @@
       x:Name="RootPage"
       DataContext="{x:Bind ViewModel, Mode=OneTime}"
       KeyDown="RootPage_KeyDown">
+    <Page.KeyboardAccelerators>
+        <KeyboardAccelerator Key="F"
+                             Modifiers="Control"
+                             Invoked="FindAccelerator_Invoked" />
+    </Page.KeyboardAccelerators>
     <Page.Resources>
         <tkconverters:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"
                                                 TrueValue="Collapsed"
                                                 FalseValue="Visible" />
+        <tkconverters:EmptyStringToObjectConverter x:Key="EmptyStringToVisibilityConverter"
+                                                   EmptyValue="Collapsed"
+                                                   NotEmptyValue="Visible" />
         <converters:ClipDataDictionaryToDataConverter x:Key="ClipDataDictionaryToDataConverter" />
         <converters:DateTimeToHumanReadableConverter x:Key="DateTimeToHumanReadableConverter" />
         <converters:DataFooterInfoConverter x:Key="DataFooterInfoConverter" />
@@ -278,7 +286,6 @@
                         <Button x:Uid="/Clipboard/TitleBar_CloseButton"
                                 AutomationProperties.AutomationId="TitleBarButtons"
                                 AutomationProperties.Name="Close Window"
-                                AccessKey="C"
                                 Width="32"
                                 Height="32"
                                 Padding="0"
@@ -296,20 +303,128 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <AutoSuggestBox x:Name="SearchBox"
-                                    x:Uid="/Clipboard/SearchBox"
-                                    AutomationProperties.AutomationId="SearchBox"
-                                    AutomationProperties.Name="Search Clips"
-                                    Grid.Column="0"
-                                    TabIndex="2"
-                                    VerticalAlignment="Center"
-                                    IsEnabled="{x:Bind ViewModel.IsSearchEnabled, Mode=OneWay}"
-                                    Text="{x:Bind ViewModel.SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    PreviewKeyDown="SearchBox_PreviewKeyDown" />
+                    <Grid Grid.Column="0"
+                          VerticalAlignment="Center">
+                        <AutoSuggestBox x:Name="SearchBox"
+                                        x:Uid="/Clipboard/SearchBox"
+                                        AutomationProperties.AutomationId="SearchBox"
+                                        AutomationProperties.Name="Search Clips"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        TabIndex="2"
+                                        IsEnabled="{x:Bind ViewModel.IsSearchEnabled, Mode=OneWay}"
+                                        Text="{x:Bind ViewModel.SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        PreviewKeyDown="SearchBox_PreviewKeyDown">
+                            <AutoSuggestBox.Resources>
+                                <Style TargetType="Button">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </Style>
+                            </AutoSuggestBox.Resources>
+                        </AutoSuggestBox>
 
-                    <Grid Grid.Column="1"
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,8,0"
+                                    Spacing="2">
+                            <Button x:Name="ClearSearchButton"
+                                    x:Uid="/Clipboard/ClearSearchButton"
+                                    AutomationProperties.AutomationId="ClearSearchButton"
+                                    AutomationProperties.Name="Clear search"
+                                    Width="24"
+                                    Height="24"
+                                    Padding="0"
+                                    CornerRadius="4"
+                                    Style="{StaticResource SubtleButtonStyle}"
+                                    Visibility="{x:Bind ViewModel.SearchString, Mode=OneWay, Converter={StaticResource EmptyStringToVisibilityConverter}}"
+                                    Click="ClearSearchButton_Click"
+                                    ToolTipService.ToolTip="Clear search">
+                                <FontIcon FontSize="10"
+                                          Glyph="&#xE711;" />
+                            </Button>
+
+                            <ToggleButton x:Name="MatchCaseToggleButton"
+                                          x:Uid="/Clipboard/MatchCaseButton"
+                                          AutomationProperties.AutomationId="MatchCaseButton"
+                                          AutomationProperties.Name="Match Case"
+                                          Width="26"
+                                          Height="24"
+                                          Padding="0"
+                                          CornerRadius="4"
+                                          IsChecked="{x:Bind ViewModel.SettingsContext.IsMatchCaseEnabled, Mode=TwoWay}"
+                                          ToolTipService.ToolTip="Match Case (Alt+C)">
+                                <ToggleButton.KeyboardAccelerators>
+                                    <KeyboardAccelerator Key="C"
+                                                         Modifiers="Menu" />
+                                </ToggleButton.KeyboardAccelerators>
+                                <TextBlock Text="Aa"
+                                           FontSize="12"
+                                           FontWeight="SemiBold"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center" />
+                            </ToggleButton>
+
+                            <ToggleButton x:Name="MatchWholeWordToggleButton"
+                                          x:Uid="/Clipboard/MatchWholeWordButton"
+                                          AutomationProperties.AutomationId="MatchWholeWordButton"
+                                          AutomationProperties.Name="Match Whole Word"
+                                          Width="26"
+                                          Height="24"
+                                          Padding="0"
+                                          CornerRadius="4"
+                                          IsChecked="{x:Bind ViewModel.SettingsContext.IsMatchWholeWordEnabled, Mode=TwoWay}"
+                                          ToolTipService.ToolTip="Match Whole Word (Alt+W)">
+                                <ToggleButton.KeyboardAccelerators>
+                                    <KeyboardAccelerator Key="W"
+                                                         Modifiers="Menu" />
+                                </ToggleButton.KeyboardAccelerators>
+                                <TextBlock Text="W"
+                                           FontSize="12"
+                                           FontWeight="SemiBold"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center" />
+                            </ToggleButton>
+
+                            <ToggleButton x:Name="UseRegexToggleButton"
+                                          x:Uid="/Clipboard/UseRegexButton"
+                                          AutomationProperties.AutomationId="UseRegexButton"
+                                          AutomationProperties.Name="Use Regular Expression"
+                                          Width="32"
+                                          Height="24"
+                                          Padding="0"
+                                          CornerRadius="4"
+                                          IsChecked="{x:Bind ViewModel.SettingsContext.IsUseRegexEnabled, Mode=TwoWay}"
+                                          ToolTipService.ToolTip="Use Regular Expression (Alt+X)">
+                                <ToggleButton.KeyboardAccelerators>
+                                    <KeyboardAccelerator Key="X"
+                                                         Modifiers="Menu" />
+                                </ToggleButton.KeyboardAccelerators>
+                                <TextBlock Text="(.*)"
+                                           FontSize="11"
+                                           FontWeight="SemiBold"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center" />
+                            </ToggleButton>
+                        </StackPanel>
+                    </Grid>
+
+                    <ToggleButton x:Name="FuzzySearchToggleButton"
+                                  x:Uid="/Clipboard/FuzzySearchButton"
+                                  AutomationProperties.AutomationId="FuzzySearchButton"
+                                  AutomationProperties.Name="Fuzzy Search"
+                                  Grid.Column="1"
+                                  TabIndex="3"
+                                  Width="32"
+                                  Margin="4,0,0,0"
+                                  Padding="0"
+                                  VerticalAlignment="Stretch"
+                                  IsChecked="{x:Bind ViewModel.SettingsContext.IsFuzzySearchEnabled, Mode=TwoWay}"
+                                  Content="{tk:FontIcon FontSize=14, Glyph=&#xF6FA;}" />
+
+                    <Grid Grid.Column="2"
                           Width="32"
                           Margin="4,0,0,0"
                           VerticalAlignment="Stretch">
@@ -318,7 +433,7 @@
                                 AutomationProperties.AutomationId="FilterButton"
                                 AutomationProperties.Name="Filter Clips"
                                 AccessKey="F"
-                                TabIndex="3"
+                                TabIndex="4"
                                 Padding="0"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
@@ -331,7 +446,7 @@
                                    Style="{StaticResource AttentionDotInfoBadgeStyle}" />
                     </Grid>
 
-                    <Rectangle Grid.Column="2"
+                    <Rectangle Grid.Column="3"
                                Width="1"
                                Height="16"
                                Margin="4,0,0,0"
@@ -342,8 +457,8 @@
                             AutomationProperties.AutomationId="EraseButton"
                             AutomationProperties.Name="Erase Clips"
                             AccessKey="E"
-                            Grid.Column="3"
-                            TabIndex="4"
+                            Grid.Column="4"
+                            TabIndex="5"
                             Width="32"
                             Margin="4,0,0,0"
                             Padding="0"
@@ -357,8 +472,8 @@
                                   AutomationProperties.AutomationId="MultiSelectionButton"
                                   AutomationProperties.Name="Enable Multiple Selection"
                                   AccessKey="S"
-                                  Grid.Column="4"
-                                  TabIndex="5"
+                                  Grid.Column="5"
+                                  TabIndex="6"
                                   Width="32"
                                   Margin="4,0,0,0"
                                   Padding="0"

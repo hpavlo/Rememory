@@ -265,6 +265,46 @@ namespace Rememory.Models
         }
 
 
+        private bool? _isFuzzySearchEnabled;
+
+        [Settings(nameof(IsFuzzySearchEnabled), DefaultValue = false)]
+        public bool IsFuzzySearchEnabled
+        {
+            get => _isFuzzySearchEnabled ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _isFuzzySearchEnabled, value);
+        }
+
+
+        private bool? _isMatchCaseEnabled;
+
+        [Settings(nameof(IsMatchCaseEnabled), DefaultValue = false)]
+        public bool IsMatchCaseEnabled
+        {
+            get => _isMatchCaseEnabled ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _isMatchCaseEnabled, value);
+        }
+
+
+        private bool? _isMatchWholeWordEnabled;
+
+        [Settings(nameof(IsMatchWholeWordEnabled), DefaultValue = false)]
+        public bool IsMatchWholeWordEnabled
+        {
+            get => _isMatchWholeWordEnabled ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _isMatchWholeWordEnabled, value);
+        }
+
+
+        private bool? _isUseRegexEnabled;
+
+        [Settings(nameof(IsUseRegexEnabled), DefaultValue = false)]
+        public bool IsUseRegexEnabled
+        {
+            get => _isUseRegexEnabled ??= GetSettingValue<bool>();
+            set => SetSettingsProperty(ref _isUseRegexEnabled, value);
+        }
+
+
         private bool? _isSetInitialTabOnOpenEnabled;
 
         [Settings(nameof(IsSetInitialTabOnOpenEnabled), DefaultValue = true)]
