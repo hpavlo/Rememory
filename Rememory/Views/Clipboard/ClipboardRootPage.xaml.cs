@@ -74,6 +74,13 @@ namespace Rememory.Views.Clipboard
             });
         }
 
+        private void FindAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            SearchBox.Focus(FocusState.Keyboard);
+            SelectAllSearchBoxText();
+            args.Handled = true;
+        }
+
         private static T? FindChildElement<T>(DependencyObject parent) where T : DependencyObject
         {
             int count = VisualTreeHelper.GetChildrenCount(parent);

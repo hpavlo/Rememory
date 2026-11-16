@@ -16,6 +16,11 @@
       x:Name="RootPage"
       DataContext="{x:Bind ViewModel, Mode=OneTime}"
       KeyDown="RootPage_KeyDown">
+    <Page.KeyboardAccelerators>
+        <KeyboardAccelerator Key="F"
+                             Modifiers="Control"
+                             Invoked="FindAccelerator_Invoked" />
+    </Page.KeyboardAccelerators>
     <Page.Resources>
         <tkconverters:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"
                                                 TrueValue="Collapsed"
