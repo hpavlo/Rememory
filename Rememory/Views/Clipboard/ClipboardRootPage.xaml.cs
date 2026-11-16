@@ -49,6 +49,7 @@ namespace Rememory.Views.Clipboard
             if (ViewModel.SettingsContext.IsSearchFocusOnStartEnabled)
             {
                 SearchBox.Focus(FocusState.Keyboard);
+                SelectAllSearchBoxText();
             }
             else
             {
@@ -57,6 +58,39 @@ namespace Rememory.Views.Clipboard
 
             ClipsListViewControl.ScrollUpTheList();
             ViewModel.OnWindowShowing();
+        }
+
+        private void SelectAllSearchBoxText()
+        {
+            if (string.IsNullOrEmpty(SearchBox.Text))
+            {
+                return;
+            }
+
+            DispatcherQueue.TryEnqueue(() =>
+            {
+                var innerTextBox = FindChildElement<TextBox>(SearchBox);
+                innerTextBox?.SelectAll();
+            });
+        }
+
+        private static T? FindChildElement<T>(DependencyObject parent) where T : DependencyObject
+        {
+            int count = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < count; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is T typedChild)
+                {
+                    return typedChild;
+                }
+                var nested = FindChildElement<T>(child);
+                if (nested != null)
+                {
+                    return nested;
+                }
+            }
+            return null;
         }
 
         private void Window_Hiding(object sender, EventArgs e)
